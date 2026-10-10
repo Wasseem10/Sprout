@@ -11,14 +11,14 @@ The public sample runs browser calculations and speech. Live Hugging Face, Datab
 
 ## Sponsor targets
 
-| Entry                                       | Demonstration and status                                                                                                                                                               |
-| ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Hugging Face: Best Use of Open Source AI    | Open text and vision models extract bill fields and interpret requests. Real provider rehearsal passed. Primary target.                                                                |
-| Databricks: Best Use of Databricks          | Real parameterized SQL verifies confirmed bill-change components and retains a statement reference. Connected and verified. Primary target.                                            |
-| MLH Best Use of ElevenLabs                  | Streaming transcription and short replies support the voice workflow. Real API checks passed; physical microphone and interruption rehearsal remains required.                         |
-| BNY: Financial Services Challenge           | Accessible financial-data analysis, affordability comparison and a practice application workflow. Proposed fit with no bank-specific API requirement in the supplied challenge prompt. |
-| Adobe: Prettiest Hack                       | Blue glass companion, coherent typography and accessible visual workspace. Visual quality is judged; no Adobe API requirement in the supplied prompt.                                  |
-| OneEthos: Innovation for Good — conditional | Local household conservation extension. Clearly label projected reductions, real program information, and the follow-up measurement plan. No achieved environmental impact is claimed. |
+| Entry                                       | Demonstration and status                                                                                                                                                                              |
+| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Hugging Face: Best Use of Open Source AI    | Open text and vision models extract bill fields and interpret requests. Real provider rehearsal passed. Primary target.                                                                               |
+| Databricks: Best Use of Databricks          | Real parameterized SQL verifies confirmed bill-change components and retains a statement reference. Connected and verified. Primary target.                                                           |
+| MLH Best Use of ElevenLabs                  | Streaming transcription and short replies support the voice workflow. Real API checks passed; the user reported that microphone input and spoken interruption work; full recording rehearsal remains. |
+| BNY: Financial Services Challenge           | Accessible financial-data analysis, affordability comparison and a practice application workflow. Proposed fit with no bank-specific API requirement in the supplied challenge prompt.                |
+| Adobe: Prettiest Hack                       | Blue glass companion, coherent typography and accessible visual workspace. Visual quality is judged; no Adobe API requirement in the supplied prompt.                                                 |
+| OneEthos: Innovation for Good — conditional | Local household conservation extension. Clearly label projected reductions, real program information, and the follow-up measurement plan. No achieved environmental impact is claimed.                |
 
 Overall and Best AI category consideration is automatic according to the event requirements. The strongest demonstrated sponsor fits are Hugging Face and Databricks; this does not predict placement.
 
@@ -32,7 +32,8 @@ The published rubric covers originality, technical understanding, functionality,
 
 ## Submission checklist
 
-- [ ] Rehearse with the actual laptop microphone, speakers/headphones and spoken interruption.
+- [x] User reported that the actual laptop hears speech and spoken interruption works.
+- [ ] Rehearse the full bill-to-application recording sequence.
 - [ ] Record, watch and attach the final narrated demo video.
 - [ ] Include public GitHub and public sample links, screenshots and the description in DEVPOST-DRAFT.md.
 - [ ] Add both teammates and select the relevant sponsor prizes.

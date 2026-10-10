@@ -34,7 +34,14 @@
   "limitations": [
     "Public build uses browser speech and deterministic calculations, not cloud AI integrations",
     "Desktop Hugging Face / ElevenLabs / Databricks workflow runs locally",
-    "Physical microphone and spoken interruption rehearsal still needed",
+    "User reported microphone and interruption success; full final video rehearsal remains",
     "Nothing submitted; bills and quotes are synthetic"
-  ]
+  ],
+  "humanVoiceRehearsal": {
+    "reportedAt": "2026-10-10T23:02:33.502Z",
+    "reportedBy": "user",
+    "prompt": "Read sample PDF bills; interrupt a spoken reply with a $30 monthly limit",
+    "response": "It hears me and interrupts correctly",
+    "scope": "User-reported microphone and spoken interruption check; not an independently observed complete recording"
+  }
 }
