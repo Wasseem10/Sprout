@@ -1,0 +1,115 @@
+.sponsor-connections {
+  text-align: left;
+  margin-top: 24px;
+  color: inherit;
+}
+.sponsor-connections h3 {
+  font-size: 1.2rem;
+  margin: 0 0 10px;
+}
+.sponsor-connections p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  opacity: 0.85;
+}
+.sponsor-status {
+  margin: 14px 0;
+  font-size: 0.9rem;
+  min-height: 24px;
+}
+.sponsor-card {
+  padding: 18px;
+  margin: 16px 0;
+  border: 1px solid #d2d5d3;
+  border-radius: 14px;
+}
+.sponsor-heading {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.sponsor-card h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+.sponsor-heading > span {
+  font-size: 0.8rem;
+}
+.sponsor-card label {
+  display: grid;
+  gap: 7px;
+  margin: 14px 0;
+  font-size: 0.85rem;
+}
+.sponsor-card input {
+  padding: 10px 12px;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #bcc4c1;
+  border-radius: 8px;
+  background: #fff;
+  color: #162320;
+  font: inherit;
+}
+.sponsor-connections button {
+  border: 1px solid #bac4be;
+  border-radius: 8px;
+  padding: 9px 12px;
+  background: #f4f7f5;
+  color: #193b30;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+}
+.sponsor-connections button:disabled,
+.sponsor-connections input:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.sponsor-connections :focus-visible {
+  outline: 3px solid #15805f;
+  outline-offset: 3px;
+}
+.sponsor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+.sponsor-connections .sponsor-account {
+  background: transparent;
+  color: inherit;
+  margin-bottom: 4px;
+}
+.sponsor-checks {
+  padding-left: 20px;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.sponsor-checks .passed {
+  color: #226445;
+}
+.sponsor-checks .failed {
+  color: #a23729;
+}
+.computer-dialog .sponsor-checks .passed {
+  color: #b5e1bf;
+}
+.computer-dialog .sponsor-checks .failed {
+  color: #ffc4ba;
+}
+.sponsor-live {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: 22px;
+  font-size: 0.9rem;
+}
+.sponsor-live input {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}

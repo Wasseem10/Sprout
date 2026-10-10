@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-10-10T15:56:53.025Z",
+  "input": "Windows synthesized WAV: print squares one through five",
+  "checks": [
+    {
+      "route": "/api/voice/transcribe",
+      "elapsedMs": 743,
+      "status": 200
+    },
+    {
+      "route": "/api/computer/demo-folder",
+      "elapsedMs": 3,
+      "status": 200
+    },
+    {
+      "route": "/api/computer/request",
+      "elapsedMs": 1383,
+      "status": 200
+    },
+    {
+      "route": "/api/computer/request",
+      "elapsedMs": 586,
+      "status": 200
+    },
+    {
+      "route": "/api/voice/speak",
+      "status": 200,
+      "bytes": 137134
+    }
+  ],
+  "microphoneHardware": "Not tested",
+  "speakerHardware": "Not tested",
+  "transcript": "Write a Python program that prints the squares of the numbers one through five",
+  "filename": "program-5e3b9471.py",
+  "output": "1\r\n4\r\n9\r\n16\r\n25\r\n"
+}

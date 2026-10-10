@@ -1,0 +1,31 @@
+services:
+  app:
+    build: ..
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      HOST: 0.0.0.0
+      PORT: 4311
+      LOCAL_DATA_DIR: /app/.local
+    volumes:
+      - insightos-data:/app/.local
+    expose:
+      - '4311'
+  proxy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      INSIGHTOS_DOMAIN: ${INSIGHTOS_DOMAIN:?Set the DNS name for your Vultr instance}
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - app
+volumes:
+  insightos-data:
+  caddy-data:
+  caddy-config:

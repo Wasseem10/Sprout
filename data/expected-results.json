@@ -1,0 +1,27 @@
+{
+  "synthetic": true,
+  "rows": 39,
+  "locations": 7,
+  "regions": 5,
+  "previous": { "label": "Q1 2026", "start": "2026-01-01", "end": "2026-03-31" },
+  "current": { "label": "Q2 2026", "start": "2026-04-01", "end": "2026-06-30" },
+  "allLocations": {
+    "previous": 134000,
+    "current": 204000,
+    "percent": 52.23880597014925,
+    "includedRows": 39,
+    "includedLocations": 7,
+    "excludedLocations": 0,
+    "largestChange": "South"
+  },
+  "commonLocations": {
+    "previous": 126000,
+    "current": 141000,
+    "percent": 11.904761904761903,
+    "includedRows": 30,
+    "includedLocations": 5,
+    "excludedLocations": 2,
+    "largestChange": "East",
+    "topThree": ["East", "North", "South"]
+  }
+}

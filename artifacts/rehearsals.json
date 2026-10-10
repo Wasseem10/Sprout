@@ -1,0 +1,133 @@
+{
+  "checkedAt": "2026-10-10T14:34:51.947Z",
+  "mode": "sample",
+  "measurement": "Browser wall time includes UI interactions and assertions. Recording run adds deliberate pacing. These are not live provider latency measurements.",
+  "runs": [
+    {
+      "run": 1,
+      "totalMilliseconds": 1458,
+      "requests": [
+        {
+          "request": "What is in this file?",
+          "milliseconds": 80
+        },
+        {
+          "request": "Compare revenue this quarter with last quarter",
+          "milliseconds": 105
+        },
+        {
+          "request": "Only include locations that were operating in both quarters",
+          "milliseconds": 105
+        },
+        {
+          "request": "Show that as a chart",
+          "milliseconds": 66
+        },
+        {
+          "request": "Describe this chart",
+          "milliseconds": 51
+        },
+        {
+          "request": "Only show the top three regions",
+          "milliseconds": 49
+        },
+        {
+          "request": "How did you calculate that percentage?",
+          "milliseconds": 73
+        },
+        {
+          "request": "Undo that change",
+          "milliseconds": 44
+        },
+        {
+          "request": "Save my workspace",
+          "milliseconds": 130
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "totalMilliseconds": 1651,
+      "requests": [
+        {
+          "request": "What is in this file?",
+          "milliseconds": 91
+        },
+        {
+          "request": "Compare revenue this quarter with last quarter",
+          "milliseconds": 140
+        },
+        {
+          "request": "Only include locations that were operating in both quarters",
+          "milliseconds": 142
+        },
+        {
+          "request": "Show that as a chart",
+          "milliseconds": 64
+        },
+        {
+          "request": "Describe this chart",
+          "milliseconds": 61
+        },
+        {
+          "request": "Only show the top three regions",
+          "milliseconds": 65
+        },
+        {
+          "request": "How did you calculate that percentage?",
+          "milliseconds": 79
+        },
+        {
+          "request": "Undo that change",
+          "milliseconds": 94
+        },
+        {
+          "request": "Save my workspace",
+          "milliseconds": 158
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "totalMilliseconds": 6378,
+      "requests": [
+        {
+          "request": "What is in this file?",
+          "milliseconds": 97
+        },
+        {
+          "request": "Compare revenue this quarter with last quarter",
+          "milliseconds": 142
+        },
+        {
+          "request": "Only include locations that were operating in both quarters",
+          "milliseconds": 149
+        },
+        {
+          "request": "Show that as a chart",
+          "milliseconds": 93
+        },
+        {
+          "request": "Describe this chart",
+          "milliseconds": 101
+        },
+        {
+          "request": "Only show the top three regions",
+          "milliseconds": 98
+        },
+        {
+          "request": "How did you calculate that percentage?",
+          "milliseconds": 101
+        },
+        {
+          "request": "Undo that change",
+          "milliseconds": 95
+        },
+        {
+          "request": "Save my workspace",
+          "milliseconds": 118
+        }
+      ]
+    }
+  ]
+}

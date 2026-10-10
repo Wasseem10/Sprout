@@ -1,0 +1,29 @@
+{
+  "checkedAt": "2026-10-10T15:24:25.451Z",
+  "provider": "Hugging Face Inference Providers",
+  "textModel": "Qwen/Qwen3-Coder-30B-A3B-Instruct:scaleway",
+  "visionModel": "Qwen/Qwen3-VL-30B-A3B-Instruct:deepinfra",
+  "tokenScope": "Make calls to Inference Providers only",
+  "checks": {
+    "commandPlanning": "passed: live structured action",
+    "codeGeneration": "passed: live model generated Python",
+    "vision": "passed: synthetic red/blue PNG recognized",
+    "pythonExecution": "passed: generated squares program executed with exit 0",
+    "output": [
+      1,
+      4,
+      9,
+      16,
+      25,
+      36,
+      49,
+      64
+    ]
+  },
+  "sourceSha256": "ae037977d00bcb24b680af99cd54817bf29dec05d2a60c7d83e1ec872fbe6706",
+  "limitations": [
+    "Vision check used a synthetic image, not a live desktop screenshot.",
+    "ElevenLabs microphone and speech are not configured."
+  ],
+  "automatedValidation": "32 tests and production build passed"
+}

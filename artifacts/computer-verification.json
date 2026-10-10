@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-10-10T14:37:31.620Z",
+  "nativeFolderPicker": "dialog selection stubbed; actual trusted IPC grant exercised",
+  "realFile": "passed: read actual .py file from selected folder",
+  "python": "passed: actual interpreter output, exit 0",
+  "editor": "passed: VS Code window title includes actual generated filename",
+  "publicBrowser": "passed: visible Chromium opened a real public catalog, clicked actual book link and read stock text",
+  "selectedWindowCapture": "passed: captured only the selected generated-code VS Code window",
+  "providerVoiceAndVision": "not tested: credentials absent",
+  "securityPreferences": {
+    "sandbox": true,
+    "contextIsolation": true,
+    "nodeIntegration": false
+  }
+}

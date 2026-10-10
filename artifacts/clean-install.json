@@ -1,0 +1,6 @@
+{
+  "checkedAt": "2026-10-10T13:58:05.258Z",
+  "status": "passed",
+  "method": "Fresh source-only temporary copy; npm ci --ignore-scripts then npm run build. No existing node_modules, .env or build outputs reused.",
+  "desktopRuntime": "Separately tested in the main workspace. setup:desktop is required when install scripts are skipped."
+}

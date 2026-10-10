@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-10-10T16:07:51.386Z",
+  "checks": [
+    {
+      "name": "Native collapsed window and registered OS shortcuts",
+      "bounds": {
+        "x": 780,
+        "y": 20,
+        "width": 360,
+        "height": 86
+      },
+      "alwaysOnTop": true,
+      "visible": true,
+      "preferences": {
+        "sandbox": true,
+        "contextIsolation": true,
+        "nodeIntegration": false
+      },
+      "voiceShortcut": true,
+      "stopShortcut": true
+    },
+    {
+      "name": "Real AI generation and Python execution from buddy",
+      "output": "55, exit 0"
+    },
+    {
+      "name": "Workspace and buddy preserve task state and conversation",
+      "passed": true
+    },
+    {
+      "name": "Native voice/stop event bridge",
+      "passed": true,
+      "limitation": "Events dispatched in test; physical OS keypress and microphone not tested."
+    },
+    {
+      "name": "Hide and restore preserve the live renderer",
+      "passed": true
+    }
+  ]
+}

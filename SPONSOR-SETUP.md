@@ -1,0 +1,32 @@
+# Connect InsightOS
+
+Open **Settings & connections**. Account buttons open your system browser for sign-in. Paste credentials into the app's masked fields; do not send them in chat. Click **Save**, then **Test** for each provider. Changes apply without restarting. The local `.env` stores plaintext credentials and is excluded from Git. Blank key fields preserve the existing key. Closing Settings clears unsaved keys.
+
+## First: AI and voice
+
+1. **Hugging Face:** create an access token at [Settings → Access Tokens](https://huggingface.co/settings/tokens) with permission to make Inference Providers calls. Save it under Hugging Face. Leave text and vision models at defaults initially. Test runs actual command planning, code generation and a synthetic-image request. If a model is unavailable to your account, change its ID to a supported compatible model and test again. [Official inference setup](https://huggingface.co/docs/inference-providers/en/guides/first-api-call).
+2. **ElevenLabs:** sign in to [your account](https://elevenlabs.io/app), create an API key with text-to-speech and speech-to-text access, and allow voice listing if leaving Voice ID blank. Save it under ElevenLabs. Test prefers an included premade voice if needed, generates short audio and sends it to Scribe for transcription. Library voices may require a paid plan for API use. Providing your own accessible voice ID skips voice listing. [Official API authentication](https://elevenlabs.io/docs/api-reference/authentication).
+3. Close Settings, select a folder, then press the microphone, say **Write a Python Fibonacci program with ten numbers**, and press again to finish. Run the generated file. Enable **Spoken replies** in Settings and check laptop playback. Select one window and try **Describe with AI** after the vision test passes.
+
+Tests use account credits. No automatic billing purchase is implemented. Missing credentials and failed checks are shown explicitly; a saved key is not a successful live test. Verification results reset after a server restart. Microphone permissions, playback, Stop and screen descriptions need a rehearsal on the actual demo laptop.
+
+## Databricks analytics
+
+Use an existing authorized workspace via [Databricks login](https://login.databricks.com/) or set one up through [Databricks Free Edition](https://www.databricks.com/learn/free-edition). Enter:
+
+- Workspace URL: its HTTPS origin, without a path.
+- SQL warehouse ID: from the warehouse's connection details.
+- Access token: authorized for the Statement Execution API.
+- Catalog/schema: defaults `main` / `insightos`; the account needs schema/table creation and insert/select permissions.
+
+Save, then Test. It uploads the included synthetic fixture and runs both all-location and common-location revenue queries, checking known totals. Synthetic tables remain in your workspace. Once HF and Databricks are saved, enable **Use Hugging Face + Databricks in the data workspace** and rehearse a CSV task. Your chosen CSV is then uploaded for live analysis. [Official Statement Execution setup](https://docs.databricks.com/aws/en/dev-tools/sql-execution-tutorial). Account signup alone does not establish warehouse access or authentication; OAuth is not implemented in this pilot.
+
+## Neon saves
+
+In [Neon](https://console.neon.tech/), create or choose a project and copy its PostgreSQL connection string. Save it under Neon. Test creates the project table, writes a synthetic data project and reads it back. The test project is retained. Neon stores CSV workspace projects, not desktop browser or screen state. Never commit the connection string.
+
+## Vultr
+
+Vultr requires a real server deployment, domain/TLS and hosted session configuration. Its API key is not needed by the running InsightOS app. Follow [deploy/README.md](deploy/README.md) after you have instance access. Hosted CSV analysis is supported; controlling this laptop requires the local desktop backend. No Vultr resources have been provisioned by this build.
+
+Hugging Face and ElevenLabs have passed real account requests on this machine. Databricks, Neon and deployment still need live checks. Keys and database passwords must stay out of videos, screenshots and the repository.

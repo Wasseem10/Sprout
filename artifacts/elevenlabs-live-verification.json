@@ -1,0 +1,19 @@
+{
+  "recordedAt": "2026-10-10T15:32:21.031Z",
+  "provider": "elevenlabs",
+  "voice": "Bella",
+  "voiceId": "hpp4J3VqNfWAUOO0d1Us",
+  "report": {
+    "checkedAt": "2026-10-10T15:31:47.400Z",
+    "checks": [
+      {
+        "status": "passed",
+        "detail": "Speech and transcription: Generated audio and transcribed it through Scribe. Test your microphone and speakers next."
+      }
+    ]
+  },
+  "limitations": [
+    "Synthetic audio round trip only; laptop microphone and audible speaker playback still require a rehearsal."
+  ],
+  "databricks": "Workspace provisioning delayed by provider high demand; no SQL credentials or live SQL test yet."
+}

@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-10-10T13:57:52.368Z",
+  "platform": "win32",
+  "productionLaunch": "passed",
+  "securityPreferences": {
+    "sandbox": true,
+    "contextIsolation": true,
+    "nodeIntegration": false,
+    "webSecurity": true
+  },
+  "nativeIpcImport": "passed with dialog selection stubbed",
+  "actualOperatingSystemPicker": "manual check pending",
+  "commonRevenue": 141000,
+  "chartRegions": 3,
+  "zoom200PercentReflow": "passed, input reachable and no horizontal document overflow"
+}
