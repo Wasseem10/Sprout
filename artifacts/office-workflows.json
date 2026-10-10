@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-10-10T17:01:29.772Z",
+  "presentation": {
+    "filename": "job-interview-preparation-cabbdf8b.pptx",
+    "title": "Job Interview Preparation",
+    "slides": [
+      "Job Interview Preparation",
+      "Before the Interview",
+      "During the Interview",
+      "After the Interview"
+    ],
+    "bytes": 81957,
+    "powerPointLaunchRequested": true
+  },
+  "spreadsheet": {
+    "filename": "sales-demo-synthetic.xlsx",
+    "rows": 6,
+    "summary": "sales-demo-synthetic.xlsx (synthetic sample), sheet Synthetic sales has 6 data rows. Revenue totals 6,200 across 6 numeric cells; average 1,033.33. Highest Region: East with 2,700 Revenue. Opened sales-demo-synthetic.xlsx in Excel.",
+    "excelLaunchRequested": true
+  }
+}

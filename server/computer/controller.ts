@@ -1,5 +1,5 @@
 import { chromium, type Browser, type Page, type Locator } from 'playwright';
-import { mkdir, realpath, lstat, readFile, writeFile } from 'node:fs/promises';
+import { access, mkdir, realpath, lstat, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { lookup } from 'node:dns/promises';
 import { BlockList, isIP } from 'node:net';
@@ -14,6 +14,8 @@ import type {
   BrowserView,
 } from '../../shared/computer.js';
 import { generateCode, computerPlan, chat } from './planner.js';
+import { generatePresentationOutline, writePresentation } from './presentation.js';
+import { analyzeSpreadsheet, ensureDemoWorkbook } from './spreadsheet.js';
 
 const hosted = (cfg: Config) => !['127.0.0.1', 'localhost', '::1'].includes(cfg.host);
 const payment =
@@ -22,6 +24,7 @@ const benignButton =
   /^(search|go|filter|add to (?:cart|basket)|close|menu|next|back|previous|load more|show more|read more|view details)$/i;
 const personal =
   /password|credit|\bcard\b|cvv|cvc|payment|\bssn\b|social security|email|phone|address|first.?name|last.?name|full.?name/i;
+const neverFill = /password|credit|\bcard\b|cvv|cvc|payment|\bssn\b|social security/i;
 const privateIPs = new BlockList();
 for (const [ip, prefix] of [
   ['0.0.0.0', 8],
@@ -78,6 +81,8 @@ export class ComputerController {
   private controls = new Map<string, Locator>();
   private controller: AbortController | null = null;
   private child: ChildProcess | null = null;
+  private pendingFill: { controlId: string; pageId: string; value: string; name: string } | null =
+    null;
   constructor(
     private cfg: Config,
     private options: { headless?: boolean; validateUrl?: typeof publicUrl } = {},
@@ -117,12 +122,16 @@ export class ComputerController {
     this.folders.set(id, root);
     this.state.folder = { id, name: path.basename(root) || root };
     this.state.code = null;
+    this.state.presentation = null;
+    this.state.spreadsheet = null;
+    this.pendingFill = null;
     return this.snapshot();
   }
   async demoFolder() {
     this.localOnly();
     const root = path.join(this.cfg.localDir, 'code-workspace');
     await mkdir(root, { recursive: true });
+    await ensureDemoWorkbook(root);
     return this.authorizeFolder(root, this.bridgeKey);
   }
   async selectScreen(name: string, image: string) {
@@ -148,7 +157,12 @@ export class ComputerController {
   async request(request: string, parent: AbortSignal): Promise<ComputerResult> {
     return this.task(parent, async (signal) => {
       // Refresh from the actual page so references cannot come from a stale renderer.
-      if (this.page && !this.page.isClosed() && this.page.url() !== 'about:blank') {
+      if (
+        !/^(?:please\s+)?confirm fill[.!]?$/i.test(request) &&
+        this.page &&
+        !this.page.isClosed() &&
+        this.page.url() !== 'about:blank'
+      ) {
         try {
           await this.observe();
         } catch {
@@ -201,6 +215,7 @@ export class ComputerController {
     this.page = null;
     this.controls.clear();
     this.state.browser = null;
+    this.pendingFill = null;
     if (this.state.code?.status === 'running') this.state.code.status = 'cancelled';
     return this.snapshot();
   }
@@ -209,6 +224,54 @@ export class ComputerController {
     await this.browser?.close();
     this.browser = null;
     this.state.screen = null;
+  }
+  private async launchOffice(kind: 'PowerPoint' | 'Excel', file: string, signal: AbortSignal) {
+    const bin = kind === 'PowerPoint' ? this.cfg.powerpointBin : this.cfg.excelBin;
+    const executableName = kind === 'PowerPoint' ? 'POWERPNT.EXE' : 'EXCEL.EXE';
+    const candidates = [
+      bin,
+      `C:\\Program Files\\Microsoft Office\\root\\Office16\\${executableName}`,
+      `C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\${executableName}`,
+    ].filter(Boolean);
+    let executable = '';
+    for (const candidate of candidates) {
+      try {
+        await access(candidate);
+        executable = candidate;
+        break;
+      } catch {
+        /* next location */
+      }
+    }
+    if (!executable)
+      throw new Error(
+        `Set ${kind === 'PowerPoint' ? 'POWERPOINT_BIN' : 'EXCEL_BIN'} to the installed ${kind} executable.`,
+      );
+    signal.throwIfAborted();
+    const childEnv = { ...process.env };
+    delete childEnv.ELECTRON_RUN_AS_NODE;
+    for (const name of [
+      'HF_TOKEN',
+      'DATABRICKS_TOKEN',
+      'ELEVENLABS_API_KEY',
+      'DATABASE_URL',
+      'SESSION_PASSPHRASE',
+    ])
+      delete childEnv[name];
+    await new Promise<void>((resolve, reject) => {
+      const child = spawn(executable, [file], {
+        detached: true,
+        shell: false,
+        stdio: 'ignore',
+        windowsHide: false,
+        env: childEnv,
+      });
+      child.once('error', () => reject(new Error(`Could not launch ${kind}.`)));
+      child.once('spawn', () => {
+        child.unref();
+        resolve();
+      });
+    });
   }
   private async codeFile() {
     const root = this.state.folder && this.folders.get(this.state.folder.id);
@@ -459,6 +522,7 @@ export class ComputerController {
   }
   private async perform(action: ComputerAction, signal: AbortSignal): Promise<ComputerResult> {
     signal.throwIfAborted();
+    if (action.tool !== 'fill' && action.tool !== 'confirmFill') this.pendingFill = null;
     let summary = '';
     if (action.tool === 'createCode') {
       const root = this.state.folder && this.folders.get(this.state.folder.id);
@@ -528,6 +592,140 @@ export class ComputerController {
       });
       this.state.code!.editorOpened = true;
       summary = `Launched VS Code with ${this.state.code!.filename}.`;
+    } else if (action.tool === 'createPresentation') {
+      const root = this.state.folder && this.folders.get(this.state.folder.id);
+      if (!root)
+        throw new Error('Choose a folder or use the demo folder before making a presentation.');
+      const outline = await generatePresentationOutline(
+        action.request,
+        action.slides ?? 4,
+        this.cfg,
+        signal,
+      );
+      signal.throwIfAborted();
+      const slug =
+        outline.title
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-|-$/g, '')
+          .slice(0, 44) || 'presentation';
+      const filename = `${slug}-${crypto.randomUUID().slice(0, 8)}.pptx`;
+      const file = path.join(root, filename);
+      await writePresentation(outline, file);
+      signal.throwIfAborted();
+      const bytes = await readFile(file);
+      this.state.presentation = {
+        filename,
+        title: outline.title,
+        slideCount: outline.slides.length + 1,
+        slideTitles: [outline.title, ...outline.slides.map((slide) => slide.title)],
+        opened: false,
+        sha256: createHash('sha256').update(bytes).digest('hex'),
+      };
+      summary = `Created editable PowerPoint ${filename} in ${this.state.folder!.name}. ${this.state.presentation.slideCount} slides: ${this.state.presentation.slideTitles.join('; ')}.`;
+      if (action.open !== false) {
+        try {
+          const opened = await this.perform({ tool: 'openPresentation' }, signal);
+          summary += ` ${opened.summary}`;
+        } catch (error) {
+          signal.throwIfAborted();
+          summary += ` The file is saved, but PowerPoint could not open: ${error instanceof Error ? error.message : 'unknown error'}`;
+        }
+      }
+    } else if (action.tool === 'openPresentation') {
+      const root = this.state.folder && this.folders.get(this.state.folder.id);
+      const presentation = this.state.presentation;
+      if (!root || !presentation) throw new Error('Create a presentation first.');
+      const file = path.join(root, presentation.filename);
+      if ((await lstat(file)).isSymbolicLink() || (await realpath(file)) !== file)
+        throw new Error('Presentation file changed outside the authorized folder.');
+      const bytes = await readFile(file);
+      if (createHash('sha256').update(bytes).digest('hex') !== presentation.sha256)
+        throw new Error('Presentation changed since creation. Open it manually to review.');
+      await this.launchOffice('PowerPoint', file, signal);
+      presentation.opened = true;
+      summary = `Opened ${presentation.filename} in PowerPoint.`;
+    } else if (action.tool === 'analyzeSpreadsheet') {
+      const root = this.state.folder && this.folders.get(this.state.folder.id);
+      if (!root)
+        throw new Error('Choose a folder or use the demo folder before analyzing a workbook.');
+      const report = await analyzeSpreadsheet(root, action.question, action.filename);
+      signal.throwIfAborted();
+      const bytes = await readFile(path.join(root, report.filename));
+      this.state.spreadsheet = {
+        ...report,
+        sha256: createHash('sha256').update(bytes).digest('hex'),
+        opened: false,
+      };
+      summary = report.summary;
+      if (action.open) {
+        try {
+          const opened = await this.perform({ tool: 'openSpreadsheet' }, signal);
+          summary += ` ${opened.summary}`;
+        } catch (error) {
+          signal.throwIfAborted();
+          summary += ` Excel could not open: ${error instanceof Error ? error.message : 'unknown error'}`;
+        }
+      }
+    } else if (action.tool === 'openSpreadsheet') {
+      const root = this.state.folder && this.folders.get(this.state.folder.id);
+      const spreadsheet = this.state.spreadsheet;
+      if (!root || !spreadsheet) throw new Error('Analyze a workbook first.');
+      const file = path.join(root, spreadsheet.filename);
+      if ((await lstat(file)).isSymbolicLink() || (await realpath(file)) !== file)
+        throw new Error('Workbook changed outside the authorized folder.');
+      const bytes = await readFile(file);
+      if (createHash('sha256').update(bytes).digest('hex') !== spreadsheet.sha256)
+        throw new Error('Workbook changed since analysis. Analyze it again before opening.');
+      await this.launchOffice('Excel', file, signal);
+      spreadsheet.opened = true;
+      summary = `Opened ${spreadsheet.filename} in Excel.`;
+    } else if (action.tool === 'confirmFill') {
+      const pending = this.pendingFill;
+      const view = this.state.browser;
+      const locator = pending && this.controls.get(pending.controlId);
+      if (
+        !pending ||
+        !view ||
+        !locator ||
+        view.id !== pending.pageId ||
+        this.page?.url() !== view.url
+      )
+        throw new Error('There is no current field to confirm. Read the page and try again.');
+      if (!(await locator.isVisible()) || !(await locator.isEnabled()))
+        throw new Error('The field is no longer available. Read the page and try again.');
+      const current = await locator.evaluate((element) => {
+        const input = element as HTMLInputElement;
+        const name = (
+          input.getAttribute('aria-label') ||
+          (input.labels &&
+            Array.from(input.labels)
+              .map((label) => label.textContent ?? '')
+              .join(' ')) ||
+          input.getAttribute('title') ||
+          input.getAttribute('placeholder') ||
+          input.innerText ||
+          input.getAttribute('alt') ||
+          ''
+        )
+          .trim()
+          .slice(0, 180);
+        return {
+          name,
+          type: input.getAttribute('type') ?? '',
+          autocomplete: input.getAttribute('autocomplete') ?? '',
+        };
+      });
+      if (
+        current.name !== pending.name ||
+        neverFill.test(`${current.name} ${current.type} ${current.autocomplete}`)
+      )
+        throw new Error('The field changed. Read the page and try again.');
+      signal.throwIfAborted();
+      await locator.fill(pending.value);
+      this.pendingFill = null;
+      await this.observe();
+      summary = `Filled ${pending.name}. The form has not been submitted.`;
     } else if (action.tool === 'describeScreen') {
       if (!this.state.screen)
         throw new Error('Computer needs a selected screen. Choose a window and capture it first.');
@@ -648,9 +846,9 @@ export class ComputerController {
           throw new Error('Computer control changed on the webpage. Read the page again.');
         if (
           control.blocked ||
-          control.sensitive ||
           payment.test(current.text) ||
-          personal.test(current.text)
+          neverFill.test(current.text) ||
+          (action.tool === 'click' && control.sensitive)
         )
           return {
             summary:
@@ -660,6 +858,19 @@ export class ComputerController {
         if (action.tool === 'fill') {
           if (control.role !== 'textbox')
             throw new Error('Computer can type only in an observed text field.');
+          if (control.sensitive || personal.test(current.text)) {
+            this.pendingFill = {
+              controlId: control.id,
+              pageId: view.id,
+              value: action.value,
+              name: control.name,
+            };
+            return {
+              summary: `I heard “${action.value}” for ${control.name}. Say “confirm fill” to type it. The website may save fields as you type; the form will not be submitted.`,
+              state: this.snapshot(),
+              clarification: true,
+            };
+          }
           await locator.fill(action.value);
         } else {
           if (control.role !== 'link' && control.role !== 'button')
@@ -682,7 +893,8 @@ export class ComputerController {
           .join('\n');
         summary = `${searchFallback ? 'Google asked for verification, so I used Bing.' : 'Opened Google.'} Results for ${action.query}:\n${results || view.text.slice(0, 1600)}\nSay “open result one” to continue.`;
       } else if (action.tool === 'openSearchResult' && searchResultRedirected) {
-        summary = 'That site sent me back to the search results. Choose a different numbered result.';
+        summary =
+          'That site sent me back to the search results. Choose a different numbered result.';
       } else if (action.tool === 'readPage' && view.searchResults.length) {
         summary = `${view.title}.\n${view.searchResults
           .map((result, index) => `${index + 1}. ${result.title}. ${result.snippet}`)

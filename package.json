@@ -28,10 +28,12 @@
     "@fastify/static": "^10.1.6",
     "@neondatabase/serverless": "^1.0.0",
     "dotenv": "^17.0.0",
+    "exceljs": "^4.4.0",
     "fastify": "^5.0.0",
     "lucide-react": "^0.577.0",
     "papaparse": "^5.5.3",
     "playwright": "^1.64.0",
+    "pptxgenjs": "^4.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "zod": "^4.0.0"
@@ -52,5 +54,9 @@
     "vite": "^8.3.4",
     "vitest": "^4.0.0",
     "wait-on": "^9.0.0"
+  },
+  "overrides": {
+    "uuid": "^11.1.1",
+    "image-size": "^2.0.3"
   }
 }

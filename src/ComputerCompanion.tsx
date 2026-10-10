@@ -9,6 +9,7 @@ import {
   Globe,
   LoaderCircle,
   Mic,
+  Presentation,
   Settings2,
   ShieldCheck,
   Sparkles,
@@ -40,13 +41,13 @@ export default function ComputerCompanion() {
     {
       id: 'welcome',
       role: 'assistant',
-      text: 'Tell me what you want to do. I can write and run Python in VS Code, search the web and read results, or describe your screen aloud.',
+      text: 'Tell me what you want to do. I can write code, create PowerPoint slides, analyze an Excel workbook, browse the web, fill a form with your confirmation, or describe your screen.',
     },
   ]);
   const [request, setRequest] = useState(''),
     [busy, setBusy] = useState(false),
     [phase, setPhase] = useState('Ready when you are');
-  const [tab, setTab] = useState<'code' | 'browser' | 'screen'>('code'),
+  const [tab, setTab] = useState<'code' | 'office' | 'browser' | 'screen'>('code'),
     [modal, setModal] = useState<'settings' | 'screens' | null>(null);
   const [sources, setSources] = useState<Source[]>([]),
     [speech, setSpeech] = useState(() =>
@@ -82,8 +83,10 @@ export default function ComputerCompanion() {
   const sync = async () => setState(await api<ComputerState>('/computer/state'));
   const applyState = (next: ComputerState, tool?: string) => {
     setState(next);
-    if (/navigate|search|SearchResult|click|fill|readPage|goBack/.test(tool ?? '')) setTab('browser');
+    if (/navigate|search|SearchResult|click|fill|readPage|goBack/.test(tool ?? ''))
+      setTab('browser');
     else if (/describeScreen/.test(tool ?? '')) setTab('screen');
+    else if (/Presentation|Spreadsheet/.test(tool ?? '')) setTab('office');
     else if (/Code|Editor/.test(tool ?? '')) setTab('code');
   };
   const perform = async (text: string, action?: ComputerAction) => {
@@ -126,6 +129,10 @@ export default function ComputerCompanion() {
       let tool = spokenScreenRequest ? 'describeScreen' : action?.tool;
       if (!tool) {
         if (result.state.browser?.capturedAt !== before.browser?.capturedAt) tool = 'readPage';
+        if (result.state.presentation?.filename !== before.presentation?.filename)
+          tool = 'createPresentation';
+        if (result.state.spreadsheet?.summary !== before.spreadsheet?.summary)
+          tool = 'analyzeSpreadsheet';
         if (
           result.state.code?.filename !== before.code?.filename ||
           result.state.code?.status !== before.code?.status
@@ -135,6 +142,7 @@ export default function ComputerCompanion() {
           tool = 'describeScreen';
       }
       applyState(result.state, tool);
+      if (tool === 'fill' || tool === 'confirmFill') setFieldValue('');
       add('assistant', result.summary);
       setPhase(result.clarification ? 'Choose your next step' : 'Result received');
       if (speech && status?.integrations.elevenLabs.ttsConfigured)
@@ -195,8 +203,7 @@ export default function ComputerCompanion() {
             : await api<ComputerState>('/computer/demo-folder', {});
         if (next) {
           applyState(next);
-          setTab('code');
-          add('assistant', `Selected ${next.folder!.name}. New Python files will be created here.`);
+          add('assistant', `Selected ${next.folder!.name}. New files will be saved here.`);
         }
       }
     } catch (error) {
@@ -392,6 +399,9 @@ export default function ComputerCompanion() {
           send={() => void perform(request)}
           run={() => void perform('Run my program', { tool: 'runCode' })}
           editor={() => void perform('Open in VS Code', { tool: 'openEditor' })}
+          openPresentation={() =>
+            void perform('Open the presentation', { tool: 'openPresentation' })
+          }
         />
       ) : (
         <>
@@ -469,6 +479,7 @@ export default function ComputerCompanion() {
               <nav className="computer-tabs" aria-label="Computer tools">
                 {[
                   { id: 'code', title: 'Create & run', icon: Code2 },
+                  { id: 'office', title: 'Office tasks', icon: Presentation },
                   { id: 'browser', title: 'Browse the web', icon: Globe },
                   { id: 'screen', title: 'See my screen', icon: Eye },
                 ].map(({ id, title, icon: Icon }) => (
@@ -605,6 +616,103 @@ export default function ComputerCompanion() {
                   )}
                 </section>
               )}
+              {tab === 'office' && (
+                <section className="computer-artifact" aria-label="Office tasks">
+                  <div className="computer-artifact-heading">
+                    <div>
+                      <span className="small-label">EDITABLE FILES. CALCULATED RESULTS.</span>
+                      <h2>Work with slides and spreadsheets</h2>
+                      <p>
+                        {state.folder
+                          ? `Folder: ${state.folder.name}`
+                          : 'Choose a folder for your files.'}
+                      </p>
+                    </div>
+                    <Presentation size={25} aria-hidden="true" />
+                  </div>
+                  <p className="computer-caption">
+                    Say “Create a four-slide PowerPoint about job interview preparation” or “Analyze
+                    the Excel workbook and tell me the top region.” Workbooks must be .xlsx files in
+                    the selected folder.
+                  </p>
+                  <div className="computer-toolbar">
+                    {window.insightos && (
+                      <button
+                        className="secondary-button"
+                        disabled={!enabled || busy}
+                        onClick={() => void setup('folder')}
+                      >
+                        <FolderOpen size={16} aria-hidden="true" /> Choose folder
+                      </button>
+                    )}
+                    <button
+                      className="secondary-button"
+                      disabled={!enabled || busy}
+                      onClick={() => void setup('demo')}
+                    >
+                      Use demo folder
+                    </button>
+                    <button
+                      className="primary-button"
+                      disabled={!enabled || busy || !state.folder}
+                      onClick={() =>
+                        void perform(
+                          'Create a four slide PowerPoint about preparing for a job interview',
+                        )
+                      }
+                    >
+                      Create sample PowerPoint
+                    </button>
+                    <button
+                      className="secondary-button"
+                      disabled={!enabled || busy || !state.folder}
+                      onClick={() =>
+                        void perform('Analyze the Excel sales workbook and tell me the top region')
+                      }
+                    >
+                      Analyze sample Excel
+                    </button>
+                  </div>
+                  {state.presentation && (
+                    <div className="office-result">
+                      <h3>{state.presentation.title}</h3>
+                      <p>
+                        {state.presentation.slideCount} editable slides ·{' '}
+                        {state.presentation.filename}
+                      </p>
+                      <ol>
+                        {state.presentation.slideTitles.map((title, index) => (
+                          <li key={`${index}-${title}`}>{title}</li>
+                        ))}
+                      </ol>
+                      <button
+                        className="secondary-button"
+                        disabled={!enabled || busy}
+                        onClick={() =>
+                          void perform('Open the presentation', { tool: 'openPresentation' })
+                        }
+                      >
+                        Open in PowerPoint
+                      </button>
+                    </div>
+                  )}
+                  {state.spreadsheet && (
+                    <div className="office-result">
+                      <h3>{state.spreadsheet.filename}</h3>
+                      <p>{state.spreadsheet.summary}</p>
+                      <button
+                        className="secondary-button"
+                        disabled={!enabled || busy}
+                        onClick={() =>
+                          void perform('Open the spreadsheet', { tool: 'openSpreadsheet' })
+                        }
+                      >
+                        Open in Excel
+                      </button>
+                    </div>
+                  )}
+                </section>
+              )}
               {tab === 'browser' && (
                 <section className="computer-artifact" aria-label="Controlled browser">
                   <div className="computer-artifact-heading">
@@ -661,8 +769,8 @@ export default function ComputerCompanion() {
                         </span>
                       </div>
                       <p className="computer-caption">
-                        Click a control here, or say its exact name. Payments and personal details
-                        stop for manual review.
+                        Click a control here, or say its exact name. Personal contact fields require
+                        “confirm fill.” Payments, passwords, and final submission stay blocked.
                       </p>
                       <div className="browser-controls">
                         {state.browser.controls.map((c) =>
@@ -673,10 +781,10 @@ export default function ComputerCompanion() {
                                 id={c.id}
                                 value={fieldValue}
                                 onChange={(e) => setFieldValue(e.target.value)}
-                                disabled={busy || c.sensitive || c.blocked}
+                                disabled={busy || c.blocked}
                               />
                               <button
-                                disabled={busy || c.sensitive || c.blocked || !fieldValue}
+                                disabled={busy || c.blocked || !fieldValue}
                                 onClick={() =>
                                   void perform(`Type in ${c.name}`, {
                                     tool: 'fill',
@@ -1064,9 +1172,9 @@ export default function ComputerCompanion() {
               ))}
             </div>
             <p>
-              The browser uses a separate session. Checkout, login and personal details require
-              manual review. The Python runner supports computation; it is not an OS sandbox for
-              untrusted code.
+              The browser uses a separate session. Personal contact fields require confirmation;
+              checkout, login and submission remain blocked. The Python runner supports computation;
+              it is not an OS sandbox for untrusted code.
             </p>
           </>
         ) : null}

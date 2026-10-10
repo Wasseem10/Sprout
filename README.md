@@ -1,8 +1,8 @@
 # InsightOS
 
-A voice-first desktop companion for people who have difficulty seeing or operating a computer. It can create, run, and open a real Python program in VS Code from one request; search the web and read numbered results aloud; and describe a one-time main-display snapshot. The CSV module remains under **Data workspace**. See [computer setup and demo](COMPUTER-DEMO.md).
+A voice-first desktop companion for people who have difficulty seeing or operating a computer. It can create and open an editable PowerPoint, analyze a real Excel workbook and open it in Excel, create/run a Python file in VS Code, browse and fill supported web forms, and describe a one-time screen snapshot. The CSV module remains under **Data workspace**. See [computer setup and demo](COMPUTER-DEMO.md).
 
-**Verified locally:** the native floating buddy, real Hugging Face planning/code generation and synthetic-image vision, ElevenLabs transcription/speech API calls, Python file creation/execution, VS Code opening, main-display and selected-window capture, visible Chromium search/result navigation, and the original CSV flow. A synthetic audio-to-code-to-VS-Code-to-spoken-reply chain passed. Physical microphone and speaker behavior still need a manual check. See [verification](VERIFICATION.md) and [sponsor status](SPONSOR-INTEGRATIONS.md).
+**Verified locally:** the native floating buddy, real Hugging Face planning/code generation and vision, ElevenLabs transcription/speech API calls, editable PowerPoint generation and launch, calculated Excel analysis and launch, Python/VS Code, screen capture, controlled browser search and form filling, and the original CSV flow. A synthetic audio-to-code-to-VS-Code-to-spoken-reply chain passed. Physical microphone and speaker behavior still need a manual check. See [verification](VERIFICATION.md) and [sponsor status](SPONSOR-INTEGRATIONS.md).
 
 ![The working computer companion](artifacts/companion-code.png)
 
@@ -22,7 +22,7 @@ No cloud account is needed in default sample mode. `setup:desktop` downloads the
 
 For a production desktop: `npm run build` then `npm start`. For browser development: `npm run dev:web`, then open `http://127.0.0.1:5173`. For the compiled browser app: build then `npm run start:web`, and open `http://127.0.0.1:4311`.
 
-Set `PYTHON_BIN` and `VSCODE_BIN` to installed executable paths; this laptop is already configured in ignored `.env`. The default screen is the companion; see [COMPUTER-DEMO.md](COMPUTER-DEMO.md).
+Set `PYTHON_BIN` and `VSCODE_BIN` to installed executable paths; this laptop is already configured in ignored `.env`. The Office flows detect the standard Windows Office16 location, or use `POWERPOINT_BIN` and `EXCEL_BIN` for custom installations. The default screen is the companion; see [COMPUTER-DEMO.md](COMPUTER-DEMO.md).
 
 For the original data demonstration, choose **Data workspace**, then **Try sample data** or open `data/operations-synthetic.csv`. Type:
 

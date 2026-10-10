@@ -138,8 +138,9 @@ it('blocks private URLs and never converts missing vision credentials into a can
     'selected screen',
   );
   expect(starterPlan('order everything and pay for it', controller.snapshot()).action).toBeNull();
-  expect(starterPlan('order everything and pay for it', controller.snapshot()).clarification)
-    .toContain('cannot place orders');
+  expect(
+    starterPlan('order everything and pay for it', controller.snapshot()).clarification,
+  ).toContain('cannot place orders');
 });
 it.skipIf(!config().pythonBin)(
   'completes an explicitly requested create-and-run workflow in one task',
@@ -160,14 +161,19 @@ it.skipIf(!config().pythonBin)(
 );
 it('maps a spoken Google request to search without inventing a website action', () => {
   const state = { folder: null, code: null, browser: null, screen: null };
-  expect(starterPlan('Open Google and search for accessible Python tutorials', state).action).toEqual({
+  expect(
+    starterPlan('Open Google and search for accessible Python tutorials', state).action,
+  ).toEqual({
     tool: 'search',
     query: 'accessible Python tutorials',
   });
-  expect(starterPlan('Search Google for bus schedules and read the results to me', state).action)
-    .toEqual({ tool: 'search', query: 'bus schedules' });
-  expect(starterPlan('Open Google and search accessible Python tutorials', state).action)
-    .toEqual({ tool: 'search', query: 'accessible Python tutorials' });
+  expect(
+    starterPlan('Search Google for bus schedules and read the results to me', state).action,
+  ).toEqual({ tool: 'search', query: 'bus schedules' });
+  expect(starterPlan('Open Google and search accessible Python tutorials', state).action).toEqual({
+    tool: 'search',
+    query: 'accessible Python tutorials',
+  });
 });
 it('regenerates Python when the model uses an unsupported main guard', async () => {
   const { cfg } = await setup({}, { hfToken: 'test-token' });
@@ -175,14 +181,92 @@ it('regenerates Python when the model uses an unsupported main guard', async () 
     'if __name__ == "__main__":\n    print(1)',
     'for n in range(1, 4):\n    print(n * n)',
   ];
-  const mock = vi.fn(async () => new Response(JSON.stringify({
-    choices: [{ message: { content: JSON.stringify({ filename: 'squares.py', code: codes.shift() }) } }],
-  }), { status: 200 }));
+  const mock = vi.fn(
+    async () =>
+      new Response(
+        JSON.stringify({
+          choices: [
+            {
+              message: { content: JSON.stringify({ filename: 'squares.py', code: codes.shift() }) },
+            },
+          ],
+        }),
+        { status: 200 },
+      ),
+  );
   vi.stubGlobal('fetch', mock);
   const result = await generateCode('print squares', cfg, signal());
   expect(result.code).toContain('print(n * n)');
   expect(result.code).not.toContain('__name__');
   expect(mock).toHaveBeenCalledTimes(2);
+});
+it('analyzes the real synthetic Excel workbook with calculated totals and a top region', async () => {
+  const { controller, cfg } = await setup();
+  await controller.demoFolder();
+  const report = await controller.request(
+    'Analyze the Excel sales workbook and tell me the top region',
+    signal(),
+  );
+  expect(report.summary).toContain('sales-demo-synthetic.xlsx (synthetic sample)');
+  expect(report.summary).toContain('Revenue totals 6,200');
+  expect(report.summary).toContain('East with 2,700');
+  expect(report.state.spreadsheet?.rows).toBe(6);
+  expect(
+    (await readFile(path.join(cfg.localDir, 'code-workspace', 'sales-demo-synthetic.xlsx')))
+      .subarray(0, 2)
+      .toString(),
+  ).toBe('PK');
+});
+it('turns a model outline into an editable PowerPoint in the selected folder', async () => {
+  const { controller, cfg } = await setup({}, { hfToken: 'test-token' });
+  await controller.demoFolder();
+  const outline = {
+    title: 'Job interview preparation',
+    subtitle: 'A practical checklist for applicants',
+    slides: [
+      {
+        title: 'Research the role',
+        points: ['Read the job description carefully', 'Note the skills you can demonstrate'],
+      },
+      {
+        title: 'Prepare examples',
+        points: ['Choose two recent projects', 'Explain your actions and results'],
+      },
+      {
+        title: 'Practice the conversation',
+        points: ['Prepare questions for the interviewer', 'Test your camera and microphone'],
+      },
+    ],
+  };
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(
+      async () =>
+        new Response(
+          JSON.stringify({
+            choices: [{ message: { content: JSON.stringify(outline) } }],
+          }),
+          { status: 200 },
+        ),
+    ),
+  );
+  const plan = starterPlan(
+    'Create a four slide PowerPoint about job interview preparation',
+    controller.snapshot(),
+  );
+  expect(plan.action).toMatchObject({ tool: 'createPresentation', slides: 4 });
+  const created = await controller.action(
+    { ...plan.action!, open: false } as Extract<
+      NonNullable<typeof plan.action>,
+      { tool: 'createPresentation' }
+    >,
+    signal(),
+  );
+  expect(created.state.presentation?.slideCount).toBe(4);
+  const file = path.join(cfg.localDir, 'code-workspace', created.state.presentation!.filename);
+  const bytes = await readFile(file);
+  expect(bytes.subarray(0, 2).toString()).toBe('PK');
+  expect(bytes.length).toBeGreaterThan(5000);
 });
 it('reads numbered observed search results and opens only the chosen result', async () => {
   const server = createServer((req, res) => {
@@ -219,17 +303,20 @@ it('reads numbered observed search results and opens only the chosen result', as
   expect(opened.state.browser?.title).toBe('Selected article');
   await expect(controller.action(plan.action!, signal())).rejects.toThrow('changed');
   const again = await controller.action({ tool: 'navigate', url: origin + '/search' }, signal());
-  const redirected = await controller.action(starterPlan('open result two', again.state).action!, signal());
+  const redirected = await controller.action(
+    starterPlan('open result two', again.state).action!,
+    signal(),
+  );
   expect(redirected.state.browser?.url).toBe(origin + '/search');
   expect(redirected.summary).toContain('sent me back to the search results');
 });
-it('uses actual page controls, rejects stale references, and stops before purchase or personal data', async () => {
+it('uses actual page controls, rejects stale references, stops purchases, and confirms personal fields', async () => {
   let purchased = false;
   const server = createServer((req, res) => {
     res.setHeader('Content-Type', 'text/html');
     if (req.url === '/detail')
       res.end(
-        '<html><title>Book details</title><body><h1>The real test book</h1><p>In stock: 7</p><button onclick="location.href=\'/purchase\'">Place order</button><label>Email<input name="email"></label></body></html>',
+        '<html><title>Book details</title><body><h1>The real test book</h1><p>In stock: 7</p><button onclick="location.href=\'/purchase\'">Place order</button><label>Email<input name="email" oninput="document.title=this.value"></label></body></html>',
       );
     else if (req.url === '/purchase') {
       purchased = true;
@@ -272,17 +359,13 @@ it('uses actual page controls, rejects stale references, and stops before purcha
   );
   expect(result.summary).toContain('Stopped for review');
   expect(purchased).toBe(false);
-  const email = clicked.state.browser!.controls.find((c) => c.name === 'Email')!;
-  const blocked = await controller.action(
-    {
-      tool: 'fill',
-      controlId: email.id,
-      pageId: clicked.state.browser!.id,
-      value: 'personal@example.test',
-    },
-    signal(),
-  );
-  expect(blocked.summary).toContain('Stopped for review');
+  const staged = await controller.request('Fill Email with personal@example.test', signal());
+  expect(staged.summary).toContain('confirm fill');
+  expect(staged.state.browser?.title).toBe('Book details');
+  const filled = await controller.request('confirm fill', signal());
+  expect(filled.summary).toContain('form has not been submitted');
+  expect(filled.state.browser?.title).toBe('personal@example.test');
+  expect(purchased).toBe(false);
 });
 it.skipIf(!config().pythonBin)(
   'Stop terminates running Python and cannot fabricate a completed result',

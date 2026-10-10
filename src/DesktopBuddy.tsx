@@ -9,6 +9,7 @@ import {
   Maximize2,
   Mic,
   Minus,
+  Presentation,
   Settings2,
   Square,
   Volume2,
@@ -45,6 +46,7 @@ type Props = {
   send: () => void;
   run: () => void;
   editor: () => void;
+  openPresentation: () => void;
 };
 export default function DesktopBuddy(p: Props) {
   const pending = ['starting', 'transcribing'].includes(p.voicePhase);
@@ -130,8 +132,8 @@ export default function DesktopBuddy(p: Props) {
                 <span className="buddy-eyebrow">A LITTLE HELP. RIGHT HERE.</span>
                 <h1>What’s on your mind?</h1>
                 <p>
-                  Ask me to write and run code in VS Code, search the web and read results, or
-                  describe your screen aloud.
+                  Ask me to make slides, analyze an Excel workbook, write code, browse the web, fill
+                  a form with your confirmation, or describe your screen.
                 </p>
                 <div className="buddy-suggestion">
                   <Code2 size={15} />
@@ -148,6 +150,20 @@ export default function DesktopBuddy(p: Props) {
               </div>
             ))}
           </div>
+          {p.state.presentation && (
+            <div className="buddy-result">
+              <div>
+                <Presentation size={15} />
+                <span>{p.state.presentation.filename}</span>
+                <small>{p.state.presentation.slideCount} editable slides</small>
+              </div>
+              <div className="buddy-result-actions">
+                <button disabled={p.busy || !p.enabled} onClick={p.openPresentation}>
+                  Open PowerPoint ↗
+                </button>
+              </div>
+            </div>
+          )}
           {p.state.code && (
             <div className="buddy-result">
               <div>

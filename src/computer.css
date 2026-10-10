@@ -75,11 +75,14 @@
   gap: 6px;
   border-bottom: 1px solid var(--line);
   margin-bottom: 25px;
+  overflow-x: auto;
 }
 .computer-tabs button {
   display: flex;
   align-items: center;
   gap: 9px;
+  flex-shrink: 0;
+  white-space: nowrap;
   padding: 14px 18px;
   border-bottom: 2px solid transparent;
   color: var(--muted);
@@ -97,6 +100,17 @@
   min-height: 465px;
   overflow: hidden;
 }
+.office-result {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px;
+  margin-top: 14px;
+  color: #f2f4ee;
+  overflow-wrap: anywhere;
+}
+.office-result h3 { margin: 0 0 8px; font-size: 19px; }
+.office-result p { line-height: 1.5; }
+.office-result li { margin: 6px 0; }
 .computer-artifact-heading {
   display: flex;
   gap: 18px;

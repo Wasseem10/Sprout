@@ -2,7 +2,7 @@
 
 ## One-line pitch
 
-InsightOS lives above your desktop. Ask it to write, run, and open a Python program in VS Code in one step; search the web and open a numbered result by voice; or describe what's on your screen.
+InsightOS lives above your desktop. Ask it to make a PowerPoint, analyze an Excel workbook, write and run code, browse the web, help fill a form, or describe what's on your screen.
 
 ## Inspiration
 
@@ -10,9 +10,9 @@ Computer tasks often require many small visual and mouse steps. We wanted to exp
 
 ## What it does
 
-The Windows Electron buddy stays in a compact, always-on-top pill and expands into a conversation when needed. Push-to-talk uses Ctrl+Shift+Space, and Ctrl+Shift+Backspace stops the current task. One spoken request can create a real Python file, run a bounded computation, report its actual output, and open the file in VS Code. The buddy can search public websites, read numbered results, open the selected result, and describe a one-time capture of the main display. The larger workspace can select a different window and preserves the same conversation.
+The Windows Electron buddy stays in a compact, always-on-top pill and expands into a conversation when needed. Push-to-talk uses Ctrl+Shift+Space, and Ctrl+Shift+Backspace stops the current task. A spoken request can generate an editable slide deck and open it in PowerPoint; read a real `.xlsx` workbook, calculate a summary, and open it in Excel; or create, run and open a Python file in VS Code. It can search public sites, read numbered results, fill an observed web form field, and describe a one-time capture of the main display. Personal contact fields require a second spoken confirmation. The larger workspace preserves the same conversation.
 
-Hugging Face open models plan flexible commands and generate Python. Its vision model describes a supplied screenshot. ElevenLabs transcribes recorded voice and produces spoken replies. A separate CSV data workspace demonstrates source-linked analysis, filtering, charts, explanation and undo. Browser checkout, personal fields and payments stop for manual review. InsightOS does not control arbitrary desktop apps or complete purchases.
+Hugging Face open models plan flexible commands and generate Python and slide outlines. Its vision model describes a supplied screenshot. ElevenLabs transcribes recorded voice and produces spoken replies. ExcelJS reads spreadsheet cells for deterministic totals and group comparisons; PptxGenJS writes editable slides. A separate CSV data workspace demonstrates source-linked analysis, filtering, charts, explanation and undo. Browser checkout, passwords, payments and final form submission stop for manual review. InsightOS does not control arbitrary desktop apps or complete purchases.
 
 ## How we built it
 
@@ -29,6 +29,8 @@ The hardest problem was making the desktop assistant genuinely act while keeping
 - A real Hugging Face request generated Python in the native buddy and the program ran with output `55, exit 0` (`artifacts/buddy-verification.json`). Another live request wrote and ran a Fibonacci program through 89.
 - A synthetic WAV passed through real ElevenLabs transcription, Hugging Face code generation, Python execution, actual VS Code opening, and ElevenLabs reply audio. Python printed squares `1, 4, 9, 16, 25` (`artifacts/accessibility-voice-rehearsal.json`).
 - A live Google request encountered verification, and the buddy announced its Bing fallback, read numbered results, then opened the first observed result (`artifacts/handsfree-workflow.json`).
+- A live Hugging Face request generated a four-slide editable PowerPoint that opened in the installed app. The same flow read a six-row synthetic Excel workbook, calculated revenue of 6,200 and East as the top region at 2,700, then launched Excel (`artifacts/office-workflows.json`).
+- The public Selenium practice form accepted a spoken field instruction; the password and submit controls remained blocked (`artifacts/form-assist.json`). A local form test verified personal-contact confirmation before typing.
 - The configured Hugging Face vision model interpreted a real buddy screenshot, and native Electron captured the main display on request. A physical microphone, audible laptop playback, and the full live screen-description conversation still need a manual rehearsal.
 
 ## What's next

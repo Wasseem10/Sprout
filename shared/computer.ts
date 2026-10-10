@@ -11,10 +11,34 @@ export const computerActionSchema = z.discriminatedUnion('tool', [
     .strict(),
   z.object({ tool: z.literal('runCode') }).strict(),
   z.object({ tool: z.literal('openEditor') }).strict(),
+  z
+    .object({
+      tool: z.literal('createPresentation'),
+      request: z.string().min(1).max(2000),
+      slides: z.number().int().min(3).max(6).optional(),
+      open: z.boolean().optional(),
+    })
+    .strict(),
+  z.object({ tool: z.literal('openPresentation') }).strict(),
+  z
+    .object({
+      tool: z.literal('analyzeSpreadsheet'),
+      question: z.string().min(1).max(1000),
+      filename: z.string().max(160).optional(),
+      open: z.boolean().optional(),
+    })
+    .strict(),
+  z.object({ tool: z.literal('openSpreadsheet') }).strict(),
   z.object({ tool: z.literal('navigate'), url: z.string().max(2000) }).strict(),
   z.object({ tool: z.literal('search'), query: z.string().min(1).max(500) }).strict(),
   z.object({ tool: z.literal('readPage') }).strict(),
-  z.object({ tool: z.literal('openSearchResult'), index: z.number().int().min(1).max(5), pageId: z.string().uuid() }).strict(),
+  z
+    .object({
+      tool: z.literal('openSearchResult'),
+      index: z.number().int().min(1).max(5),
+      pageId: z.string().uuid(),
+    })
+    .strict(),
   z.object({ tool: z.literal('goBack') }).strict(),
   z
     .object({ tool: z.literal('click'), controlId: z.string().max(100), pageId: z.string().uuid() })
@@ -28,6 +52,7 @@ export const computerActionSchema = z.discriminatedUnion('tool', [
     })
     .strict(),
   z.object({ tool: z.literal('describeScreen') }).strict(),
+  z.object({ tool: z.literal('confirmFill') }).strict(),
 ]);
 export type ComputerAction = z.infer<typeof computerActionSchema>;
 export const computerPlanSchema = z
@@ -79,5 +104,21 @@ export type ComputerState = {
   code: CodeArtifact | null;
   browser: BrowserView | null;
   screen: ScreenView | null;
+  presentation?: {
+    filename: string;
+    title: string;
+    slideCount: number;
+    slideTitles: string[];
+    opened: boolean;
+    sha256: string;
+  } | null;
+  spreadsheet?: {
+    filename: string;
+    sheet: string;
+    rows: number;
+    summary: string;
+    sha256: string;
+    opened: boolean;
+  } | null;
 };
 export type ComputerResult = { summary: string; state: ComputerState; clarification?: boolean };

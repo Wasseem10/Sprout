@@ -51,3 +51,18 @@ test('screen capture is explicit and connections remain accessible on small scre
   const audit = await new AxeBuilder({ page }).analyze();
   expect(audit.violations).toEqual([]);
 });
+
+test('Office tab analyzes a real Excel workbook and reads calculated results', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Office tasks' }).click();
+  await page.getByRole('button', { name: 'Use demo folder', exact: true }).click();
+  await page.getByRole('button', { name: 'Analyze sample Excel' }).click();
+  await expect(page.getByRole('region', { name: 'Office tasks' })).toContainText(
+    'Revenue totals 6,200',
+  );
+  await expect(page.getByRole('region', { name: 'Office tasks' })).toContainText('East with 2,700');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+});

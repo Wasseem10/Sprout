@@ -37,6 +37,8 @@ export function config() {
     hfVisionModel: process.env.HF_VISION_MODEL_ID || 'Qwen/Qwen2.5-VL-7B-Instruct',
     pythonBin: process.env.PYTHON_BIN ?? '',
     codeBin: process.env.VSCODE_BIN ?? '',
+    powerpointBin: process.env.POWERPOINT_BIN ?? '',
+    excelBin: process.env.EXCEL_BIN ?? '',
     hfEndpoint: process.env.HF_ENDPOINT_URL || 'https://router.huggingface.co/v1/chat/completions',
     dbHost: process.env.DATABRICKS_HOST ?? '',
     dbWarehouse: process.env.DATABRICKS_WAREHOUSE_ID ?? '',
