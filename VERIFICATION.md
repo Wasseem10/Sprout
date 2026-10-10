@@ -1,3 +1,14 @@
+# Public publishing verification — October 10, 2026
+
+Published source: https://github.com/Wasseem10/insightos
+Public interactive sample: https://insightos-livid.vercel.app/
+
+Both links were checked anonymously. GitHub is public, README returns 200, and .env/.env.local return 404. The Vercel root and sample PDF return 200 without authentication. The production sample passed both end-to-end browser tests, including corrections, affordability, application-review invalidation, preserved answers, downloads, keyboard navigation, mobile and large text. Automated accessibility audits reported zero violations. All 111 unit tests passed and both desktop and public builds passed. See artifacts/public-deployment-verification.json and artifacts/public-demo-desktop.png / public-demo-mobile.png.
+
+The public sample does not make local API or cloud AI calls; browser speech is labeled. Native sponsor functionality remains in the desktop companion. Physical microphone and interruption testing and the final video are still outstanding. The remaining two-hour plan is FINAL-TWO-HOURS.md.
+
+---
+
 # Verification record — October 10, 2026
 
 ## Focused bill-to-decision rehearsal

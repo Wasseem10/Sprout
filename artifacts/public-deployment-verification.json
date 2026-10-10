@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-10-10T23:01:22.624Z",
+  "sourceUrl": "https://github.com/Wasseem10/insightos",
+  "demoUrl": "https://insightos-livid.vercel.app/",
+  "sourceCommit": "0e73fdc",
+  "anonymousGitHub": {
+    "visibility": "public",
+    "defaultBranch": "master",
+    "readme": 200,
+    "environmentFiles": 404
+  },
+  "anonymousVercel": {
+    "root": 200,
+    "samplePdf": 200,
+    "pageErrors": []
+  },
+  "checks": {
+    "unitTests": 111,
+    "unitSuites": 16,
+    "localPublicBrowserTests": 2,
+    "productionPublicBrowserTests": 2,
+    "axeViolations": 0,
+    "desktopBuild": "passed",
+    "vercelBuild": "passed"
+  },
+  "workflow": [
+    "Bill total corrections block inconsistent charges",
+    "Budget $60 to $30 invalidates old application review",
+    "Existing applicant answers are preserved",
+    "Weather sealing $25 replaces over-budget duct repair",
+    "Current browser form values are checked before narration",
+    "Sample plan downloads without API calls"
+  ],
+  "limitations": [
+    "Public build uses browser speech and deterministic calculations, not cloud AI integrations",
+    "Desktop Hugging Face / ElevenLabs / Databricks workflow runs locally",
+    "Physical microphone and spoken interruption rehearsal still needed",
+    "Nothing submitted; bills and quotes are synthetic"
+  ]
+}

@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+test.use({ baseURL: process.env.INSIGHTOS_PUBLIC_URL || 'http://127.0.0.1:5173' });
 
 test('public demo keeps corrected budgets, choices and application review consistent without calling the local API', async ({
   page,
