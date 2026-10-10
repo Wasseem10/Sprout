@@ -2,7 +2,7 @@
 
 ## One-line pitch
 
-InsightOS lives above your desktop. Ask it to write and run a Python program, open the result in VS Code, browse a public site, or describe a screen you choose.
+InsightOS lives above your desktop. Ask it to write, run, and open a Python program in VS Code in one step; search the web and open a numbered result by voice; or describe what's on your screen.
 
 ## Inspiration
 
@@ -10,7 +10,7 @@ Computer tasks often require many small visual and mouse steps. We wanted to exp
 
 ## What it does
 
-The Windows Electron buddy stays in a compact, always-on-top pill and expands into a conversation when needed. Push-to-talk uses Ctrl+Shift+Space, and Ctrl+Shift+Backspace stops the current task. It can create a real Python file in a selected folder, run a bounded computation, display the actual output, and open the file in VS Code. It also controls a separate visible Chromium browser on public sites and captures only a window the user explicitly selects. The larger workspace is optional and preserves the same conversation.
+The Windows Electron buddy stays in a compact, always-on-top pill and expands into a conversation when needed. Push-to-talk uses Ctrl+Shift+Space, and Ctrl+Shift+Backspace stops the current task. One spoken request can create a real Python file, run a bounded computation, report its actual output, and open the file in VS Code. The buddy can search public websites, read numbered results, open the selected result, and describe a one-time capture of the main display. The larger workspace can select a different window and preserves the same conversation.
 
 Hugging Face open models plan flexible commands and generate Python. Its vision model describes a supplied screenshot. ElevenLabs transcribes recorded voice and produces spoken replies. A separate CSV data workspace demonstrates source-linked analysis, filtering, charts, explanation and undo. Browser checkout, personal fields and payments stop for manual review. InsightOS does not control arbitrary desktop apps or complete purchases.
 
@@ -27,9 +27,9 @@ The hardest problem was making the desktop assistant genuinely act while keeping
 ## Verified demo evidence
 
 - A real Hugging Face request generated Python in the native buddy and the program ran with output `55, exit 0` (`artifacts/buddy-verification.json`). Another live request wrote and ran a Fibonacci program through 89.
-- A real ElevenLabs transcription of synthetic WAV audio produced a command; Hugging Face generated its program; Python printed `1, 4, 9, 16, 25`; ElevenLabs generated reply audio (`artifacts/live-voice-rehearsal.json`).
-- The configured Hugging Face vision model identified a synthetic image, and the native app captured a selected window. A physical microphone, audible laptop playback, and live interpretation of a user-selected window still need a manual rehearsal.
-- The controlled browser opened and clicked a link on a real public site. No online purchase was attempted.
+- A synthetic WAV passed through real ElevenLabs transcription, Hugging Face code generation, Python execution, actual VS Code opening, and ElevenLabs reply audio. Python printed squares `1, 4, 9, 16, 25` (`artifacts/accessibility-voice-rehearsal.json`).
+- A live Google request encountered verification, and the buddy announced its Bing fallback, read numbered results, then opened the first observed result (`artifacts/handsfree-workflow.json`).
+- The configured Hugging Face vision model interpreted a real buddy screenshot, and native Electron captured the main display on request. A physical microphone, audible laptop playback, and the full live screen-description conversation still need a manual rehearsal.
 
 ## What's next
 

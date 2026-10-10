@@ -48,6 +48,7 @@ declare global {
       chooseFolder: () => Promise<import('../shared/computer').ComputerState | null>;
       screenSources: () => Promise<{ id: string; name: string; thumbnail: string }[]>;
       captureScreen: (id: string) => Promise<{ name: string; image: string }>;
+      captureCurrentScreen: () => Promise<{ name: string; image: string }>;
       openAccount: (
         provider: keyof typeof import('../shared/connections').accountUrls,
       ) => Promise<void>;

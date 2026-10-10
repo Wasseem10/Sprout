@@ -40,7 +40,7 @@ export default function ComputerCompanion() {
     {
       id: 'welcome',
       role: 'assistant',
-      text: 'Tell me what you want to do. I can create and run Python programs, operate my visible browser, and describe a screen you select.',
+      text: 'Tell me what you want to do. I can write and run Python in VS Code, search the web and read results, or describe your screen aloud.',
     },
   ]);
   const [request, setRequest] = useState(''),
@@ -82,7 +82,7 @@ export default function ComputerCompanion() {
   const sync = async () => setState(await api<ComputerState>('/computer/state'));
   const applyState = (next: ComputerState, tool?: string) => {
     setState(next);
-    if (/navigate|search|click|fill|readPage|goBack/.test(tool ?? '')) setTab('browser');
+    if (/navigate|search|SearchResult|click|fill|readPage|goBack/.test(tool ?? '')) setTab('browser');
     else if (/describeScreen/.test(tool ?? '')) setTab('screen');
     else if (/Code|Editor/.test(tool ?? '')) setTab('code');
   };
@@ -100,13 +100,30 @@ export default function ComputerCompanion() {
     setPhase(action ? text : 'Understanding your request');
     const before = state;
     try {
-      const result = await api<ComputerResult>(
-        action ? '/computer/action' : '/computer/request',
-        action ?? { request: text },
-        abort.signal,
-      );
+      const spokenScreenRequest =
+        !action &&
+        !!window.insightos?.captureCurrentScreen &&
+        /\b(describe|read|what|tell me)\b.*\b(screen|display)\b/i.test(text);
+      let result: ComputerResult;
+      if (spokenScreenRequest) {
+        setPhase('Capturing one snapshot of the main display');
+        const image = await window.insightos!.captureCurrentScreen();
+        if (abort.signal.aborted) return;
+        await api<ComputerState>('/computer/screen', image, abort.signal);
+        setPhase('Describing the snapshot');
+        result = await api<ComputerResult>(
+          '/computer/action',
+          { tool: 'describeScreen' },
+          abort.signal,
+        );
+      } else
+        result = await api<ComputerResult>(
+          action ? '/computer/action' : '/computer/request',
+          action ?? { request: text },
+          abort.signal,
+        );
       if (current !== generation.current) return;
-      let tool = action?.tool;
+      let tool = spokenScreenRequest ? 'describeScreen' : action?.tool;
       if (!tool) {
         if (result.state.browser?.capturedAt !== before.browser?.capturedAt) tool = 'readPage';
         if (

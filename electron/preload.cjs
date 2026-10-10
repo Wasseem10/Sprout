@@ -4,6 +4,7 @@ contextBridge.exposeInMainWorld('insightos', {
   chooseFolder: () => ipcRenderer.invoke('insightos:choose-folder'),
   screenSources: () => ipcRenderer.invoke('insightos:screen-sources'),
   captureScreen: (id) => ipcRenderer.invoke('insightos:capture-screen', id),
+  captureCurrentScreen: () => ipcRenderer.invoke('insightos:capture-current-screen'),
   openAccount: (provider) => ipcRenderer.invoke('insightos:open-account', provider),
   platform: process.platform,
   setBuddyMode: (mode) => ipcRenderer.invoke('insightos:buddy-mode', mode),

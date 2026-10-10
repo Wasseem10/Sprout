@@ -5,7 +5,7 @@ import path from 'node:path';
 import { createServer, type Server } from 'node:http';
 import { config } from '../server/config';
 import { ComputerController, publicUrl } from '../server/computer/controller';
-import { computerPlan, starterPlan } from '../server/computer/planner';
+import { computerPlan, generateCode, starterPlan } from '../server/computer/planner';
 import { computerActionSchema } from '../shared/computer';
 
 const controllers: ComputerController[] = [],
@@ -117,11 +117,10 @@ it.skipIf(!config().pythonBin)(
           ),
       ),
     );
-    await hf.controller.action({ tool: 'createCode', request: 'environment test' }, signal());
-    const safe = await hf.controller.action({ tool: 'runCode' }, signal());
-    expect(safe.state.code!.exitCode).toBe(0);
-    expect(safe.state.code!.output).not.toContain('do-not-leak-this-secret');
-    expect(safe.state.code!.output).not.toContain('INSIGHTOS_PRIVATE_TEST');
+    await expect(
+      hf.controller.action({ tool: 'createCode', request: 'environment test' }, signal()),
+    ).rejects.toThrow('unsupported private names');
+    expect(hf.controller.snapshot().code?.code).not.toContain('INSIGHTOS_PRIVATE_TEST');
   },
 );
 it('blocks private URLs and never converts missing vision credentials into a canned description', async () => {
@@ -139,6 +138,90 @@ it('blocks private URLs and never converts missing vision credentials into a can
     'selected screen',
   );
   expect(starterPlan('order everything and pay for it', controller.snapshot()).action).toBeNull();
+  expect(starterPlan('order everything and pay for it', controller.snapshot()).clarification)
+    .toContain('cannot place orders');
+});
+it.skipIf(!config().pythonBin)(
+  'completes an explicitly requested create-and-run workflow in one task',
+  async () => {
+    const { controller } = await setup();
+    await controller.demoFolder();
+    const plan = starterPlan(
+      'Write a Python Fibonacci program with 10 numbers and run it',
+      controller.snapshot(),
+    );
+    expect(plan.action).toMatchObject({ tool: 'createCode', run: true, openEditor: false });
+    const result = await controller.action(plan.action!, signal());
+    expect(result.state.code?.status).toBe('completed');
+    expect(result.state.code?.output).toContain('[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]');
+    expect(result.summary).toContain('Exit code: 0.');
+    expect(result.summary).toContain('Output:');
+  },
+);
+it('maps a spoken Google request to search without inventing a website action', () => {
+  const state = { folder: null, code: null, browser: null, screen: null };
+  expect(starterPlan('Open Google and search for accessible Python tutorials', state).action).toEqual({
+    tool: 'search',
+    query: 'accessible Python tutorials',
+  });
+  expect(starterPlan('Search Google for bus schedules and read the results to me', state).action)
+    .toEqual({ tool: 'search', query: 'bus schedules' });
+  expect(starterPlan('Open Google and search accessible Python tutorials', state).action)
+    .toEqual({ tool: 'search', query: 'accessible Python tutorials' });
+});
+it('regenerates Python when the model uses an unsupported main guard', async () => {
+  const { cfg } = await setup({}, { hfToken: 'test-token' });
+  const codes = [
+    'if __name__ == "__main__":\n    print(1)',
+    'for n in range(1, 4):\n    print(n * n)',
+  ];
+  const mock = vi.fn(async () => new Response(JSON.stringify({
+    choices: [{ message: { content: JSON.stringify({ filename: 'squares.py', code: codes.shift() }) } }],
+  }), { status: 200 }));
+  vi.stubGlobal('fetch', mock);
+  const result = await generateCode('print squares', cfg, signal());
+  expect(result.code).toContain('print(n * n)');
+  expect(result.code).not.toContain('__name__');
+  expect(mock).toHaveBeenCalledTimes(2);
+});
+it('reads numbered observed search results and opens only the chosen result', async () => {
+  const server = createServer((req, res) => {
+    if (req.url === '/redirect') {
+      res.writeHead(302, { Location: '/search' });
+      res.end();
+      return;
+    }
+    res.setHeader('Content-Type', 'text/html');
+    res.end(
+      req.url === '/detail'
+        ? '<html><title>Selected article</title><body><h1>Accessible guide</h1></body></html>'
+        : '<html><title>Search results</title><body><div id="b_results"><div class="b_algo"><h2><a href="/detail">Accessible guide</a></h2><div class="b_caption"><p>A guide that helps.</p></div></div><div class="b_algo"><h2><a href="/redirect">Redirecting guide</a></h2></div></div></body></html>',
+    );
+  });
+  servers.push(server);
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const origin = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
+  const { controller } = await setup({
+    headless: true,
+    validateUrl: async (url) => {
+      if (new URL(url).origin !== origin) throw new Error('Test origin only');
+      return url;
+    },
+  });
+  const search = await controller.action({ tool: 'navigate', url: origin + '/search' }, signal());
+  expect(search.state.browser?.searchResults[0]).toMatchObject({
+    title: 'Accessible guide',
+    snippet: 'A guide that helps.',
+  });
+  const plan = starterPlan('open result one', search.state);
+  expect(plan.action).toMatchObject({ tool: 'openSearchResult', index: 1 });
+  const opened = await controller.action(plan.action!, signal());
+  expect(opened.state.browser?.title).toBe('Selected article');
+  await expect(controller.action(plan.action!, signal())).rejects.toThrow('changed');
+  const again = await controller.action({ tool: 'navigate', url: origin + '/search' }, signal());
+  const redirected = await controller.action(starterPlan('open result two', again.state).action!, signal());
+  expect(redirected.state.browser?.url).toBe(origin + '/search');
+  expect(redirected.summary).toContain('sent me back to the search results');
 });
 it('uses actual page controls, rejects stale references, and stops before purchase or personal data', async () => {
   let purchased = false;

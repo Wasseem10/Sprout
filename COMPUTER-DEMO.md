@@ -16,7 +16,15 @@ Open **Settings & connections** to enter and test HF/ElevenLabs credentials; see
 
 ## Local demo
 
-**Voice controls:** Ctrl+Shift+Space starts a recording; press again to send it. Escape stops the task and audio when a dialog is not open. Enable spoken replies using the speaker button. The live synthesized-audio → transcription → generated Python → executed output → response-audio chain passed (`artifacts/live-voice-rehearsal.json`); test the laptop microphone and audible playback before presenting. Databricks is not required for this companion demo.
+**Voice controls:** Ctrl+Shift+Space starts a recording; press again to send it. Escape stops the task and audio when a dialog is not open. Enable spoken replies using the speaker button. A synthetic WAV passed through real ElevenLabs transcription, Hugging Face generation, Python execution, VS Code opening, and ElevenLabs reply audio (`artifacts/accessibility-voice-rehearsal.json`). Test the laptop microphone and audible playback before presenting. Databricks is not required for this companion demo.
+
+### Three-request accessibility demo
+
+1. Say **“Write a Python program that prints the squares from one through five, run it, and open it in VS Code.”** The buddy creates a real file, runs it, opens the editor, and speaks the output. The demo folder is available automatically in the desktop buddy.
+2. Say **“Open Google and search for accessible Python tutorials.”** The buddy reads numbered search results. If Google presents an automated-traffic challenge, it tells the user and uses Bing. Say **“Open result one”**, then **“Read this page.”** These actions use a dedicated visible Chromium browser, not the user's personal browser session.
+3. Say **“What is on my screen?”** The desktop buddy captures one image of the main display, sends that image to the configured Hugging Face vision model, and speaks its description. To target another window, use **See my screen** and select it in the workspace.
+
+The coding and browser sequence passed live integration checks (`artifacts/handsfree-workflow.json`); native main-display capture passed (`scripts/smoke-native-screen.mjs`). The combined physical microphone, speaker, and screen-description conversation still needs a human rehearsal on this machine. Rehearse these exact requests and record the actual result. This is a supported-task accessibility prototype, not unrestricted desktop control or blind-user validation.
 
 1. **Choose folder** or **Use demo folder**. The native picker grants only that folder. Demo files go into `.local/code-workspace`.
 2. Type **Write a Python Fibonacci program with 10 numbers**. Show the actual `.py` file, read-back source and hash. Without HF this is explicitly a starter template, not AI-generated code.
@@ -28,7 +36,7 @@ Record the visible app, editor and browser. State whether commands are typed or 
 
 ## Boundaries
 
-One validated action per request. The browser uses a fresh Chromium session; it does not attach to personal passwords or other native apps. Click/type targets come from observed controls and are checked again. Public HTTPS only; private destinations, downloads and popups are blocked. Websites may require authentication or block automation; rehearse your target.
+One validated action per request, except an explicit code request can create, run, and open the file as one task. The browser uses a fresh Chromium session; it does not attach to personal passwords or other native apps. Click/type targets come from observed controls and are checked again. Public HTTPS only; private destinations, downloads and popups are blocked. Websites may require authentication or block automation; rehearse your target.
 
 Payments, checkout, messages, login, personal fields and unknown buttons stop for manual review in the visible browser. No automatic purchase is implemented. The demo proves navigation and product inspection.
 

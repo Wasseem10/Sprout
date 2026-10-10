@@ -1,12 +1,20 @@
 import { z } from 'zod';
 
 export const computerActionSchema = z.discriminatedUnion('tool', [
-  z.object({ tool: z.literal('createCode'), request: z.string().min(1).max(2000) }).strict(),
+  z
+    .object({
+      tool: z.literal('createCode'),
+      request: z.string().min(1).max(2000),
+      run: z.boolean().optional(),
+      openEditor: z.boolean().optional(),
+    })
+    .strict(),
   z.object({ tool: z.literal('runCode') }).strict(),
   z.object({ tool: z.literal('openEditor') }).strict(),
   z.object({ tool: z.literal('navigate'), url: z.string().max(2000) }).strict(),
   z.object({ tool: z.literal('search'), query: z.string().min(1).max(500) }).strict(),
   z.object({ tool: z.literal('readPage') }).strict(),
+  z.object({ tool: z.literal('openSearchResult'), index: z.number().int().min(1).max(5), pageId: z.string().uuid() }).strict(),
   z.object({ tool: z.literal('goBack') }).strict(),
   z
     .object({ tool: z.literal('click'), controlId: z.string().max(100), pageId: z.string().uuid() })
@@ -46,6 +54,7 @@ export type BrowserView = {
   title: string;
   text: string;
   controls: BrowserControl[];
+  searchResults: { title: string; url: string; snippet: string }[];
   image: string;
   capturedAt: string;
 };

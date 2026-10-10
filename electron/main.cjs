@@ -155,6 +155,29 @@ app
         throw new Error('That window is no longer available. Choose it again.');
       return { name: source.name, image: source.thumbnail.toDataURL() };
     });
+    ipcMain.handle('insightos:capture-current-screen', async (event) => {
+      nativeRequest(event);
+      // A spoken request is explicit consent for one snapshot. Hide the buddy so
+      // it does not cover the content the user asked to understand.
+      const wasVisible = !!companionWindow && companionWindow.isVisible();
+      if (wasVisible) companionWindow.hide();
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 180));
+        const display = screen.getPrimaryDisplay();
+        const sources = await desktopCapturer.getSources({
+          types: ['screen'],
+          thumbnailSize: { width: 1600, height: 1000 },
+        });
+        const source =
+          sources.find((item) => item.display_id === String(display.id)) || sources[0];
+        if (!source || source.thumbnail.isEmpty())
+          throw new Error('Could not capture the main display. Try choosing a window.');
+        return { name: `Main display — ${source.name}`, image: source.thumbnail.toDataURL() };
+      } finally {
+        if (wasVisible && companionWindow && !companionWindow.isDestroyed())
+          companionWindow.show();
+      }
+    });
     const work = screen.getPrimaryDisplay().workArea;
     const standaloneWorkspace = process.argv.includes('--workspace') || !!remote;
     const win = (companionWindow = new BrowserWindow({

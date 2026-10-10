@@ -1,5 +1,9 @@
 # Verification record — October 10, 2026
 
+## Hands-free accessibility workflows
+
+October 10, 2026: a real Hugging Face request created a Python squares program, executed it with exit 0, and opened its file in VS Code from one explicit request. A live Google search encountered an automated-traffic challenge, so the controlled browser used Bing and reported the fallback; it read numbered results and opened the first observed result. Evidence: `artifacts/handsfree-workflow.json`. A synthetic WAV was transcribed by ElevenLabs into the combined coding request; Hugging Face generated the code, Python printed squares 1–25, VS Code opened, and ElevenLabs produced reply audio. Evidence: `artifacts/accessibility-voice-rehearsal.json`. The native Electron main-display capture bridge passed a PNG capture and restored the buddy without saving the screenshot. The physical microphone, audible speaker output, and a complete screen-description conversation have not been operated by the user yet. Unit/backend tests: 36 passed; production build passed.
+
 ## Native desktop buddy
 
 October 10, 2026: Electron now defaults to a frameless, transparent, always-on-top 360×86 buddy, expanding to a 440×580 conversation panel. A native tray offers restore, talk, stop, settings, workspace and Quit. The application reserves Ctrl+Shift+Space for voice and Ctrl+Shift+Backspace for Stop, and rejects duplicate instances. The larger workspace is an optional view in the same renderer, preserving task state and conversation.

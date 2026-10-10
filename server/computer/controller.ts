@@ -11,6 +11,7 @@ import type {
   ComputerState,
   ComputerResult,
   BrowserControl,
+  BrowserView,
 } from '../../shared/computer.js';
 import { generateCode, computerPlan, chat } from './planner.js';
 
@@ -422,6 +423,28 @@ export class ComputerController {
       controls.push({ id, name: info.name, role, sensitive, blocked });
       this.controls.set(id, loc);
     }
+    const resultLinks = page.locator('#b_results .b_algo h2 a, #search a:has(h3)');
+    const searchResults: BrowserView['searchResults'] = [];
+    for (let i = 0, count = Math.min(await resultLinks.count(), 5); i < count; i++) {
+      const result = await resultLinks.nth(i).evaluate((element) => {
+        const anchor = element as HTMLAnchorElement;
+        const card = anchor.closest('.b_algo') || anchor.parentElement?.parentElement;
+        return {
+          title: (anchor.innerText || '').trim().slice(0, 180),
+          href: anchor.href,
+          snippet: (card?.querySelector('.b_caption p')?.textContent || card?.textContent || '')
+            .trim()
+            .replace(/\s+/g, ' ')
+            .slice(0, 260),
+        };
+      });
+      if (result.title && result.href)
+        searchResults.push({
+          title: result.title,
+          url: result.href,
+          snippet: result.snippet,
+        });
+    }
     const image = `data:image/png;base64,${(await page.screenshot({ fullPage: false, timeout: 7000 })).toString('base64')}`;
     this.state.browser = {
       id: crypto.randomUUID(),
@@ -429,6 +452,7 @@ export class ComputerController {
       title: await page.title(),
       text,
       controls,
+      searchResults,
       image,
       capturedAt: new Date().toISOString(),
     };
@@ -458,7 +482,18 @@ export class ComputerController {
         status: 'created',
         editorOpened: false,
       };
-      summary = `Created ${filename} in ${this.state.folder!.name}. ${generated.provider === 'starter-template' ? 'Source: local starter template.' : 'Source: Hugging Face model.'} Ready to run or open in VS Code.`;
+      summary = `Created ${filename} in ${this.state.folder!.name}. ${generated.provider === 'starter-template' ? 'Source: local starter template.' : 'Source: Hugging Face model.'}`;
+      if (action.run) summary += `\n${await this.runCode(signal)}`;
+      if (action.openEditor) {
+        try {
+          const opened = await this.perform({ tool: 'openEditor' }, signal);
+          summary += `\n${opened.summary}`;
+        } catch (error) {
+          signal.throwIfAborted();
+          summary += `\nVS Code could not open: ${error instanceof Error ? error.message : 'Unknown error'}`;
+        }
+      }
+      if (!action.run && !action.openEditor) summary += ' Ready to run or open in VS Code.';
     } else if (action.tool === 'runCode') summary = await this.runCode(signal);
     else if (action.tool === 'openEditor') {
       const { file } = await this.codeFile();
@@ -514,6 +549,8 @@ export class ComputerController {
     } else {
       const page = await this.ensurePage();
       signal.throwIfAborted();
+      let searchFallback = false;
+      let searchResultRedirected = false;
       if (action.tool === 'navigate' || action.tool === 'search') {
         const url =
           action.tool === 'navigate'
@@ -522,6 +559,51 @@ export class ComputerController {
         await (this.options.validateUrl ?? publicUrl)(url);
         signal.throwIfAborted();
         await page.goto(url, { waitUntil: 'domcontentloaded' });
+        if (action.tool === 'search' && /\/sorry(?:\/|$)/i.test(new URL(page.url()).pathname)) {
+          // Google sometimes blocks automated browsers. Keep the task usable,
+          // and tell the user plainly which search engine supplied the result.
+          searchFallback = true;
+          const fallback = `https://www.bing.com/search?q=${encodeURIComponent(action.query)}`;
+          await (this.options.validateUrl ?? publicUrl)(fallback);
+          signal.throwIfAborted();
+          await page.goto(fallback, { waitUntil: 'domcontentloaded' });
+          await page
+            .locator('#b_results')
+            .first()
+            .waitFor({ state: 'visible', timeout: 8000 })
+            .catch(() => {});
+        }
+      } else if (action.tool === 'openSearchResult') {
+        const view = this.state.browser;
+        if (!view || action.pageId !== view.id)
+          throw new Error('Search results changed. Search again before choosing a result.');
+        const observed = view.searchResults[action.index - 1];
+        if (!observed) throw new Error('That result is not available. Choose a listed result.');
+        const links = page.locator('#b_results .b_algo h2 a, #search a:has(h3)');
+        let stillPresent = false;
+        for (let i = 0, count = await links.count(); i < count; i++) {
+          const current = await links.nth(i).evaluate((element) => ({
+            title: (element as HTMLAnchorElement).innerText.trim().slice(0, 180),
+            url: (element as HTMLAnchorElement).href,
+          }));
+          if (current.title === observed.title && current.url === observed.url) {
+            stillPresent = true;
+            break;
+          }
+        }
+        if (!stillPresent)
+          throw new Error('Search result changed. Search again before opening it.');
+        await (this.options.validateUrl ?? publicUrl)(observed.url);
+        signal.throwIfAborted();
+        // Search engines commonly open a new tab. Keep one controlled, audible
+        // browsing context by navigating to the observed public URL directly.
+        await page.goto(observed.url, { waitUntil: 'domcontentloaded' });
+        const destination = new URL(page.url());
+        const searchPage = new URL(view.url);
+        searchResultRedirected =
+          destination.origin === searchPage.origin &&
+          destination.pathname === searchPage.pathname &&
+          searchPage.pathname === '/search';
       } else if (action.tool === 'goBack') {
         const previous = await page.goBack({ waitUntil: 'domcontentloaded' });
         if (!previous) throw new Error('Computer browser has no earlier page.');
@@ -594,10 +676,22 @@ export class ComputerController {
       await this.observe();
       const view = this.state.browser;
       if (!view) throw new Error('Computer browser was closed. Open the website again.');
-      summary =
-        action.tool === 'readPage'
-          ? `${view.title}. ${view.text.slice(0, 1600)}`
-          : `Browser ${action.tool === 'fill' ? 'typed in the selected field' : action.tool === 'click' ? 'clicked the selected control' : action.tool === 'goBack' ? 'went back' : 'opened the website'}. Current page: ${view.title}. ${view.url}`;
+      if (action.tool === 'search') {
+        const results = view.searchResults
+          .map((result, index) => `${index + 1}. ${result.title}. ${result.snippet}`)
+          .join('\n');
+        summary = `${searchFallback ? 'Google asked for verification, so I used Bing.' : 'Opened Google.'} Results for ${action.query}:\n${results || view.text.slice(0, 1600)}\nSay “open result one” to continue.`;
+      } else if (action.tool === 'openSearchResult' && searchResultRedirected) {
+        summary = 'That site sent me back to the search results. Choose a different numbered result.';
+      } else if (action.tool === 'readPage' && view.searchResults.length) {
+        summary = `${view.title}.\n${view.searchResults
+          .map((result, index) => `${index + 1}. ${result.title}. ${result.snippet}`)
+          .join('\n')}`;
+      } else
+        summary =
+          action.tool === 'readPage'
+            ? `${view.title}. ${view.text.slice(0, 1600)}`
+            : `Browser ${action.tool === 'fill' ? 'typed in the selected field' : action.tool === 'click' ? 'clicked the selected control' : action.tool === 'goBack' ? 'went back' : 'opened the website'}. Current page: ${view.title}. ${view.url}`;
     }
     return { summary, state: this.snapshot() };
   }

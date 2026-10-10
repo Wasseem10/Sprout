@@ -1,8 +1,8 @@
 # InsightOS
 
-A desktop companion that creates and runs real Python programs, opens them in VS Code, operates a visible browser, and captures a screen you explicitly select. The CSV module remains under **Data workspace**. See [computer setup and demo](COMPUTER-DEMO.md).
+A voice-first desktop companion for people who have difficulty seeing or operating a computer. It can create, run, and open a real Python program in VS Code from one request; search the web and read numbered results aloud; and describe a one-time main-display snapshot. The CSV module remains under **Data workspace**. See [computer setup and demo](COMPUTER-DEMO.md).
 
-**Verified locally:** the native floating buddy, real Hugging Face planning/code generation and synthetic-image vision, ElevenLabs transcription/speech API calls, Python file creation/execution, VS Code opening, selected-window capture, visible Chromium navigation/clicks, and the original CSV flow. A synthetic audio-to-code-to-spoken-reply chain passed. Physical microphone and speaker behavior still need a manual check. See [verification](VERIFICATION.md) and [sponsor status](SPONSOR-INTEGRATIONS.md).
+**Verified locally:** the native floating buddy, real Hugging Face planning/code generation and synthetic-image vision, ElevenLabs transcription/speech API calls, Python file creation/execution, VS Code opening, main-display and selected-window capture, visible Chromium search/result navigation, and the original CSV flow. A synthetic audio-to-code-to-VS-Code-to-spoken-reply chain passed. Physical microphone and speaker behavior still need a manual check. See [verification](VERIFICATION.md) and [sponsor status](SPONSOR-INTEGRATIONS.md).
 
 ![The working computer companion](artifacts/companion-code.png)
 

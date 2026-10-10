@@ -130,12 +130,12 @@ export default function DesktopBuddy(p: Props) {
                 <span className="buddy-eyebrow">A LITTLE HELP. RIGHT HERE.</span>
                 <h1>What’s on your mind?</h1>
                 <p>
-                  Talk to me while you work. I can write and run code, browse the web, or describe a
-                  window you choose.
+                  Ask me to write and run code in VS Code, search the web and read results, or
+                  describe your screen aloud.
                 </p>
                 <div className="buddy-suggestion">
                   <Code2 size={15} />
-                  <span>“Write a Python Fibonacci program.”</span>
+                  <span>“Write a Python program, run it, and open it in VS Code.”</span>
                 </div>
               </div>
             )}

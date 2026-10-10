@@ -1,0 +1,12 @@
+{
+  "checkedAt": "2026-10-10T16:38:41.749Z",
+  "input": "Synthetic WAV; physical microphone not tested",
+  "transcript": "Write a Python program that prints the squares from one through five, run it, and open it in VS Code",
+  "provider": "hugging-face",
+  "filename": "program-75606505.py",
+  "output": "1 squared is 1\r\n2 squared is 4\r\n3 squared is 9\r\n4 squared is 16\r\n5 squared is 25\r\n",
+  "exitCode": 0,
+  "editorOpened": true,
+  "replyAudioBytes": 379968,
+  "speakerPlayback": "Not tested"
+}

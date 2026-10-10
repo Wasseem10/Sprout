@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-10-10T16:41:51.972Z",
+  "code": {
+    "provider": "hugging-face",
+    "filename": "program-2f6c28fe.py",
+    "output": "1 squared is 1\r\n2 squared is 4\r\n3 squared is 9\r\n4 squared is 16\r\n5 squared is 25\r\n",
+    "exitCode": 0,
+    "editorOpened": true
+  },
+  "search": {
+    "url": "https://www.bing.com/search?q=Python%20accessibility%20documentation&rdr=1&rdrig=4A6FA7D3E3A446AA8FFBB5D93F9846A4",
+    "title": "Python accessibility documentation - Search",
+    "spokenSummaryPreview": "Google asked for verification, so I used Bing. Results for Python accessibility documentation:\n1. Welcome to Python.org. Experienced programmers in any other language can pick up Python very quickly, and beginners find the clean syntax and …\n2. Download Python | Python.org. Python was created in the early 1990s by Guido van Rossum at Stichting Mathematisch Centrum in the Netherlands as a successor …\n3. Python Tutorial - W3Schools. Learn Python Python is a popular programming language. Python can",
+    "firstResult": "Welcome to Python.org",
+    "openedUrl": "https://www.python.org/"
+  }
+}
