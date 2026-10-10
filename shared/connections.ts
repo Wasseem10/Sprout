@@ -19,11 +19,13 @@ export const connectionSettingsSchema = z
     DATABRICKS_CATALOG: value.optional(),
     DATABRICKS_SCHEMA: value.optional(),
     DATABASE_URL: value.optional(),
+    INSIGHTOS_CLOUD_URL: value.optional(),
+    INSIGHTOS_CLOUD_PASSPHRASE: value.optional(),
     APP_MODE: z.enum(['sample', 'live']).optional(),
   })
   .strict();
 export type ConnectionSettings = z.infer<typeof connectionSettingsSchema>;
-export const providerSchema = z.enum(['huggingFace', 'elevenLabs', 'databricks', 'neon']);
+export const providerSchema = z.enum(['huggingFace', 'elevenLabs', 'databricks', 'neon', 'vultr']);
 export type Provider = z.infer<typeof providerSchema>;
 export type ConnectionCheck = { status: 'passed' | 'failed'; detail: string };
 export type ConnectionReport = { checkedAt: string; checks: ConnectionCheck[] };
@@ -38,6 +40,7 @@ export type ConnectionState = {
     DATABRICKS_CATALOG: string;
     DATABRICKS_SCHEMA: string;
     APP_MODE: 'sample' | 'live';
+    INSIGHTOS_CLOUD_URL?: string;
   };
   configured: Record<Provider, boolean>;
   reports: Partial<Record<Provider, ConnectionReport>>;

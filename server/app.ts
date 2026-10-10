@@ -223,6 +223,20 @@ export async function buildApp(cfg: Config = config()) {
     return { dataset, comparison: defaultComparison(dataset) };
   });
   app.get('/api/computer/state', async () => computer.snapshot());
+  app.post('/api/computer/finance/import', async (req, reply) => {
+    const file = await req.file();
+    if (!file) throw new Error('Computer finance import needs one CSV or XLSX file.');
+    const bytes = await file.toBuffer();
+    if (file.file.truncated) throw new Error('Computer finance file is too large.');
+    return computer.importFinance(file.filename, bytes, taskSignal(req, reply));
+  });
+  app.get('/api/computer/finance/export', async (_req, reply) => {
+    const file = await computer.financeExport();
+    return reply
+      .type('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+      .header('Content-Disposition', `attachment; filename="${file.filename}"`)
+      .send(file.bytes);
+  });
   app.post('/api/computer/demo-folder', async () => computer.demoFolder());
   app.post('/api/computer/authorize-folder', async (req) => {
     const body = z

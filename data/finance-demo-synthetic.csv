@@ -1,0 +1,15 @@
+Date,Description,Category,Type,Amount
+2026-08-01,Sample wages,Income,income,3000.00
+2026-08-02,Sample rent,Housing,expense,1500.00
+2026-08-05,Sample groceries,Groceries,expense,350.00
+2026-08-10,Sample utility bill,Utilities,expense,120.00
+2026-08-12,Sample transport,Transport,expense,180.00
+2026-08-15,Sample subscriptions,Subscriptions,expense,120.00
+2026-08-20,Sample restaurants,Dining,expense,350.00
+2026-09-01,Sample wages,Income,income,3000.00
+2026-09-02,Sample rent,Housing,expense,1500.00
+2026-09-05,Sample groceries,Groceries,expense,450.00
+2026-09-10,Sample utility bill,Utilities,expense,210.00
+2026-09-12,Sample transport,Transport,expense,180.00
+2026-09-15,Sample subscriptions,Subscriptions,expense,120.00
+2026-09-20,Sample restaurants,Dining,expense,350.00

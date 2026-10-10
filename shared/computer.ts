@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { EnergyState } from './energy.js';
+import type { FinanceState } from './finance.js';
 
 export const nativeAppSchema = z.enum([
   'browser',
@@ -15,6 +16,9 @@ export const nativeAppSchema = z.enum([
 export type NativeAppId = z.infer<typeof nativeAppSchema>;
 
 export const computerActionSchema = z.discriminatedUnion('tool', [
+  z
+    .object({ tool: z.literal('financeHelp'), request: z.string().trim().min(1).max(2000) })
+    .strict(),
   z.object({ tool: z.literal('energyHelp'), request: z.string().trim().min(1).max(2000) }).strict(),
   z.object({ tool: z.literal('openApp'), app: nativeAppSchema }).strict(),
   z
@@ -132,6 +136,7 @@ export type ScreenView = {
   description: string | null;
 };
 export type ComputerState = {
+  finance?: FinanceState | null;
   energy?: EnergyState | null;
   task?: {
     id: string;

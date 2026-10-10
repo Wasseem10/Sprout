@@ -448,6 +448,7 @@ export async function computerPlan(
     system +
       outputFormat +
       conversationRules +
+      ' Additional tool: financeHelp {request:string} for accessible household transaction analysis, hypothetical spending reductions, undo, payment assumption comparisons, Databricks finance analysis, and Excel budget exports. Pass the exact request and never invent loan terms, transactions or user consent to sample data. Financial results cover uploaded records, not a bank balance or lender approval.' +
       " Additional tool: energyHelp {request:string} for utility bill analysis, budget-constrained efficiency comparisons and the labeled application rehearsal. Pass the user's exact request. Do not invent budget, consent to sample data, identity, savings, or financing eligibility. The energy state contains verified calculations that you may explain; distinguish estimated savings from observed usage.",
     JSON.stringify({ request, context }),
     signal,

@@ -31,6 +31,8 @@ async function fixture() {
     dbHost: '',
     dbWarehouse: '',
     dbToken: '',
+    cloudUrl: '',
+    cloudPassphrase: '',
   };
   return { cfg, connections: new Connections(cfg) };
 }
@@ -42,6 +44,33 @@ const inference = (content: unknown) =>
       { message: { content: typeof content === 'string' ? content : JSON.stringify(content) } },
     ],
   });
+it('saves an HTTPS cloud connection privately and verifies authenticated inference', async () => {
+  const { cfg, connections } = await fixture();
+  await expect(connections.save({ INSIGHTOS_CLOUD_URL: 'http://example.com' })).rejects.toThrow();
+  await expect(
+    connections.save({ INSIGHTOS_CLOUD_URL: 'https://example.com/api' }),
+  ).rejects.toThrow();
+  await connections.save({
+    INSIGHTOS_CLOUD_URL: 'https://insight.example.com',
+    INSIGHTOS_CLOUD_PASSPHRASE: 'private-cloud-passphrase',
+  });
+  expect(connections.snapshot().configured.vultr).toBe(true);
+  expect(JSON.stringify(connections.snapshot())).not.toContain('private-cloud-passphrase');
+  const fetchMock = vi
+    .fn()
+    .mockResolvedValueOnce(
+      new Response('{}', {
+        headers: { 'set-cookie': 'insightos_session=fixture-session; HttpOnly' },
+      }),
+    )
+    .mockResolvedValueOnce(json({ text: '{"ready":true}' }));
+  vi.stubGlobal('fetch', fetchMock);
+  const result = await connections.verify('vultr', new AbortController().signal);
+  expect(result.reports.vultr?.checks[0].status).toBe('passed');
+  expect(fetchMock.mock.calls[1][1].headers.Cookie).toBe('insightos_session=fixture-session');
+  expect(JSON.parse(fetchMock.mock.calls[1][1].body)).toMatchObject({ vision: false, json: true });
+  expect(JSON.stringify(result)).not.toContain('private-cloud-passphrase');
+});
 it('saves whitelisted settings atomically, preserving existing paths and secrets without returning keys', async () => {
   const { cfg, connections } = await fixture();
   await writeFile(

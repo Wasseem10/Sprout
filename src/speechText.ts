@@ -36,6 +36,8 @@ export function spokenRequestAcknowledgment(
   action?: ComputerAction,
 ): string | null {
   switch (action?.tool) {
+    case 'financeHelp':
+      return "I'll check the numbers.";
     case 'createCode':
       return "I'll write the program.";
     case 'runCode':
@@ -230,7 +232,12 @@ export function spokenComputerReply(result: ComputerResult, tool?: string): stri
   const { summary, state } = result;
   // Keep the budget question and application readback intact; generic shortening
   // can cut off the next question and strand a voice-only user.
-  if (result.tool === 'energyHelp' || tool === 'energyHelp')
+  if (
+    result.tool === 'energyHelp' ||
+    tool === 'energyHelp' ||
+    result.tool === 'financeHelp' ||
+    tool === 'financeHelp'
+  )
     return cleanSpeechText(result.spokenSummary ?? summary, 1000);
   // Conversation replies must never be replaced by a result from an older task.
   if (result.clarification) return cleanSpeechText(summary, 360);

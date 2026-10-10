@@ -22,6 +22,8 @@ import { pointAt } from './browser-pointer.js';
 import { AssistantMemory } from '../providers/assistantMemory.js';
 import { decideGoal, needsGoalLoop, observationKey } from './goal.js';
 import { EnergyAssistant } from './energy-assistant.js';
+import { FinanceAssistant } from './finance-assistant.js';
+import { parseFinanceFile, writeFinanceWorkbook } from './finance-files.js';
 import { money, newEnergyState, parseEnergyCsv } from './energy.js';
 import { energyDemoUrl, energyProgramUrl, type EnergyState } from '../../shared/energy.js';
 
@@ -114,6 +116,7 @@ export class ComputerController {
   private pendingFill: { controlId: string; pageId: string; value: string; name: string } | null =
     null;
   private energyAssistant: EnergyAssistant;
+  private financeAssistant: FinanceAssistant;
   private ownedEnergyDemo: string | null = null;
   constructor(
     private cfg: Config,
@@ -123,6 +126,41 @@ export class ComputerController {
       searchUrl?: (query: string) => string;
     } = {},
   ) {
+    this.financeAssistant = new FinanceAssistant(cfg, this.state, {
+      root: () => (this.state.folder ? (this.folders.get(this.state.folder.id) ?? null) : null),
+      openCommunity: async (signal) => {
+        await this.perform({ tool: 'navigate', url: energyProgramUrl }, signal);
+      },
+      exportWorkbook: async (finance, signal, open) => {
+        let root = this.state.folder ? this.folders.get(this.state.folder.id) : undefined;
+        if (!root) {
+          root = path.join(cfg.localDir, 'finance-workspace');
+          await mkdir(root, { recursive: true });
+          const id = crypto.randomUUID();
+          this.folders.set(id, root);
+          this.state.folder = { id, name: 'finance-workspace' };
+        }
+        signal.throwIfAborted();
+        const filename = `insight-finance-${crypto.randomUUID().slice(0, 8)}.xlsx`;
+        const result = await writeFinanceWorkbook(finance, path.join(root, filename));
+        signal.throwIfAborted();
+        finance.export = { filename, sha256: result.sha256, opened: false };
+        this.state.spreadsheet = {
+          filename,
+          sha256: result.sha256,
+          sheet: 'Monthly totals',
+          rows: result.rows,
+          summary: finance.narrative || 'Verified finance workbook with editable formulas',
+          provider: finance.provider,
+          opened: false,
+        };
+        if (open) {
+          await this.perform({ tool: 'openSpreadsheet' }, signal);
+          finance.export.opened = this.state.spreadsheet.opened;
+        }
+        return filename;
+      },
+    });
     this.energyAssistant = new EnergyAssistant(cfg, this.state, {
       importBills: async (filename) => {
         const root = this.state.folder && this.folders.get(this.state.folder.id);
@@ -246,6 +284,33 @@ export class ComputerController {
   snapshot() {
     return structuredClone(this.state);
   }
+  async importFinance(filename: string, bytes: Buffer, signal: AbortSignal) {
+    return this.task(signal, async (activeSignal) => {
+      const rows = await parseFinanceFile(filename, bytes);
+      activeSignal.throwIfAborted();
+      return this.financeAssistant.import(rows, path.basename(filename));
+    });
+  }
+  async financeExport() {
+    const exported = this.state.finance?.export;
+    const root = this.state.folder && this.folders.get(this.state.folder.id);
+    if (!exported || !root) throw new Error('Computer export the finance workbook first.');
+    const file = path.join(root, exported.filename),
+      stat = await lstat(file);
+    if (
+      !stat.isFile() ||
+      stat.isSymbolicLink() ||
+      stat.size > 5 * 1024 * 1024 ||
+      (await realpath(file)) !== file
+    )
+      throw new Error('Computer finance export is no longer available. Export again.');
+    const bytes = await readFile(file);
+    if (createHash('sha256').update(bytes).digest('hex') !== exported.sha256)
+      throw new Error(
+        'Computer finance export changed. Export again to download the verified workbook.',
+      );
+    return { bytes, filename: exported.filename };
+  }
   private localOnly() {
     if (hosted(this.cfg))
       throw new Error(
@@ -344,6 +409,7 @@ export class ComputerController {
       'openSpreadsheet',
       'openApp',
       'energyHelp',
+      'financeHelp',
     ]);
     let last: ComputerResult | undefined;
     let lastTool: ComputerAction['tool'] | undefined;
@@ -419,8 +485,21 @@ export class ComputerController {
   }
   async request(request: string, parent: AbortSignal): Promise<ComputerResult> {
     return this.task(parent, async (signal) => {
+      const energyFollowup =
+        this.energyAssistant.active &&
+        !/\b(?:finance|financial|transactions|cash.?flow|loan|apr|spending|groceries)\b/i.test(
+          request,
+        );
+      const finance = energyFollowup ? null : await this.financeAssistant.request(request, signal);
+      if (finance) {
+        this.energyAssistant.active = false;
+        return finance;
+      }
       const energy = await this.energyAssistant.request(request, signal);
-      if (energy) return energy;
+      if (energy) {
+        this.financeAssistant.active = false;
+        return energy;
+      }
       const memory = new AssistantMemory(this.cfg);
       const remember = request.match(/^(?:please\s+)?remember (?:that\s+)?(.+)$/i);
       if (
@@ -1164,6 +1243,15 @@ export class ComputerController {
   }
   private async perform(action: ComputerAction, signal: AbortSignal): Promise<ComputerResult> {
     signal.throwIfAborted();
+    if (action.tool === 'financeHelp') {
+      return (
+        (await this.financeAssistant.request(action.request, signal)) ?? {
+          state: this.snapshot(),
+          summary: 'Say “start the finance demo” or import a finance CSV or Excel workbook.',
+          clarification: true,
+        }
+      );
+    }
     if (action.tool === 'energyHelp') {
       return (
         (await this.energyAssistant.request(action.request, signal)) ?? {
@@ -1257,6 +1345,17 @@ export class ComputerController {
         );
       const outline = await generatePresentationOutline(
         action.request +
+          (this.state.finance && /finance|budget|cash.?flow|spending/i.test(action.request)
+            ? '\nUse only these verified finance figures; all reductions and payment terms are hypothetical, not a bank offer. Do not include transaction descriptions: ' +
+              JSON.stringify({
+                source: this.state.finance.sourceName,
+                synthetic: this.state.finance.synthetic,
+                analysis: this.state.finance.analysis,
+                reductions: this.state.finance.reductions,
+                scenarioRemaining: this.state.finance.scenarioRemaining,
+                loan: this.state.finance.loan,
+              })
+            : '') +
           (this.state.energy && /energy|utility|bill|saving|efficiency/i.test(action.request)
             ? '\nUse these verified calculations. Contractor quotes and savings are hypothetical; the bill source is labeled. Do not claim achieved environmental impact: ' +
               JSON.stringify({

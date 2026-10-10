@@ -46,12 +46,29 @@ export async function decideGoal(
     presentation: state.presentation,
     lastApp: state.lastApp,
     energy: state.energy,
+    finance: state.finance
+      ? {
+          analysis: state.finance.analysis,
+          reductions: state.finance.reductions,
+          scenarioRemaining: state.finance.scenarioRemaining,
+          loan: state.finance.loan,
+          synthetic: state.finance.synthetic,
+        }
+      : null,
     preferences,
     recentConversation: conversation.slice(-6),
   });
   let repair = '';
   for (let attempt = 0; attempt < 2; attempt++) {
-    const raw = await chat(cfg, instructions + energyInstructions + repair, context, signal);
+    const raw = await chat(
+      cfg,
+      instructions +
+        energyInstructions +
+        ' For finance spreadsheets, spending explanations, hypothetical budget changes and payment comparisons, use financeHelp {request:the user’s exact request}. Never invent missing terms. Use its verified figures and preserve sample and hypothetical labels. Export finance workbooks through financeHelp. It never executes payments or approves credit.' +
+        repair,
+      context,
+      signal,
+    );
     try {
       return goalDecisionSchema.parse(JSON.parse(raw));
     } catch {

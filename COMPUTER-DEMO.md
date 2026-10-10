@@ -1,5 +1,23 @@
 # Computer companion setup and demonstration
 
+## Finance recording sequence
+
+Use the floating buddy for the voice session and **Finance & Excel** for the visible results. Keep the recording to one story: a person who cannot see a spreadsheet can understand spending, correct a payment assumption, and take an editable plan into Excel.
+
+1. Say **“Start the finance demo.”** The clearly labeled synthetic records show $3,000 income, $2,810 spending and a $190 recorded difference.
+2. Say **“Why did my spending increase?”** Groceries increased $100 and utilities $90. These are record comparisons, not proof of causes.
+3. Say **“What happens if I spend one hundred dollars less on groceries?”** Live HF interprets this flexible request. The hypothetical difference becomes $290; source records remain intact.
+4. Say **“Check a $1200 loan at 12% APR over 24 months with a $30 limit.”** The estimate is $56.49 per month, above the stated limit.
+5. Interrupt the spoken reply with **“Wait, change the payment limit to $60.”** Rehearse the actual microphone/speaker interruption before filming. The comparison updates; it does not approve financing.
+6. Say **“Export and open my finance Excel workbook.”** Show Transactions, Monthly totals, Budget scenario, Payment comparison, Amortization and Read me. Excel formulas recalculate when assumptions change. Generated exports provide a verified download too.
+7. Optional: **“Create a four-slide PowerPoint about my finance budget results.”** Office generation uses the verified aggregate figures.
+
+Open the workspace's **Import transactions** control for real CSV/XLSX. Files need Date, Category and Amount; use optional Type=income/expense, or positive income/negative spending without Type. USD only, exclude transfers, maximum 3 MB/3,000 rows. Imports use the first populated sheet and cached source-formula results.
+
+For a secondary community-energy segment, use the existing energy sequence below and **Local assistance** for OUC's public information. Clearly distinguish fictional quotes, estimated conservation and the owned application rehearsal from a real program or lender application. Do not claim measured savings.
+
+**Sponsor recording:** show HF's live intent request. Show Databricks statement IDs only after entering credentials and clicking **Run on Databricks**. Show Vultr only after deploying the documented backend and completing its authenticated inference check. Account signup and adapter code alone are not live-use evidence.
+
 Run `npm run dev`, or build then `npm start`. The desktop app opens a small floating buddy at the top of the screen. Click the face or chevron to expand its conversation. Drag the name area to reposition it. The minus button hides it to the Windows system tray; click its tray icon to bring it back, or right-click for Settings, workspace and Quit. Closing the buddy hides it; Quit actually exits.
 
 Click the buddy's center **play** button once to start a conversation. It detects when you finish speaking, handles the request, speaks the reply, and keeps listening. You can speak over a reply to interrupt it. Click **pause** to end the voice session. **Ctrl+Shift+Space** toggles the conversation from other apps; **Ctrl+Shift+Backspace** stops the task and audio globally. Escape stops while InsightOS has focus. Spoken replies default on for the buddy and can be muted. No wake-word listening is implemented.

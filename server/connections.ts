@@ -14,6 +14,7 @@ import { computerPlan, generateCode, chat } from './computer/planner.js';
 import { Databricks } from './providers/databricks.js';
 import { Storage } from './providers/storage.js';
 import { fetchJson, secureUrl } from './providers/http.js';
+import { cloudInference } from './providers/cloudInference.js';
 import { parseCsv, defaultComparison } from '../shared/analysis.js';
 import { emptyWorkspace, resultSchema } from '../shared/schema.js';
 
@@ -29,6 +30,8 @@ const fields = {
   DATABRICKS_CATALOG: 'dbCatalog',
   DATABRICKS_SCHEMA: 'dbSchema',
   DATABASE_URL: 'neonUrl',
+  INSIGHTOS_CLOUD_URL: 'cloudUrl',
+  INSIGHTOS_CLOUD_PASSPHRASE: 'cloudPassphrase',
   APP_MODE: 'mode',
 } as const;
 const local = (cfg: Config) => ['127.0.0.1', 'localhost', '::1'].includes(cfg.host);
@@ -87,12 +90,14 @@ export class Connections {
         DATABRICKS_CATALOG: this.cfg.dbCatalog,
         DATABRICKS_SCHEMA: this.cfg.dbSchema,
         APP_MODE: this.cfg.mode,
+        INSIGHTOS_CLOUD_URL: this.cfg.cloudUrl,
       },
       configured: {
         huggingFace: !!this.cfg.hfToken,
         elevenLabs: !!this.cfg.elevenKey,
         databricks: !!(this.cfg.dbHost && this.cfg.dbWarehouse && this.cfg.dbToken),
         neon: !!this.cfg.neonUrl,
+        vultr: !!(this.cfg.cloudUrl && this.cfg.cloudPassphrase),
       },
       reports: structuredClone(this.reports),
     };
@@ -115,6 +120,19 @@ export class Connections {
   }
   private async persist(input: ConnectionSettings) {
     const values = connectionSettingsSchema.parse(input);
+    if (values.INSIGHTOS_CLOUD_URL) {
+      let url: URL;
+      try {
+        url = secureUrl(values.INSIGHTOS_CLOUD_URL);
+      } catch {
+        throw new Error('Connection cloud URL must be an HTTPS origin.');
+      }
+      if (url.pathname !== '/' || url.search || url.hash)
+        throw new Error('Connection cloud URL must be an HTTPS origin without a path.');
+      values.INSIGHTOS_CLOUD_URL = url.origin;
+    }
+    if (values.INSIGHTOS_CLOUD_PASSPHRASE && values.INSIGHTOS_CLOUD_PASSPHRASE.length < 16)
+      throw new Error('Connection cloud passphrase must be at least 16 characters.');
     if (values.DATABRICKS_HOST) {
       let url: URL;
       try {
@@ -201,6 +219,7 @@ export class Connections {
       elevenLabs: ['ELEVENLABS_'],
       databricks: ['DATABRICKS_'],
       neon: ['DATABASE_URL'],
+      vultr: ['INSIGHTOS_CLOUD_'],
     };
     for (const [provider, prefixes] of Object.entries(affected))
       if (keys.some((key) => prefixes.some((prefix) => key.startsWith(prefix))))
@@ -243,7 +262,22 @@ export class Connections {
       };
       if (!this.snapshot().configured[provider])
         throw new Error('Connection credentials need to be saved first.');
-      if (provider === 'huggingFace') {
+      if (provider === 'vultr') {
+        await check('Authenticated cloud inference', async () => {
+          const result = await cloudInference(
+            this.cfg,
+            {
+              system: 'Return only JSON {"ready":true}.',
+              content: 'Synthetic InsightOS connection check. No user files or desktop actions.',
+              vision: false,
+              json: true,
+            },
+            signal,
+          );
+          if (JSON.parse(result).ready !== true) throw new Error('Unexpected cloud response.');
+          return 'Deployed service authenticated and completed a real inference request. Confirm this endpoint is hosted in your Vultr account for sponsor evidence.';
+        });
+      } else if (provider === 'huggingFace') {
         await check('Commands and code', async () => {
           const plan = await computerPlan(
             'Write a Python program that prints the first ten Fibonacci numbers',

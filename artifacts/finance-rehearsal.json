@@ -1,0 +1,80 @@
+{
+  "checkedAt": "2026-10-10T20:45:01.553Z",
+  "ok": true,
+  "steps": [
+    {
+      "request": "Start the finance demo",
+      "reply": "Using sample transactions. For September 2026, recorded income is $3,000.00, spending is $2,810.00, and the difference is $190.00. Spending increased $190.00 compared with August 2026. Largest increases: Groceries, $100.00; Utilities, $90.00. These totals cover the uploaded records, not your bank balance.",
+      "milliseconds": 18
+    },
+    {
+      "request": "Why did my finance spending increase?",
+      "reply": "Using sample transactions. For September 2026, recorded income is $3,000.00, spending is $2,810.00, and the difference is $190.00. Spending increased $190.00 compared with August 2026. Largest increases: Groceries, $100.00; Utilities, $90.00. These totals cover the uploaded records, not your bank balance.",
+      "milliseconds": 1
+    },
+    {
+      "request": "What happens if I spend one hundred dollars less on groceries?",
+      "reply": "In this hypothetical plan, Groceries drops by $100.00. Your scenario difference becomes $290.00. No transaction was changed.",
+      "milliseconds": 694
+    },
+    {
+      "request": "Check a $1200 loan at 12% APR over 24 months with a $30 limit",
+      "reply": "With your assumptions, the estimated payment is $56.49 per month. It exceeds your $30.00 limit by $26.49. Estimated interest is $155.71 over 24 months. This excludes fees and is not a lender offer.",
+      "milliseconds": 1
+    },
+    {
+      "request": "Change the payment limit to $60",
+      "reply": "With your assumptions, the estimated payment is $56.49 per month. It fits your limit and recorded cash flow. Estimated interest is $155.71 over 24 months. This excludes fees and is not a lender offer.",
+      "milliseconds": 0
+    },
+    {
+      "request": "Reduce groceries by $50",
+      "reply": "In this hypothetical plan, Groceries drops by $50.00. Your scenario difference becomes $240.00. No transaction was changed.",
+      "milliseconds": 0
+    },
+    {
+      "request": "Undo my finance change",
+      "reply": "Undone. Your scenario difference is $290.00. The original transactions are unchanged.",
+      "milliseconds": 0
+    },
+    {
+      "request": "Export my finance Excel workbook",
+      "reply": "Created insight-finance-13f5783c.xlsx with transactions, monthly totals, budget scenario, payment comparison, and source notes. The Excel formulas are editable.",
+      "milliseconds": 40
+    }
+  ],
+  "source": "Synthetic household records",
+  "aiIntent": "Live Hugging Face inference",
+  "workbook": {
+    "filename": "insight-finance-13f5783c.xlsx",
+    "bytes": 29666,
+    "sheets": [
+      "Transactions",
+      "Monthly totals",
+      "Budget scenario",
+      "Payment comparison",
+      "Amortization",
+      "Read me"
+    ]
+  },
+  "presentation": {
+    "filename": "household-finance-overview-1dea797e.pptx",
+    "title": "Household Finance Overview",
+    "slideCount": 4,
+    "slideTitles": [
+      "Household Finance Overview",
+      "Current Financial Snapshot",
+      "Spending Category Breakdown",
+      "Hypothetical Grocery Reduction Impact"
+    ],
+    "opened": false,
+    "sha256": "bef9ac038b3a8e92fcc982d319f9369a6810a9a13c0b42a6146f1fe4a2f871cb",
+    "bytes": 82309
+  },
+  "limits": [
+    "Databricks not exercised without credentials",
+    "Vultr not deployed",
+    "Physical microphone and interruption not exercised",
+    "No bank account, lender offer or payment involved"
+  ]
+}

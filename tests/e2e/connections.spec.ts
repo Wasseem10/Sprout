@@ -17,7 +17,13 @@ test('saves keys through masked fields, refreshes capabilities, and shows real-t
       DATABRICKS_SCHEMA: 'insightos',
       APP_MODE: 'sample',
     },
-    configured: { huggingFace: false, elevenLabs: false, databricks: false, neon: false },
+    configured: {
+      huggingFace: false,
+      elevenLabs: false,
+      databricks: false,
+      neon: false,
+      vultr: false,
+    },
     reports: {},
   };
   let submitted: unknown;

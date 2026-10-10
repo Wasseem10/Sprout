@@ -26,6 +26,7 @@ import './computer.css';
 import ConnectionsPanel from './ConnectionsPanel';
 import DesktopBuddy from './DesktopBuddy';
 import EnergyPanel from './EnergyPanel';
+import FinancePanel from './FinancePanel';
 
 const empty: ComputerState = { folder: null, code: null, browser: null, screen: null };
 type Message = { id: string; role: 'user' | 'assistant' | 'error'; text: string };
@@ -84,8 +85,12 @@ export default function ComputerCompanion() {
   const [request, setRequest] = useState(''),
     [busy, setBusy] = useState(false),
     [phase, setPhase] = useState('Ready when you are');
-  const [tab, setTab] = useState<'home' | 'code' | 'office' | 'browser' | 'screen' | 'energy'>(
-      'home',
+  const [tab, setTab] = useState<
+      'home' | 'code' | 'office' | 'browser' | 'screen' | 'energy' | 'finance'
+    >(
+      new URLSearchParams(window.location.search).get('workspace') === 'finance'
+        ? 'finance'
+        : 'home',
     ),
     [modal, setModal] = useState<'settings' | 'screens' | null>(null);
   const [sources, setSources] = useState<Source[]>([]),
@@ -124,7 +129,8 @@ export default function ComputerCompanion() {
   const sync = async () => setState(await api<ComputerState>('/computer/state'));
   const applyState = (next: ComputerState, tool?: string) => {
     setState(next);
-    if (tool === 'energyHelp') setTab('energy');
+    if (tool === 'financeHelp') setTab('finance');
+    else if (tool === 'energyHelp') setTab('energy');
     else if (/navigate|search|SearchResult|click|fill|readPage|goBack/.test(tool ?? ''))
       setTab('browser');
     else if (/describeScreen|screenAction/.test(tool ?? '')) setTab('screen');
@@ -523,6 +529,54 @@ export default function ComputerCompanion() {
     }
   }, [modal]);
   const active = busy || voice.conversationActive || voice.phase !== 'idle';
+  const importFinance = async (file: File) => {
+    if (!enabled || inFlight.current) return;
+    if (file.size > 3 * 1024 * 1024) {
+      add('error', 'Choose a finance CSV or XLSX under 3 MB.');
+      return;
+    }
+    inFlight.current = true;
+    setBusy(true);
+    setPhase('Reading the finance file');
+    const current = ++generation.current,
+      abort = new AbortController();
+    controller.current = abort;
+    try {
+      const form = new FormData();
+      form.append('file', file);
+      const response = await fetch('/api/computer/finance/import', {
+        method: 'POST',
+        body: form,
+        signal: abort.signal,
+        credentials: 'same-origin',
+      });
+      const raw = await response.text();
+      let body: ComputerResult & { error?: string };
+      try {
+        body = JSON.parse(raw);
+      } catch {
+        throw new Error('Insight’s local service is reconnecting. Try importing the file again.');
+      }
+      if (!response.ok) throw new Error(body.error ?? 'The finance file could not be imported.');
+      if (!body.state || typeof body.summary !== 'string')
+        throw new Error('The finance service returned an incomplete result. Try the import again.');
+      if (generation.current !== current || abort.signal.aborted) return;
+      applyState((body as ComputerResult).state);
+      setTab('finance');
+      add('assistant', body.summary);
+      setPhase('Finance records analyzed');
+      if (speech) void voice.speak(spokenComputerReply(body, 'financeHelp'));
+    } catch (error) {
+      if (generation.current === current && !abort.signal.aborted)
+        add('error', error instanceof Error ? error.message : 'Finance import failed.');
+    } finally {
+      if (generation.current === current) {
+        inFlight.current = false;
+        setBusy(false);
+        controller.current = null;
+      }
+    }
+  };
   const voicePending = voice.phase === 'starting' || voice.phase === 'transcribing';
   const toggleRecording = () => {
     if (voice.isConversationActive()) {
@@ -638,7 +692,10 @@ export default function ComputerCompanion() {
             setDockExpanded(true);
             setModal('settings');
           }}
-          workspace={() => setDockMode(false)}
+          workspace={() => {
+            setTab('finance');
+            setDockMode(false);
+          }}
           folder={() => void setup(window.insightos ? 'folder' : 'demo')}
           screen={() => void setup('screen')}
           setRequest={setRequest}
@@ -727,6 +784,7 @@ export default function ComputerCompanion() {
               <nav className="computer-tabs" aria-label="Computer tools">
                 {[
                   { id: 'home', title: 'Start here', icon: Sparkles },
+                  { id: 'finance', title: 'Finance & Excel', icon: ShieldCheck },
                   { id: 'energy', title: 'Energy & affordability', icon: Sparkles },
                   { id: 'browser', title: 'Browse & act', icon: Globe },
                   { id: 'screen', title: 'My screen', icon: Eye },
@@ -743,6 +801,16 @@ export default function ComputerCompanion() {
                   </button>
                 ))}
               </nav>
+              {tab === 'finance' && (
+                <FinancePanel
+                  state={state.finance ?? null}
+                  disabled={busy || !enabled}
+                  databricksReady={status?.integrations.databricks.configured}
+                  ask={(text) => void perform(text)}
+                  importFile={(file) => void importFinance(file)}
+                  settings={() => setModal('settings')}
+                />
+              )}
               {tab === 'energy' &&
                 (state.energy ? (
                   <EnergyPanel

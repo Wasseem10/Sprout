@@ -21,6 +21,7 @@ import {
 import type { ComputerState } from '../shared/computer';
 import './buddy.css';
 import EnergyPanel from './EnergyPanel';
+import FinancePanel from './FinancePanel';
 
 type Props = {
   expanded: boolean;
@@ -34,7 +35,7 @@ type Props = {
   speechReady: boolean;
   shortcut: boolean | null;
   state: ComputerState;
-  resultView: 'home' | 'code' | 'office' | 'browser' | 'screen' | 'energy';
+  resultView: 'home' | 'code' | 'office' | 'browser' | 'screen' | 'energy' | 'finance';
   request: string;
   messages: { id: string; role: 'user' | 'assistant' | 'error'; text: string }[];
   inputRef: RefObject<HTMLTextAreaElement | null>;
@@ -161,14 +162,14 @@ export default function DesktopBuddy(p: Props) {
                 <h2>What’s on your mind?</h2>
                 <p>
                   Press Play and talk naturally. I’ll keep listening, even while I reply. Ask me to
-                  find a job, open an app, describe your screen, or make slides.
+                  understand spending, check a payment, use Excel, or describe your screen.
                 </p>
                 <div className="buddy-suggestions" aria-label="Ideas to try">
                   <button
                     disabled={!p.enabled || p.busy}
-                    onClick={() => p.suggest('Start the energy demo')}
+                    onClick={() => p.suggest('Start the finance demo')}
                   >
-                    Lower my energy bill
+                    Understand my finances
                   </button>
                   <button
                     disabled={!p.enabled || p.busy}
@@ -206,6 +207,15 @@ export default function DesktopBuddy(p: Props) {
               compact
               disabled={p.busy || !p.enabled}
               ask={p.suggest}
+            />
+          )}
+          {p.resultView === 'finance' && p.state.finance && (
+            <FinancePanel
+              state={p.state.finance}
+              compact
+              disabled={p.busy || !p.enabled}
+              ask={p.suggest}
+              workspace={p.workspace}
             />
           )}
           {p.state.task && (
