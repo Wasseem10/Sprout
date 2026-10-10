@@ -1,5 +1,33 @@
 # Computer companion setup and demonstration
 
+## Focused video script
+
+Record one story: **a household bill becomes an understandable, affordable decision through voice**. Target about two minutes, subject to the event's video limit. Rehearse the physical microphone and interruption before recording. Use the floating buddy alongside Bills & energy; keep the source PDF, comparison and browser review visible at the relevant moments.
+
+| Scene          | What to show / say                                                                                                                                                                                                                  |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Opening        | “A utility bill should not take away your independence. InsightOS helps blind and low-vision people understand a bill and decide what to do through conversation.”                                                                  |
+| Read           | “Read sample PDF bills.” Say “yes,” then confirm each bill. Show the original PDFs and extracted numbers. Keep the synthetic label visible.                                                                                         |
+| Explain        | “Analyze my energy bills using Databricks.” Show **Verified with Databricks SQL** and the $195 → $240 comparison: the $45 increase comes from usage.                                                                                |
+| First choice   | “I can afford sixty dollars a month.” “Choose duct repair.” “Prepare my energy application.” “Use demo details.” Show the fictional practice form and its verified review.                                                          |
+| Change of mind | While Insight speaks, say “Wait, I can only afford thirty dollars a month.” Show the $41.67 option above the new limit and the withdrawn verification. Then say “Choose weather sealing.” The $25 option and browser review update. |
+| Finish         | “Read the application back.” Explain: “Hugging Face reads text and scanned bills, Databricks checks the numbers, and ElevenLabs supports conversation. The user stays in control.”                                                  |
+
+The practice form is owned by this project and is not an OUC or lender submission. Quotes and projected energy savings are assumptions. The real OUC program link is the actual local next step. If the microphone misses a phrase during rehearsal, resolve that before recording; textbox input proves the workflow but does not prove voice accessibility. The final recording and public repository URL still need to be supplied by the team.
+
+## Bill-to-action recording sequence
+
+Use the floating buddy for conversation and **Bills & energy** for visible results.
+
+1. Say **“Read sample PDF bills”**, then **“yes.”** Insight finds two synthetic PDFs in the bundled sample folder, asks before reading, then uses Hugging Face to extract them. For real saved files, say **“find my latest two electricity bills in Downloads.”** Matching names need bill, utility, electricity, energy, statement or a supported utility-name hint. Use the native folder picker or Choose bills for other names.
+2. Say **“confirm this bill”** for each document. Insight reads usage, days, energy charges, other charges and current total. Correct a number with **“usage is twelve hundred”** or the editable form. Missing, duplicate-month and inconsistent amounts block comparison. Text quotes are checked against the PDF; scanned-image quotes need human review.
+3. The sample comparison shows **$195 → $240**, **$45 from usage**, **$0 from effective rate** and **$0 from other charges**. Say **“explain why my electricity bill changed.”** The bill does not identify an appliance.
+4. Say **“Analyze my energy bills using Databricks.”** The connected warehouse verifies the four components; the workspace shows a truthful cloud verification label and statement reference.
+5. Say **“I can afford sixty dollars a month”**, then **“choose duct repair”**, **“prepare my energy application”** and **“use demo details.”** Change your limit to **“thirty dollars a month.”** Insight withdraws the previous verification and flags the $41.67 choice as above budget. Say **“choose weather sealing.”** The $25/month fictional quote fits and the form is verified again. Savings of $7.50/month and 600 kWh/year are estimates.
+6. Optionally say **“open the real OUC energy program.”** OUC determines actual eligibility and costs.
+
+Revising a confirmed document: **“review bill 2026-09”** clears the comparison, then correction and confirmation rebuild it. **“Clear bill documents”** clears only the workspace. Evidence: `artifacts/bill-rehearsal.json`; `npm run test:bills` uses real HF calls and a verified browser form. Physical microphone/speaker interruption and blind-user validation still need rehearsal.
+
 ## Finance recording sequence
 
 Use the floating buddy for the voice session and **Finance & Excel** for the visible results. Keep the recording to one story: a person who cannot see a spreadsheet can understand spending, correct a payment assumption, and take an editable plan into Excel.

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import type { EnergyState } from './energy.js';
 import type { FinanceState } from './finance.js';
+import type { BillWorkspace } from './bills.js';
 
 export const nativeAppSchema = z.enum([
   'browser',
@@ -136,6 +137,7 @@ export type ScreenView = {
   description: string | null;
 };
 export type ComputerState = {
+  bills?: BillWorkspace | null;
   finance?: FinanceState | null;
   energy?: EnergyState | null;
   task?: {

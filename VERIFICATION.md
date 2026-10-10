@@ -1,5 +1,27 @@
 # Verification record — October 10, 2026
 
+## Focused bill-to-decision rehearsal
+
+The combined live rehearsal now includes real Hugging Face PDF extraction, a real Databricks bill query, practice-form completion at a $60 limit, a $30 correction that invalidates the old verification, and a $25 weather-sealing choice that updates and verifies the form again. A scanned bill also passed live Hugging Face vision extraction. `artifacts/bill-rehearsal.json` records the steps and SQL reference; it explicitly leaves physical microphone testing unclaimed. The run used an isolated local rehearsal directory.
+
+The UI has a contextual voice guide, an explicit above-budget warning with affordable choices, disabled practice-form preparation for an over-budget selection, and a prominent truthful SQL/local provenance label. Clicking a document expands its source review. Spoken review uses month names. The affected backend suites passed 26 tests, and all three bill browser checks passed, including desktop/mobile/buddy accessibility scans. The browser flow tests the $60 → $30 warning and recovery. Production build and type checking passed. `COMPUTER-DEMO.md` contains the focused recording script and `DEVPOST-DRAFT.md` now uses one coherent bill-to-decision pitch.
+
+## Databricks live connection and settings repair
+
+The user's credentials were saved privately in ignored `.env`; no token is returned by the settings API or committed. SQL confirmed the Free Edition catalog is `workspace`, replacing the incompatible `main` default for this installation. The real warehouse connection test matched both known operations fixtures. A separate real bill query returned and reconciled a $45 bill increase, $45 usage effect and zero rate/other effects. Evidence: `artifacts/databricks-energy-live.json`, `artifacts/databricks-connected.jpg`. Earlier missing-credential statements in this log are superseded.
+
+Canceled HTTP responses now release their settings lock even when Fastify's `onResponse` does not run. A real socket-cancellation regression passed; all nine connection/backend tests and both settings browser checks passed. Save/test feedback appears inside the selected provider card. Vite ignores private environment saves, generated artifacts and local runtime data so they do not reload the browser or discard the dialog/conversation. Production build and type checking passed.
+
+## Bill-to-action workflow
+
+PDF/PNG/JPEG ingestion, bounded saved-file discovery, explicit reading confirmation, source-page rendering, user field corrections and a confirmed-input comparison are implemented. The final bill/energy/finance unit selection passed 27 tests, including real PDF extraction, changed-file rejection, inconsistent-total blocking, duplicate-month blocking, spoken number correction, old-comparison invalidation and the multiple-workbook Excel regression. The broader unit run passed 109 tests before the additional Excel regression was added. Production build and type checking passed after the fixes; a fresh-source `npm ci --ignore-scripts` and build also passed with the new dependencies.
+
+Four final browser checks passed: PDF-to-comparison/budget flow, the floating buddy's ask-before-read/workspace transition, mobile import/correction/confirmation, and the existing Excel sample task. Desktop, mobile and buddy bill views passed automated axe scans with no violations. During the broader 35-test browser run, 32 checks passed; a Windows PDF font path and an ambiguous old sample-Excel selection were found and fixed. Bill tests now reset their own session and wait for the next document before confirming, preventing fixture duplication. Evidence: `artifacts/bill-start.png`, `artifacts/bill-workspace.png`, `artifacts/bill-mobile.png`, `artifacts/bill-buddy.png`.
+
+`npm run test:bills` passed **live Hugging Face** text extraction of two genuine PDFs and vision extraction of a rasterized bill. All six fields matched their source documents. The same rehearsal verified $195 → $240, a $45 usage component, a $30 spoken budget limit and eight owned-browser application review values. Text fields require an observed quote containing the proposed numeric value; image quotes need human review. Provider calls have bounded timeouts; clearly labeled text can fall back locally. Evidence: `artifacts/bill-rehearsal.json`, `artifacts/bill-source-preview.png`. The PDF preview was visually checked after bundling standard fonts.
+
+These are synthetic bill fixtures and fictional efficiency quotes. No actual OUC submission, lender decision, measured conservation impact or blind-user validation is claimed. Physical microphone/speaker interruption still needs rehearsal. Databricks remains awaiting warehouse/token credentials, and no new live Neon or Vultr verification is claimed.
+
 ## Accessible finance and Excel workspace
 
 The new finance workspace imports real CSV/XLSX, computes monthly and category totals in integer cents, explains observed changes, applies reversible hypothetical spending reductions, and compares user-entered fixed-rate payment assumptions against a limit and recorded cash-flow difference. Source records remain unchanged. Exports are genuine Excel workbooks with numeric date cells, SUMIFS/date criteria, budget formulas, payment formulas, a 360-month bounded amortization schedule and source notes. Cached values are independently checked; full recalculation in installed Excel still needs the physical demo rehearsal.

@@ -201,6 +201,26 @@ export default function DesktopBuddy(p: Props) {
               </div>
             ))}
           </div>
+          {p.resultView === 'energy' && p.state.bills && !p.state.energy && (
+            <section className="energy-panel compact" aria-label="Bill document review">
+              <div className="energy-heading">
+                <strong>Your bills, understood.</strong>
+                <span>{p.state.bills.documents.length} DOCUMENTS</span>
+              </div>
+              <p>
+                {p.state.bills.pendingReadIds.length
+                  ? 'I found your bills. Say “yes” to read them.'
+                  : p.state.bills.documents.length
+                    ? 'Say “confirm this bill” or correct a number. The full workspace shows source quotes and editable fields.'
+                    : 'Find saved bills or choose PDFs in the workspace.'}
+              </p>
+              <div className="energy-actions">
+                <button disabled={p.busy || !p.enabled} onClick={p.workspace}>
+                  Open bill workspace
+                </button>
+              </div>
+            </section>
+          )}
           {p.resultView === 'energy' && p.state.energy && (
             <EnergyPanel
               state={p.state.energy}

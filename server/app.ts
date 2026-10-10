@@ -30,6 +30,7 @@ import { computerActionSchema } from '../shared/computer.js';
 import { Connections } from './connections.js';
 import { connectionSettingsSchema, providerSchema } from '../shared/connections.js';
 import { chat } from './computer/planner.js';
+import { billValuesSchema } from '../shared/bills.js';
 
 export async function buildApp(cfg: Config = config()) {
   const app = Fastify({ logger: false, bodyLimit: 8 * 1024 * 1024 });
@@ -79,6 +80,9 @@ export async function buildApp(cfg: Config = config()) {
           .code(409)
           .send({ error: 'Connection check is running. Wait or cancel first.' });
       activeRequests.add(req);
+      // Canceled browser requests can close without Fastify's onResponse hook.
+      // Release their settings lock as well as aborting the underlying task.
+      reply.raw.once('close', () => activeRequests.delete(req));
     }
   });
   app.addHook('onResponse', async (req) => {
@@ -223,6 +227,20 @@ export async function buildApp(cfg: Config = config()) {
     return { dataset, comparison: defaultComparison(dataset) };
   });
   app.get('/api/computer/state', async () => computer.snapshot());
+  app.post('/api/computer/bills/import', async (req, reply) => {
+    const file = await req.file();
+    if (!file) throw new Error('Computer choose one bill PDF or image.');
+    const bytes = await file.toBuffer();
+    if (file.file.truncated) throw new Error('Computer bill file is too large.');
+    return computer.importBill(file.filename, bytes, taskSignal(req, reply));
+  });
+  app.post('/api/computer/bills/confirm', async (req, reply) => {
+    const body = z
+      .object({ id: z.string().uuid(), values: billValuesSchema })
+      .strict()
+      .parse(req.body);
+    return computer.confirmBill(body.id, body.values, taskSignal(req, reply));
+  });
   app.post('/api/computer/finance/import', async (req, reply) => {
     const file = await req.file();
     if (!file) throw new Error('Computer finance import needs one CSV or XLSX file.');

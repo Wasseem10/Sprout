@@ -2,6 +2,7 @@ import { it, expect, vi, afterEach } from 'vitest';
 import { mkdtemp, writeFile, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { request as httpRequest } from 'node:http';
 import { parse } from 'dotenv';
 import { config } from '../server/config';
 import { Connections } from '../server/connections';
@@ -44,6 +45,52 @@ const inference = (content: unknown) =>
       { message: { content: typeof content === 'string' ? content : JSON.stringify(content) } },
     ],
   });
+it('releases the settings lock when a client cancels a pending API response', async () => {
+  const { cfg } = await fixture();
+  const app = await buildApp(cfg);
+  apps.push(app);
+  let started!: () => void, closed!: () => void, release!: () => void;
+  const ready = new Promise<void>((resolve) => {
+    started = resolve;
+  });
+  const disconnected = new Promise<void>((resolve) => {
+    closed = resolve;
+  });
+  const pending = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  app.post('/api/test-stalled', async (_req, reply) => {
+    reply.raw.once('close', closed);
+    started();
+    await pending;
+    return { ok: true };
+  });
+  const origin = await app.listen({ host: '127.0.0.1', port: 0 });
+  const session = await app.inject({ method: 'POST', url: '/api/session', payload: {} });
+  const cookie = session.headers['set-cookie']!.toString().split(';')[0];
+  const client = httpRequest(origin + '/api/test-stalled', {
+    method: 'POST',
+    headers: { cookie },
+  });
+  client.on('error', () => {});
+  client.end();
+  try {
+    await ready;
+    client.destroy();
+    await disconnected;
+    const saved = await app.inject({
+      method: 'POST',
+      url: '/api/connections',
+      headers: { cookie },
+      payload: { DATABRICKS_WAREHOUSE_ID: 'warehouse-fixture' },
+    });
+    expect(saved.statusCode).toBe(200);
+    expect(cfg.dbWarehouse).toBe('warehouse-fixture');
+  } finally {
+    client.destroy();
+    release();
+  }
+});
 it('saves an HTTPS cloud connection privately and verifies authenticated inference', async () => {
   const { cfg, connections } = await fixture();
   await expect(connections.save({ INSIGHTOS_CLOUD_URL: 'http://example.com' })).rejects.toThrow();

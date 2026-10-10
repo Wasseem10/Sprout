@@ -1,0 +1,92 @@
+{
+  "testedAt": "2026-10-10T21:40:53.357Z",
+  "steps": [
+    {
+      "step": "live PDF text extraction",
+      "documents": [
+        {
+          "filename": "insight-sample-electricity-2026-09.pdf",
+          "values": {
+            "month": "2026-09",
+            "days": 30,
+            "kwh": 1200,
+            "energyCharge": 180,
+            "otherCharges": 60,
+            "total": 240
+          },
+          "provider": "hugging-face"
+        },
+        {
+          "filename": "insight-sample-electricity-2026-08.pdf",
+          "values": {
+            "month": "2026-08",
+            "days": 30,
+            "kwh": 900,
+            "energyCharge": 135,
+            "otherCharges": 60,
+            "total": 195
+          },
+          "provider": "hugging-face"
+        }
+      ],
+      "elapsedMs": 4704
+    },
+    {
+      "step": "live Databricks bill reconciliation",
+      "queryReference": "Databricks statement 01f1c4f3-3dc4-1bd7-a8ec-67e08cd4ee56",
+      "comparison": {
+        "previousBill": 195,
+        "currentBill": 240,
+        "billChange": 45,
+        "usageChange": 300,
+        "usageEffect": 45,
+        "rateEffect": 0,
+        "otherEffect": 0,
+        "previousDailyKwh": 30,
+        "currentDailyKwh": 40,
+        "rate": 0.15
+      }
+    },
+    {
+      "step": "budget correction blocks the old choice",
+      "budget": 30,
+      "selected": "ducts",
+      "applicationVerified": false
+    },
+    {
+      "step": "spoken budget + owned application rehearsal",
+      "budget": 30,
+      "applicationVerified": true,
+      "comparison": {
+        "previousBill": 195,
+        "currentBill": 240,
+        "billChange": 45,
+        "usageChange": 300,
+        "usageEffect": 45,
+        "rateEffect": 0,
+        "otherEffect": 0,
+        "previousDailyKwh": 30,
+        "currentDailyKwh": 40,
+        "rate": 0.15
+      }
+    },
+    {
+      "step": "live Hugging Face vision extraction",
+      "values": {
+        "month": "2026-09",
+        "days": 30,
+        "kwh": 1200,
+        "energyCharge": 180,
+        "otherCharges": 60,
+        "total": 240
+      },
+      "provider": "hugging-face",
+      "confirmationRequired": true,
+      "elapsedMs": 5077
+    }
+  ],
+  "physicalMicrophoneTested": false,
+  "databricksVerified": true,
+  "savings": "hypothetical estimates",
+  "application": "owned rehearsal; no real application submitted"
+}

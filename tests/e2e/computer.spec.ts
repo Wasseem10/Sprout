@@ -185,8 +185,10 @@ test('energy demo supports a payment limit and exposes assumptions accessibly', 
   page,
 }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Energy & affordability', exact: true }).click();
-  await page.getByRole('button', { name: 'Try the sample household' }).click();
+  await page.getByRole('button', { name: 'Bills & energy', exact: true }).click();
+  const request = page.getByLabel('Tell your computer what to do');
+  await request.fill('Start the energy demo');
+  await request.press('Enter');
   const panel = page.getByRole('region', { name: 'Energy and affordability plan' });
   await expect(panel).toContainText('SAMPLE BILLS');
   await panel.getByRole('button', { name: 'Try a $30 limit' }).click();

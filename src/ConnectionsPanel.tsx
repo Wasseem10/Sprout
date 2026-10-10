@@ -74,6 +74,7 @@ export default function ConnectionsPanel({
   const [values, setValues] = useState<ConnectionSettings>({});
   const [pending, setPending] = useState<string | null>(null);
   const [message, setMessage] = useState('');
+  const [feedbackProvider, setFeedbackProvider] = useState<Provider | null>(null);
   const abort = useRef<AbortController | null>(null);
   const mounted = useRef(false);
   useEffect(() => {
@@ -98,6 +99,9 @@ export default function ConnectionsPanel({
   const locked = disabled || !!pending || !state?.editable;
   const run = async (name: string, body: unknown, verify = false) => {
     if (locked || abort.current) return;
+    setFeedbackProvider(
+      cards.find((card) => name.startsWith(card.provider + '-'))?.provider ?? null,
+    );
     const controller = new AbortController();
     abort.current = controller;
     setPending(name);
@@ -158,6 +162,7 @@ export default function ConnectionsPanel({
     }
   };
   const save = (provider: Provider) => {
+    setFeedbackProvider(provider);
     const body = Object.fromEntries(
       cards
         .find((card) => card.provider === provider)!
@@ -183,9 +188,11 @@ export default function ConnectionsPanel({
           server.
         </p>
       )}
-      <div className="sponsor-status" role="status" aria-live="polite">
-        {message || (state ? 'Ready to connect.' : 'Loading connections…')}
-      </div>
+      {!feedbackProvider && (
+        <div className="sponsor-status" role="status" aria-live="polite">
+          {message || (state ? 'Ready to connect.' : 'Loading connections…')}
+        </div>
+      )}
       {pending && (
         <button type="button" className="sponsor-cancel" onClick={() => abort.current?.abort()}>
           Cancel connection request
@@ -254,6 +261,11 @@ export default function ConnectionsPanel({
                 Test {card.name}
               </button>
             </div>
+            {feedbackProvider === card.provider && (
+              <div className="sponsor-status" role="status" aria-live="polite">
+                {message}
+              </div>
+            )}
             {report && (
               <ul className="sponsor-checks">
                 {report.checks.map((check, index) => (

@@ -151,3 +151,16 @@
     margin-left: 0;
   }
 }
+.energy-budget-alert {
+  padding: 16px;
+  margin: 16px 0;
+  border: 1px solid #eab47870;
+  border-radius: 12px;
+  background: #9f612518;
+  color: #ffe3bf;
+}
+.energy-budget-alert p {
+  color: inherit;
+  font-size: 12px;
+  line-height: 1.6;
+}

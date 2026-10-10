@@ -52,6 +52,28 @@ export default function EnergyPanel({
           nothing submitted
         </p>
       )}
+      {selected?.fitsBudget === false && (
+        <div className="energy-budget-alert" role="status">
+          <strong>Your choice is above your payment limit.</strong>
+          <p>
+            {selected.name} is {usd(selected.payment)} a month; your limit is {usd(state.budget!)}.
+            Choose an option within your limit before preparing the practice application.
+          </p>
+          <div className="energy-actions">
+            {state.quotes
+              .filter((quote) => quote.fitsBudget)
+              .map((quote) => (
+                <button
+                  key={quote.id}
+                  disabled={disabled}
+                  onClick={() => ask(`Choose ${quote.name}`)}
+                >
+                  {quote.name} · {usd(quote.payment)}/mo
+                </button>
+              ))}
+          </div>
+        </div>
+      )}
       <details open={!compact}>
         <summary>Calculations, assumptions and options</summary>
         <div className="energy-detail">
@@ -61,7 +83,12 @@ export default function EnergyPanel({
             {usd(state.comparison.usageEffect)}, effective rate {usd(state.comparison.rateEffect)},
             other charges {usd(state.comparison.otherEffect)}.
           </p>
-          <div className="energy-table-wrap">
+          <div
+            className="energy-table-wrap"
+            tabIndex={0}
+            role="region"
+            aria-label="Scrollable improvement quote table"
+          >
             <table>
               <caption>Fictional contractor quotes · 24 months · 0% assumed interest</caption>
               <thead>
@@ -128,8 +155,11 @@ export default function EnergyPanel({
         <button disabled={disabled} onClick={() => ask('I can afford $30 per month')}>
           Try a $30 limit
         </button>
-        <button disabled={disabled} onClick={() => ask('Prepare my energy application')}>
-          Prepare application
+        <button
+          disabled={disabled || selected?.fitsBudget === false}
+          onClick={() => ask('Prepare my energy application')}
+        >
+          Prepare demo application
         </button>
         <button disabled={disabled} onClick={() => ask('Save my energy plan')}>
           Save plan

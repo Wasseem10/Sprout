@@ -26,6 +26,8 @@ import { FinanceAssistant } from './finance-assistant.js';
 import { parseFinanceFile, writeFinanceWorkbook } from './finance-files.js';
 import { money, newEnergyState, parseEnergyCsv } from './energy.js';
 import { energyDemoUrl, energyProgramUrl, type EnergyState } from '../../shared/energy.js';
+import { BillAssistant } from './bill-assistant.js';
+import type { BillValues } from '../../shared/bills.js';
 
 const hosted = (cfg: Config) => !['127.0.0.1', 'localhost', '::1'].includes(cfg.host);
 const payment =
@@ -118,6 +120,7 @@ export class ComputerController {
   private energyAssistant: EnergyAssistant;
   private financeAssistant: FinanceAssistant;
   private ownedEnergyDemo: string | null = null;
+  private billAssistant: BillAssistant;
   constructor(
     private cfg: Config,
     private options: {
@@ -126,6 +129,9 @@ export class ComputerController {
       searchUrl?: (query: string) => string;
     } = {},
   ) {
+    this.billAssistant = new BillAssistant(cfg, this.state, () =>
+      this.state.folder ? (this.folders.get(this.state.folder.id) ?? null) : null,
+    );
     this.financeAssistant = new FinanceAssistant(cfg, this.state, {
       root: () => (this.state.folder ? (this.folders.get(this.state.folder.id) ?? null) : null),
       openCommunity: async (signal) => {
@@ -289,6 +295,20 @@ export class ComputerController {
       const rows = await parseFinanceFile(filename, bytes);
       activeSignal.throwIfAborted();
       return this.financeAssistant.import(rows, path.basename(filename));
+    });
+  }
+  async importBill(filename: string, bytes: Buffer, signal: AbortSignal) {
+    this.localOnly();
+    return this.task(signal, async (activeSignal) =>
+      this.billAssistant.import(filename, bytes, activeSignal),
+    );
+  }
+  async confirmBill(id: string, values: BillValues, signal: AbortSignal) {
+    return this.task(signal, async () => {
+      const result = await this.billAssistant.confirm(id, values);
+      this.energyAssistant.active = !!this.state.energy;
+      this.financeAssistant.active = false;
+      return result;
     });
   }
   async financeExport() {
@@ -485,6 +505,12 @@ export class ComputerController {
   }
   async request(request: string, parent: AbortSignal): Promise<ComputerResult> {
     return this.task(parent, async (signal) => {
+      const bill = await this.billAssistant.request(request, signal);
+      if (bill) {
+        this.financeAssistant.active = false;
+        this.energyAssistant.active = !!this.state.energy;
+        return bill;
+      }
       const energyFollowup =
         this.energyAssistant.active &&
         !/\b(?:finance|financial|transactions|cash.?flow|loan|apr|spending|groceries)\b/i.test(
@@ -1419,10 +1445,17 @@ export class ComputerController {
       const root = this.state.folder && this.folders.get(this.state.folder.id);
       if (!root)
         throw new Error('Choose a folder or use the demo folder before analyzing a workbook.');
-      const report = await analyzeSpreadsheet(root, action.question, action.filename, {
-        cfg: this.cfg,
-        signal,
-      });
+      const sample = !action.filename && /\b(?:sample|synthetic|demo)\b/i.test(action.question);
+      if (sample) await ensureDemoWorkbook(root);
+      const report = await analyzeSpreadsheet(
+        root,
+        action.question,
+        action.filename ?? (sample ? 'sales-demo-synthetic.xlsx' : undefined),
+        {
+          cfg: this.cfg,
+          signal,
+        },
+      );
       signal.throwIfAborted();
       const bytes = await readFile(path.join(root, report.filename));
       this.state.spreadsheet = {

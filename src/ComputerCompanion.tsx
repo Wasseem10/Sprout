@@ -25,8 +25,9 @@ import { spokenComputerReply, spokenRequestAcknowledgment } from './speechText';
 import './computer.css';
 import ConnectionsPanel from './ConnectionsPanel';
 import DesktopBuddy from './DesktopBuddy';
-import EnergyPanel from './EnergyPanel';
 import FinancePanel from './FinancePanel';
+import BillWorkspace from './BillWorkspace';
+import type { BillValues } from '../shared/bills';
 
 const empty: ComputerState = { folder: null, code: null, browser: null, screen: null };
 type Message = { id: string; role: 'user' | 'assistant' | 'error'; text: string };
@@ -90,7 +91,9 @@ export default function ComputerCompanion() {
     >(
       new URLSearchParams(window.location.search).get('workspace') === 'finance'
         ? 'finance'
-        : 'home',
+        : new URLSearchParams(window.location.search).get('workspace') === 'energy'
+          ? 'energy'
+          : 'home',
     ),
     [modal, setModal] = useState<'settings' | 'screens' | null>(null);
   const [sources, setSources] = useState<Source[]>([]),
@@ -529,6 +532,67 @@ export default function ComputerCompanion() {
     }
   }, [modal]);
   const active = busy || voice.conversationActive || voice.phase !== 'idle';
+  const billOperation = async (operation: (signal: AbortSignal) => Promise<ComputerResult>) => {
+    if (!enabled || inFlight.current) return;
+    inFlight.current = true;
+    setBusy(true);
+    setPhase('Reading bill documents');
+    const current = ++generation.current,
+      abort = new AbortController();
+    controller.current = abort;
+    try {
+      const result = await operation(abort.signal);
+      if (generation.current !== current || abort.signal.aborted) return;
+      applyState(result.state);
+      setTab('energy');
+      add('assistant', result.summary);
+      setPhase('Ready to review your bills');
+      if (speech) void voice.speak(spokenComputerReply(result, 'energyHelp'));
+    } catch (error) {
+      if (generation.current === current && !abort.signal.aborted)
+        add('error', error instanceof Error ? error.message : 'Bill reading failed.');
+    } finally {
+      if (generation.current === current) {
+        inFlight.current = false;
+        setBusy(false);
+        controller.current = null;
+      }
+    }
+  };
+  const importBills = (files: File[]) => {
+    if (files.length > 4 || files.some((file) => file.size > 5 * 1024 * 1024)) {
+      add('error', 'Choose up to four bill PDFs or images under 5 MB each.');
+      return;
+    }
+    void billOperation(async (signal) => {
+      let result: ComputerResult | undefined;
+      for (const file of files) {
+        const form = new FormData();
+        form.append('file', file);
+        const response = await fetch('/api/computer/bills/import', {
+          method: 'POST',
+          body: form,
+          signal,
+          credentials: 'same-origin',
+        });
+        const raw = await response.text();
+        let body: ComputerResult & { error?: string };
+        try {
+          body = JSON.parse(raw);
+        } catch {
+          throw new Error('Insight’s local service is reconnecting. Try reading the bill again.');
+        }
+        if (!response.ok) throw new Error(body.error ?? 'The bill could not be read.');
+        result = body;
+        if (generation.current && !signal.aborted) applyState(body.state);
+      }
+      return result!;
+    });
+  };
+  const confirmBill = (id: string, values: BillValues) =>
+    void billOperation((signal) =>
+      api<ComputerResult>('/computer/bills/confirm', { id, values }, signal),
+    );
   const importFinance = async (file: File) => {
     if (!enabled || inFlight.current) return;
     if (file.size > 3 * 1024 * 1024) {
@@ -693,7 +757,7 @@ export default function ComputerCompanion() {
             setModal('settings');
           }}
           workspace={() => {
-            setTab('finance');
+            setTab(tab === 'energy' ? 'energy' : 'finance');
             setDockMode(false);
           }}
           folder={() => void setup(window.insightos ? 'folder' : 'demo')}
@@ -785,7 +849,7 @@ export default function ComputerCompanion() {
                 {[
                   { id: 'home', title: 'Start here', icon: Sparkles },
                   { id: 'finance', title: 'Finance & Excel', icon: ShieldCheck },
-                  { id: 'energy', title: 'Energy & affordability', icon: Sparkles },
+                  { id: 'energy', title: 'Bills & energy', icon: Sparkles },
                   { id: 'browser', title: 'Browse & act', icon: Globe },
                   { id: 'screen', title: 'My screen', icon: Eye },
                   { id: 'office', title: 'Slides & Excel', icon: Presentation },
@@ -811,32 +875,18 @@ export default function ComputerCompanion() {
                   settings={() => setModal('settings')}
                 />
               )}
-              {tab === 'energy' &&
-                (state.energy ? (
-                  <EnergyPanel
-                    state={state.energy}
-                    disabled={!enabled || busy}
-                    ask={(text) => void perform(text)}
-                  />
-                ) : (
-                  <section className="computer-artifact" aria-label="Start an energy plan">
-                    <h2>Independence at home</h2>
-                    <p>
-                      Understand your energy bills, compare sample financing, and prepare an
-                      application through conversation.
-                    </p>
-                    <button
-                      disabled={!enabled || busy}
-                      onClick={() => void perform('Start the energy demo')}
-                    >
-                      Try the sample household
-                    </button>
-                    <p>
-                      For your own bills, choose their folder and say “import energy.csv.” Required
-                      columns: month, days, kwh, energyCharge, otherCharges.
-                    </p>
-                  </section>
-                ))}
+              {tab === 'energy' && (
+                <BillWorkspace
+                  state={state}
+                  disabled={!enabled || busy}
+                  busy={busy}
+                  ask={(text) => void perform(text)}
+                  importFiles={importBills}
+                  confirm={confirmBill}
+                  settings={() => setModal('settings')}
+                  databricksReady={status?.integrations.databricks.configured}
+                />
+              )}
               {tab === 'home' && (
                 <section
                   className="computer-artifact computer-home"

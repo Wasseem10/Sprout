@@ -1,0 +1,10 @@
+{
+  "checkedAt": "2026-10-10T21:37:18.618Z",
+  "provider": "databricks",
+  "synthetic": true,
+  "billChange": 45,
+  "usageEffect": 45,
+  "rateEffect": 0,
+  "otherEffect": 0,
+  "queryReference": "Databricks statement 01f1c4f2-c4ae-1e89-808c-c467c325154e"
+}
