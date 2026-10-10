@@ -130,6 +130,14 @@ export type ScreenView = {
   description: string | null;
 };
 export type ComputerState = {
+  task?: {
+    id: string;
+    goal: string;
+    status: 'running' | 'waiting' | 'completed' | 'paused' | 'failed';
+    message: string;
+    steps: { tool: string; summary: string }[];
+  } | null;
+  memory?: { provider: 'local' | 'neon'; count: number };
   lastApp?: { app: NativeAppId; name: string; mode: 'focused' | 'launched' } | null;
   folder: { id: string; name: string } | null;
   code: CodeArtifact | null;

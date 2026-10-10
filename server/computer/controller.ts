@@ -19,6 +19,8 @@ import { generatePresentationOutline, writePresentation } from './presentation.j
 import { analyzeSpreadsheet, ensureDemoWorkbook } from './spreadsheet.js';
 import { openNativeApp } from './native-apps.js';
 import { pointAt } from './browser-pointer.js';
+import { AssistantMemory } from '../providers/assistantMemory.js';
+import { decideGoal, needsGoalLoop, observationKey } from './goal.js';
 
 const hosted = (cfg: Config) => !['127.0.0.1', 'localhost', '::1'].includes(cfg.host);
 const payment =
@@ -183,8 +185,156 @@ export class ComputerController {
     this.state.screen = null;
     return this.snapshot();
   }
+  private async runGoal(
+    request: string,
+    signal: AbortSignal,
+    resume: boolean,
+  ): Promise<ComputerResult> {
+    if (!resume || !this.state.task)
+      this.state.task = {
+        id: crypto.randomUUID(),
+        goal: request,
+        status: 'running',
+        message: 'Looking at the next step',
+        steps: [],
+      };
+    const task = this.state.task;
+    task.status = 'running';
+    const memory = new AssistantMemory(this.cfg);
+    let preferences: string[] = [];
+    try {
+      const notes = await memory.list(signal);
+      preferences = notes.map((n) => n.text);
+      this.state.memory = { provider: memory.provider, count: notes.length };
+    } catch {
+      signal.throwIfAborted();
+      task.status = 'waiting';
+      task.message =
+        'I could not read your saved preferences. Check the memory connection before continuing.';
+      return { state: this.snapshot(), summary: task.message, clarification: true };
+    }
+    const seen = new Set<string>();
+    const permitted = new Set([
+      'navigate',
+      'search',
+      'searchCurrentSite',
+      'openSearchResult',
+      'readPage',
+      'goBack',
+      'click',
+      'fill',
+      'createPresentation',
+      'analyzeSpreadsheet',
+      'openPresentation',
+      'openSpreadsheet',
+      'openApp',
+    ]);
+    let last: ComputerResult | undefined;
+    let lastTool: ComputerAction['tool'] | undefined;
+    for (let step = 0; step < 6; step++) {
+      signal.throwIfAborted();
+      const decision = await decideGoal(
+        this.cfg,
+        this.snapshot(),
+        request,
+        preferences,
+        this.conversation,
+        signal,
+      );
+      signal.throwIfAborted();
+      task.message = decision.message;
+      if (decision.decision !== 'act') {
+        // A model cannot declare completion without a successful action in this task.
+        task.status =
+          decision.decision === 'done' && task.steps.length > 0 ? 'completed' : 'waiting';
+        const summary =
+          task.status === 'completed'
+            ? decision.message
+            : decision.decision === 'done'
+              ? 'I have not completed an action yet. What would you like me to do next?'
+              : decision.message;
+        return { state: this.snapshot(), summary, clarification: true, tool: lastTool };
+      }
+      const action = decision.action!;
+      if (!permitted.has(action.tool))
+        throw new Error('That action is not available to the task coordinator.');
+      const { pageId: _pageId, ...fingerprintAction } = action as typeof action & {
+        pageId?: string;
+      };
+      const fingerprint = JSON.stringify(fingerprintAction) + observationKey(this.state);
+      if (seen.has(fingerprint)) {
+        task.status = 'waiting';
+        task.message = 'That step is not making progress. What would you like to change?';
+        return { state: this.snapshot(), summary: task.message, clarification: true };
+      }
+      seen.add(fingerprint);
+      if (
+        action.tool === 'createPresentation' &&
+        this.state.spreadsheet &&
+        /\b(?:data|workbook|spreadsheet|analysis|results|excel)\b/i.test(task.goal)
+      ) {
+        action.request += `\nUse these actual workbook findings and label their source: ${this.state.spreadsheet.summary}`;
+      }
+      if (['createPresentation', 'analyzeSpreadsheet'].includes(action.tool) && !this.state.folder)
+        throw new Error('Choose the workbook folder before continuing this task.');
+      last = await this.perform(action, signal);
+      lastTool = action.tool;
+      signal.throwIfAborted();
+      task.steps.push({ tool: action.tool, summary: last.summary.slice(0, 650) });
+      task.steps = task.steps.slice(-24);
+      if (
+        last.clarification ||
+        last.pointer ||
+        /^(?:Stopped for review|I found several|I did not find|I am staying)/.test(last.summary)
+      ) {
+        task.status = 'waiting';
+        task.message = last.summary;
+        return { ...last, state: this.snapshot(), tool: action.tool, clarification: true };
+      }
+    }
+    task.status = 'waiting';
+    task.message =
+      'I finished this set of steps. Say “continue” to keep going, or tell me what to change.';
+    return {
+      state: this.snapshot(),
+      summary: `${last?.summary ?? ''} ${task.message}`,
+      clarification: true,
+    };
+  }
   async request(request: string, parent: AbortSignal): Promise<ComputerResult> {
     return this.task(parent, async (signal) => {
+      const memory = new AssistantMemory(this.cfg);
+      const remember = request.match(/^(?:please\s+)?remember (?:that\s+)?(.+)$/i);
+      if (
+        remember ||
+        /^(?:what (?:do you )?remember(?: about me)?|read (?:my )?saved preferences|forget (?:all )?(?:my )?(?:saved )?(?:preferences|memories))[.!?]*$/i.test(
+          request.trim(),
+        )
+      ) {
+        if (remember) await memory.remember(remember[1], signal);
+        else if (/^forget/i.test(request.trim())) await memory.forgetAll(signal);
+        const notes = await memory.list(signal);
+        this.state.memory = { provider: memory.provider, count: notes.length };
+        return {
+          state: this.snapshot(),
+          clarification: true,
+          summary: remember
+            ? `I'll remember that${memory.provider === 'neon' ? ' in Neon' : ' on this computer'}.`
+            : /^forget/i.test(request.trim())
+              ? 'I cleared your saved preferences.'
+              : notes.length
+                ? `You asked me to remember: ${notes.map((n) => n.text).join('; ')}`
+                : 'You have no saved preferences yet.',
+        };
+      }
+      if (/^(?:stop|cancel|never mind|cancel (?:the )?task)[.!?]*$/i.test(request.trim())) {
+        if (this.state.task) this.state.task.status = 'paused';
+        return {
+          state: this.snapshot(),
+          summary: 'Okay, I stopped. What would you like to do next?',
+          clarification: true,
+        };
+      }
       // Refresh from the actual page so references cannot come from a stale renderer.
       if (
         !/^(?:please\s+)?confirm fill[.!]?$/i.test(request) &&
@@ -204,6 +354,47 @@ export class ComputerController {
           this.state.browser = null;
           this.controls.clear();
         }
+      }
+      if (
+        /^(?:please\s+)?confirm fill[.!]?$/i.test(request) &&
+        this.pendingFill &&
+        this.state.task?.status === 'waiting'
+      ) {
+        const filled = await this.perform({ tool: 'confirmFill' }, signal);
+        this.state.task.steps.push({ tool: 'confirmFill', summary: filled.summary });
+        return this.runGoal(request, signal, true);
+      }
+      const unfinished =
+        this.state.task && ['waiting', 'paused', 'failed'].includes(this.state.task.status);
+      const independent =
+        /^(?:hi|hello|hey|what can you do|remember|analy[sz]e|summari[sz]e|open (?:https?:|calculator|notepad|excel|powerpoint)|(?:create|make|write) (?:a |an )?(?:presentation|powerpoint|python))/i.test(
+          request.trim(),
+        );
+      if (
+        /\b(?:pay for it|order everything|place (?:the |my )?order|complete (?:the |my )?purchase)\b/i.test(
+          request,
+        )
+      ) {
+        return {
+          state: this.snapshot(),
+          clarification: true,
+          summary:
+            'I can help research items and get to a product or cart. Checkout completion is not implemented yet.',
+        };
+      }
+      if (independent && !/^(?:hi|hello|hey|what can you do)\b/i.test(request.trim()))
+        this.state.task = null;
+      if (
+        (this.cfg.hfToken || this.cfg.cloudUrl) &&
+        (needsGoalLoop(request) || (unfinished && !independent))
+      ) {
+        const result = await this.runGoal(request, signal, !!unfinished && !needsGoalLoop(request));
+        this.conversation.push({
+          request: request.slice(0, 300),
+          outcome: result.summary.slice(0, 300),
+        });
+        this.conversation = this.conversation.slice(-6);
+        return result;
       }
       const plan = await computerPlan(
         request,
@@ -258,6 +449,12 @@ export class ComputerController {
       signal.throwIfAborted();
       return result;
     } catch (error) {
+      if (this.state.task?.status === 'running') {
+        this.state.task.status = signal.aborted ? 'paused' : 'failed';
+        this.state.task.message = signal.aborted
+          ? 'Paused. Tell me what to change.'
+          : 'The task needs attention.';
+      }
       signal.throwIfAborted();
       throw error;
     } finally {
@@ -743,7 +940,7 @@ export class ComputerController {
               'product',
             ].includes(word),
         ) ?? [];
-    if (index === null && this.cfg.hfToken) {
+    if (index === null && (this.cfg.hfToken || this.cfg.cloudUrl)) {
       try {
         const raw = await chat(
           this.cfg,

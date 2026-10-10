@@ -8,6 +8,10 @@ A voice-first desktop companion for people who have difficulty seeing or operati
 
 ## Run locally
 
+The buddy now supports an observe → act → check loop for multi-step browser and office goals. For a read-only rehearsal, ask “Open https://books.toscrape.com and then open Travel. Tell me the first book's price.” A real Hugging Face rehearsal completed navigation and read the displayed result; see `artifacts/goal-rehearsal.json`. Requests may ask for clarification or stop at site barriers. This does not establish reliable shopping checkout or arbitrary application control.
+
+Say “Remember that I prefer remote jobs,” then “What do you remember about me?” Explicit preferences survive restart locally, or in Neon when `DATABASE_URL` is connected. Goal/browser sessions do not survive backend restart. Optional Vultr-hosted inference uses `INSIGHTOS_CLOUD_URL` and `INSIGHTOS_CLOUD_PASSPHRASE` while the desktop stays local; see the deployment guide. Cloud/Neon/Databricks account checks remain outstanding.
+
 Use Node 24 and npm. From this folder:
 
 ```powershell

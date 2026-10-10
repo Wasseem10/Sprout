@@ -412,3 +412,19 @@ html.desktop-buddy,
     animation: none !important;
   }
 }
+.buddy-task {
+  margin: 0 16px 10px;
+  padding: 10px 12px;
+  background: rgba(49, 105, 186, 0.13);
+  border: 1px solid rgba(128, 180, 249, 0.25);
+  border-radius: 14px;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.buddy-task p {
+  margin: 5px 0;
+  line-height: 1.4;
+}
+.buddy-task small {
+  color: #bfd8ff;
+}

@@ -474,6 +474,30 @@ export default function ComputerCompanion() {
     transcript.current?.scrollTo({ top: transcript.current.scrollHeight, behavior: 'instant' });
   }, [messages]);
   useEffect(() => {
+    if (!busy) return;
+    const abort = new AbortController();
+    let reading = false;
+    const timer = setInterval(async () => {
+      if (reading) return;
+      reading = true;
+      try {
+        const next = await api<ComputerState>('/computer/state', undefined, abort.signal);
+        if (!abort.signal.aborted && next.task?.status === 'running') {
+          setState(next);
+          setPhase(next.task.message);
+        }
+      } catch {
+        /* The task request reports errors; polling does not interrupt voice. */
+      } finally {
+        reading = false;
+      }
+    }, 900);
+    return () => {
+      clearInterval(timer);
+      abort.abort();
+    };
+  }, [busy]);
+  useEffect(() => {
     if (tab === 'code' && state.code && ['completed', 'failed'].includes(state.code.status))
       document.querySelector('.computer-terminal')?.scrollIntoView({ block: 'nearest' });
   }, [state.code?.status, tab]);

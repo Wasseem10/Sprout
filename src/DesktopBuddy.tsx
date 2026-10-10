@@ -147,7 +147,13 @@ export default function DesktopBuddy(p: Props) {
             ref={p.transcriptRef}
             tabIndex={0}
           >
-            {!conversation.length && (
+            {!conversation.length && p.state.task && (
+              <div className="buddy-welcome">
+                <span className="buddy-eyebrow">YOUR CURRENT TASK</span>
+                <p>{p.state.task.goal}</p>
+              </div>
+            )}
+            {!conversation.length && !p.state.task && (
               <div className="buddy-welcome">
                 <span className="buddy-eyebrow">A LITTLE HELP. RIGHT HERE.</span>
                 <h1>What’s on your mind?</h1>
@@ -186,6 +192,19 @@ export default function DesktopBuddy(p: Props) {
               </div>
             ))}
           </div>
+          {p.state.task && (
+            <div className="buddy-task" aria-label="Current task">
+              <strong>
+                {p.state.task.status === 'running'
+                  ? 'Working on it'
+                  : p.state.task.status === 'completed'
+                    ? 'Task finished'
+                    : 'Your next step'}
+              </strong>
+              <p>{p.state.task.message}</p>
+              <small>{p.state.task.steps.length} steps taken</small>
+            </div>
+          )}
           {p.resultView === 'office' && p.state.presentation && (
             <div className="buddy-result">
               <div>

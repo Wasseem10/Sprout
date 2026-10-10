@@ -27,9 +27,13 @@ Useful accessibility demo: a person asks about a workbook without navigating cel
 
 ## Neon saves
 
+The desktop buddy also uses Neon for explicit conversational preferences: say “Remember that I prefer remote jobs.” It creates `insightos_assistant_memory`, uses owner-scoped parameterized SQL, and reads the notes when planning a goal. Say “What do you remember about me?” after restarting to verify persistence, or “forget my saved preferences” to clear them. Without `DATABASE_URL`, notes are saved locally and must not be described as Neon-backed. The existing Test button checks project storage; also rehearse the preference flow for this new feature.
+
 In [Neon](https://console.neon.tech/), create or choose a project and copy its PostgreSQL connection string. Save it under Neon. Test creates the project table, writes a synthetic data project and reads it back. The test project is retained. Neon stores CSV workspace projects, not desktop browser or screen state. Never commit the connection string.
 
 ## Vultr
+
+The new hybrid route hosts Hugging Face inference on the deployed service while keeping the desktop and its browser local. Set `INSIGHTOS_CLOUD_URL` and `INSIGHTOS_CLOUD_PASSPHRASE` on the laptop, keep `INSIGHTOS_APP_URL` empty, then run `npm run check:cloud`. Run an actual desktop goal through that configuration as well; record both the goal result and evidence that the server is your Vultr instance. No instance has been created by this build.
 
 Vultr requires a real server deployment, domain/TLS and hosted session configuration. Its API key is not needed by the running InsightOS app. Follow [deploy/README.md](deploy/README.md) after you have instance access. Hosted CSV analysis is supported; controlling this laptop requires the local desktop backend. No Vultr resources have been provisioned by this build.
 

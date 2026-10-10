@@ -32,6 +32,12 @@ A separate computer controller implements Python files/execution, installed-app 
 
 ## Computer action layer
 
+Multi-step browser and office requests now enter a goal coordinator (`server/computer/goal.ts`). It retains the original goal, latest clarification, observed page and successful step summaries, asks Hugging Face for one validated next action, executes it and observes again. Each turn allows six actions; repeated actions against unchanged observations stop for clarification. Waiting and interrupted goals can continue in the same process. This is one coordinator using typed tools, not independently running agents. Goal state is not restored across backend restarts.
+
+Explicit “remember …” preferences persist through `AssistantMemory`: owner-scoped parameterized Neon SQL when configured, private local JSON otherwise. Conversations, application answers, browser pages and screenshots are not automatically saved as preferences. “What do you remember?” reads them back; “forget my saved preferences” clears only the current owner's notes.
+
+Optional hybrid hosting keeps desktop UI and actions on localhost. `INSIGHTOS_CLOUD_URL` sends authenticated inference requests to `/api/agent/infer` on a deployed backend (intended for Vultr). That service runs Hugging Face calls; it does not execute desktop tools. The deployed service and Neon still need live account verification. The Excel worker can use Databricks and pass its calculated findings into the presentation worker in the same goal.
+
 `shared/computer.ts` defines the discriminated contract. `server/computer/controller.ts` serializes actions using actual server-owned state. Plans receive fresh browser observations, not renderer-supplied targets. Computer actions have real external effects; completed writes remain after Stop.
 
 The native folder picker grants a directory using a private bridge key unavailable to the renderer. Files use exclusive creation and unique names; Python verifies SHA-256 and runs disk source through a restricted computation runner. Editor launch uses a configured executable without a shell. This is not an OS sandbox for hostile code.

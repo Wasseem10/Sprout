@@ -29,6 +29,7 @@ import { ComputerController } from './computer/controller.js';
 import { computerActionSchema } from '../shared/computer.js';
 import { Connections } from './connections.js';
 import { connectionSettingsSchema, providerSchema } from '../shared/connections.js';
+import { chat } from './computer/planner.js';
 
 export async function buildApp(cfg: Config = config()) {
   const app = Fastify({ logger: false, bodyLimit: 8 * 1024 * 1024 });
@@ -124,6 +125,29 @@ export async function buildApp(cfg: Config = config()) {
     return controller.signal;
   };
   app.get('/health', async () => ({ ok: true, service: 'insightos' }));
+  app.post('/api/agent/infer', async (req, reply) => {
+    const body = z
+      .object({
+        system: z.string().min(1).max(16000),
+        content: z.unknown(),
+        vision: z.boolean(),
+        json: z.boolean(),
+      })
+      .strict()
+      .parse(req.body);
+    if (JSON.stringify(body.content)?.length > 6 * 1024 * 1024)
+      throw new Error('Cloud context is too large.');
+    // This authenticated service performs inference only; never remote desktop actions.
+    const text = await chat(
+      { ...cfg, cloudUrl: '', cloudPassphrase: '' },
+      body.system,
+      body.content,
+      taskSignal(req, reply),
+      body.vision ? cfg.hfVisionModel : cfg.hfModel,
+      body.json,
+    );
+    return { text, provider: 'hugging-face', execution: 'cloud-service' };
+  });
   app.get('/api/connections', async () => connections.snapshot());
   const connectionIdle = () => {
     if (activeRequests.size)
@@ -153,14 +177,17 @@ export async function buildApp(cfg: Config = config()) {
       visionModel: cfg.hfVisionModel,
     },
     integrations: {
-      huggingFace: { configured: !!cfg.hfToken, model: cfg.hfModel },
+      huggingFace: {
+        configured: !!cfg.hfToken || !!(cfg.cloudUrl && cfg.cloudPassphrase),
+        model: cfg.hfModel,
+      },
       databricks: { configured: !!(cfg.dbHost && cfg.dbWarehouse && cfg.dbToken) },
       elevenLabs: {
         configured: !!cfg.elevenKey,
         ttsConfigured: !!(cfg.elevenKey && cfg.elevenVoice),
       },
       neon: { configured: !!cfg.neonUrl },
-      vultr: { configured: false },
+      vultr: { configured: !!(cfg.cloudUrl && cfg.cloudPassphrase) },
     },
     storage: storage.provider,
   }));

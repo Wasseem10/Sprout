@@ -1,0 +1,30 @@
+{
+  "checkedAt": "2026-10-10T18:46:40.892Z",
+  "provider": "live-hugging-face",
+  "site": "public read-only practice bookstore",
+  "request": "Open https://books.toscrape.com and then open the Travel category. Tell me the first book title and its displayed price. Do not purchase anything.",
+  "elapsedMs": 3434,
+  "summary": "The first book in the Travel category is 'It's Only the Himalayas' with a price of £45.17. Browser clicked the selected control. Current page: Travel | Books to Scrape - Sandbox. https://books.toscrape.com/catalogue/category/books/travel_2/index.html",
+  "task": {
+    "id": "9c5b7889-8abb-4046-99b6-4ba529ac3770",
+    "goal": "Open https://books.toscrape.com and then open the Travel category. Tell me the first book title and its displayed price. Do not purchase anything.",
+    "status": "completed",
+    "message": "The first book in the Travel category is 'It's Only the Himalayas' with a price of £45.17.",
+    "steps": [
+      {
+        "tool": "navigate",
+        "summary": "Browser opened the website. Current page: All products | Books to Scrape - Sandbox. https://books.toscrape.com/"
+      },
+      {
+        "tool": "click",
+        "summary": "Browser clicked the selected control. Current page: Travel | Books to Scrape - Sandbox. https://books.toscrape.com/catalogue/category/books/travel_2/index.html"
+      }
+    ]
+  },
+  "page": {
+    "url": "https://books.toscrape.com/catalogue/category/books/travel_2/index.html",
+    "title": "Travel | Books to Scrape - Sandbox",
+    "text": "Books to Scrape We love being scraped!\nHome  Books Travel\nBooks\nTravel\nMystery\nHistorical Fiction\nSequential Art\nClassics\nPhilosophy\nRomance\nWomens Fiction\nFiction\nChildrens\nReligion\nNonfiction\nMusic\nDefault\nScience Fiction\nSports and Games\nAdd a comment\nFantasy\nNew Adult\nYoung Adult\nScience\nPoetry\nParanormal\nArt\nPsychology\nAutobiography\nParenting\nAdult Fiction\nHumor\nHorror\nHistory\nFood and Drink\nChristian Fiction\nBusiness\nBiography\nThriller\nContemporary\nSpirituality\nAcademic\nSelf Help\nHistorical\nChristian\nSuspense\nShort Stories\nNovels\nHealth\nPolitics\nCultural\nErotica\nCrime\nTravel\n11 results.\nWarning! This is a demo website for web scraping purposes. Prices and ratings here were randomly assigned and have no real meaning.\n\n    \n\nIt's Only the Himalayas\n\n£45.17\n\n In stock\n\nAdd to basket\n\n    \n\nFull Moon over Noah’s ...\n\n£49.43\n\n In stock\n\nAdd to basket\n\n    \n\nSee America: A Celebration ...\n\n£48.87\n\n In stock\n\nAdd to basket\n\n    \n\nVagabonding: An Uncommon Guide ...\n\n£36.94\n\n In stock\n\nAdd to basket\n\n    \n\nUnder the Tuscan Sun\n\n£37.33\n\n In stock\n\nAdd to basket\n\n    \n\nA Summer In Europe\n\n£44.34\n\n In stock\n\nAdd to basket\n\n    \n\nThe Great Railway Bazaar\n\n£30.54\n\n In stock\n\nAdd to basket\n\n    \n\nA Year in Provence ...\n\n£56.88\n\n In stock\n\nAdd to basket\n\n    \n\nThe Road to Little ...\n\n£23.21\n\n In stock\n\nAdd to basket\n\n    \n\nNeither Here nor There: ...\n\n£38.95\n\n In stock\n\nAdd to basket\n\n    \n\n1,000 Places to See ...\n\n£26.08\n\n In stock\n\nAdd to basket"
+  },
+  "purchased": false
+}

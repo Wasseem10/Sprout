@@ -24,7 +24,8 @@ export async function generatePresentationOutline(
   cfg: Config,
   signal: AbortSignal,
 ): Promise<PresentationOutline> {
-  if (!cfg.hfToken) throw new Error('Presentation creation needs Hugging Face connected.');
+  if (!cfg.hfToken && !cfg.cloudUrl)
+    throw new Error('Presentation creation needs Hugging Face connected.');
   const system = `Create an editable ${slideCount}-slide PowerPoint outline for the user's topic. Return ONLY one JSON object in this exact shape: {"title":"Short title","subtitle":"One sentence","slides":[{"title":"Section title","points":["Specific point one","Specific point two"]}]}. The cover is title/subtitle; slides must contain exactly ${slideCount - 1} content slides. Each content slide has title and 2-4 short points. Write concrete, plain language suitable for spoken reading. Do not invent statistics, dates, quotes, studies, sources, or facts the user did not provide. If the topic lacks evidence, use a practical overview and label suggestions as suggestions. No Markdown, instructions to the assistant, code, or links.`;
   let lastIssue = '';
   for (let attempt = 0; attempt < 2; attempt++) {

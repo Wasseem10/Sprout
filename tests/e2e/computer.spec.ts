@@ -104,3 +104,34 @@ test('reopening the buddy does not promote an old Python result on startup', asy
   await expect(page.getByRole('button', { name: 'Open in VS Code' })).toHaveCount(0);
   await expect(page.getByText('old-program.py')).toHaveCount(0);
 });
+
+test('the buddy shows task progress without hiding the conversation controls', async ({ page }) => {
+  await page.setViewportSize({ width: 440, height: 580 });
+  await page.route('**/api/computer/state', (route) =>
+    route.fulfill({
+      json: {
+        folder: null,
+        code: null,
+        browser: null,
+        screen: null,
+        task: {
+          id: 'test',
+          goal: 'Find the book',
+          status: 'waiting',
+          message: 'Which color would you like?',
+          steps: [{ tool: 'navigate', summary: 'Opened the catalog.' }],
+        },
+      },
+    }),
+  );
+  await page.goto('/?desktop=buddy');
+  await page.getByRole('button', { name: 'Expand conversation', exact: true }).click();
+  await expect(page.getByLabel('Current task')).toContainText('Which color would you like?');
+  await expect(
+    page.getByRole('button', { name: 'Start voice conversation', exact: true }),
+  ).toBeVisible();
+  await page.screenshot({ path: 'artifacts/buddy-task-progress.png' });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+});

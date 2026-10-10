@@ -1,5 +1,17 @@
 # Verification record — October 10, 2026
 
+## Goal coordinator, explicit memory and hybrid cloud inference
+
+The coordinator now retains a goal, observes the active browser after each action, and asks Hugging Face for a validated next step. It can ask a question and continue with the same goal when answered. Six-action turn limits, unchanged-state repetition detection, interruption, and manual boundaries for submissions remain in effect. Native Windows automation is still the separate named-click/scroll path; this is not unrestricted autonomous desktop control.
+
+`npm run test:goal` passed against the **real Hugging Face model and public Books to Scrape practice site**: one request navigated to the site, clicked Travel and returned the first displayed book title and price, matching the observed page. The successful run took 3.4 seconds, a single measured run rather than a latency guarantee. Evidence: `artifacts/goal-rehearsal.json`. The first live attempt returned an invalid action shape; explicit format examples and one bounded validation-repair retry fixed that failure before any invalid action was executed.
+
+Unit fixtures cover waiting/resume with retained preferences, fresh observed controls, repetition stopping, unsupported-tool rejection, refusal to complete without any action, explicit memory surviving restart and deletion, owner-scoped parameterized Neon queries, and a workbook-to-editable-PowerPoint goal carrying Databricks totals into its outline. That combined data test used simulated HF/Databricks responses and generated a real PPTX. Neon and Databricks are **not live verified**.
+
+The cloud inference adapter authenticates to a deployed backend; the endpoint calls Hugging Face and leaves desktop execution local. Tests cover authentication, withholding local HF credentials from the cloud request, and refusing desktop execution on the hosted backend. `npm run check:cloud` is ready for a real Vultr host; no instance was created and no cloud deployment is claimed.
+
+The 79-test full unit suite passed, followed by affected-suite reruns including a new regression for changing from a waiting shopping goal to Excel (80 unique unit tests total). All 25 computer/voice browser checks passed across the suite and targeted reruns after fixing new-task routing; build passed. The task-progress screenshot is a browser rendering with fixture state, not a live desktop or sponsor demonstration. Physical voice/echo behavior still needs rehearsal. Source references for the optional cloud components: [Neon serverless driver](https://github.com/neondatabase/serverless/blob/main/CONFIG.md) and [Vultr Docker application](https://docs.vultr.com/how-to-use-vultrs-docker-marketplace-application).
+
 ## Page continuity and general conversation fixes
 
 The latest changes fix two concrete regressions: speech formatting could substitute an old Python result for a new conversational clarification, and voice interruption used the destructive Stop endpoint, closing the active browser. The buddy now greets on its first Play activation with “Hi, I'm Insight. What would you like to do?”; clarification speech takes priority over old artifacts. Interrupt uses a separate cancellation path that retains the tab and waits for the old task to finish before the next request. Errors are spoken while voice conversation remains active.

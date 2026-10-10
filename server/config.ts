@@ -49,6 +49,8 @@ export function config() {
     elevenVoice: process.env.ELEVENLABS_VOICE_ID ?? '',
     elevenTtsModel: process.env.ELEVENLABS_TTS_MODEL_ID || 'eleven_flash_v2_5',
     neonUrl: process.env.DATABASE_URL ?? '',
+    cloudUrl: process.env.INSIGHTOS_CLOUD_URL ?? '',
+    cloudPassphrase: process.env.INSIGHTOS_CLOUD_PASSPHRASE ?? '',
     origins: [
       `http://127.0.0.1:${port}`,
       `http://localhost:${port}`,
