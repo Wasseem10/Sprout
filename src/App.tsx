@@ -48,7 +48,19 @@ declare global {
       chooseFolder: () => Promise<import('../shared/computer').ComputerState | null>;
       screenSources: () => Promise<{ id: string; name: string; thumbnail: string }[]>;
       captureScreen: (id: string) => Promise<{ name: string; image: string }>;
-      captureCurrentScreen: () => Promise<{ name: string; image: string }>;
+      captureCurrentScreen: () => Promise<{ name: string; image: string; captureId: string }>;
+      clickCapturedTarget?: (
+        captureId: string,
+        x: number,
+        y: number,
+        target: string,
+        observedText: string,
+        context: string,
+        authorization: import('../shared/computer').ScreenPointer['authorization'],
+      ) => Promise<{ clicked: true; target: string }>;
+      scrollCurrentScreen?: (
+        direction: 'up' | 'down',
+      ) => Promise<{ scrolled: true; direction: 'up' | 'down' }>;
       openAccount: (
         provider: keyof typeof import('../shared/connections').accountUrls,
       ) => Promise<void>;

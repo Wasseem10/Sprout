@@ -52,6 +52,12 @@ export const computerActionSchema = z.discriminatedUnion('tool', [
     })
     .strict(),
   z.object({ tool: z.literal('describeScreen') }).strict(),
+  z
+    .object({
+      tool: z.literal('locateScreenTarget'),
+      target: z.string().trim().min(2).max(120),
+    })
+    .strict(),
   z.object({ tool: z.literal('confirmFill') }).strict(),
 ]);
 export type ComputerAction = z.infer<typeof computerActionSchema>;
@@ -121,4 +127,17 @@ export type ComputerState = {
     opened: boolean;
   } | null;
 };
-export type ComputerResult = { summary: string; state: ComputerState; clarification?: boolean };
+export type ScreenPointer = {
+  x: number;
+  y: number;
+  target: string;
+  observedText: string;
+  context: 'listing' | 'form' | 'checkout' | 'desktop' | 'other';
+  authorization: { nonce: string; expiresAt: number; proof: string };
+};
+export type ComputerResult = {
+  summary: string;
+  state: ComputerState;
+  clarification?: boolean;
+  pointer?: ScreenPointer;
+};

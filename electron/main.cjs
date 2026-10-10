@@ -13,7 +13,15 @@ const {
   globalShortcut,
 } = require('electron');
 const path = require('node:path');
+const crypto = require('node:crypto');
 const { readFile, stat } = require('node:fs/promises');
+const {
+  validatePointerRequest,
+  verifyPointerAuthorization,
+  targetRegionChanged,
+  runPointerCommand,
+  locateAccessibleTarget,
+} = require('./native-pointer.cjs');
 require('dotenv').config({ quiet: true });
 let backend;
 let companionWindow,
@@ -131,6 +139,8 @@ app
       return result;
     });
     let screenChoices = new Set();
+    let pendingScreenCapture = null;
+    const usedPointerProofs = new Map();
     ipcMain.handle('insightos:screen-sources', async (event) => {
       nativeRequest(event);
       const sources = await desktopCapturer.getSources({
@@ -142,6 +152,7 @@ app
     });
     ipcMain.handle('insightos:capture-screen', async (event, id) => {
       nativeRequest(event);
+      pendingScreenCapture = null;
       if (typeof id !== 'string' || !screenChoices.has(id))
         throw new Error('Choose a screen from the current picker.');
       screenChoices.clear();
@@ -155,6 +166,19 @@ app
         throw new Error('That window is no longer available. Choose it again.');
       return { name: source.name, image: source.thumbnail.toDataURL() };
     });
+    const mainDisplaySnapshot = async () => {
+      const display = screen.getPrimaryDisplay();
+      const sources = await desktopCapturer.getSources({
+        types: ['screen'],
+        thumbnailSize: { width: 1600, height: 1000 },
+      });
+      const source =
+        sources.find((item) => item.display_id === String(display.id)) ||
+        (sources.length === 1 ? sources[0] : null);
+      if (!source || source.thumbnail.isEmpty())
+        throw new Error('Could not capture the main display. Try again.');
+      return { display, source, size: source.thumbnail.getSize() };
+    };
     ipcMain.handle('insightos:capture-current-screen', async (event) => {
       nativeRequest(event);
       // A spoken request is explicit consent for one snapshot. Hide the buddy so
@@ -163,19 +187,124 @@ app
       if (wasVisible) companionWindow.hide();
       try {
         await new Promise((resolve) => setTimeout(resolve, 180));
-        const display = screen.getPrimaryDisplay();
-        const sources = await desktopCapturer.getSources({
-          types: ['screen'],
-          thumbnailSize: { width: 1600, height: 1000 },
-        });
-        const source =
-          sources.find((item) => item.display_id === String(display.id)) || sources[0];
-        if (!source || source.thumbnail.isEmpty())
-          throw new Error('Could not capture the main display. Try choosing a window.');
-        return { name: `Main display — ${source.name}`, image: source.thumbnail.toDataURL() };
+        const { display, source, size } = await mainDisplaySnapshot();
+        const captureId = crypto.randomUUID();
+        const image = source.thumbnail.toDataURL();
+        pendingScreenCapture = {
+          id: captureId,
+          createdAt: Date.now(),
+          displayId: display.id,
+          bounds: { ...display.bounds },
+          scaleFactor: display.scaleFactor,
+          width: size.width,
+          height: size.height,
+          pixels: source.thumbnail.toBitmap(),
+          imageHash: crypto.createHash('sha256').update(image).digest('hex'),
+        };
+        return {
+          name: `Main display — ${source.name}`,
+          image,
+          captureId,
+        };
       } finally {
-        if (wasVisible && companionWindow && !companionWindow.isDestroyed())
-          companionWindow.show();
+        if (wasVisible && companionWindow && !companionWindow.isDestroyed()) companionWindow.show();
+      }
+    });
+    ipcMain.handle(
+      'insightos:click-captured-target',
+      async (event, captureId, x, y, target, observedText, context, authorization) => {
+        nativeRequest(event);
+        const capture = pendingScreenCapture;
+        validatePointerRequest(capture, { captureId, x, y, target, observedText, context });
+        for (const [nonce, expiresAt] of usedPointerProofs)
+          if (expiresAt < Date.now()) usedPointerProofs.delete(nonce);
+        const key = await readFile(
+          path.join(process.env.LOCAL_DATA_DIR || path.resolve('.local'), 'desktop-bridge-key'),
+          'utf8',
+        );
+        verifyPointerAuthorization(
+          capture,
+          { x, y, target, observedText, context },
+          authorization,
+          key,
+          usedPointerProofs,
+        );
+        pendingScreenCapture = null; // One observed screen can cause at most one click.
+        const wasVisible = !!companionWindow && companionWindow.isVisible();
+        if (wasVisible) companionWindow.hide();
+        try {
+          await new Promise((resolve) => setTimeout(resolve, 180));
+          let accessible = null;
+          for (let attempt = 0; attempt < 3 && !accessible; attempt++) {
+            accessible = await locateAccessibleTarget(observedText);
+            if (!accessible) await new Promise((resolve) => setTimeout(resolve, 220));
+          }
+          if (!accessible)
+            throw new Error(
+              'I could not find one accessible control with that label. Nothing was clicked.',
+            );
+          const accessibleDip = screen.screenToDipPoint({
+            x: accessible.x,
+            y: accessible.y,
+          });
+          const actualX = (accessibleDip.x - capture.bounds.x) / capture.bounds.width;
+          const actualY = (accessibleDip.y - capture.bounds.y) / capture.bounds.height;
+          const current = await mainDisplaySnapshot();
+          if (
+            current.display.id !== capture.displayId ||
+            current.display.bounds.x !== capture.bounds.x ||
+            current.display.bounds.y !== capture.bounds.y ||
+            current.display.bounds.width !== capture.bounds.width ||
+            current.display.bounds.height !== capture.bounds.height ||
+            current.display.scaleFactor !== capture.scaleFactor ||
+            current.size.width !== capture.width ||
+            current.size.height !== capture.height ||
+            actualX < 0.015 ||
+            actualX > 0.985 ||
+            actualY < 0.015 ||
+            actualY > 0.985 ||
+            Math.abs(actualX - x) > 0.25 ||
+            Math.abs(actualY - y) > 0.25 ||
+            targetRegionChanged(
+              capture.pixels,
+              current.source.thumbnail.toBitmap(),
+              actualX,
+              actualY,
+              capture.width,
+              capture.height,
+            )
+          )
+            throw new Error('The visible target changed since I looked. Try the click again.');
+          const dip = {
+            x: Math.round(capture.bounds.x + actualX * capture.bounds.width),
+            y: Math.round(capture.bounds.y + actualY * capture.bounds.height),
+          };
+          const physical = screen.dipToScreenPoint(dip);
+          await runPointerCommand('click', physical.x, physical.y);
+          return { clicked: true, target: observedText };
+        } finally {
+          if (wasVisible && companionWindow && !companionWindow.isDestroyed())
+            companionWindow.show();
+        }
+      },
+    );
+    ipcMain.handle('insightos:scroll-current-screen', async (event, direction) => {
+      nativeRequest(event);
+      if (direction !== 'up' && direction !== 'down') throw new Error('Choose scroll up or down.');
+      pendingScreenCapture = null;
+      const wasVisible = !!companionWindow && companionWindow.isVisible();
+      if (wasVisible) companionWindow.hide();
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 140));
+        const display = screen.getPrimaryDisplay();
+        const point = screen.dipToScreenPoint({
+          x: Math.round(display.bounds.x + display.bounds.width / 2),
+          y: Math.round(display.bounds.y + display.bounds.height * 0.6),
+        });
+        await runPointerCommand(direction === 'up' ? 'scroll-up' : 'scroll-down', point.x, point.y);
+        return { scrolled: true, direction };
+      } finally {
+        if (wasVisible && companionWindow && !companionWindow.isDestroyed()) companionWindow.show();
       }
     });
     const work = screen.getPrimaryDisplay().workArea;
@@ -271,9 +400,9 @@ app
           const inside = (x - 15.5) ** 2 + (y - 15.5) ** 2 < 225;
           const eye = y >= 12 && y <= 18 && ((x >= 9 && x <= 12) || (x >= 20 && x <= 23));
           const i = (y * 32 + x) * 4;
-          pixels[i] = eye ? 20 : 139;
-          pixels[i + 1] = eye ? 25 : 236;
-          pixels[i + 2] = eye ? 20 : 196;
+          pixels[i] = eye ? 10 : 75;
+          pixels[i + 1] = eye ? 21 : 167;
+          pixels[i + 2] = eye ? 39 : 244;
           pixels[i + 3] = inside ? 255 : 0;
         }
       tray = new Tray(nativeImage.createFromBitmap(pixels, { width: 32, height: 32 }));

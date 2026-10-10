@@ -16,13 +16,18 @@ html.desktop-buddy,
   width: 100%;
   max-width: 440px;
   margin: 0 auto;
-  color: #edf2e9;
-  background: linear-gradient(135deg, #202c27f7, #111916fa 65%);
-  border: 1px solid #bdedaa38;
+  color: #f2f8ff;
+  background:
+    radial-gradient(circle at 22% 0%, #8dccff36, transparent 48%),
+    linear-gradient(135deg, #24446ee8, #0b1938ed 68%);
+  border: 1px solid #c3e6ff70;
   border-radius: 29px;
   box-shadow:
-    0 4px 15px #0005,
-    inset 0 1px 0 #ffffff0b;
+    0 12px 36px #030f2a80,
+    inset 0 1px 0 #ffffff55,
+    inset 0 0 35px #6dbbff11;
+  backdrop-filter: blur(28px) saturate(165%);
+  -webkit-backdrop-filter: blur(28px) saturate(165%);
   overflow: hidden;
   font-size: 13px;
 }
@@ -50,14 +55,16 @@ html.desktop-buddy,
   height: 43px;
   border-radius: 16px;
   margin-right: 5px;
-  background: radial-gradient(circle at 35% 20%, #d9ffc1, #aace92);
-  box-shadow: 0 0 24px #b7e99316;
+  background: radial-gradient(circle at 35% 20%, #eef8ff, #8bc5ff);
+  box-shadow:
+    0 0 24px #8bc5ff55,
+    inset 0 1px 0 #ffffffbb;
 }
 .buddy-face span {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #24382b;
+  background: #1a416f;
   animation: buddy-blink 7s infinite;
 }
 .buddy-face.awake {
@@ -83,11 +90,11 @@ html.desktop-buddy,
   font-weight: 600;
 }
 .buddy-identity strong span {
-  color: #bdddaf;
+  color: #9fd6ff;
   font-weight: 400;
 }
 .buddy-identity > span {
-  color: #a9b9ad;
+  color: #afcbe6;
   font-size: 10px;
   white-space: nowrap;
   overflow: hidden;
@@ -101,11 +108,11 @@ html.desktop-buddy,
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #a8b8ad;
+  color: #b3cce6;
   flex-shrink: 0;
 }
 .buddy-icon:hover {
-  color: #f0ffe8;
+  color: #ffffff;
   background: #ffffff0d;
 }
 .buddy-icon.stop {
@@ -130,11 +137,11 @@ html.desktop-buddy,
   display: grid;
   place-items: center;
   padding-left: 3px;
-  color: #1b3020;
-  background: linear-gradient(145deg, #d9f8b9, #a9da8c);
+  color: #10345c;
+  background: linear-gradient(145deg, #e1f5ff, #7bc5ff);
   box-shadow:
-    0 4px 18px #a6d58440,
-    inset 0 1px 0 #fff8;
+    0 5px 22px #49acff78,
+    inset 0 1px 0 #fff;
   transition:
     transform 150ms ease,
     box-shadow 150ms ease;
@@ -142,7 +149,7 @@ html.desktop-buddy,
 .buddy-play:hover:not(:disabled) {
   transform: translate(-50%, -50%) scale(1.07);
   box-shadow:
-    0 5px 25px #a6d58480,
+    0 6px 28px #49acffb3,
     inset 0 1px 0 #fff9;
 }
 .buddy-play:focus-visible {
@@ -151,9 +158,9 @@ html.desktop-buddy,
 }
 .buddy-play.playing {
   padding-left: 0;
-  color: #e9ffd9;
-  background: linear-gradient(145deg, #3d6e49, #234631);
-  box-shadow: 0 0 20px #a6d58460;
+  color: #eff9ff;
+  background: linear-gradient(145deg, #328bd7, #245691);
+  box-shadow: 0 0 24px #49acff88;
 }
 .buddy-play.listening {
   animation: buddy-listen 1.8s ease-in-out infinite;
@@ -163,7 +170,7 @@ html.desktop-buddy,
   cursor: not-allowed;
 }
 .buddy-body {
-  border-top: 1px solid #c2e9ad17;
+  border-top: 1px solid #d4ecff38;
   flex: 1;
   min-height: 0;
   display: flex;
@@ -176,13 +183,13 @@ html.desktop-buddy,
   overflow-y: auto;
   padding: 20px 4px 8px;
   scrollbar-width: thin;
-  scrollbar-color: #465b4a transparent;
+  scrollbar-color: #527ba8 transparent;
 }
 .buddy-welcome {
   padding: 10px 5px;
 }
 .buddy-eyebrow {
-  color: #b9d5b0;
+  color: #addaff;
   font-size: 9px;
   letter-spacing: 1.6px;
 }
@@ -194,7 +201,7 @@ html.desktop-buddy,
 }
 .buddy-welcome p {
   margin: 0;
-  color: #a6b6aa;
+  color: #b6cbdf;
   font-size: 12px;
   line-height: 1.8;
   max-width: 325px;
@@ -205,7 +212,7 @@ html.desktop-buddy,
   align-items: center;
   margin-top: 20px;
   font-size: 11px;
-  color: #c4d5bc;
+  color: #cce5ff;
 }
 .buddy-message {
   margin: 0 0 19px;
@@ -213,7 +220,7 @@ html.desktop-buddy,
 .buddy-message > span {
   font-size: 8px;
   letter-spacing: 1.4px;
-  color: #bbd7ae;
+  color: #a8d7ff;
 }
 .buddy-message p {
   margin: 6px 0 0;
@@ -230,14 +237,14 @@ html.desktop-buddy,
   margin-left: 18px;
 }
 .buddy-message.user > span {
-  color: #92a69a;
+  color: #a7bfd8;
 }
 .buddy-message.error p {
   color: #ffc7b7;
 }
 .buddy-result {
-  border: 1px solid #d1eac317;
-  background: #d5f3bb05;
+  border: 1px solid #d1eaff36;
+  background: #c5e7ff0e;
   padding: 10px 12px;
   border-radius: 12px;
   margin-bottom: 12px;
@@ -256,7 +263,7 @@ html.desktop-buddy,
 .buddy-result small {
   margin-left: auto;
   font-size: 9px;
-  color: #b5d59e;
+  color: #b8ddff;
   white-space: nowrap;
 }
 .buddy-result-actions {
@@ -264,32 +271,32 @@ html.desktop-buddy,
 }
 .buddy-result-actions button {
   font-size: 10px;
-  color: #c6d7bd;
+  color: #d2eaff;
   padding: 3px 0;
   margin-right: 12px;
 }
 .buddy-composer {
-  background: #ffffff06;
-  border: 1px solid #c3dfb52e;
+  background: #ffffff0d;
+  border: 1px solid #c3e4ff45;
   border-radius: 16px;
   padding: 12px;
 }
 .buddy-composer:focus-within,
 .buddy-composer.listening {
-  border-color: #bfdc9c88;
+  border-color: #94d5ffb3;
 }
 .buddy-composer textarea {
   resize: none;
   width: 100%;
   background: transparent;
-  color: #edf2e9;
+  color: #f2f8ff;
   border: 0;
   outline: 0;
   font-size: 12px;
   line-height: 1.6;
 }
 .buddy-composer textarea::placeholder {
-  color: #8b9d90;
+  color: #a1b8ce;
 }
 .buddy-composer > div {
   display: flex;
@@ -297,15 +304,15 @@ html.desktop-buddy,
   align-items: center;
 }
 .buddy-composer > div > span {
-  color: #94a58e;
+  color: #a7c0da;
   font-size: 9px;
   flex: 1;
 }
 .buddy-send {
   width: 30px;
   height: 30px;
-  background: #c2e4a7;
-  color: #1c2d20;
+  background: #a1d9ff;
+  color: #163b67;
   border-radius: 10px;
   display: grid;
   place-items: center;
@@ -338,14 +345,14 @@ html.desktop-buddy,
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #1e2a21;
+  background: #142744;
   padding: 9px 20px;
   -webkit-app-region: drag;
   font-size: 12px;
 }
 .desktop-workspace-bar button {
   -webkit-app-region: no-drag;
-  color: #c4ec8b;
+  color: #9bd4ff;
 }
 @keyframes buddy-blink {
   0%,
@@ -360,13 +367,13 @@ html.desktop-buddy,
 }
 @keyframes buddy-breathe {
   50% {
-    box-shadow: 0 0 22px #b7e99344;
+    box-shadow: 0 0 22px #8bc5ff88;
     transform: scale(0.94);
   }
 }
 @keyframes buddy-listen {
   50% {
-    box-shadow: 0 0 30px #a6d584aa;
+    box-shadow: 0 0 30px #49acffbb;
   }
 }
 @media (prefers-reduced-motion: reduce) {

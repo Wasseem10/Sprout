@@ -145,8 +145,9 @@ export default function DesktopBuddy(p: Props) {
                 <span className="buddy-eyebrow">A LITTLE HELP. RIGHT HERE.</span>
                 <h1>What’s on your mind?</h1>
                 <p>
-                  Press play once and talk naturally. I can make slides, analyze a workbook, browse
-                  the web, help with forms, and describe your screen.
+                  Press play once and talk naturally. Interrupt me anytime. I can make slides,
+                  analyze a workbook, browse the web, describe your screen, and click a named button
+                  you can see.
                 </p>
                 <div className="buddy-suggestion">
                   <Code2 size={15} />
@@ -229,7 +230,7 @@ export default function DesktopBuddy(p: Props) {
             <div>
               <span>
                 {p.conversationActive
-                  ? 'Conversation on · I’ll listen after I reply'
+                  ? 'Conversation on · Speak anytime, even during my reply'
                   : p.shortcut === false
                     ? 'Press play to talk'
                     : 'Press play or Ctrl + Shift + Space'}

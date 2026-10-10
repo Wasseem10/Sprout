@@ -2,6 +2,8 @@ import { it, expect, afterEach, vi } from 'vitest';
 import { mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { createHash } from 'node:crypto';
+import { createRequire } from 'node:module';
 import { createServer, type Server } from 'node:http';
 import { config } from '../server/config';
 import { ComputerController, publicUrl } from '../server/computer/controller';
@@ -570,4 +572,104 @@ it('uploads only the explicitly selected image to the configured vision model', 
     'HF_TOKEN',
   );
   expect(missing.controller.snapshot().screen!.description).toBeNull();
+});
+it('locates only a confident navigation control and signs a one-use native click', async () => {
+  const { controller, cfg } = await setup({}, { hfToken: 'test-token' });
+  const image =
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aT7cAAAAASUVORK5CYII=';
+  await controller.selectScreen('Main display', image);
+  const locate = vi.fn(
+    async (_url: string, _options: RequestInit) =>
+      new Response(
+        JSON.stringify({
+          choices: [
+            {
+              message: {
+                content: JSON.stringify({
+                  found: true,
+                  x: 420,
+                  y: 620,
+                  observedText: 'Apply now',
+                  context: 'listing',
+                  actionType: 'navigation',
+                  confidence: 0.94,
+                }),
+              },
+            },
+          ],
+        }),
+        { status: 200 },
+      ),
+  );
+  vi.stubGlobal('fetch', locate);
+  expect(starterPlan('click the Apply button on my screen', controller.snapshot()).action).toEqual({
+    tool: 'locateScreenTarget',
+    target: 'the Apply button',
+  });
+  const located = await controller.action(
+    { tool: 'locateScreenTarget', target: 'Apply button' },
+    signal(),
+  );
+  expect(located.pointer).toMatchObject({
+    x: 0.42,
+    y: 0.62,
+    target: 'Apply button',
+    observedText: 'Apply now',
+    context: 'listing',
+  });
+  const require = createRequire(import.meta.url);
+  const { verifyPointerAuthorization } = require('../electron/native-pointer.cjs');
+  const input = located.pointer!;
+  const bridgeKey = await readFile(path.join(cfg.localDir, 'desktop-bridge-key'), 'utf8');
+  const capture = { imageHash: createHash('sha256').update(image).digest('hex') };
+  const used = new Map<string, number>();
+  expect(() =>
+    verifyPointerAuthorization(capture, input, input.authorization, bridgeKey, used),
+  ).not.toThrow();
+  expect(() =>
+    verifyPointerAuthorization(capture, input, input.authorization, bridgeKey, used),
+  ).toThrow('already used');
+  expect(() =>
+    verifyPointerAuthorization(
+      capture,
+      { ...input, observedText: 'Submit application' },
+      input.authorization,
+      bridgeKey,
+      new Map(),
+    ),
+  ).toThrow('does not match');
+  const body = JSON.parse(locate.mock.calls[0][1]!.body as string);
+  expect(body.messages[1].content[1].image_url.url).toBe(image);
+  await expect(
+    controller.action({ tool: 'locateScreenTarget', target: 'Submit application' }, signal()),
+  ).rejects.toThrow('cannot click');
+  locate.mockImplementationOnce(
+    async () =>
+      new Response(
+        JSON.stringify({
+          choices: [
+            {
+              message: {
+                content: JSON.stringify({
+                  found: true,
+                  x: 0.42,
+                  y: 0.62,
+                  observedText: 'Apply now',
+                  context: 'form',
+                  actionType: 'navigation',
+                  confidence: 0.94,
+                }),
+              },
+            },
+          ],
+        }),
+        { status: 200 },
+      ),
+  );
+  const onForm = await controller.action(
+    { tool: 'locateScreenTarget', target: 'Apply button' },
+    signal(),
+  );
+  expect(onForm.pointer).toBeUndefined();
+  expect(onForm.summary).toContain('Nothing was clicked');
 });

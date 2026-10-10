@@ -1,6 +1,6 @@
 .companion {
   min-height: 100vh;
-  background: radial-gradient(ellipse at 35% 0%, #1d292020, transparent 65%), #101211;
+  background: radial-gradient(ellipse at 35% 0%, #2766a533, transparent 65%), #0b1424;
 }
 .companion-header {
   height: 95px;
@@ -63,9 +63,11 @@
   display: grid;
   place-items: center;
   color: var(--lime);
-  border: 1px solid #adc88944;
-  background: radial-gradient(circle at 40% 35%, #66864b75, #2c423555 50%, #161e1a);
-  box-shadow: 0 0 40px #6b8e4015;
+  border: 1px solid #a7d9ff70;
+  background: radial-gradient(circle at 40% 35%, #5ba9ff88, #214b7c66 50%, #0f1d33);
+  box-shadow:
+    0 0 40px #60aaff55,
+    inset 0 1px 0 #ffffff55;
 }
 .companion-orb.is-active {
   animation: companion-breathe 2s ease-in-out infinite;
@@ -96,7 +98,7 @@
   border: 1px solid var(--line);
   border-radius: 15px;
   padding: 25px;
-  background: #171b18;
+  background: #13223a;
   min-height: 465px;
   overflow: hidden;
 }
@@ -105,12 +107,19 @@
   border-radius: 10px;
   padding: 18px;
   margin-top: 14px;
-  color: #f2f4ee;
+  color: #f2f8ff;
   overflow-wrap: anywhere;
 }
-.office-result h3 { margin: 0 0 8px; font-size: 19px; }
-.office-result p { line-height: 1.5; }
-.office-result li { margin: 6px 0; }
+.office-result h3 {
+  margin: 0 0 8px;
+  font-size: 19px;
+}
+.office-result p {
+  line-height: 1.5;
+}
+.office-result li {
+  margin: 6px 0;
+}
 .computer-artifact-heading {
   display: flex;
   gap: 18px;
@@ -121,7 +130,7 @@
 .computer-artifact-heading h2 {
   font-size: 22px;
   letter-spacing: -0.5px;
-  color: #f2f4ee;
+  color: #f2f8ff;
   margin: 10px 0;
   overflow-wrap: anywhere;
 }
@@ -158,13 +167,13 @@
   display: grid;
   place-items: center;
   border-radius: 20px;
-  background: #29342970;
+  background: #2b579470;
   color: var(--lime);
   margin-bottom: 8px;
 }
 .computer-empty h3 {
   font-size: 20px;
-  color: #e1e8dd;
+  color: #e7f3ff;
   font-weight: 500;
   margin: 20px 0 3px;
 }
@@ -184,7 +193,7 @@
 .computer-step span {
   font-family: monospace;
   color: var(--lime);
-  border: 1px solid #45543a;
+  border: 1px solid #50759e;
   padding: 4px 5px;
   border-radius: 4px;
   margin-left: 6px;
@@ -208,8 +217,8 @@
 .computer-code,
 .computer-terminal {
   padding: 20px;
-  background: #101411;
-  border: 1px solid #2a342b;
+  background: #0b182b;
+  border: 1px solid #28425f;
   border-radius: 8px;
   font:
     12px/1.8 Consolas,
@@ -217,12 +226,12 @@
   overflow: auto;
   max-height: 350px;
   margin: 0 0 20px;
-  color: #d0dfc7;
+  color: #d4e9fa;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
 .computer-terminal {
-  color: #c4ec8b;
+  color: #9cdbff;
   min-height: 84px;
   max-height: 250px;
 }
@@ -260,7 +269,7 @@
   align-items: center;
   gap: 8px;
   font-size: 10px;
-  color: #a1afa2;
+  color: #a8bfd7;
   margin: 20px 5px;
   line-height: 1.6;
 }
@@ -272,7 +281,7 @@
   height: calc(100vh - 95px);
   position: sticky;
   top: 0;
-  background: #141815;
+  background: #102039;
 }
 .computer-conversation .conversation-heading {
   padding: 0 0 22px;
@@ -296,7 +305,7 @@
 .computer-message {
   padding: 0 2px 15px;
   margin-bottom: 15px;
-  border-bottom: 1px solid #263028;
+  border-bottom: 1px solid #2b4563;
 }
 .computer-message > span {
   font-size: 9px;
@@ -311,13 +320,13 @@
   margin: 10px 0 0;
 }
 .computer-message.user {
-  background: #252d2540;
-  border: 1px solid #37423655;
+  background: #335b8738;
+  border: 1px solid #79baff44;
   border-radius: 10px;
   padding: 15px;
 }
 .computer-message.user > span {
-  color: #b8c1b5;
+  color: #b3cbe5;
 }
 .computer-message.error {
   color: #edb9a6;
@@ -340,16 +349,16 @@
   display: flex;
   gap: 5px;
   align-items: center;
-  border: 1px solid #526149;
+  border: 1px solid #55799f;
   padding: 7px 10px;
   border-radius: 6px;
-  color: #e0eccf;
+  color: #e3f3ff;
   flex-shrink: 0;
 }
 .computer-composer {
-  border: 1px solid #485740;
+  border: 1px solid #6585a9;
   border-radius: 12px;
-  background: #1c241d;
+  background: #172b47;
   padding: 10px 12px;
 }
 .computer-composer:focus-within {
@@ -361,7 +370,7 @@
   resize: vertical;
   border: 0;
   background: none;
-  color: #f2f4ee;
+  color: #f2f8ff;
   padding: 10px 2px;
   font-size: 13px;
   outline: none;
@@ -379,7 +388,7 @@
 }
 .computer-send {
   background: var(--lime);
-  color: #172011;
+  color: #0c2e51;
   width: 34px;
   height: 34px;
   display: grid;
@@ -400,7 +409,7 @@
     11px Consolas,
     monospace;
   padding: 10px 14px;
-  background: #101411;
+  background: #0b182b;
   border: 1px solid var(--line);
   border-radius: 8px 8px 0 0;
   overflow-wrap: anywhere;
@@ -419,7 +428,7 @@
   border: 1px solid var(--line);
   border-radius: 8px;
   display: block;
-  background: #101411;
+  background: #0b182b;
   margin-bottom: 12px;
 }
 .computer-caption {
@@ -436,12 +445,12 @@
   padding: 7px 2px;
 }
 .browser-controls > button {
-  border: 1px solid #3b4839;
+  border: 1px solid #49688b;
   padding: 9px 10px;
   border-radius: 6px;
   text-align: left;
   font-size: 11px;
-  background: #202820;
+  background: #19304d;
   max-width: 100%;
   overflow-wrap: anywhere;
 }
@@ -468,9 +477,9 @@
 .browser-field input {
   min-width: 80px;
   flex: 1;
-  background: #131913;
-  color: #f2f4ee;
-  border: 1px solid #485740;
+  background: #10223c;
+  color: #f2f8ff;
+  border: 1px solid #6585a9;
   border-radius: 4px;
   padding: 8px;
 }
@@ -485,9 +494,9 @@
   max-width: 720px;
   width: calc(100vw - 40px);
   max-height: 85vh;
-  background: #171d18;
-  color: #eef2ee;
-  border: 1px solid #485740;
+  background: #142641;
+  color: #f0f6ff;
+  border: 1px solid #6585a9;
   padding: 28px;
   border-radius: 15px;
 }
@@ -528,7 +537,7 @@
   height: 140px;
   object-fit: contain;
   display: block;
-  background: #0e130f;
+  background: #0c1b30;
   margin-bottom: 10px;
 }
 .screen-sources span {
@@ -549,7 +558,7 @@
   margin-top: 20px;
 }
 .connection-grid > div {
-  background: #20292170;
+  background: #1f3a5f70;
   padding: 14px;
   border: 1px solid var(--line);
   border-radius: 7px;
@@ -581,7 +590,7 @@
 }
 @keyframes companion-breathe {
   50% {
-    box-shadow: 0 0 55px #8dae3c30;
+    box-shadow: 0 0 55px #65bbff77;
     transform: scale(1.05);
   }
 }

@@ -16,6 +16,7 @@ async function setup(
       if (noAnalysis) w.AudioContext = undefined;
       w.trackSets = [];
       w.gains = [];
+      w.playbackPauses = 0;
       w.Audio = class {
         onended: (() => void) | null = null;
         onerror: (() => void) | null = null;
@@ -24,6 +25,7 @@ async function setup(
           return Promise.resolve();
         }
         pause() {
+          w.playbackPauses++;
           this.onended = null;
         }
       };
@@ -109,6 +111,25 @@ test('one activation sends after silence, speaks, then listens again until pause
   ).toBe(true);
 });
 
+test('a fast result skips the acknowledgment and speaks once', async ({ page }) => {
+  await setup(page);
+  let spokenReplies = 0;
+  page.on('request', (request) => {
+    if (new URL(request.url()).pathname === '/api/voice/speak') spokenReplies++;
+  });
+  await page.route('**/api/voice/transcribe', async (route) =>
+    route.fulfill({ json: { text: 'Find jobs' } }),
+  );
+  await page.keyboard.press('Control+Shift+Space');
+  await expect(page.getByRole('log', { name: 'Conversation transcript' })).toContainText(
+    'Your voice command reached the task handler.',
+  );
+  await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBe(2);
+  await page.waitForTimeout(450);
+  expect(spokenReplies).toBe(1);
+  await page.getByRole('button', { name: 'Pause conversation' }).click();
+});
+
 test('after a spoken reply, a second utterance runs without another click', async ({ page }) => {
   const commands = await setup(page);
   await page.route('**/api/voice/transcribe', async (route) =>
@@ -126,6 +147,98 @@ test('after a spoken reply, a second utterance runs without another click', asyn
   await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBe(3);
   await page.getByRole('button', { name: 'Pause conversation' }).click();
   expect(commands).toEqual(['Run my program', 'Run my program']);
+});
+
+test('speaking can be interrupted by a new utterance without pressing play again', async ({
+  page,
+}) => {
+  const commands = await setup(page);
+  await page.evaluate(() => ((window as any).playbackMs = 60000));
+  let utterance = 0;
+  await page.route('**/api/voice/transcribe', async (route) => {
+    utterance++;
+    await route.fulfill({ json: { text: utterance === 1 ? 'Find jobs' : 'Open result one' } });
+  });
+  await page.keyboard.press('Control+Shift+Space');
+  await expect(page.getByText('Reading the answer aloud')).toBeVisible();
+  await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBeGreaterThanOrEqual(2);
+  await page.evaluate(() => {
+    const gain: GainNode = (window as any).gains.at(-1);
+    const now = gain.context.currentTime;
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.setValueAtTime(0, now + 0.5);
+  });
+  await expect.poll(() => page.evaluate(() => (window as any).playbackPauses)).toBe(1);
+  await expect.poll(() => commands.length).toBe(2);
+  expect(commands).toEqual(['Find jobs', 'Open result one']);
+  await page.getByRole('button', { name: 'Pause conversation' }).click();
+});
+
+test('pause stops microphone and audio immediately while the buddy speaks', async ({ page }) => {
+  const commands = await setup(page);
+  await page.evaluate(() => ((window as any).playbackMs = 10000));
+  await page.route('**/api/voice/transcribe', async (route) =>
+    route.fulfill({ json: { text: 'Find jobs' } }),
+  );
+  await page.keyboard.press('Control+Shift+Space');
+  await expect(page.getByText('Reading the answer aloud')).toBeVisible();
+  await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBe(2);
+  await page.getByRole('button', { name: 'Pause conversation' }).click();
+  await expect(page.getByRole('button', { name: 'Start conversation' })).toBeEnabled();
+  expect(await page.evaluate(() => (window as any).playbackPauses)).toBeGreaterThanOrEqual(1);
+  expect(
+    await page.evaluate(() =>
+      (window as any).trackSets.flat().every((t: MediaStreamTrack) => t.readyState === 'ended'),
+    ),
+  ).toBe(true);
+  expect(commands).toEqual(['Find jobs']);
+});
+
+test('interrupting a spoken acknowledgment replaces the in-flight task', async ({ page }) => {
+  await setup(page);
+  await page.evaluate(() => ((window as any).playbackMs = 10000));
+  let spokenReplies = 0;
+  page.on('request', (request) => {
+    if (new URL(request.url()).pathname === '/api/voice/speak') spokenReplies++;
+  });
+  let utterance = 0;
+  await page.route('**/api/voice/transcribe', async (route) => {
+    utterance++;
+    await route.fulfill({ json: { text: utterance === 1 ? 'Find jobs' : 'Open result one' } });
+  });
+  let releaseFirst!: () => void;
+  const firstGate = new Promise<void>((resolve) => (releaseFirst = resolve));
+  const requests: string[] = [];
+  await page.route('**/api/computer/request', async (route) => {
+    const request = route.request().postDataJSON().request as string;
+    requests.push(request);
+    if (request === 'Find jobs') await firstGate;
+    await route.fulfill({ json: { state: empty, summary: `Handled ${request}` } }).catch(() => {});
+  });
+  await page.keyboard.press('Control+Shift+Space');
+  await expect.poll(() => requests.length).toBe(1);
+  await expect(page.getByText('Reading the answer aloud')).toBeVisible();
+  await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBe(2);
+  await page.evaluate(() => {
+    const gain: GainNode = (window as any).gains[1];
+    const now = gain.context.currentTime;
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.setValueAtTime(0, now + 0.5);
+  });
+  await expect.poll(() => page.evaluate(() => (window as any).playbackPauses)).toBe(1);
+  // The old task completes while the user is still recording the interruption.
+  // Its final TTS must not close that recording before transcription runs.
+  releaseFirst();
+  await expect.poll(() => requests.length).toBe(2);
+  expect(requests).toEqual(['Find jobs', 'Open result one']);
+  await expect(page.getByRole('log', { name: 'Conversation transcript' })).toContainText(
+    'Handled Open result one',
+  );
+  await expect(page.getByRole('log', { name: 'Conversation transcript' })).toContainText(
+    'Handled Find jobs',
+  );
+  expect(spokenReplies).toBe(2);
+  await page.getByRole('button', { name: 'Pause conversation' }).click();
 });
 
 test('muting replies keeps the conversation listening for the next request', async ({ page }) => {
@@ -245,4 +358,114 @@ test('canceled transcription cannot submit a late command', async ({ page }) => 
   release();
   await expect(page.getByText('Stopped.', { exact: false }).first()).toBeVisible();
   expect(commands).toEqual([]);
+});
+
+test('a spoken-style screen click uses a fresh capture and native mouse, then recaptures', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const w = window as any;
+    w.nativeActions = [];
+    w.insightos = {
+      captureCurrentScreen: async () => {
+        const captureId = `capture-${w.nativeActions.filter((a: any) => a.type === 'capture').length + 1}`;
+        w.nativeActions.push({ type: 'capture', captureId });
+        return { name: 'Main display', image: 'data:image/png;base64,YQ==', captureId };
+      },
+      clickCapturedTarget: async (
+        captureId: string,
+        x: number,
+        y: number,
+        target: string,
+        observedText: string,
+        context: string,
+      ) => {
+        w.nativeActions.push({ type: 'click', captureId, x, y, target, observedText, context });
+        return { clicked: true, target };
+      },
+    };
+  });
+  await setup(page);
+  const screen = {
+    ...empty,
+    screen: {
+      name: 'Main display',
+      image: 'data:image/png;base64,YQ==',
+      capturedAt: new Date().toISOString(),
+      description: null,
+    },
+  };
+  await page.route('**/api/computer/screen', (route) => route.fulfill({ json: screen }));
+  await page.route('**/api/computer/action', async (route) => {
+    expect(route.request().postDataJSON()).toEqual({
+      tool: 'locateScreenTarget',
+      target: 'Apply button',
+    });
+    await route.fulfill({
+      json: {
+        state: screen,
+        summary: 'I found the Apply button.',
+        pointer: {
+          x: 0.5,
+          y: 0.4,
+          target: 'Apply button',
+          observedText: 'Apply',
+          context: 'listing',
+        },
+      },
+    });
+  });
+  const input = page.getByLabel('Tell your computer what to do');
+  await input.fill('Click the Apply button on my screen');
+  await input.press('Enter');
+  await expect(page.getByRole('log', { name: 'Conversation transcript' })).toContainText(
+    'Clicked Apply button.',
+  );
+  const actions = await page.evaluate(() => (window as any).nativeActions);
+  expect(actions).toEqual([
+    { type: 'capture', captureId: 'capture-1' },
+    {
+      type: 'click',
+      captureId: 'capture-1',
+      x: 0.5,
+      y: 0.4,
+      target: 'Apply button',
+      observedText: 'Apply',
+      context: 'listing',
+    },
+    { type: 'capture', captureId: 'capture-2' },
+  ]);
+});
+
+test('scroll down uses desktop scrolling and refreshes the screen', async ({ page }) => {
+  await page.addInitScript(() => {
+    const w = window as any;
+    w.nativeActions = [];
+    w.insightos = {
+      captureCurrentScreen: async () => {
+        w.nativeActions.push('capture');
+        return {
+          name: 'Main display',
+          image: 'data:image/png;base64,YQ==',
+          captureId: 'capture-1',
+        };
+      },
+      scrollCurrentScreen: async (direction: string) => {
+        w.nativeActions.push(`scroll-${direction}`);
+        return { scrolled: true, direction };
+      },
+    };
+  });
+  await setup(page);
+  await page.route('**/api/computer/screen', (route) => route.fulfill({ json: empty }));
+  const input = page.getByLabel('Tell your computer what to do');
+  await input.fill('Scroll down');
+  await input.press('Enter');
+  await expect(page.getByRole('log', { name: 'Conversation transcript' })).toContainText(
+    'Scrolled down.',
+  );
+  expect(await page.evaluate(() => (window as any).nativeActions)).toEqual([
+    'scroll-down',
+    'capture',
+  ]);
 });

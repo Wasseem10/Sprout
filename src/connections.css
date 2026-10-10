@@ -50,7 +50,7 @@
   border: 1px solid #bcc4c1;
   border-radius: 8px;
   background: #fff;
-  color: #162320;
+  color: #122c4b;
   font: inherit;
 }
 .sponsor-connections button {
@@ -58,7 +58,7 @@
   border-radius: 8px;
   padding: 9px 12px;
   background: #f4f7f5;
-  color: #193b30;
+  color: #194e82;
   cursor: pointer;
   font: inherit;
   font-size: 0.85rem;
@@ -69,7 +69,7 @@
   cursor: default;
 }
 .sponsor-connections :focus-visible {
-  outline: 3px solid #15805f;
+  outline: 3px solid #2589cc;
   outline-offset: 3px;
 }
 .sponsor-actions {
@@ -90,13 +90,13 @@
   overflow-wrap: anywhere;
 }
 .sponsor-checks .passed {
-  color: #226445;
+  color: #2773a8;
 }
 .sponsor-checks .failed {
   color: #a23729;
 }
 .computer-dialog .sponsor-checks .passed {
-  color: #b5e1bf;
+  color: #b5ddff;
 }
 .computer-dialog .sponsor-checks .failed {
   color: #ffc4ba;

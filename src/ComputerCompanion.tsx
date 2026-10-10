@@ -21,7 +21,7 @@ import {
 import type { ComputerAction, ComputerResult, ComputerState } from '../shared/computer';
 import { api, backend, type Status } from './api';
 import { useVoice } from './voice';
-import { spokenComputerReply } from './speechText';
+import { spokenComputerReply, spokenRequestAcknowledgment } from './speechText';
 import './computer.css';
 import ConnectionsPanel from './ConnectionsPanel';
 import DesktopBuddy from './DesktopBuddy';
@@ -29,6 +29,18 @@ import DesktopBuddy from './DesktopBuddy';
 const empty: ComputerState = { folder: null, code: null, browser: null, screen: null };
 type Message = { id: string; role: 'user' | 'assistant' | 'error'; text: string };
 type Source = { id: string; name: string; thumbnail: string };
+
+function visibleScreenTarget(request: string, hasControlledBrowser: boolean) {
+  const explicit = request.match(
+    /\b(?:click|press|tap|select)\s+(?:on\s+)?(?:the\s+)?(.{2,100}?)\s+(?:on|in)\s+(?:my|the|this)\s+(?:screen|display|desktop|window|app)\b/i,
+  );
+  if (explicit) return explicit[1].trim();
+  if (hasControlledBrowser) return null;
+  const contextual = request.match(
+    /^(?:please\s+)?(?:click|press|tap|select)\s+(?:on\s+)?(?:the\s+)?(.{2,100}?)\s*[.!?]?$/i,
+  );
+  return contextual?.[1].replace(/[.!?]+$/, '').trim() ?? null;
+}
 
 export default function ComputerCompanion() {
   const desktopBuddy = new URLSearchParams(window.location.search).get('desktop') === 'buddy';
@@ -66,6 +78,7 @@ export default function ComputerCompanion() {
   const controller = useRef<AbortController | null>(null),
     generation = useRef(0),
     inFlight = useRef(false);
+  const acknowledgmentTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const input = useRef<HTMLTextAreaElement>(null),
     transcript = useRef<HTMLDivElement>(null),
     dialog = useRef<HTMLDialogElement>(null),
@@ -86,12 +99,14 @@ export default function ComputerCompanion() {
     setState(next);
     if (/navigate|search|SearchResult|click|fill|readPage|goBack/.test(tool ?? ''))
       setTab('browser');
-    else if (/describeScreen/.test(tool ?? '')) setTab('screen');
+    else if (/describeScreen|screenAction/.test(tool ?? '')) setTab('screen');
     else if (/Presentation|Spreadsheet/.test(tool ?? '')) setTab('office');
     else if (/Code|Editor/.test(tool ?? '')) setTab('code');
   };
   const perform = async (text: string, action?: ComputerAction, fromVoice = false) => {
     if (!enabled || inFlight.current || !text.trim()) return;
+    if (acknowledgmentTimer.current) clearTimeout(acknowledgmentTimer.current);
+    acknowledgmentTimer.current = null;
     if (!fromVoice) voice.stop();
     if (dockMode) setDockExpanded(true);
     inFlight.current = true;
@@ -102,18 +117,108 @@ export default function ComputerCompanion() {
     controller.current = abort;
     add('user', text);
     setPhase(action ? text : 'Understanding your request');
+    const acknowledgment = fromVoice ? spokenRequestAcknowledgment(text, action) : null;
+    if (acknowledgment && speech && status?.integrations.elevenLabs.ttsConfigured)
+      acknowledgmentTimer.current = setTimeout(() => {
+        acknowledgmentTimer.current = null;
+        if (
+          current === generation.current &&
+          inFlight.current &&
+          voice.isConversationActive() &&
+          !voice.hasPendingInterruption()
+        )
+          void voice.speak(acknowledgment);
+      }, 350);
     const before = state;
     try {
+      const scrollDirection =
+        !action && window.insightos?.scrollCurrentScreen
+          ? (text.match(/\bscroll\s+(up|down)\b/i)?.[1]?.toLowerCase() as 'up' | 'down' | undefined)
+          : undefined;
+      const nativeTarget =
+        !action && !scrollDirection && !!window.insightos?.clickCapturedTarget
+          ? visibleScreenTarget(text, !!state.browser)
+          : action?.tool === 'locateScreenTarget'
+            ? action.target
+            : null;
       const spokenScreenRequest =
         !action &&
+        !scrollDirection &&
+        !nativeTarget &&
         !!window.insightos?.captureCurrentScreen &&
         /\b(describe|read|what|tell me)\b.*\b(screen|display)\b/i.test(text);
+      const clickVisibleTarget = async (target: string): Promise<ComputerResult> => {
+        if (!window.insightos?.captureCurrentScreen || !window.insightos.clickCapturedTarget)
+          throw new Error('Screen clicking requires the desktop buddy.');
+        setPhase('Looking at the current screen');
+        const capture = await window.insightos.captureCurrentScreen();
+        if (abort.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
+        await api<ComputerState>(
+          '/computer/screen',
+          { name: capture.name, image: capture.image },
+          abort.signal,
+        );
+        setPhase(`Locating ${target}`);
+        const located = await api<ComputerResult>(
+          '/computer/action',
+          { tool: 'locateScreenTarget', target },
+          abort.signal,
+        );
+        if (!located.pointer) return located;
+        const pointer = located.pointer;
+        setPhase(`Clicking ${pointer.target}`);
+        const clicked = await window.insightos.clickCapturedTarget(
+          capture.captureId,
+          pointer.x,
+          pointer.y,
+          pointer.target,
+          pointer.observedText,
+          pointer.context,
+          pointer.authorization,
+        );
+        if (abort.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        if (abort.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
+        const updated = await window.insightos.captureCurrentScreen();
+        const updatedState = await api<ComputerState>(
+          '/computer/screen',
+          { name: updated.name, image: updated.image },
+          abort.signal,
+        );
+        return {
+          state: updatedState,
+          summary: `Clicked ${clicked.target}. I can see the updated screen; tell me the next step.`,
+        };
+      };
       let result: ComputerResult;
-      if (spokenScreenRequest) {
+      let usedNativeScreen = !!scrollDirection || !!nativeTarget;
+      if (scrollDirection) {
+        setPhase(`Scrolling ${scrollDirection}`);
+        await window.insightos!.scrollCurrentScreen!(scrollDirection);
+        if (abort.signal.aborted) return;
+        await new Promise((resolve) => setTimeout(resolve, 350));
+        if (abort.signal.aborted) return;
+        const updated = await window.insightos!.captureCurrentScreen();
+        const updatedState = await api<ComputerState>(
+          '/computer/screen',
+          { name: updated.name, image: updated.image },
+          abort.signal,
+        );
+        result = {
+          state: updatedState,
+          summary: `Scrolled ${scrollDirection}. I can see the updated screen.`,
+        };
+      } else if (nativeTarget) {
+        result = await clickVisibleTarget(nativeTarget);
+      } else if (spokenScreenRequest) {
         setPhase('Capturing one snapshot of the main display');
         const image = await window.insightos!.captureCurrentScreen();
         if (abort.signal.aborted) return;
-        await api<ComputerState>('/computer/screen', image, abort.signal);
+        await api<ComputerState>(
+          '/computer/screen',
+          { name: image.name, image: image.image },
+          abort.signal,
+        );
         setPhase('Describing the snapshot');
         result = await api<ComputerResult>(
           '/computer/action',
@@ -126,8 +231,20 @@ export default function ComputerCompanion() {
           action ?? { request: text },
           abort.signal,
         );
+      if (result.pointer) {
+        // A planner may ask to click a visible desktop control. Always locate it
+        // again from a fresh capture so the click cannot use stale coordinates.
+        usedNativeScreen = true;
+        result = await clickVisibleTarget(result.pointer.target);
+      }
       if (current !== generation.current) return;
-      let tool = spokenScreenRequest ? 'describeScreen' : action?.tool;
+      if (acknowledgmentTimer.current) clearTimeout(acknowledgmentTimer.current);
+      acknowledgmentTimer.current = null;
+      let tool = usedNativeScreen
+        ? 'screenAction'
+        : spokenScreenRequest
+          ? 'describeScreen'
+          : action?.tool;
       if (!tool) {
         if (result.state.browser?.capturedAt !== before.browser?.capturedAt) tool = 'readPage';
         if (result.state.presentation?.filename !== before.presentation?.filename)
@@ -147,17 +264,24 @@ export default function ComputerCompanion() {
       add('assistant', result.summary);
       setPhase(result.clarification ? 'Choose your next step' : 'Result received');
       if (fromVoice && !voice.isConversationActive()) return;
+      // The result remains in the transcript. Only its spoken reply is skipped:
+      // the microphone is capturing an interruption and must not be reset.
+      if (fromVoice && voice.hasPendingInterruption()) return;
       if (speech && status?.integrations.elevenLabs.ttsConfigured)
         void voice.speak(spokenComputerReply(result, tool));
       else if (fromVoice) voice.resumeConversation();
     } catch (error) {
       if (current !== generation.current || abort.signal.aborted) return;
+      if (acknowledgmentTimer.current) clearTimeout(acknowledgmentTimer.current);
+      acknowledgmentTimer.current = null;
       add('error', error instanceof Error ? error.message : 'Task could not complete.');
       setPhase('Needs attention');
       await sync().catch(() => {});
       if (fromVoice) voice.resumeConversation();
     } finally {
       if (current === generation.current) {
+        if (acknowledgmentTimer.current) clearTimeout(acknowledgmentTimer.current);
+        acknowledgmentTimer.current = null;
         inFlight.current = false;
         setBusy(false);
         controller.current = null;
@@ -165,8 +289,27 @@ export default function ComputerCompanion() {
       }
     }
   };
-  runRef.current = (text) => perform(text, undefined, true);
+  runRef.current = async (text) => {
+    if (inFlight.current) {
+      // A new utterance during an acknowledgment supersedes the older request.
+      if (acknowledgmentTimer.current) clearTimeout(acknowledgmentTimer.current);
+      acknowledgmentTimer.current = null;
+      ++generation.current;
+      controller.current?.abort();
+      controller.current = null;
+      try {
+        applyState(await api<ComputerState>('/computer/stop', {}));
+      } catch {
+        // A failed stop is surfaced by the new task if the backend remains busy.
+      }
+      inFlight.current = false;
+      setBusy(false);
+    }
+    await perform(text, undefined, true);
+  };
   const stop = async () => {
+    if (acknowledgmentTimer.current) clearTimeout(acknowledgmentTimer.current);
+    acknowledgmentTimer.current = null;
     ++generation.current;
     controller.current?.abort();
     controller.current = null;

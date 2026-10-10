@@ -5,6 +5,19 @@ contextBridge.exposeInMainWorld('insightos', {
   screenSources: () => ipcRenderer.invoke('insightos:screen-sources'),
   captureScreen: (id) => ipcRenderer.invoke('insightos:capture-screen', id),
   captureCurrentScreen: () => ipcRenderer.invoke('insightos:capture-current-screen'),
+  clickCapturedTarget: (captureId, x, y, target, observedText, context, authorization) =>
+    ipcRenderer.invoke(
+      'insightos:click-captured-target',
+      captureId,
+      x,
+      y,
+      target,
+      observedText,
+      context,
+      authorization,
+    ),
+  scrollCurrentScreen: (direction) =>
+    ipcRenderer.invoke('insightos:scroll-current-screen', direction),
   openAccount: (provider) => ipcRenderer.invoke('insightos:open-account', provider),
   platform: process.platform,
   setBuddyMode: (mode) => ipcRenderer.invoke('insightos:buddy-mode', mode),

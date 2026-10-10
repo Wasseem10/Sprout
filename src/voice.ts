@@ -18,6 +18,8 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
   const voiceActivityTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const audioContext = useRef<AudioContext | null>(null);
   const url = useRef<string | null>(null);
+  const monitoringPlayback = useRef(false);
+  const speechInterrupted = useRef(false);
   const transcriptHandler = useRef(onTranscript);
   const errorHandler = useRef(onError);
   transcriptHandler.current = onTranscript;
@@ -25,6 +27,8 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
 
   function clearMedia() {
     generation.current++;
+    monitoringPlayback.current = false;
+    speechInterrupted.current = false;
     abort.current?.abort();
     abort.current = null;
     if (timer.current) clearTimeout(timer.current);
@@ -50,10 +54,11 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
     setPhase('idle');
   }
 
-  async function start(automatic = false) {
-    clearMedia();
+  async function start(automatic = false, monitorPlayback = false) {
+    if (!monitorPlayback) clearMedia();
     const id = generation.current;
-    setPhase('starting');
+    monitoringPlayback.current = monitorPlayback;
+    if (!monitorPlayback) setPhase('starting');
     try {
       if (!navigator.mediaDevices?.getUserMedia)
         throw new Error('Microphone access needs the desktop app, localhost, or HTTPS.');
@@ -98,11 +103,16 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
         stream.current = null;
         if (automatic && !heardSpeech) {
           // Staying available should not repeatedly send silent clips to ElevenLabs.
-          if (conversation.current) timer.current = setTimeout(() => void start(true), 150);
+          if (conversation.current)
+            timer.current = setTimeout(
+              () => void start(true, monitoringPlayback.current && !!audio.current),
+              150,
+            );
           return;
         }
         const blob = new Blob(chunks, { type: recording.mimeType.split(';')[0] });
         if (!blob.size) {
+          speechInterrupted.current = false;
           if (conversation.current) timer.current = setTimeout(() => void start(true), 150);
           else {
             setPhase('idle');
@@ -133,8 +143,12 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
           const text = value.text?.trim();
           if (text) {
             setPhase(conversation.current ? 'processing' : 'idle');
+            // The handoff to the new request is synchronous. Until this point,
+            // pending speech blocks an older task from starting another reply.
+            speechInterrupted.current = false;
             transcriptHandler.current(text);
           } else if (conversation.current) {
+            speechInterrupted.current = false;
             void start(true);
           } else {
             setPhase('idle');
@@ -156,7 +170,7 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
         }
       };
       recording.start();
-      setPhase('listening');
+      if (!monitorPlayback) setPhase('listening');
       timer.current = setTimeout(() => {
         if (recording.state === 'recording') recording.stop();
       }, MAX_RECORDING_MS);
@@ -184,10 +198,23 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
           const rms = Math.sqrt(sum / samples.length);
           // Cap startup calibration: speech may begin on the very first frame.
           if (sampleCount++ < 6) noiseFloor = Math.max(noiseFloor, Math.min(rms, 0.012));
-          const audible = rms > Math.max(0.014, noiseFloor * 1.6);
+          // During playback, echo cancellation removes most speaker output. The higher
+          // threshold and sustained onset avoid treating a stray echo as an interruption.
+          const audible = monitoringPlayback.current
+            ? rms > Math.max(0.027, noiseFloor * 2.4)
+            : rms > Math.max(0.014, noiseFloor * 1.6);
           if (audible) {
             voiceFrames++;
-            if (voiceFrames >= 2) {
+            if (voiceFrames >= (monitoringPlayback.current ? 3 : 2)) {
+              if (monitoringPlayback.current) {
+                monitoringPlayback.current = false;
+                speechInterrupted.current = true;
+                audio.current?.pause();
+                audio.current = null;
+                if (url.current) URL.revokeObjectURL(url.current);
+                url.current = null;
+                setPhase('listening');
+              }
               heardSpeech = true;
               lastSpeech = Date.now();
             }
@@ -239,6 +266,15 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
   }
 
   function skipSpeech() {
+    if (conversation.current && recorder.current?.state === 'recording') {
+      monitoringPlayback.current = false;
+      audio.current?.pause();
+      audio.current = null;
+      if (url.current) URL.revokeObjectURL(url.current);
+      url.current = null;
+      setPhase('listening');
+      return;
+    }
     if (conversation.current) void start(true);
     else stop();
   }
@@ -250,6 +286,7 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
   async function speak(text: string) {
     clearMedia();
     const id = generation.current;
+    speechInterrupted.current = false;
     const controller = new AbortController();
     abort.current = controller;
     setPhase('speaking');
@@ -272,9 +309,17 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
       audio.current = playback;
       playback.onended = () => {
         if (id !== generation.current) return;
+        audio.current = null;
+        if (url.current) URL.revokeObjectURL(url.current);
+        url.current = null;
         if (conversation.current) {
-          setPhase('starting');
-          timer.current = setTimeout(() => void start(true), 350);
+          if (recorder.current?.state === 'recording') {
+            monitoringPlayback.current = false;
+            setPhase('listening');
+          } else {
+            setPhase('starting');
+            timer.current = setTimeout(() => void start(true), 150);
+          }
         } else {
           clearMedia();
           setPhase('idle');
@@ -290,8 +335,12 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
         }
       };
       await playback.play();
+      // Keep the microphone listening while ElevenLabs speaks. The recording includes
+      // the beginning of an interruption, so its first words are not clipped by VAD.
+      if (conversation.current && id === generation.current && audio.current === playback)
+        void start(true, true);
     } catch (error) {
-      if (id === generation.current) {
+      if (id === generation.current && !speechInterrupted.current) {
         errorHandler.current(error instanceof Error ? error.message : 'Voice output failed.');
         if (conversation.current) void start(true);
         else {
@@ -308,6 +357,10 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
 
   function isConversationActive() {
     return conversation.current;
+  }
+
+  function hasPendingInterruption() {
+    return speechInterrupted.current;
   }
 
   useEffect(
@@ -327,6 +380,7 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
     skipSpeech,
     resumeConversation,
     isConversationActive,
+    hasPendingInterruption,
     finish,
     speak,
     stop,

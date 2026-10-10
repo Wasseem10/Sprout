@@ -18,6 +18,7 @@
     "seed:databricks": "tsx scripts/seed-databricks.ts",
     "setup:desktop": "node node_modules/electron/install.js",
     "test:desktop": "node scripts/smoke-desktop.mjs",
+    "test:native-pointer": "node scripts/smoke-native-pointer.mjs",
     "test:computer": "node scripts/smoke-computer.mjs",
     "format": "prettier --write src shared server electron scripts tests *.ts *.json *.md data/*.json data/*.md deploy/*.md deploy/*.yaml",
     "verify:clean": "node scripts/verify-clean.mjs"
