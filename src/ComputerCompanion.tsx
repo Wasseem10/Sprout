@@ -21,6 +21,7 @@ import {
 import type { ComputerAction, ComputerResult, ComputerState } from '../shared/computer';
 import { api, backend, type Status } from './api';
 import { useVoice } from './voice';
+import { spokenComputerReply } from './speechText';
 import './computer.css';
 import ConnectionsPanel from './ConnectionsPanel';
 import DesktopBuddy from './DesktopBuddy';
@@ -89,9 +90,9 @@ export default function ComputerCompanion() {
     else if (/Presentation|Spreadsheet/.test(tool ?? '')) setTab('office');
     else if (/Code|Editor/.test(tool ?? '')) setTab('code');
   };
-  const perform = async (text: string, action?: ComputerAction) => {
+  const perform = async (text: string, action?: ComputerAction, fromVoice = false) => {
     if (!enabled || inFlight.current || !text.trim()) return;
-    voice.stop();
+    if (!fromVoice) voice.stop();
     if (dockMode) setDockExpanded(true);
     inFlight.current = true;
     setBusy(true);
@@ -145,13 +146,16 @@ export default function ComputerCompanion() {
       if (tool === 'fill' || tool === 'confirmFill') setFieldValue('');
       add('assistant', result.summary);
       setPhase(result.clarification ? 'Choose your next step' : 'Result received');
+      if (fromVoice && !voice.isConversationActive()) return;
       if (speech && status?.integrations.elevenLabs.ttsConfigured)
-        void voice.speak(result.summary.slice(0, 3000));
+        void voice.speak(spokenComputerReply(result, tool));
+      else if (fromVoice) voice.resumeConversation();
     } catch (error) {
       if (current !== generation.current || abort.signal.aborted) return;
       add('error', error instanceof Error ? error.message : 'Task could not complete.');
       setPhase('Needs attention');
       await sync().catch(() => {});
+      if (fromVoice) voice.resumeConversation();
     } finally {
       if (current === generation.current) {
         inFlight.current = false;
@@ -161,7 +165,7 @@ export default function ComputerCompanion() {
       }
     }
   };
-  runRef.current = (text) => perform(text);
+  runRef.current = (text) => perform(text, undefined, true);
   const stop = async () => {
     ++generation.current;
     controller.current?.abort();
@@ -294,14 +298,17 @@ export default function ComputerCompanion() {
       lastFocus.current?.focus();
     }
   }, [modal]);
-  const active = busy || voice.phase !== 'idle';
+  const active = busy || voice.conversationActive || voice.phase !== 'idle';
   const voicePending = voice.phase === 'starting' || voice.phase === 'transcribing';
   const toggleRecording = () => {
+    if (voice.isConversationActive()) {
+      voice.pauseConversation();
+      return;
+    }
     if (!enabled || inFlight.current || voicePending || !status?.integrations.elevenLabs.configured)
       return;
     if (dockMode) setDockExpanded(true);
-    if (voice.phase === 'listening') voice.finish();
-    else void voice.start();
+    voice.startConversation();
   };
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -316,7 +323,15 @@ export default function ComputerCompanion() {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [modal, enabled, busy, voice.phase, globalVoice, status?.integrations.elevenLabs.configured]);
+  }, [
+    modal,
+    enabled,
+    busy,
+    voice.phase,
+    voice.conversationActive,
+    globalVoice,
+    status?.integrations.elevenLabs.configured,
+  ]);
   const hideBuddy = async () => {
     if (active) await stop();
     setDockExpanded(false);
@@ -362,7 +377,7 @@ export default function ComputerCompanion() {
       .catch(() => {});
   }, [desktopBuddy, dockMode, dockExpanded, modal]);
   const toggleSpeech = () => {
-    if (speech && voice.phase === 'speaking') voice.stop();
+    if (speech && voice.phase === 'speaking') voice.skipSpeech();
     setSpeech(!speech);
   };
   return (
@@ -374,6 +389,7 @@ export default function ComputerCompanion() {
           busy={busy}
           enabled={enabled}
           voicePhase={voice.phase}
+          conversationActive={voice.conversationActive}
           voiceReady={!!status?.integrations.elevenLabs.configured}
           speech={speech}
           speechReady={!!status?.integrations.elevenLabs.ttsConfigured}
@@ -942,7 +958,7 @@ export default function ComputerCompanion() {
                   aria-label={speech ? 'Turn spoken replies off' : 'Turn spoken replies on'}
                   disabled={!status?.integrations.elevenLabs.ttsConfigured}
                   onClick={() => {
-                    if (speech && voice.phase === 'speaking') voice.stop();
+                    if (speech && voice.phase === 'speaking') voice.skipSpeech();
                     setSpeech(!speech);
                   }}
                 >
@@ -986,10 +1002,12 @@ export default function ComputerCompanion() {
                     : voice.phase === 'starting'
                       ? 'Opening microphone…'
                       : voice.phase === 'listening'
-                        ? 'Listening — press Ctrl+Shift+Space or microphone to send'
+                        ? 'Listening — I will respond when you finish speaking'
                         : voice.phase === 'transcribing'
                           ? 'Transcribing your request…'
-                          : 'Reading the answer aloud'}
+                          : voice.phase === 'processing'
+                            ? 'Working on your request…'
+                            : 'Reading the answer aloud'}
                 </span>
                 {active && (
                   <button onClick={() => void stop()} className="computer-stop">
@@ -1033,13 +1051,12 @@ export default function ComputerCompanion() {
                     type="button"
                     className={`icon-button ${voice.phase === 'listening' ? 'listening' : ''}`}
                     aria-label={
-                      voice.phase === 'listening' ? 'Finish recording' : 'Start voice recording'
+                      voice.conversationActive ? 'Pause conversation' : 'Start conversation'
                     }
                     aria-keyshortcuts="Control+Shift+Space"
                     disabled={
                       !enabled ||
-                      busy ||
-                      voicePending ||
+                      (!voice.conversationActive && (busy || voicePending)) ||
                       !status?.integrations.elevenLabs.configured
                     }
                     onClick={toggleRecording}
@@ -1057,7 +1074,8 @@ export default function ComputerCompanion() {
                 </div>
               </form>
               <p className="computer-voice-note">
-                Ctrl+Shift+Space starts or sends a recording. Esc stops the task and audio.
+                Ctrl+Shift+Space starts or pauses conversation. Speak naturally; silence sends each
+                request. Esc stops the task and audio.
               </p>
             </aside>
           </div>
@@ -1141,7 +1159,7 @@ export default function ComputerCompanion() {
                 type="checkbox"
                 checked={speech}
                 onChange={(e) => {
-                  if (!e.target.checked && voice.phase === 'speaking') voice.stop();
+                  if (!e.target.checked && voice.phase === 'speaking') voice.skipSpeech();
                   setSpeech(e.target.checked);
                 }}
                 disabled={!status?.integrations.elevenLabs.ttsConfigured}

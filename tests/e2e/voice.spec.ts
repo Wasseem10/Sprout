@@ -1,27 +1,57 @@
 import { test, expect, type Page } from '@playwright/test';
 
 const empty = { folder: null, code: null, browser: null, screen: null };
-async function setup(page: Page, pendingPermission = false) {
+async function setup(
+  page: Page,
+  pendingPermission = false,
+  initialSpeech = true,
+  noAnalysis = false,
+) {
   // An oscillator stream exercises actual MediaRecorder without opening the user's microphone.
-  await page.addInitScript((pending) => {
-    localStorage.setItem('insightos.speech', 'false');
-    const w = window as any;
-    navigator.mediaDevices.getUserMedia = async () => {
-      w.micCalls = (w.micCalls ?? 0) + 1;
-      const context = new AudioContext();
-      const destination = context.createMediaStreamDestination();
-      const oscillator = context.createOscillator();
-      oscillator.connect(destination);
-      oscillator.start();
-      w.testTracks = destination.stream.getTracks();
-      w.releaseMic = () => destination.stream;
-      if (pending)
-        return new Promise<MediaStream>((resolve) => {
-          w.releaseMic = () => resolve(destination.stream);
-        });
-      return destination.stream;
-    };
-  }, pendingPermission);
+  await page.addInitScript(
+    ({ pending, initialSpeech, noAnalysis }) => {
+      localStorage.setItem('insightos.speech', String(initialSpeech));
+      const w = window as any;
+      const TestAudioContext = AudioContext;
+      if (noAnalysis) w.AudioContext = undefined;
+      w.trackSets = [];
+      w.gains = [];
+      w.Audio = class {
+        onended: (() => void) | null = null;
+        onerror: (() => void) | null = null;
+        play() {
+          setTimeout(() => this.onended?.(), w.playbackMs ?? 80);
+          return Promise.resolve();
+        }
+        pause() {
+          this.onended = null;
+        }
+      };
+      navigator.mediaDevices.getUserMedia = async () => {
+        w.micCalls = (w.micCalls ?? 0) + 1;
+        const context = new TestAudioContext();
+        const destination = context.createMediaStreamDestination();
+        const oscillator = context.createOscillator();
+        const gain = context.createGain();
+        oscillator.connect(gain).connect(destination);
+        w.gains.push(gain);
+        if (w.micCalls === 1) {
+          gain.gain.setValueAtTime(0, context.currentTime);
+          gain.gain.setValueAtTime(0.25, context.currentTime + 0.2);
+          gain.gain.setValueAtTime(0, context.currentTime + 0.7);
+        } else gain.gain.setValueAtTime(0, context.currentTime);
+        oscillator.start();
+        w.trackSets.push(destination.stream.getTracks());
+        w.releaseMic = () => destination.stream;
+        if (pending)
+          return new Promise<MediaStream>((resolve) => {
+            w.releaseMic = () => resolve(destination.stream);
+          });
+        return destination.stream;
+      };
+    },
+    { pending: pendingPermission, initialSpeech, noAnalysis },
+  );
   const commands: string[] = [];
   await page.route('**/api/**', async (route) => {
     const pathname = new URL(route.request().url()).pathname;
@@ -42,14 +72,16 @@ async function setup(page: Page, pendingPermission = false) {
       commands.push(route.request().postDataJSON().request);
       json = { state: empty, summary: 'Your voice command reached the task handler.' };
     }
+    if (pathname === '/api/voice/speak')
+      return route.fulfill({ body: 'mock-audio', contentType: 'audio/mpeg' });
     await route.fulfill({ json });
   });
   await page.goto('/');
-  await expect(page.getByRole('button', { name: 'Start voice recording' })).toBeEnabled();
+  await expect(page.getByRole('button', { name: 'Start conversation' })).toBeEnabled();
   return commands;
 }
 
-test('keyboard recording produces audio and dispatches exactly one recognized command', async ({
+test('one activation sends after silence, speaks, then listens again until paused', async ({
   page,
 }) => {
   const commands = await setup(page);
@@ -61,16 +93,116 @@ test('keyboard recording produces audio and dispatches exactly one recognized co
     await route.fulfill({ json: { text: 'Run my program', provider: 'elevenlabs' } });
   });
   await page.keyboard.press('Control+Shift+Space');
-  await expect(page.getByRole('button', { name: 'Finish recording' })).toBeEnabled();
-  await page.keyboard.press('Control+Shift+Space');
+  await expect(page.getByRole('button', { name: 'Pause conversation' })).toBeEnabled();
   await expect(
     page.getByText('Your voice command reached the task handler.', { exact: true }).first(),
   ).toBeVisible();
+  await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBe(2);
   expect(recordings).toBe(1);
   expect(commands).toEqual(['Run my program']);
+  await page.keyboard.press('Control+Shift+Space');
+  await expect(page.getByRole('button', { name: 'Start conversation' })).toBeEnabled();
   expect(
     await page.evaluate(() =>
-      (window as any).testTracks.every((t: MediaStreamTrack) => t.readyState === 'ended'),
+      (window as any).trackSets.flat().every((t: MediaStreamTrack) => t.readyState === 'ended'),
+    ),
+  ).toBe(true);
+});
+
+test('after a spoken reply, a second utterance runs without another click', async ({ page }) => {
+  const commands = await setup(page);
+  await page.route('**/api/voice/transcribe', async (route) =>
+    route.fulfill({ json: { text: 'Run my program' } }),
+  );
+  await page.keyboard.press('Control+Shift+Space');
+  await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBe(2);
+  await page.evaluate(() => {
+    const gain: GainNode = (window as any).gains[1];
+    const now = gain.context.currentTime;
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.setValueAtTime(0, now + 0.5);
+  });
+  await expect.poll(() => commands.length).toBe(2);
+  await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBe(3);
+  await page.getByRole('button', { name: 'Pause conversation' }).click();
+  expect(commands).toEqual(['Run my program', 'Run my program']);
+});
+
+test('muting replies keeps the conversation listening for the next request', async ({ page }) => {
+  const commands = await setup(page);
+  let spokenReplies = 0;
+  page.on('request', (request) => {
+    if (new URL(request.url()).pathname === '/api/voice/speak') spokenReplies++;
+  });
+  await page.route('**/api/voice/transcribe', async (route) =>
+    route.fulfill({ json: { text: 'Run my program' } }),
+  );
+  await page.keyboard.press('Control+Shift+Space');
+  await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBe(2);
+  await page.getByRole('button', { name: 'Turn spoken replies off' }).click();
+  await page.evaluate(() => {
+    const gain: GainNode = (window as any).gains[1];
+    const now = gain.context.currentTime;
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.setValueAtTime(0, now + 0.5);
+  });
+  await expect.poll(() => commands.length).toBe(2);
+  await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBe(3);
+  expect(spokenReplies).toBe(1);
+  await page.getByRole('button', { name: 'Pause conversation' }).click();
+});
+
+test('muting during a spoken reply stops audio but keeps the session active', async ({ page }) => {
+  const commands = await setup(page);
+  await page.evaluate(() => ((window as any).playbackMs = 10000));
+  await page.route('**/api/voice/transcribe', async (route) =>
+    route.fulfill({ json: { text: 'Run my program' } }),
+  );
+  await page.keyboard.press('Control+Shift+Space');
+  await expect(page.getByText('Reading the answer aloud')).toBeVisible();
+  await page.getByRole('button', { name: 'Turn spoken replies off' }).click();
+  await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBe(2);
+  await expect(page.getByRole('button', { name: 'Pause conversation' })).toBeEnabled();
+  expect(commands).toEqual(['Run my program']);
+  await page.getByRole('button', { name: 'Pause conversation' }).click();
+});
+
+test('playing honors a previously muted setting', async ({ page }) => {
+  const commands = await setup(page, false, false);
+  let spokenReplies = 0;
+  page.on('request', (request) => {
+    if (new URL(request.url()).pathname === '/api/voice/speak') spokenReplies++;
+  });
+  await page.route('**/api/voice/transcribe', async (route) =>
+    route.fulfill({ json: { text: 'Run my program' } }),
+  );
+  await page.keyboard.press('Control+Shift+Space');
+  await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBe(2);
+  expect(commands).toEqual(['Run my program']);
+  expect(spokenReplies).toBe(0);
+  await page.getByRole('button', { name: 'Pause conversation' }).click();
+});
+
+test('missing audio analysis stops instead of sending repeated silent clips', async ({ page }) => {
+  const commands = await setup(page, false, true, true);
+  let transcriptions = 0;
+  page.on('request', (request) => {
+    if (new URL(request.url()).pathname === '/api/voice/transcribe') transcriptions++;
+  });
+  await page.keyboard.press('Control+Shift+Space');
+  await expect(
+    page
+      .getByRole('log', { name: 'Conversation transcript' })
+      .getByText('Automatic voice detection is unavailable.', { exact: false }),
+  ).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Start conversation' })).toBeEnabled();
+  expect(commands).toEqual([]);
+  expect(transcriptions).toBe(0);
+  expect(
+    await page.evaluate(() =>
+      (window as any).trackSets
+        .flat()
+        .every((track: MediaStreamTrack) => track.readyState === 'ended'),
     ),
   ).toBe(true);
 });
@@ -81,16 +213,15 @@ test('Escape cancels pending microphone permission and stops a stream arriving l
   const commands = await setup(page, true);
   await page.keyboard.press('Control+Shift+Space');
   await expect(page.getByText('Opening microphone…')).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Start voice recording' })).toBeDisabled();
-  await page.keyboard.press('Control+Shift+Space');
+  await expect(page.getByRole('button', { name: 'Pause conversation' })).toBeEnabled();
   expect(await page.evaluate(() => (window as any).micCalls)).toBe(1);
   await page.keyboard.press('Escape');
-  await expect(page.getByRole('button', { name: 'Start voice recording' })).toBeEnabled();
+  await expect(page.getByRole('button', { name: 'Start conversation' })).toBeEnabled();
   await page.evaluate(() => (window as any).releaseMic());
   await expect
     .poll(() =>
       page.evaluate(() =>
-        (window as any).testTracks.every((t: MediaStreamTrack) => t.readyState === 'ended'),
+        (window as any).trackSets.flat().every((t: MediaStreamTrack) => t.readyState === 'ended'),
       ),
     )
     .toBe(true);
@@ -108,11 +239,9 @@ test('canceled transcription cannot submit a late command', async ({ page }) => 
     await route.fulfill({ json: { text: 'Run my program' } }).catch(() => {});
   });
   await page.keyboard.press('Control+Shift+Space');
-  await expect(page.getByRole('button', { name: 'Finish recording' })).toBeEnabled();
-  await page.keyboard.press('Control+Shift+Space');
   await expect(page.getByText('Transcribing your request…')).toBeVisible();
   await page.keyboard.press('Escape');
-  await expect(page.getByRole('button', { name: 'Start voice recording' })).toBeEnabled();
+  await expect(page.getByRole('button', { name: 'Start conversation' })).toBeEnabled();
   release();
   await expect(page.getByText('Stopped.', { exact: false }).first()).toBeVisible();
   expect(commands).toEqual([]);

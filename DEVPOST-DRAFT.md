@@ -10,7 +10,7 @@ Computer tasks often require many small visual and mouse steps. We wanted to exp
 
 ## What it does
 
-The Windows Electron buddy stays in a compact, always-on-top pill and expands into a conversation when needed. Push-to-talk uses Ctrl+Shift+Space, and Ctrl+Shift+Backspace stops the current task. A spoken request can generate an editable slide deck and open it in PowerPoint; read a real `.xlsx` workbook, calculate a summary, and open it in Excel; or create, run and open a Python file in VS Code. It can search public sites, read numbered results, fill an observed web form field, and describe a one-time capture of the main display. Personal contact fields require a second spoken confirmation. The larger workspace preserves the same conversation.
+The Windows Electron buddy stays in a compact, always-on-top pill and expands into a conversation when needed. One center play button starts a voice session: InsightOS detects the end of each utterance, responds aloud, then listens for the next request. Ctrl+Shift+Space toggles the conversation, and Ctrl+Shift+Backspace stops the current task. A spoken request can generate an editable slide deck and open it in PowerPoint; read a real `.xlsx` workbook, calculate a summary, and open it in Excel; or create, run and open a Python file in VS Code. It can search public sites, read numbered results, open an observed Apply control on a job listing, help fill an observed form field, and describe a one-time capture of the main display. Personal contact fields require a second spoken confirmation. The larger workspace preserves the same conversation.
 
 Hugging Face open models plan flexible commands and generate Python and slide outlines. Its vision model describes a supplied screenshot. ElevenLabs transcribes recorded voice and produces spoken replies. ExcelJS reads spreadsheet cells for deterministic totals and group comparisons; PptxGenJS writes editable slides. A separate CSV data workspace demonstrates source-linked analysis, filtering, charts, explanation and undo. Browser checkout, passwords, payments and final form submission stop for manual review. InsightOS does not control arbitrary desktop apps or complete purchases.
 
@@ -22,7 +22,7 @@ We used Codex to help write and test the code, then checked the actual applicati
 
 ## Challenges and learning
 
-The hardest problem was making the desktop assistant genuinely act while keeping its claims precise. We bounded AI-selected actions, inspect browser controls before interacting, limit Python execution, and stop at sensitive web actions. The voice chain needed cancellation so an old transcription or spoken reply could not continue after Stop. We also learned that configured credentials are not evidence of a working integration, so we tested real Hugging Face and ElevenLabs calls and recorded their outputs.
+The hardest problem was making the desktop assistant genuinely act while keeping its claims precise. We bounded AI-selected actions, inspect browser controls before interacting, limit Python execution, and stop at sensitive web actions. The voice chain needed silence detection and cancellation so it could keep a conversation going without sending silent audio or continuing an old transcription after Stop. We also learned that configured credentials are not evidence of a working integration, so we tested real Hugging Face and ElevenLabs calls and recorded their outputs.
 
 ## Verified demo evidence
 
@@ -31,7 +31,8 @@ The hardest problem was making the desktop assistant genuinely act while keeping
 - A live Google request encountered verification, and the buddy announced its Bing fallback, read numbered results, then opened the first observed result (`artifacts/handsfree-workflow.json`).
 - A live Hugging Face request generated a four-slide editable PowerPoint that opened in the installed app. The same flow read a six-row synthetic Excel workbook, calculated revenue of 6,200 and East as the top region at 2,700, then launched Excel (`artifacts/office-workflows.json`).
 - The public Selenium practice form accepted a spoken field instruction; the password and submit controls remained blocked (`artifacts/form-assist.json`). A local form test verified personal-contact confirmation before typing.
-- The configured Hugging Face vision model interpreted a real buddy screenshot, and native Electron captured the main display on request. A physical microphone, audible laptop playback, and the full live screen-description conversation still need a manual rehearsal.
+- A public Greenhouse job listing exposed an Apply button that opened its real application form. The buddy identified text fields but blocked final submission; no personal information was entered (`artifacts/job-apply.json`).
+- The configured Hugging Face vision model interpreted a real buddy screenshot, and native Electron captured the main display on request. Automated browser tests verified two consecutive voice requests from one play activation; the revised voice loop and full screen-description conversation still need a physical rehearsal.
 
 ## What's next
 

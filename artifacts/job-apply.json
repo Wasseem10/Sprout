@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-10-10T17:21:21.988Z",
+  "listingUrl": "https://job-boards.greenhouse.io/k18inc/jobs/4065057008",
+  "listingTitle": "Job Application for General Application (US) at K18 Hair",
+  "observedApplyControl": {
+    "id": "control-1",
+    "name": "Apply",
+    "role": "button",
+    "sensitive": false,
+    "blocked": false
+  },
+  "applicationPageTitle": "Job Application for General Application (US) at K18 Hair",
+  "applicationPageUrl": "https://job-boards.greenhouse.io/k18inc/jobs/4065057008",
+  "observedFields": [
+    "First Name",
+    "Last Name",
+    "Email",
+    "Country*",
+    "Phone",
+    "What excites you about K18?",
+    "Are you currently employed by Unilever or any of its subsidiary brands?*",
+    "Are you legally authorized to work in the United States?*"
+  ],
+  "finalSubmitBlocked": true,
+  "note": "Read-only rehearsal. No personal data was entered and no application was submitted."
+}

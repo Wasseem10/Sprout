@@ -175,6 +175,17 @@ it('maps a spoken Google request to search without inventing a website action', 
     query: 'accessible Python tutorials',
   });
 });
+it('opens an explicitly named HTTPS job listing without relying on model parsing', async () => {
+  const state = { folder: null, code: null, browser: null, screen: null };
+  const url = 'https://job-boards.greenhouse.io/k18inc/jobs/4065057008';
+  const plan = await computerPlan(
+    `Open ${url}`,
+    state,
+    { ...config(), hfToken: 'test-token' },
+    signal(),
+  );
+  expect(plan.action).toEqual({ tool: 'navigate', url });
+});
 it('regenerates Python when the model uses an unsupported main guard', async () => {
   const { cfg } = await setup({}, { hfToken: 'test-token' });
   const codes = [
@@ -309,6 +320,89 @@ it('reads numbered observed search results and opens only the chosen result', as
   );
   expect(redirected.state.browser?.url).toBe(origin + '/search');
   expect(redirected.summary).toContain('sent me back to the search results');
+});
+it('follows a job search result into Apply, keeps a new-tab form controlled, and never submits it', async () => {
+  let submitted = false;
+  const navigation = Array.from(
+    { length: 72 },
+    (_, i) => `<a href="/menu?item=${i}">Menu ${i}</a>`,
+  ).join('');
+  const server = createServer((req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    if (req.url === '/search')
+      res.end(
+        `<html><title>Job search</title><body>${navigation}<div id="b_results"><div class="b_algo"><h2><a href="/job">Library assistant opening</a></h2><div class="b_caption"><p>Local accessible work</p></div></div></div></body></html>`,
+      );
+    else if (req.url === '/job')
+      res.end(
+        `<html><title>Library assistant opening</title><body>${navigation}<h1>Library assistant</h1><a href="/application" target="_blank">Apply now</a></body></html>`,
+      );
+    else if (req.url === '/popup-job')
+      res.end(
+        "<html><title>Popup job</title><body><button onclick=\"window.open('/application', '_blank')\">Apply now</button></body></html>",
+      );
+    else if (req.url === '/application')
+      res.end(
+        '<html><title>Library job application</title><body><h1>Apply for Library assistant</h1><form action="/submitted" method="post"><label>Email<input name="email" type="email"></label><label>Why this job?<textarea name="motivation"></textarea></label><button type="button" onclick="location.href=\'/submitted\'">Apply now</button><button>Submit application</button></form></body></html>',
+      );
+    else if (req.url === '/submitted') {
+      submitted = true;
+      res.end('submitted');
+    } else res.end('<html><title>Menu</title></html>');
+  });
+  servers.push(server);
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const origin = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
+  const { controller } = await setup({
+    headless: true,
+    validateUrl: async (url) => {
+      if (new URL(url).origin !== origin) throw new Error('Test origin only');
+      return url;
+    },
+  });
+  const search = await controller.action({ tool: 'navigate', url: origin + '/search' }, signal());
+  const pick = starterPlan('apply to the first job', search.state);
+  expect(pick.action).toMatchObject({ tool: 'openSearchResult', index: 1 });
+  expect(starterPlan('open the first job', search.state).action).toMatchObject({
+    tool: 'openSearchResult',
+    index: 1,
+  });
+  const job = await controller.action(pick.action!, signal());
+  expect(job.state.browser?.title).toBe('Library assistant opening');
+  const apply = job.state.browser!.controls.find((control) => control.name === 'Apply now');
+  expect(apply).toMatchObject({ role: 'link', blocked: false });
+  const open = starterPlan('click apply', job.state);
+  expect(open.action).toMatchObject({ tool: 'click', controlId: apply!.id });
+  const application = await controller.action(open.action!, signal());
+  expect(application.state.browser?.url).toBe(origin + '/application');
+  expect(application.summary).toContain('I found text fields:');
+  expect(application.summary).toContain('I will not submit');
+  const submitControls = application.state.browser!.controls.filter((control) =>
+    ['Apply now', 'Submit application'].includes(control.name),
+  );
+  expect(submitControls).toHaveLength(2);
+  expect(submitControls.every((control) => control.blocked)).toBe(true);
+  for (const submit of submitControls) {
+    const blocked = await controller.action(
+      { tool: 'click', controlId: submit.id, pageId: application.state.browser!.id },
+      signal(),
+    );
+    expect(blocked.summary).toContain('Stopped for review');
+  }
+  expect(submitted).toBe(false);
+  const staged = await controller.request('Fill Email with person@example.test', signal());
+  expect(staged.summary).toContain('confirm fill');
+  const filled = await controller.request('confirm fill', signal());
+  expect(filled.summary).toContain('Filled Email');
+  expect(submitted).toBe(false);
+  const popupJob = await controller.action(
+    { tool: 'navigate', url: origin + '/popup-job' },
+    signal(),
+  );
+  const popupPlan = starterPlan('click apply', popupJob.state);
+  const popupResult = await controller.action(popupPlan.action!, signal());
+  expect(popupResult.state.browser?.url).toBe(origin + '/application');
+  expect(submitted).toBe(false);
 });
 it('uses actual page controls, rejects stale references, stops purchases, and confirms personal fields', async () => {
   let purchased = false;

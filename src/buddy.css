@@ -32,6 +32,7 @@ html.desktop-buddy,
   flex-direction: column;
 }
 .buddy-bar {
+  position: relative;
   height: 68px;
   flex-shrink: 0;
   padding: 10px 13px;
@@ -53,9 +54,9 @@ html.desktop-buddy,
   box-shadow: 0 0 24px #b7e99316;
 }
 .buddy-face span {
-  width: 5px;
-  height: 13px;
-  border-radius: 5px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
   background: #24382b;
   animation: buddy-blink 7s infinite;
 }
@@ -66,7 +67,7 @@ html.desktop-buddy,
   animation-delay: 0.18s;
 }
 .buddy-identity {
-  flex: 1;
+  flex: 0 1 84px;
   min-width: 0;
   align-self: stretch;
   justify-content: center;
@@ -107,12 +108,59 @@ html.desktop-buddy,
   color: #f0ffe8;
   background: #ffffff0d;
 }
-.buddy-icon.talk {
-  color: #c3e7ac;
-}
 .buddy-icon.stop {
   color: #ffc5b4;
   background: #ffbfa914;
+}
+.buddy-window-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+.buddy-play {
+  -webkit-app-region: no-drag;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  padding-left: 3px;
+  color: #1b3020;
+  background: linear-gradient(145deg, #d9f8b9, #a9da8c);
+  box-shadow:
+    0 4px 18px #a6d58440,
+    inset 0 1px 0 #fff8;
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease;
+}
+.buddy-play:hover:not(:disabled) {
+  transform: translate(-50%, -50%) scale(1.07);
+  box-shadow:
+    0 5px 25px #a6d58480,
+    inset 0 1px 0 #fff9;
+}
+.buddy-play:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+.buddy-play.playing {
+  padding-left: 0;
+  color: #e9ffd9;
+  background: linear-gradient(145deg, #3d6e49, #234631);
+  box-shadow: 0 0 20px #a6d58460;
+}
+.buddy-play.listening {
+  animation: buddy-listen 1.8s ease-in-out infinite;
+}
+.buddy-play:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 .buddy-body {
   border-top: 1px solid #c2e9ad17;
@@ -316,9 +364,15 @@ html.desktop-buddy,
     transform: scale(0.94);
   }
 }
+@keyframes buddy-listen {
+  50% {
+    box-shadow: 0 0 30px #a6d584aa;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .buddy-face,
-  .buddy-face span {
+  .buddy-face span,
+  .buddy-play {
     animation: none !important;
   }
 }

@@ -7,8 +7,9 @@ import {
   Eye,
   FolderOpen,
   Maximize2,
-  Mic,
   Minus,
+  Pause,
+  Play,
   Presentation,
   Settings2,
   Square,
@@ -21,6 +22,7 @@ import './buddy.css';
 type Props = {
   expanded: boolean;
   active: boolean;
+  conversationActive: boolean;
   busy: boolean;
   enabled: boolean;
   voicePhase: string;
@@ -49,18 +51,17 @@ type Props = {
   openPresentation: () => void;
 };
 export default function DesktopBuddy(p: Props) {
-  const pending = ['starting', 'transcribing'].includes(p.voicePhase);
   const status = p.busy
-    ? 'Working on your request'
+    ? 'Working…'
     : p.voicePhase === 'listening'
-      ? 'I’m listening…'
+      ? 'Listening…'
       : p.voicePhase === 'starting'
-        ? 'Opening microphone…'
+        ? 'Opening mic…'
         : p.voicePhase === 'transcribing'
-          ? 'Getting your words…'
+          ? 'Understanding…'
           : p.voicePhase === 'speaking'
-            ? 'Speaking'
-            : 'Here when you need me';
+            ? 'Speaking…'
+            : 'Ready to talk';
   const conversation = p.messages.filter((m) => m.id !== 'welcome');
   return (
     <section
@@ -82,40 +83,52 @@ export default function DesktopBuddy(p: Props) {
           </strong>
           <span role="status">{status}</span>
         </div>
-        {p.active ? (
-          <button
-            className="buddy-icon stop"
-            onClick={p.stop}
-            aria-label="Stop task and audio"
-            title="Stop · Ctrl+Shift+Backspace"
-          >
-            <Square size={15} />
-          </button>
-        ) : (
-          <button
-            className="buddy-icon talk"
-            onClick={p.talk}
-            disabled={!p.enabled || !p.voiceReady}
-            aria-label="Start voice recording"
-          >
-            <Mic size={18} />
-          </button>
-        )}
         <button
-          className="buddy-icon"
-          onClick={p.expand}
-          aria-label={p.expanded ? 'Collapse conversation' : 'Expand conversation'}
+          className={`buddy-play ${p.conversationActive ? 'playing' : ''} ${p.voicePhase === 'listening' ? 'listening' : ''}`}
+          onClick={p.talk}
+          disabled={!p.conversationActive && (!p.enabled || !p.voiceReady || p.busy)}
+          aria-label={
+            p.conversationActive ? 'Pause voice conversation' : 'Start voice conversation'
+          }
+          aria-pressed={p.conversationActive}
+          aria-keyshortcuts="Control+Shift+Space"
+          title={
+            p.conversationActive ? 'Pause conversation' : 'Start conversation · Ctrl+Shift+Space'
+          }
         >
-          {p.expanded ? <ChevronUp size={17} /> : <ChevronDown size={17} />}
+          {p.conversationActive ? (
+            <Pause size={22} fill="currentColor" />
+          ) : (
+            <Play size={23} fill="currentColor" />
+          )}
         </button>
-        <button
-          className="buddy-icon"
-          onClick={p.hide}
-          aria-label="Hide to system tray"
-          title="Hide to tray"
-        >
-          <Minus size={17} />
-        </button>
+        <div className="buddy-window-actions">
+          {p.active && (
+            <button
+              className="buddy-icon stop"
+              onClick={p.stop}
+              aria-label="Stop task and audio"
+              title="Stop · Ctrl+Shift+Backspace"
+            >
+              <Square size={15} />
+            </button>
+          )}
+          <button
+            className="buddy-icon"
+            onClick={p.expand}
+            aria-label={p.expanded ? 'Collapse conversation' : 'Expand conversation'}
+          >
+            {p.expanded ? <ChevronUp size={17} /> : <ChevronDown size={17} />}
+          </button>
+          <button
+            className="buddy-icon"
+            onClick={p.hide}
+            aria-label="Hide to system tray"
+            title="Hide to tray"
+          >
+            <Minus size={17} />
+          </button>
+        </div>
       </header>
       {p.expanded && (
         <div className="buddy-body">
@@ -132,8 +145,8 @@ export default function DesktopBuddy(p: Props) {
                 <span className="buddy-eyebrow">A LITTLE HELP. RIGHT HERE.</span>
                 <h1>What’s on your mind?</h1>
                 <p>
-                  Ask me to make slides, analyze an Excel workbook, write code, browse the web, fill
-                  a form with your confirmation, or describe your screen.
+                  Press play once and talk naturally. I can make slides, analyze a workbook, browse
+                  the web, help with forms, and describe your screen.
                 </p>
                 <div className="buddy-suggestion">
                   <Code2 size={15} />
@@ -201,7 +214,7 @@ export default function DesktopBuddy(p: Props) {
               onChange={(e) => p.setRequest(e.target.value)}
               placeholder={
                 p.voicePhase === 'listening'
-                  ? 'Listening. Press the mic again to send…'
+                  ? 'Listening. I’ll respond when you finish speaking…'
                   : 'Ask me anything I can help with…'
               }
               maxLength={2000}
@@ -215,22 +228,12 @@ export default function DesktopBuddy(p: Props) {
             />
             <div>
               <span>
-                {p.shortcut === false
-                  ? 'Use the microphone to talk'
-                  : 'Ctrl + Shift + Space to talk'}
+                {p.conversationActive
+                  ? 'Conversation on · I’ll listen after I reply'
+                  : p.shortcut === false
+                    ? 'Press play to talk'
+                    : 'Press play or Ctrl + Shift + Space'}
               </span>
-              <button
-                type="button"
-                className="buddy-icon"
-                disabled={!p.enabled || p.busy || pending || !p.voiceReady}
-                onClick={p.talk}
-                aria-label={
-                  p.voicePhase === 'listening' ? 'Finish recording' : 'Record a voice request'
-                }
-                aria-keyshortcuts="Control+Shift+Space"
-              >
-                <Mic size={18} />
-              </button>
               <button
                 className="buddy-send"
                 type="submit"

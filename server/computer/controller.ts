@@ -21,7 +21,9 @@ const hosted = (cfg: Config) => !['127.0.0.1', 'localhost', '::1'].includes(cfg.
 const payment =
   /\b(place (?:your )?order|order now|buy now|checkout|pay|purchase|confirm|complete (?:order|purchase)|send|delete|publish|subscribe|sign (?:in|up)|log in)\b/i;
 const benignButton =
-  /^(search|go|filter|add to (?:cart|basket)|close|menu|next|back|previous|load more|show more|read more|view details)$/i;
+  /^(search|go|filter|add to (?:cart|basket)|close|menu|next|back|previous|load more|show more|read more|view details|apply|apply now|apply for (?:this|the) job|apply on (?:company|employer) (?:site|website)|start (?:an? |the )?application)$/i;
+const applyControl =
+  /^(?:apply(?: now| for (?:this|the) job| on (?:company|employer) (?:site|website))?|start (?:an? |the )?application)$/i;
 const personal =
   /password|credit|\bcard\b|cvv|cvc|payment|\bssn\b|social security|email|phone|address|first.?name|last.?name|full.?name/i;
 const neverFill = /password|credit|\bcard\b|cvv|cvc|payment|\bssn\b|social security/i;
@@ -78,6 +80,7 @@ export class ComputerController {
   private bridgeKey = '';
   private browser: Browser | null = null;
   private page: Page | null = null;
+  private acceptingPopup = false;
   private controls = new Map<string, Locator>();
   private controller: AbortController | null = null;
   private child: ChildProcess | null = null;
@@ -397,20 +400,25 @@ export class ComputerController {
           await route.abort('blockedbyclient');
         }
       });
+      const configure = (currentPage: Page) => {
+        currentPage.setDefaultTimeout(7000);
+        currentPage.setDefaultNavigationTimeout(25000);
+        currentPage.on('popup', (popup) => {
+          if (this.acceptingPopup) configure(popup);
+          else void popup.close();
+        });
+        currentPage.on('download', (download) => void download.cancel());
+        currentPage.on('close', () => {
+          if (this.page === currentPage) {
+            this.page = null;
+            this.state.browser = null;
+            this.controls.clear();
+            void context.close().catch(() => {});
+          }
+        });
+      };
       this.page = await context.newPage();
-      this.page.setDefaultTimeout(7000);
-      this.page.setDefaultNavigationTimeout(25000);
-      this.page.on('popup', (popup) => void popup.close());
-      this.page.on('download', (download) => void download.cancel());
-      const currentPage = this.page;
-      this.page.on('close', () => {
-        if (this.page === currentPage) {
-          this.page = null;
-          this.state.browser = null;
-          this.controls.clear();
-        }
-        void context.close().catch(() => {});
-      });
+      configure(this.page);
     }
     return this.page;
   }
@@ -427,10 +435,21 @@ export class ComputerController {
       'a,button,input:not([type="hidden"]),textarea,select,[role="button"]',
     );
     const controls: BrowserControl[] = [];
+    const observed: {
+      locator: Locator;
+      info: {
+        tag: string;
+        type: string;
+        name: string;
+        field: string;
+        submit: boolean;
+        inForm: boolean;
+      };
+    }[] = [];
     this.controls.clear();
     for (
-      let i = 0, length = Math.min(await candidates.count(), 250);
-      i < length && controls.length < 60;
+      let i = 0, length = Math.min(await candidates.count(), 300);
+      i < length && observed.length < 160;
       i++
     ) {
       const loc = candidates.nth(i);
@@ -453,6 +472,7 @@ export class ComputerController {
             el.getAttribute('title') ||
             el.getAttribute('placeholder') ||
             element.innerText ||
+            (/^(?:button|submit|reset)$/i.test(input.type) ? input.value : '') ||
             el.getAttribute('alt') ||
             ''
           )
@@ -463,26 +483,60 @@ export class ComputerController {
             el.getAttribute('id'),
             el.getAttribute('autocomplete'),
           ].join(' '),
-          submit: el.tagName === 'BUTTON' && input.type === 'submit' && !!el.closest('form'),
+          submit:
+            el.tagName === 'BUTTON' &&
+            (input.type || 'submit') === 'submit' &&
+            !!(input.form || el.closest('form')),
+          inForm: !!(input.form || el.closest('form')),
         };
       });
       if (!info.name) continue;
+      observed.push({ locator: loc, info });
+    }
+    // Job boards can have dozens of header links before the Apply control.
+    // Surface actions and form fields first while retaining observed locators.
+    observed.sort((a, b) => {
+      const priority = (item: (typeof observed)[number]) =>
+        applyControl.test(item.info.name.trim())
+          ? 2
+          : (item.info.tag === 'input' &&
+                !/^(?:checkbox|radio|file|submit|image|button|reset)$/i.test(item.info.type)) ||
+              ['textarea', 'select'].includes(item.info.tag)
+            ? 1
+            : 0;
+      return priority(b) - priority(a);
+    });
+    for (const { locator: loc, info } of observed.slice(0, 60)) {
       const id = `control-${controls.length + 1}`;
       const sensitive = personal.test(info.name + ' ' + info.type + ' ' + info.field);
       const blocked =
         payment.test(info.name) ||
-        (info.tag === 'input' && /submit|image|file/.test(info.type)) ||
+        info.submit ||
+        (info.inForm &&
+          (info.tag === 'button' || (info.tag === 'input' && info.type === 'button')) &&
+          /\b(?:apply|submit)\b/i.test(info.name)) ||
+        (info.tag === 'input' &&
+          (/^(?:submit|image|file|reset|checkbox|radio)$/i.test(info.type) ||
+            (/^button$/i.test(info.type) && !benignButton.test(info.name)))) ||
         (info.tag !== 'a' &&
           !['input', 'textarea', 'select'].includes(info.tag) &&
           !benignButton.test(info.name));
       const role =
         info.tag === 'a'
           ? 'link'
-          : ['input', 'textarea'].includes(info.tag)
-            ? 'textbox'
-            : info.tag === 'select'
-              ? 'select'
-              : 'button';
+          : info.tag === 'input'
+            ? /^(?:checkbox|radio)$/i.test(info.type)
+              ? 'choice'
+              : /^file$/i.test(info.type)
+                ? 'file'
+                : /^(?:button|submit|reset|image)$/i.test(info.type)
+                  ? 'button'
+                  : 'textbox'
+            : info.tag === 'textarea'
+              ? 'textbox'
+              : info.tag === 'select'
+                ? 'select'
+                : 'button';
       controls.push({ id, name: info.name, role, sensitive, blocked });
       this.controls.set(id, loc);
     }
@@ -749,6 +803,7 @@ export class ComputerController {
       signal.throwIfAborted();
       let searchFallback = false;
       let searchResultRedirected = false;
+      let clickedApply = false;
       if (action.tool === 'navigate' || action.tool === 'search') {
         const url =
           action.tool === 'navigate'
@@ -825,6 +880,9 @@ export class ComputerController {
             el.getAttribute('title') ||
             el.getAttribute('placeholder') ||
             (el as HTMLElement).innerText ||
+            (/^(?:button|submit|reset)$/i.test((el as HTMLInputElement).type)
+              ? (el as HTMLInputElement).value
+              : '') ||
             el.getAttribute('alt') ||
             ''
           )
@@ -840,12 +898,21 @@ export class ComputerController {
             ].join(' '),
             tag: el.tagName,
             href: el.getAttribute('href'),
+            target: el.getAttribute('target'),
+            formSubmit:
+              !!((el as HTMLButtonElement).form || el.closest('form')) &&
+              ((el.tagName === 'BUTTON' &&
+                ((el as HTMLButtonElement).type || 'submit') === 'submit') ||
+                ((el.tagName === 'BUTTON' ||
+                  (el.tagName === 'INPUT' && (el as HTMLInputElement).type === 'button')) &&
+                  /\b(?:apply|submit)\b/i.test(name))),
           };
         });
         if (current.name !== control.name)
           throw new Error('Computer control changed on the webpage. Read the page again.');
         if (
           control.blocked ||
+          current.formSubmit ||
           payment.test(current.text) ||
           neverFill.test(current.text) ||
           (action.tool === 'click' && control.sensitive)
@@ -879,8 +946,31 @@ export class ComputerController {
             await (this.options.validateUrl ?? publicUrl)(
               new URL(current.href, page.url()).toString(),
             );
-          await locator.click();
-          await page.waitForLoadState('domcontentloaded');
+          clickedApply = applyControl.test(control.name.trim());
+          if (current.href && current.target === '_blank') {
+            // Job boards often put Apply in a new tab. Open the observed URL in
+            // our existing controlled tab so the next spoken request can continue.
+            await page.goto(new URL(current.href, page.url()).toString(), {
+              waitUntil: 'domcontentloaded',
+            });
+          } else {
+            const popupWait = clickedApply
+              ? page.waitForEvent('popup', { timeout: 1800 }).catch(() => null)
+              : Promise.resolve(null);
+            this.acceptingPopup = clickedApply;
+            try {
+              await locator.click();
+              const popup = await popupWait;
+              if (popup) {
+                await popup.waitForLoadState('domcontentloaded');
+                await (this.options.validateUrl ?? publicUrl)(popup.url());
+                this.page = popup;
+                await page.close();
+              } else await page.waitForLoadState('domcontentloaded');
+            } finally {
+              this.acceptingPopup = false;
+            }
+          }
         }
       }
       signal.throwIfAborted();
@@ -899,6 +989,15 @@ export class ComputerController {
         summary = `${view.title}.\n${view.searchResults
           .map((result, index) => `${index + 1}. ${result.title}. ${result.snippet}`)
           .join('\n')}`;
+      } else if (action.tool === 'click' && clickedApply) {
+        const fields = view.controls
+          .filter((control) => control.role === 'textbox' && !control.blocked)
+          .map((control) => control.name)
+          .slice(0, 6);
+        const example = fields.find((name) => /^email\b/i.test(name)) ?? fields[0];
+        const account = /\b(sign in|log in|create (?:an? )?account)\b/i.test(view.text);
+        const verification = /\b(captcha|verify you are human)\b/i.test(view.text);
+        summary = `Opened ${view.title}. ${fields.length ? `I found text fields: ${fields.join(', ')}. Say “fill ${example} with your answer” to type in one.` : 'I do not see an application text field yet. Say “read this page” for the next steps.'}${account ? ' This site asks for account access, which you must complete manually.' : ''}${verification ? ' This site asks for human verification, which you must complete manually.' : ''} I will not submit the application.`;
       } else
         summary =
           action.tool === 'readPage'
