@@ -1,18 +1,17 @@
 .companion {
   min-height: 100vh;
-  background: radial-gradient(ellipse at 35% 0%, #2766a533, transparent 65%), #0b1424;
+  background: radial-gradient(ellipse at 78% 0%, #355c6d24, transparent 50%), #0b1013;
 }
 .companion-header {
-  height: 95px;
-  padding: 0 44px;
+  height: 88px;
+  padding: 0 4vw;
   display: flex;
   align-items: center;
   gap: 45px;
   border-bottom: 1px solid var(--line);
 }
 .companion-tag {
-  font-size: 10px;
-  letter-spacing: 2px;
+  font-size: 14px;
   color: var(--muted);
 }
 .companion-header-actions {
@@ -28,13 +27,13 @@
 }
 .companion-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 400px;
-  max-width: 1750px;
+  grid-template-columns: minmax(0, 1fr) minmax(340px, 380px);
+  max-width: 1640px;
   margin: auto;
   min-height: calc(100vh - 95px);
 }
 .computer-work {
-  padding: 44px 42px;
+  padding: 48px 4vw;
   min-width: 0;
 }
 .computer-heading {
@@ -45,13 +44,16 @@
   margin-bottom: 30px;
 }
 .computer-heading h1 {
-  font-size: 37px;
+  font-size: clamp(36px, 3.8vw, 60px);
   font-weight: 500;
-  letter-spacing: -1.7px;
+  letter-spacing: -2.5px;
+  line-height: 1.08;
+  max-width: 660px;
   margin: 16px 0 10px;
 }
 .computer-heading p {
-  font-size: 14px;
+  font-size: 17px;
+  max-width: 560px;
   color: var(--muted);
   margin: 0;
 }
@@ -85,10 +87,10 @@
   gap: 9px;
   flex-shrink: 0;
   white-space: nowrap;
-  padding: 14px 18px;
+  padding: 14px 15px;
   border-bottom: 2px solid transparent;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
 }
 .computer-tabs button[aria-pressed='true'] {
   color: var(--lime);
@@ -98,7 +100,7 @@
   border: 1px solid var(--line);
   border-radius: 15px;
   padding: 25px;
-  background: #13223a;
+  background: #10191e;
   min-height: 465px;
   overflow: hidden;
 }
@@ -106,34 +108,35 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  background:
-    radial-gradient(circle at 95% 0%, #73baff24, transparent 42%),
-    linear-gradient(145deg, #172b49, #10213a);
+  background: transparent;
+  padding: 12px 0;
+  border: 0;
 }
 .computer-starters {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: 0 24px;
 }
 .computer-starters button {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  min-height: 95px;
-  padding: 18px;
+  min-height: 114px;
+  padding: 22px 8px;
   text-align: left;
-  color: #eaf6ff;
-  background: #e6f4ff0c;
-  border: 1px solid #c5e7ff31;
-  border-radius: 13px;
+  color: #f2f3ed;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
 }
 .computer-starters button:hover:not(:disabled),
 .computer-starters button:focus-visible {
-  background: #cbe8ff18;
-  border-color: #a7d8ff94;
+  background: #b6e4d008;
+  border-color: var(--lime);
 }
 .computer-starters button > svg {
-  color: #9fd6ff;
+  color: var(--lime);
   flex-shrink: 0;
 }
 .computer-starters strong,
@@ -141,18 +144,18 @@
   display: block;
 }
 .computer-starters strong {
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 600;
 }
 .computer-starters small {
   margin-top: 5px;
-  color: #b5cce2;
-  font-size: 11px;
+  color: var(--muted);
+  font-size: 14px;
   line-height: 1.5;
 }
 .computer-home-note {
-  color: #b5cce2;
-  font-size: 11px;
+  color: var(--muted);
+  font-size: 14px;
   line-height: 1.5;
   margin: 0;
 }
@@ -199,14 +202,14 @@
   color: var(--muted);
 }
 .computer-artifact-heading h2 {
-  font-size: 22px;
+  font-size: 28px;
   letter-spacing: -0.5px;
-  color: #f2f8ff;
+  color: #f2f3ed;
   margin: 10px 0;
   overflow-wrap: anywhere;
 }
 .computer-artifact-heading p {
-  font-size: 13px;
+  font-size: 16px;
   margin: 0 0 15px;
 }
 .computer-toolbar {
@@ -348,11 +351,11 @@
   border-left: 1px solid var(--line);
   display: flex;
   flex-direction: column;
-  padding: 30px 24px 15px;
-  height: calc(100vh - 95px);
+  padding: 32px 26px 24px;
+  height: calc(100vh - 88px);
   position: sticky;
   top: 0;
-  background: #102039;
+  background: #10191e;
 }
 .computer-conversation .conversation-heading {
   padding: 0 0 22px;
@@ -362,7 +365,7 @@
   border-bottom: 1px solid var(--line);
 }
 .computer-conversation h2 {
-  font-size: 20px;
+  font-size: 26px;
   font-weight: 500;
   margin: 10px 0 0;
   letter-spacing: -0.5px;
@@ -376,28 +379,28 @@
 .computer-message {
   padding: 0 2px 15px;
   margin-bottom: 15px;
-  border-bottom: 1px solid #2b4563;
+  border-bottom: 1px solid var(--line);
 }
 .computer-message > span {
-  font-size: 9px;
-  letter-spacing: 1.6px;
+  font-size: 12px;
+  letter-spacing: 0.6px;
   color: var(--lime);
 }
 .computer-message p {
-  font-size: 13px;
-  line-height: 1.85;
+  font-size: 17px;
+  line-height: 1.8;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   margin: 10px 0 0;
 }
 .computer-message.user {
-  background: #335b8738;
-  border: 1px solid #79baff44;
+  background: #1c2c31;
+  border: 1px solid var(--line);
   border-radius: 10px;
   padding: 15px;
 }
 .computer-message.user > span {
-  color: #b3cbe5;
+  color: var(--muted);
 }
 .computer-message.error {
   color: #edb9a6;
@@ -410,8 +413,8 @@
   align-items: center;
   gap: 8px;
   color: var(--muted);
-  font-size: 11px;
-  min-height: 38px;
+  font-size: 13px;
+  min-height: 56px;
 }
 .computer-phase > span:nth-child(2) {
   flex: 1;
@@ -420,16 +423,17 @@
   display: flex;
   gap: 5px;
   align-items: center;
-  border: 1px solid #55799f;
+  border: 1px solid #b4c0c0;
+  min-height: 44px;
   padding: 7px 10px;
   border-radius: 6px;
   color: #e3f3ff;
   flex-shrink: 0;
 }
 .computer-composer {
-  border: 1px solid #6585a9;
+  border: 1px solid #637779;
   border-radius: 12px;
-  background: #172b47;
+  background: #18252b;
   padding: 10px 12px;
 }
 .computer-composer:focus-within {
@@ -441,9 +445,10 @@
   resize: vertical;
   border: 0;
   background: none;
-  color: #f2f8ff;
+  color: #f2f3ed;
   padding: 10px 2px;
-  font-size: 13px;
+  font-size: 17px;
+  line-height: 1.7;
   outline: none;
   max-height: 200px;
 }
@@ -455,19 +460,19 @@
 .computer-composer > div > span {
   flex: 1;
   color: var(--muted);
-  font-size: 9px;
+  font-size: 12px;
 }
 .computer-send {
   background: var(--lime);
-  color: #0c2e51;
-  width: 34px;
-  height: 34px;
+  color: #102d26;
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
   border-radius: 8px;
 }
 .computer-voice-note {
-  font-size: 9px;
+  font-size: 12px;
   color: var(--muted);
   line-height: 1.6;
   margin: 11px 0 0;
@@ -749,5 +754,290 @@
   .companion-orb.is-active,
   .spin {
     animation: none;
+  }
+}
+
+/* Readable surfaces share the same palette as the companion and bill workspace. */
+.companion .brand {
+  margin: 0;
+  font-size: 25px;
+  font-weight: 500;
+  letter-spacing: -1px;
+}
+.companion .brand-symbol {
+  border: 1px solid #b6e4d042;
+  border-radius: 10px;
+  background: #b6e4d009;
+}
+.companion-header-actions a,
+.companion-header-actions button {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.companion-intro {
+  color: var(--lime);
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.computer-heading {
+  margin-bottom: 40px;
+}
+.computer-heading > div {
+  min-width: 0;
+}
+.computer-heading .insight-signal {
+  margin: 0 -10px 0 12px;
+}
+.computer-home .computer-artifact-heading > svg {
+  display: none;
+}
+.computer-home .computer-artifact-heading p {
+  max-width: 560px;
+}
+.computer-home .computer-artifact-heading h2 {
+  font-size: 24px;
+}
+.computer-tabs {
+  scrollbar-width: thin;
+  scrollbar-color: #526767 transparent;
+}
+.computer-tabs button:hover {
+  color: #f2f3ed;
+  background: #b6e4d007;
+}
+.computer-conversation .small-label {
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0;
+}
+.computer-transcript {
+  scrollbar-width: thin;
+  scrollbar-color: #526767 transparent;
+}
+.computer-composer textarea::placeholder {
+  color: #b1bdbd;
+}
+.computer-composer .icon-button {
+  width: 44px;
+  height: 44px;
+  color: var(--lime);
+}
+.computer-composer:focus-within {
+  box-shadow: 0 0 0 1px var(--lime);
+}
+.computer-caption,
+.computer-empty p,
+.computer-foot,
+.office-provider,
+.office-provider small,
+.office-provider code,
+.computer-details,
+.artifact-meta {
+  color: var(--muted);
+  font-size: 14px;
+}
+.computer-foot {
+  margin-top: 26px;
+}
+.office-result,
+.browser-controls > button {
+  background: #17252b;
+  border-color: var(--line);
+}
+.office-result {
+  color: #f2f3ed;
+  font-size: 16px;
+}
+.office-result h3 {
+  font-size: 24px;
+}
+.office-result li {
+  margin: 12px 0;
+  line-height: 1.7;
+}
+.computer-code,
+.computer-terminal,
+.browser-address {
+  background: #0b1419;
+  border-color: var(--line);
+  font-size: 14px;
+  color: #e3e9e5;
+}
+.computer-terminal {
+  color: var(--lime);
+}
+.computer-terminal:empty {
+  min-height: 100px;
+}
+.empty-glyph {
+  background: #b6e4d00d;
+  color: var(--lime);
+}
+.computer-empty h3 {
+  color: #f2f3ed;
+  font-size: 24px;
+}
+.computer-toolbar .primary-button,
+.computer-toolbar .secondary-button {
+  font-size: 14px;
+  min-height: 44px;
+}
+.computer-step {
+  font-size: 13px;
+  line-height: 1.8;
+}
+.computer-step span {
+  border-color: #617e7c;
+}
+.computer-stop {
+  color: #f2f3ed;
+}
+.browser-controls > button {
+  font-size: 14px;
+  min-height: 44px;
+}
+.computer-details summary {
+  min-height: 44px;
+  padding: 12px 0;
+}
+.computer-dialog {
+  color: #f2f3ed;
+  background: #10191e;
+  border-color: var(--line);
+  font-size: 16px;
+}
+.computer-dialog h2 {
+  font-size: 32px;
+}
+.computer-dialog p {
+  color: var(--muted);
+  font-size: 15px;
+}
+.connection-grid > div {
+  background: #18272c;
+}
+.connection-grid strong {
+  font-size: 15px;
+}
+.connection-grid span,
+.connection-grid small {
+  font-size: 13px;
+}
+.computer-setting {
+  min-height: 60px;
+  font-size: 16px;
+}
+.companion.large-text .computer-message p,
+.companion.large-text .computer-composer textarea {
+  font-size: 21px;
+}
+.companion.large-text .computer-code,
+.companion.large-text .computer-terminal {
+  font-size: 18px;
+}
+.companion.large-text .computer-caption,
+.companion.large-text .computer-artifact-heading p,
+.companion.large-text .computer-starters small {
+  font-size: 18px;
+}
+.companion.large-text .computer-starters strong {
+  font-size: 20px;
+}
+@media (min-width: 1101px) {
+  .computer-heading .insight-signal {
+    --signal-size: clamp(128px, 13vw, 190px);
+  }
+}
+@media (max-width: 1100px) {
+  .computer-heading h1 {
+    font-size: 38px;
+    letter-spacing: -1.6px;
+  }
+  .computer-heading .insight-signal {
+    --signal-size: 112px;
+  }
+  .computer-tabs button {
+    font-size: 14px;
+  }
+}
+@media (max-width: 800px) {
+  .companion-layout {
+    min-height: auto;
+  }
+  .companion-header {
+    min-height: 80px;
+    height: auto;
+  }
+  .companion-header-actions {
+    font-size: 13px;
+  }
+  .computer-work {
+    padding: 34px 24px;
+  }
+  .computer-heading {
+    align-items: flex-start;
+    margin-bottom: 28px;
+    gap: 10px;
+  }
+  .computer-heading h1 {
+    font-size: clamp(32px, 6vw, 44px);
+    letter-spacing: -1.5px;
+  }
+  .computer-heading p {
+    font-size: 16px;
+  }
+  .computer-heading .insight-signal {
+    --signal-size: 96px;
+    margin: 24px 0 0;
+  }
+  .computer-heading .signal-halo {
+    inset: -15%;
+  }
+  .computer-conversation {
+    height: 650px;
+    padding: 26px 24px;
+  }
+  .computer-foot {
+    font-size: 13px;
+  }
+  .computer-artifact-heading h2 {
+    font-size: 26px;
+  }
+  .computer-home {
+    padding: 8px 0;
+  }
+}
+@media (max-width: 480px) {
+  .companion-header {
+    padding: 12px 18px;
+  }
+  .companion-header .brand {
+    font-size: 23px;
+    gap: 6px;
+  }
+  .companion-header-actions {
+    gap: 8px;
+    font-size: 12px;
+  }
+  .computer-work {
+    padding: 30px 20px;
+  }
+  .computer-heading .insight-signal {
+    --signal-size: 70px;
+  }
+  .computer-heading h1 {
+    font-size: 32px;
+  }
+  .companion-intro {
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+  .computer-starters button {
+    min-height: 96px;
+  }
+  .computer-home .computer-artifact-heading h2 {
+    font-size: 23px;
   }
 }

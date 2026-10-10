@@ -127,6 +127,9 @@ test('the buddy shows task progress without hiding the conversation controls', a
   await page.goto('/?desktop=buddy');
   await page.getByRole('button', { name: 'Expand conversation', exact: true }).click();
   await expect(page.getByLabel('Current task')).toContainText('Which color would you like?');
+  await expect(page.getByRole('button', { name: 'Send request', exact: true })).toBeInViewport({
+    ratio: 1,
+  });
   await expect(
     page.getByRole('button', { name: 'Start voice conversation', exact: true }),
   ).toBeVisible();

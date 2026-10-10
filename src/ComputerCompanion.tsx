@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import {
   ArrowUp,
-  AudioLines,
   Check,
   Code2,
   Eye,
@@ -25,6 +24,7 @@ import { spokenComputerReply, spokenRequestAcknowledgment } from './speechText';
 import './computer.css';
 import ConnectionsPanel from './ConnectionsPanel';
 import DesktopBuddy from './DesktopBuddy';
+import AssistantSignal from './AssistantSignal';
 import FinancePanel from './FinancePanel';
 import BillWorkspace from './BillWorkspace';
 import type { BillValues } from '../shared/bills';
@@ -799,7 +799,7 @@ export default function ComputerCompanion() {
                 insight<span className="brand-os">OS</span>
               </span>
             </a>
-            <span className="companion-tag">YOUR COMPUTER, WITHIN REACH</span>
+            <span className="companion-tag">Your personal desktop companion</span>
             <div className="companion-header-actions">
               <a href="/?workspace=data">Data workspace</a>
               <button
@@ -835,15 +835,11 @@ export default function ComputerCompanion() {
             <main id="computer-main" className="computer-work">
               <div className="computer-heading">
                 <div>
-                  <div className="eyebrow">
-                    <span /> LESS FRICTION. MORE FREEDOM.
-                  </div>
+                  <div className="companion-intro">A little help. A clearer next step.</div>
                   <h1>Tell me what you need done.</h1>
-                  <p>Search, open apps, use your screen, or make something together.</p>
+                  <p>Understand your bills. Explore your options. Make something together.</p>
                 </div>
-                <div className={`companion-orb ${active ? 'is-active' : ''}`} aria-hidden="true">
-                  <AudioLines size={37} />
-                </div>
+                <AssistantSignal active={active} />
               </div>
               <nav className="computer-tabs" aria-label="Computer tools">
                 {[
@@ -894,16 +890,29 @@ export default function ComputerCompanion() {
                 >
                   <div className="computer-artifact-heading">
                     <div>
-                      <span className="small-label">YOUR COMPUTER, WITHIN REACH</span>
                       <h2>What can I help with?</h2>
                       <p>
-                        Press Play on the buddy or type a request. I can take a step, tell you what
-                        happened, and keep the conversation going.
+                        Choose a starting point, or tell me in your own words. We’ll take it one
+                        step at a time.
                       </p>
                     </div>
                     <Sparkles size={25} aria-hidden="true" />
                   </div>
                   <div className="computer-starters">
+                    <button onClick={() => setTab('energy')}>
+                      <ShieldCheck size={22} aria-hidden="true" />
+                      <span>
+                        <strong>Understand my bills</strong>
+                        <small>Review the numbers and see what changed.</small>
+                      </span>
+                    </button>
+                    <button onClick={() => setTab('finance')}>
+                      <FolderOpen size={22} aria-hidden="true" />
+                      <span>
+                        <strong>Make sense of my spending</strong>
+                        <small>Explore a budget that works for your life.</small>
+                      </span>
+                    </button>
                     <button
                       disabled={!enabled || busy}
                       onClick={() => void perform('Find jobs near me')}
@@ -1426,7 +1435,7 @@ export default function ComputerCompanion() {
             <aside className="computer-conversation" aria-label="Computer companion conversation">
               <div className="conversation-heading">
                 <div>
-                  <span className="small-label">HERE WITH YOU</span>
+                  <span className="small-label">Here with you</span>
                   <h2>Your companion</h2>
                 </div>
                 <button

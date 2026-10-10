@@ -1,11 +1,16 @@
 .energy-panel {
-  padding: 20px;
-  border: 1px solid #496a91;
-  border-radius: 20px;
-  background: linear-gradient(135deg, #203d61e6, #132640ed);
-  color: #eef6ff;
-  font-size: 14px;
+  padding: 26px;
+  border: 1px solid #34434a;
+  border-radius: 18px;
+  background: #10191e;
+  color: #f2f3ed;
+  font-family: 'Inter', sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
   min-width: 0;
+}
+.energy-panel svg {
+  flex-shrink: 0;
 }
 .energy-heading {
   display: flex;
@@ -13,154 +18,287 @@
   gap: 10px;
   flex-wrap: wrap;
 }
+.energy-heading > svg {
+  color: #b6e4d0;
+}
+.energy-heading > strong {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.3;
+}
 .energy-heading span {
   margin-left: auto;
-  border: 1px solid #7596bd;
-  border-radius: 20px;
-  padding: 4px 9px;
-  color: #d3e6fc;
-  font-size: 10px;
-  letter-spacing: 0.08em;
+  border: 1px solid #34434a;
+  border-radius: 7px;
+  padding: 5px 9px;
+  color: #b1bdbd;
+  font-size: 12px;
+  letter-spacing: 0.035em;
 }
 .energy-metrics {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin: 20px 0;
+  gap: 18px;
+  margin: 24px 0;
+  padding: 20px 0;
+  border-top: 1px solid #34434a;
+  border-bottom: 1px solid #34434a;
 }
 .energy-metrics strong {
   display: block;
-  font-size: 20px;
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 28px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.5px;
   line-height: 1.3;
-  margin: 6px 0;
+  margin: 8px 0;
   overflow-wrap: anywhere;
+}
+.energy-metrics > div:last-child strong {
+  font-size: 23px;
 }
 .energy-metrics small,
 .energy-panel td small,
 .energy-panel th small {
   display: block;
-  color: #c3d7ef;
-  font-size: 11px;
+  color: #b1bdbd;
+  font-size: 14px;
+  line-height: 1.5;
   font-weight: 400;
 }
 .energy-panel summary {
+  display: flex;
+  align-items: center;
   cursor: pointer;
-  font-weight: 600;
-  padding: 9px 0;
+  font-weight: 500;
+  color: #b6e4d0;
+  padding: 12px 0;
+  min-height: 44px;
+  list-style: none;
+}
+.energy-panel summary::after {
+  content: '+';
+  margin-left: auto;
+  padding-left: 12px;
+}
+.energy-panel details[open] > summary::after {
+  content: '−';
+}
+.energy-panel summary::-webkit-details-marker {
+  display: none;
 }
 .energy-detail {
-  line-height: 1.6;
+  color: #b1bdbd;
+  line-height: 1.7;
+}
+.energy-detail p {
+  margin: 16px 0;
+  overflow-wrap: anywhere;
 }
 .energy-detail a {
-  color: #b6deff;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #b6e4d0;
   text-decoration: underline;
+  text-underline-offset: 5px;
 }
 .energy-table-wrap {
   overflow: auto;
+  overscroll-behavior-inline: contain;
+  border: 1px solid #34434a;
+  border-radius: 12px;
+  background: #0b1013;
 }
 .energy-panel table {
   width: 100%;
+  min-width: 600px;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+  color: #f2f3ed;
 }
 .energy-panel caption {
   text-align: left;
-  color: #ccddf2;
-  padding: 9px 0;
+  color: #b1bdbd;
+  font-size: 14px;
+  padding: 16px;
 }
 .energy-panel th,
 .energy-panel td {
-  padding: 10px 8px;
+  padding: 16px 14px;
   text-align: left;
-  border-bottom: 1px solid #557195;
+  border-bottom: 1px solid #34434a;
   vertical-align: top;
 }
+.energy-panel thead th {
+  font-weight: 500;
+  color: #b1bdbd;
+  background: #131e23;
+  line-height: 1.4;
+}
+.energy-panel tbody th {
+  font-weight: 500;
+}
+.energy-panel tbody tr:last-child > * {
+  border-bottom: 0;
+}
 .energy-panel .chosen {
-  background: #3372b733;
+  background: #1a2c29;
+}
+.energy-panel .chosen th {
+  color: #b6e4d0;
+  box-shadow: inset 3px 0 #b6e4d0;
+}
+.energy-panel td small,
+.energy-panel th small {
+  margin-top: 6px;
 }
 .energy-verified {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
-  color: #d1eaff;
+  color: #b6e4d0;
+  font-size: 15px;
+}
+.energy-verified svg {
+  margin-top: 4px;
 }
 .energy-actions {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
-  margin-top: 12px;
+  margin-top: 18px;
 }
 .energy-actions button {
-  padding: 8px 12px;
+  padding: 11px 14px;
+  min-height: 44px;
   border-radius: 10px;
-  border: 1px solid #779cc5;
-  background: #284e78;
-  color: #eef7ff;
+  border: 1px solid #607774;
+  background: #1b282e;
+  color: #f2f3ed;
   font: inherit;
+  font-size: 15px;
   cursor: pointer;
 }
+.energy-actions button:hover:not(:disabled) {
+  background: #263a3e;
+  border-color: #b6e4d0;
+}
 .energy-actions button:disabled {
-  opacity: 0.5;
+  opacity: 0.55;
   cursor: default;
 }
 .energy-panel :focus-visible {
-  outline: 3px solid #c0e6ff;
-  outline-offset: 3px;
+  outline: 3px solid #b6e4d0;
+  outline-offset: 4px;
+}
+.energy-budget-alert {
+  padding: 18px;
+  margin: 18px 0;
+  border: 1px solid #806b48;
+  border-radius: 12px;
+  background: #292219;
+  color: #eed8ad;
+}
+.energy-budget-alert p {
+  color: inherit;
+  font-size: 16px;
+  line-height: 1.65;
+  margin: 10px 0;
 }
 .energy-panel.compact {
   margin: 0 16px 10px;
-  padding: 12px;
-  max-height: 190px;
+  padding: 16px;
+  max-height: 240px;
   overflow: auto;
   flex-shrink: 0;
-  font-size: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.energy-panel.compact .energy-heading strong {
+  font-size: 18px;
+}
+.energy-panel.compact .energy-heading span {
+  font-size: 11px;
 }
 .energy-panel.compact .energy-metrics {
-  gap: 8px;
-  margin: 10px 0;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 12px 0;
+  padding: 12px 0;
+}
+.energy-panel.compact .energy-metrics > div:last-child {
+  grid-column: 1/-1;
 }
 .energy-panel.compact .energy-metrics strong {
-  font-size: 14px;
+  font-size: 20px;
+  margin: 4px 0;
+}
+.energy-panel.compact .energy-metrics small {
+  font-size: 13px;
 }
 .energy-panel.compact .energy-metrics small:last-child {
   display: none;
 }
+.energy-panel.compact .energy-actions {
+  gap: 8px;
+  margin-top: 10px;
+}
 .energy-panel.compact .energy-actions button {
-  font-size: 11px;
+  font-size: 13px;
 }
-.energy-panel.compact .energy-heading strong {
-  font-size: 12px;
+.large-text .energy-panel {
+  font-size: 20px;
 }
-@media (max-width: 500px) {
+.large-text .energy-panel p,
+.large-text .energy-panel small,
+.large-text .energy-panel table,
+.large-text .energy-panel caption,
+.large-text .energy-heading span,
+.large-text .energy-verified {
+  font-size: 17px;
+}
+.large-text .energy-panel .energy-actions button {
+  font-size: 20px;
+}
+.large-text .energy-panel .energy-metrics strong {
+  font-size: 34px;
+}
+.large-text .energy-panel.compact {
+  max-height: 290px;
+}
+.large-text .energy-panel.compact .energy-metrics strong {
+  font-size: 26px;
+}
+@media (max-width: 600px) {
+  .energy-panel {
+    padding: 18px;
+  }
   .energy-metrics {
     grid-template-columns: 1fr 1fr;
   }
   .energy-metrics > div:last-child {
     grid-column: 1/-1;
   }
-  .energy-panel.compact .energy-metrics {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .energy-panel.compact .energy-metrics > div:last-child {
-    grid-column: auto;
-  }
-  .energy-panel {
-    padding: 14px;
-  }
   .energy-heading span {
     margin-left: 0;
   }
 }
-.energy-budget-alert {
-  padding: 16px;
-  margin: 16px 0;
-  border: 1px solid #eab47870;
-  border-radius: 12px;
-  background: #9f612518;
-  color: #ffe3bf;
+@media (max-width: 380px) {
+  .energy-panel:not(.compact) .energy-metrics {
+    grid-template-columns: 1fr;
+  }
+  .energy-panel:not(.compact) .energy-metrics > div:last-child {
+    grid-column: auto;
+  }
 }
-.energy-budget-alert p {
-  color: inherit;
-  font-size: 12px;
-  line-height: 1.6;
+@media (prefers-reduced-motion: reduce) {
+  .energy-panel * {
+    animation: none;
+    transition: none;
+    scroll-behavior: auto;
+  }
 }

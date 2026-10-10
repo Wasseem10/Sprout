@@ -1,0 +1,117 @@
+.insight-signal {
+  --signal-size: 176px;
+  width: var(--signal-size);
+  height: var(--signal-size);
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  isolation: isolate;
+}
+.insight-signal > span {
+  position: absolute;
+  pointer-events: none;
+}
+.signal-halo {
+  inset: -26%;
+  background: radial-gradient(ellipse, #7ca9c326, transparent 66%);
+}
+.signal-shell {
+  inset: 10%;
+  border-radius: 43% 57% 54% 46% / 52% 44% 56% 48%;
+  transform: rotate(-22deg);
+  background:
+    radial-gradient(ellipse at 23% 15%, #f0f8ee96, transparent 32%),
+    radial-gradient(ellipse at 73% 87%, #91cdb54d, transparent 36%),
+    linear-gradient(135deg, #638797 0%, #243f4c 31%, #121e25 65%, #4a696b);
+  border: 1px solid #c5e1dc6b;
+  box-shadow:
+    inset 2px 3px 9px #e2f3ed46,
+    inset -8px -14px 22px #030b12ba,
+    8px 19px 34px #0008;
+}
+.signal-rim {
+  inset: 18%;
+  transform: rotate(-22deg);
+  border-radius: 45% 55% 53% 47% / 52% 46% 54% 48%;
+  background: linear-gradient(
+    138deg,
+    #d9e9e5a3,
+    #86acb047 24%,
+    #09151b 48%,
+    #6e9c924d 83%,
+    #d8eee48c
+  );
+  box-shadow:
+    inset 1px 2px 3px #ffffff5c,
+    0 2px 9px #0009;
+}
+.signal-core {
+  inset: 21%;
+  border-radius: 45% 55% 53% 47% / 52% 46% 54% 48%;
+  transform: rotate(-22deg);
+  background:
+    radial-gradient(ellipse at 36% 20%, #356475, transparent 58%),
+    radial-gradient(ellipse at 70% 100%, #36594f, transparent 70%), #0c171d;
+  box-shadow:
+    inset 0 2px 8px #000c,
+    inset 0 -1px 1px #afddc860;
+}
+.signal-wave {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--signal-size) * 0.026);
+}
+.signal-wave i {
+  display: block;
+  width: calc(var(--signal-size) * 0.024);
+  height: calc(var(--signal-size) * 0.08);
+  border-radius: 3px;
+  background: #d9f0e5;
+  box-shadow: 0 0 9px #b6e4d03b;
+}
+.signal-wave i:nth-child(2),
+.signal-wave i:nth-child(4) {
+  height: calc(var(--signal-size) * 0.15);
+}
+.signal-wave i:nth-child(3) {
+  height: calc(var(--signal-size) * 0.23);
+}
+.insight-signal.is-active .signal-wave i {
+  animation: signal-speak 1.1s ease-in-out infinite alternate;
+}
+.insight-signal.is-active .signal-wave i:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.insight-signal.is-active .signal-wave i:nth-child(3) {
+  animation-delay: -0.7s;
+}
+.insight-signal.is-active .signal-wave i:nth-child(4) {
+  animation-delay: -0.45s;
+}
+.insight-signal.is-small {
+  --signal-size: 46px;
+}
+.insight-signal.is-small .signal-halo {
+  display: none;
+}
+.insight-signal.is-small .signal-shell {
+  inset: 2%;
+}
+.insight-signal.is-small .signal-rim {
+  inset: 13%;
+}
+.insight-signal.is-small .signal-core {
+  inset: 18%;
+}
+@keyframes signal-speak {
+  to {
+    transform: scaleY(0.55);
+    opacity: 0.7;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .insight-signal.is-active .signal-wave i {
+    animation: none;
+  }
+}

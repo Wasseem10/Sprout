@@ -239,7 +239,12 @@ export default function FinancePanel({
               </div>
               <details>
                 <summary>Read the chart as a table</summary>
-                <div className="finance-table-wrap">
+                <div
+                  className="finance-table-wrap"
+                  role="region"
+                  aria-label="Scrollable cash flow table"
+                  tabIndex={0}
+                >
                   <table>
                     <caption>Recorded monthly cash flow in USD</caption>
                     <thead>
