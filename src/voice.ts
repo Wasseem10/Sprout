@@ -1,14 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
+import { CommitStrategy, useScribe } from '@elevenlabs/react';
 
 type VoicePhase = 'idle' | 'starting' | 'listening' | 'transcribing' | 'processing' | 'speaking';
 
-const SILENCE_AFTER_SPEECH_MS = 1350;
+const SILENCE_AFTER_SPEECH_MS = 800;
 const MAX_RECORDING_MS = 30000;
 
 export function useVoice(onTranscript: (text: string) => void, onError: (text: string) => void) {
   const [phase, setPhase] = useState<VoicePhase>('idle');
   const [conversationActive, setConversationActive] = useState(false);
   const generation = useRef(0);
+  const outputGeneration = useRef(0);
+  const outputAbort = useRef<AbortController | null>(null);
+  const spokenText = useRef('');
+  const speechEndedAt = useRef(0);
+  const voiceMode = useRef<'off' | 'connecting' | 'realtime' | 'batch'>('off');
   const conversation = useRef(false);
   const recorder = useRef<MediaRecorder | null>(null);
   const stream = useRef<MediaStream | null>(null);
@@ -25,10 +31,101 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
   transcriptHandler.current = onTranscript;
   errorHandler.current = onError;
 
+  const scribe = useScribe({
+    modelId: 'scribe_v2_realtime',
+    commitStrategy: CommitStrategy.VAD,
+    vadSilenceThresholdSecs: 0.65,
+    minSpeechDurationMs: 200,
+    microphone: {
+      echoCancellation: true,
+      noiseSuppression: true,
+      workletPaths: { scribeAudioProcessor: '/scribeAudioProcessor.js' },
+    },
+    onSessionStarted: () => {
+      if (conversation.current && voiceMode.current === 'realtime') setPhase('listening');
+    },
+    onPartialTranscript: ({ text }) => handleRealtimePartial(text),
+    onCommittedTranscript: ({ text }) => handleRealtimeCommit(text),
+    onError: () => handleRealtimeFailure(),
+    onDisconnect: () => {
+      // An unexpected provider disconnect should not leave Play looking active
+      // while nothing is listening. Ignore closes caused by Pause/Stop.
+      setTimeout(() => {
+        if (conversation.current && voiceMode.current === 'realtime' && !scribe.getConnection())
+          handleRealtimeFailure();
+      }, 250);
+    },
+  });
+
+  function stopOutput() {
+    outputGeneration.current++;
+    outputAbort.current?.abort();
+    outputAbort.current = null;
+    if (audio.current) speechEndedAt.current = Date.now();
+    audio.current?.pause();
+    audio.current = null;
+    if (url.current) URL.revokeObjectURL(url.current);
+    url.current = null;
+  }
+
+  function isPlaybackEcho(value: string) {
+    if (!audio.current && Date.now() - speechEndedAt.current > 800) return false;
+    const normalize = (text: string) => text.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    const heard = normalize(value);
+    // A short word may be a command even when it also appears in the reply:
+    // “stop”, “no”, and “open” must always be able to interrupt. Only skip a
+    // substantial phrase that matches the buddy's own just-played speech.
+    return (
+      heard.length >= 20 &&
+      heard.split(' ').length >= 4 &&
+      normalize(spokenText.current).includes(heard)
+    );
+  }
+
+  function handleRealtimePartial(value: string) {
+    if (!conversation.current || voiceMode.current !== 'realtime') return;
+    const text = value.trim();
+    if (text.length < 3) return;
+    if (isPlaybackEcho(text)) return;
+    // The microphone stays open during speech synthesis and playback. As soon
+    // as Scribe hears a new utterance, cancel any older audio, including a
+    // still-pending TTS response. Its final transcript will start the new task.
+    speechInterrupted.current = true;
+    if (audio.current || outputAbort.current) stopOutput();
+    setPhase('listening');
+  }
+
+  function handleRealtimeCommit(value: string) {
+    if (!conversation.current || voiceMode.current !== 'realtime') return;
+    const text = value.trim();
+    if (!text) {
+      speechInterrupted.current = false;
+      setPhase('listening');
+      return;
+    }
+    if (isPlaybackEcho(text)) return;
+    if (audio.current || outputAbort.current) stopOutput();
+    setPhase('processing');
+    // The handler synchronously supersedes the old request. Clearing this just
+    // before dispatch lets the new request speak its own acknowledgment.
+    speechInterrupted.current = false;
+    transcriptHandler.current(text);
+  }
+
+  function handleRealtimeFailure() {
+    if (!conversation.current || voiceMode.current !== 'realtime') return;
+    voiceMode.current = 'batch';
+    scribe.disconnect();
+    // Keep the conversation alive if a realtime socket expires or worklet
+    // setup fails. The local recorder remains a usable fallback.
+    void start(true);
+  }
+
   function clearMedia() {
     generation.current++;
     monitoringPlayback.current = false;
     speechInterrupted.current = false;
+    stopOutput();
     abort.current?.abort();
     abort.current = null;
     if (timer.current) clearTimeout(timer.current);
@@ -41,21 +138,23 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
     stream.current = null;
     if (audioContext.current) void audioContext.current.close().catch(() => {});
     audioContext.current = null;
-    audio.current?.pause();
-    audio.current = null;
-    if (url.current) URL.revokeObjectURL(url.current);
-    url.current = null;
   }
 
   function stop() {
     conversation.current = false;
     setConversationActive(false);
+    voiceMode.current = 'off';
+    scribe.disconnect();
     clearMedia();
     setPhase('idle');
   }
 
   async function start(automatic = false, monitorPlayback = false) {
-    if (!monitorPlayback) clearMedia();
+    if (!monitorPlayback) {
+      if (voiceMode.current === 'realtime') scribe.disconnect();
+      voiceMode.current = 'batch';
+      clearMedia();
+    }
     const id = generation.current;
     monitoringPlayback.current = monitorPlayback;
     if (!monitorPlayback) setPhase('starting');
@@ -255,10 +354,33 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
     }
   }
 
-  function startConversation() {
+  async function startConversation() {
+    if (conversation.current) return;
     conversation.current = true;
     setConversationActive(true);
-    void start(true);
+    clearMedia();
+    const id = generation.current;
+    voiceMode.current = 'connecting';
+    setPhase('starting');
+    try {
+      const response = await fetch('/api/voice/realtime-token', {
+        method: 'POST',
+        signal: AbortSignal.timeout(10000),
+      });
+      if (!response.ok) throw new Error('Realtime voice unavailable');
+      const value = await response.json();
+      if (typeof value.token !== 'string' || !value.token) throw new Error('No realtime token');
+      if (!conversation.current || id !== generation.current) return;
+      voiceMode.current = 'realtime';
+      await scribe.connect({ token: value.token });
+      if (!conversation.current || id !== generation.current) scribe.disconnect();
+    } catch {
+      if (!conversation.current || id !== generation.current) return;
+      // Still offer continuous conversation with the local recorder if the
+      // account, browser, or network cannot start streaming transcription.
+      voiceMode.current = 'batch';
+      void start(true);
+    }
   }
 
   function pauseConversation() {
@@ -266,6 +388,12 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
   }
 
   function skipSpeech() {
+    if (voiceMode.current === 'realtime') {
+      stopOutput();
+      if (conversation.current) setPhase('listening');
+      else setPhase('idle');
+      return;
+    }
     if (conversation.current && recorder.current?.state === 'recording') {
       monitoringPlayback.current = false;
       audio.current?.pause();
@@ -283,7 +411,56 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
     if (recorder.current?.state === 'recording') recorder.current.stop();
   }
 
+  async function speakRealtime(text: string) {
+    if (speechInterrupted.current) return;
+    stopOutput();
+    const id = outputGeneration.current;
+    const controller = new AbortController();
+    outputAbort.current = controller;
+    setPhase('speaking');
+    try {
+      const response = await fetch('/api/voice/speak', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: text.slice(0, 3000) }),
+        signal: AbortSignal.any([controller.signal, AbortSignal.timeout(30000)]),
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Voice output failed.');
+      }
+      const blob = await response.blob();
+      if (id !== outputGeneration.current || !conversation.current) return;
+      outputAbort.current = null;
+      url.current = URL.createObjectURL(blob);
+      const playback = new Audio(url.current);
+      audio.current = playback;
+      spokenText.current = text;
+      playback.onended = () => {
+        if (id !== outputGeneration.current) return;
+        stopOutput();
+        if (conversation.current) setPhase('listening');
+      };
+      playback.onerror = () => {
+        if (id !== outputGeneration.current) return;
+        stopOutput();
+        errorHandler.current('Audio playback failed. The full answer remains in the transcript.');
+        if (conversation.current) setPhase('listening');
+      };
+      await playback.play();
+    } catch (error) {
+      if (id !== outputGeneration.current || !conversation.current) return;
+      outputAbort.current = null;
+      errorHandler.current(error instanceof Error ? error.message : 'Voice output failed.');
+      setPhase('listening');
+    }
+  }
+
   async function speak(text: string) {
+    if (voiceMode.current === 'realtime' && conversation.current) {
+      await speakRealtime(text);
+      return;
+    }
     clearMedia();
     const id = generation.current;
     speechInterrupted.current = false;
@@ -352,7 +529,9 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
   }
 
   function resumeConversation() {
-    if (conversation.current) void start(true);
+    if (!conversation.current) return;
+    if (voiceMode.current === 'realtime') setPhase('listening');
+    else void start(true);
   }
 
   function isConversationActive() {
@@ -366,6 +545,8 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
   useEffect(
     () => () => {
       conversation.current = false;
+      voiceMode.current = 'off';
+      scribe.disconnect();
       clearMedia();
     },
     [],

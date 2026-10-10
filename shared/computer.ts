@@ -1,6 +1,27 @@
 import { z } from 'zod';
 
+export const nativeAppSchema = z.enum([
+  'browser',
+  'chrome',
+  'edge',
+  'fileExplorer',
+  'notepad',
+  'calculator',
+  'vsCode',
+  'excel',
+  'powerPoint',
+]);
+export type NativeAppId = z.infer<typeof nativeAppSchema>;
+
 export const computerActionSchema = z.discriminatedUnion('tool', [
+  z.object({ tool: z.literal('openApp'), app: nativeAppSchema }).strict(),
+  z
+    .object({
+      tool: z.literal('pursueBrowserGoal'),
+      kind: z.enum(['job', 'shopping']),
+      query: z.string().trim().min(2).max(300),
+    })
+    .strict(),
   z
     .object({
       tool: z.literal('createCode'),
@@ -106,6 +127,7 @@ export type ScreenView = {
   description: string | null;
 };
 export type ComputerState = {
+  lastApp?: { app: NativeAppId; name: string; mode: 'focused' | 'launched' } | null;
   folder: { id: string; name: string } | null;
   code: CodeArtifact | null;
   browser: BrowserView | null;
@@ -125,6 +147,8 @@ export type ComputerState = {
     summary: string;
     sha256: string;
     opened: boolean;
+    provider?: 'local' | 'databricks';
+    queryReference?: string;
   } | null;
 };
 export type ScreenPointer = {

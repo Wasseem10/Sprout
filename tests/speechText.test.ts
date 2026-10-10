@@ -116,6 +116,15 @@ describe('spoken computer replies', () => {
     );
     expect(spokenRequestAcknowledgment('Click Apply')).toBe("I'll check the Apply button.");
     expect(spokenRequestAcknowledgment('Tell me a joke')).toBeNull();
+    expect(
+      spokenRequestAcknowledgment('Open Calculator', { tool: 'openApp', app: 'calculator' }),
+    ).toBe("I'll open the app.");
+  });
+
+  it('reports an app as opened or focused based on the actual result', () => {
+    const result = reply('Focused Calculator.', null);
+    result.state.lastApp = { app: 'calculator', name: 'Calculator', mode: 'focused' };
+    expect(spokenComputerReply(result, 'openApp')).toBe('I switched to Calculator.');
   });
 
   it('gives application next steps without reading the whole form', () => {
@@ -141,6 +150,26 @@ describe('spoken computer replies', () => {
     expect(speech).not.toContain('Password');
   });
 
+  it('speaks the completed job-search path rather than random page text', () => {
+    const view = browser({
+      title: 'Library Assistant Application',
+      text: 'Navigation Menu 8bf6c9901d Some random page text that should stay in the transcript.',
+      controls: [{ id: '1', role: 'textbox', name: 'Email', sensitive: true, blocked: false }],
+    });
+    const speech = spokenComputerReply(
+      reply(
+        'Found Library Assistant in Orlando and opened its application page. Opened Library Assistant Application. I found text fields: Email. I will not submit the application.',
+        view,
+      ),
+      'readPage',
+    );
+    expect(speech).toContain(
+      'I found Library Assistant in Orlando and opened the application page',
+    );
+    expect(speech).toContain('help fill Email');
+    expect(speech).not.toContain('random page text');
+  });
+
   it('summarizes workbook findings without speaking a hashed filename', () => {
     const result = reply(
       'sales-demo-synthetic.xlsx (synthetic sample), sheet Synthetic sales has 6 data rows. Revenue totals 6,200 across 6 numeric cells; average 1,033.33. Highest Region: East with 2,700 Revenue. Opened sales-demo-synthetic.xlsx in Excel.',
@@ -160,6 +189,46 @@ describe('spoken computer replies', () => {
     expect(speech).toContain('East with 2,700 Revenue is the top region');
     expect(speech).toContain('I opened it in Excel');
     expect(speech).not.toContain('.xlsx');
+  });
+
+  it('names Databricks without reading its query reference aloud', () => {
+    const result = reply(
+      'sales-demo-synthetic.xlsx has 6 data rows. Databricks calculated Revenue: total 6,200 across 6 numeric cells; average 1,033.33. Highest Region: East with 2,700 Revenue.',
+      null,
+    );
+    result.state.spreadsheet = {
+      filename: 'sales-demo-synthetic.xlsx',
+      sheet: 'Synthetic sales',
+      rows: 6,
+      summary: result.summary,
+      sha256: 'x',
+      opened: false,
+      provider: 'databricks',
+      queryReference: '4f3bd97e-567a-4e0b-8a96-4b9c322d921d',
+    };
+    const speech = spokenComputerReply(result, 'analyzeSpreadsheet');
+    expect(speech).toContain('Databricks calculated revenue of 6,200');
+    expect(speech).not.toContain('4f3bd97e');
+  });
+
+  it('preserves negative and decimal workbook values', () => {
+    const result = reply(
+      'returns.xlsx, sheet Returns has 4 data rows. Profit totals -1,234.5 across 4 numeric cells; average -308.63. Highest Region: East with -12.75 Profit.',
+      null,
+    );
+    result.state.spreadsheet = {
+      filename: 'returns.xlsx',
+      sheet: 'Returns',
+      rows: 4,
+      summary: result.summary,
+      sha256: 'x',
+      opened: false,
+      provider: 'local',
+    };
+    const speech = spokenComputerReply(result, 'analyzeSpreadsheet');
+    expect(speech).toContain('Profit totals -1,234.5');
+    expect(speech).toContain('East with -12.75 Profit is the top region');
+    expect(speech).not.toContain('no reliable number');
   });
 
   it('does not claim Office opened when it failed', () => {

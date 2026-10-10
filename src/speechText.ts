@@ -69,6 +69,10 @@ export function spokenRequestAcknowledgment(
       return "I'll check that field.";
     case 'describeScreen':
       return "I'll describe the screen.";
+    case 'openApp':
+      return "I'll open the app.";
+    case 'pursueBrowserGoal':
+      return action.kind === 'job' ? "I'll look for jobs." : "I'll look for options.";
     case 'locateScreenTarget':
       return "I'll look for that button.";
   }
@@ -89,6 +93,12 @@ export function spokenRequestAcknowledgment(
     return "I'll describe the screen.";
   if (/\b(?:click|open|select|press)\b.*\bapply\b/i.test(text))
     return "I'll check the Apply button.";
+  if (
+    /\b(?:open|launch|start|switch to)\b.*\b(?:calculator|browser|chrome|edge|file explorer|notepad|vs code|excel|powerpoint)\b/i.test(
+      text,
+    )
+  )
+    return "I'll open the app.";
   if (/\b(?:click|press|tap|select)\b.*\b(?:screen|display|desktop|window|app)\b/i.test(text))
     return "I'll look for that button.";
   if (/\bscroll\s+(?:up|down)\b/i.test(text)) return "I'll scroll the screen.";
@@ -129,6 +139,21 @@ function usefulLines(body: string): string[] {
 
 function browserSpeech(browser: BrowserView, summary: string, tool?: string): string | null {
   const title = cleanSpeechText(browser.title, 100) || 'the page';
+  if (/^Found .+ and opened its application page\./s.test(summary)) {
+    const job = summary.match(/^Found (.+?) and opened its application page\./s)?.[1];
+    const fields = browser.controls
+      .filter((control) => control.role === 'textbox' && !control.blocked)
+      .map((control) => cleanSpeechText(control.name, 35))
+      .filter(Boolean)
+      .slice(0, 3);
+    const next = fields.length
+      ? `I can help fill ${fields.join(', ')}.`
+      : 'I can read the page for the next step.';
+    return cleanSpeechText(
+      `I found ${cleanSpeechText(job || 'the job', 95)} and opened the application page. ${next} You review and submit it.`,
+      300,
+    );
+  }
   if (/^I heard “.+” for .+\. Say “confirm fill”/i.test(summary)) {
     const matched = summary.match(/^I heard (“.+?”) for ([^.]+)\./i);
     if (matched)
@@ -203,6 +228,10 @@ function browserSpeech(browser: BrowserView, summary: string, tool?: string): st
 
 export function spokenComputerReply(result: ComputerResult, tool?: string): string {
   const { summary, state } = result;
+  if (tool === 'openApp' && state.lastApp)
+    return state.lastApp.mode === 'focused'
+      ? `I switched to ${state.lastApp.name}.`
+      : `I opened ${state.lastApp.name}.`;
   if (/^Created editable PowerPoint/.test(summary) && state.presentation) {
     const deck = state.presentation;
     const opened = deck.opened
@@ -218,10 +247,12 @@ export function spokenComputerReply(result: ComputerResult, tool?: string): stri
   if (/^Opened .+\.pptx in PowerPoint\./.test(summary)) return 'I opened the PowerPoint.';
   if (state.spreadsheet && (/\bdata rows\b/i.test(summary) || tool === 'analyzeSpreadsheet')) {
     const report = state.spreadsheet.summary;
-    const total = report.match(/([\w ]+?) totals ([\d,.]+) across \d+ numeric cells/i);
-    const highest = report.match(/Highest ([\w ]+): ([^.]+)\./i);
+    const total =
+      report.match(/Databricks calculated ([\w ]+): total (-?[\d,]+(?:\.\d+)?)/i) ??
+      report.match(/([\w ]+?) totals (-?[\d,]+(?:\.\d+)?) across \d+ numeric cells/i);
+    const highest = report.match(/Highest ([\w ]+): (.+?) with (-?[\d,]+(?:\.\d+)?) ([\w ]+)\./i);
     const insight = total
-      ? `${total[1].trim()} totals ${total[2]}.${highest ? ` ${highest[2].trim()} is the top ${highest[1].trim().toLowerCase()}.` : ''}`
+      ? `${state.spreadsheet.provider === 'databricks' ? `Databricks calculated ${total[1].trim().toLowerCase()} of ${total[2]}.` : `${total[1].trim()} totals ${total[2]}.`}${highest ? ` ${highest[2].trim()} with ${highest[3]} ${highest[4].trim()} is the top ${highest[1].trim().toLowerCase()}.` : ''}`
       : `I found ${state.spreadsheet.rows} rows, but no reliable number to total.`;
     const opened = state.spreadsheet.opened
       ? 'I opened it in Excel.'

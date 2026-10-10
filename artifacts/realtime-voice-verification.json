@@ -1,0 +1,11 @@
+{
+  "checkedAt": "2026-10-10T18:03:59.856Z",
+  "provider": "elevenlabs",
+  "model": "scribe_v2_realtime",
+  "input": "Synthetic Windows voice WAV, streamed in paced 200 ms PCM chunks",
+  "transcript": "Write a Python program that prints the squares of the numbers one through five.",
+  "firstPartialMs": 2381,
+  "committedAfterAudioMs": 93,
+  "physicalMicrophone": "Not tested",
+  "physicalSpeakers": "Not tested"
+}

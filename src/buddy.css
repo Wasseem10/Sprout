@@ -206,13 +206,29 @@ html.desktop-buddy,
   line-height: 1.8;
   max-width: 325px;
 }
-.buddy-suggestion {
+.buddy-suggestions {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+}
+.buddy-suggestions button {
   display: flex;
   gap: 9px;
   align-items: center;
-  margin-top: 20px;
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 10px;
+  border: 1px solid #c3e6ff38;
+  border-radius: 11px;
+  background: #d8edff0d;
+  text-align: left;
   font-size: 11px;
-  color: #cce5ff;
+  color: #d8ebff;
+}
+.buddy-suggestions button:hover:not(:disabled),
+.buddy-suggestions button:focus-visible {
+  background: #d8edff20;
+  border-color: #c3e6ff99;
 }
 .buddy-message {
   margin: 0 0 19px;
@@ -274,6 +290,19 @@ html.desktop-buddy,
   color: #d2eaff;
   padding: 3px 0;
   margin-right: 12px;
+}
+.buddy-reference {
+  margin-top: 7px;
+  color: #b8ddff;
+  font-size: 9px;
+}
+.buddy-reference summary {
+  cursor: pointer;
+}
+.buddy-reference code {
+  display: block;
+  margin-top: 5px;
+  overflow-wrap: anywhere;
 }
 .buddy-composer {
   background: #ffffff0d;

@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-10-10T18:02:46.457Z",
+  "note": "One synthetic phrase per model. Network-inclusive API timing, not microphone-to-answer or user-perceived latency.",
+  "results": [
+    {
+      "model": "eleven_multilingual_v2",
+      "status": 200,
+      "firstByteMs": 1167,
+      "completeMs": 1211,
+      "bytes": 43094
+    },
+    {
+      "model": "eleven_flash_v2_5",
+      "status": 200,
+      "firstByteMs": 820,
+      "completeMs": 916,
+      "bytes": 41422
+    }
+  ]
+}

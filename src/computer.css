@@ -102,6 +102,60 @@
   min-height: 465px;
   overflow: hidden;
 }
+.computer-home {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background:
+    radial-gradient(circle at 95% 0%, #73baff24, transparent 42%),
+    linear-gradient(145deg, #172b49, #10213a);
+}
+.computer-starters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.computer-starters button {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 95px;
+  padding: 18px;
+  text-align: left;
+  color: #eaf6ff;
+  background: #e6f4ff0c;
+  border: 1px solid #c5e7ff31;
+  border-radius: 13px;
+}
+.computer-starters button:hover:not(:disabled),
+.computer-starters button:focus-visible {
+  background: #cbe8ff18;
+  border-color: #a7d8ff94;
+}
+.computer-starters button > svg {
+  color: #9fd6ff;
+  flex-shrink: 0;
+}
+.computer-starters strong,
+.computer-starters small {
+  display: block;
+}
+.computer-starters strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+.computer-starters small {
+  margin-top: 5px;
+  color: #b5cce2;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.computer-home-note {
+  color: #b5cce2;
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 0;
+}
 .office-result {
   border: 1px solid var(--line);
   border-radius: 10px;
@@ -116,6 +170,23 @@
 }
 .office-result p {
   line-height: 1.5;
+}
+.office-provider {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  color: #b9dfff;
+  font-size: 11px;
+}
+.office-provider strong {
+  font-weight: 600;
+}
+.office-provider small,
+.office-provider code {
+  color: #a7c7e3;
+  overflow-wrap: anywhere;
 }
 .office-result li {
   margin: 6px 0;
@@ -664,6 +735,14 @@
   .screen-sources,
   .connection-grid {
     grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .computer-starters {
+    grid-template-columns: 1fr;
+  }
+  .computer-starters button {
+    min-height: 72px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

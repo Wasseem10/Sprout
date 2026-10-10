@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-10-10T18:14:19.045Z",
+  "productionUi": true,
+  "sameOriginWorklet": true,
+  "realtimeSockets": 1,
+  "batchFallbackCalls": 0,
+  "requests": [
+    "Write a Python program that prints the squares of the numbers one through five."
+  ],
+  "javascriptErrors": [],
+  "speechReply": "Real ElevenLabs Flash response returned successfully",
+  "computerActions": "Intercepted with harmless response; none executed",
+  "microphone": "Chromium fake microphone using a synthetic WAV; physical microphone not tested",
+  "speakers": "Headless playback; physical speakers not tested"
+}

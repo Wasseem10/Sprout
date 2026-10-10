@@ -1,6 +1,8 @@
 import ExcelJS from 'exceljs';
 import { access, lstat, readdir, realpath } from 'node:fs/promises';
 import path from 'node:path';
+import type { Config } from '../config.js';
+import { analyzeWorkbookOnDatabricks } from '../providers/workbookAnalytics.js';
 
 const demoName = 'sales-demo-synthetic.xlsx';
 const currencyHint = /revenue|sales|profit|cost|price|amount|usd|dollars?/i;
@@ -46,7 +48,21 @@ function simpleValue(value: ExcelJS.CellValue): string | number | null {
   return null;
 }
 
-export async function analyzeSpreadsheet(root: string, question: string, requestedName?: string) {
+export async function analyzeSpreadsheet(
+  root: string,
+  question: string,
+  requestedName?: string,
+  cloud?: { cfg: Config; signal: AbortSignal },
+) {
+  const useDatabricks =
+    /\bdatabricks\b/i.test(question) &&
+    !/\b(?:without|avoid|skip|not with|don['’]t use|do not use)\s+(?:using\s+)?databricks\b/i.test(
+      question,
+    );
+  if (useDatabricks && (!cloud?.cfg.dbHost || !cloud.cfg.dbWarehouse || !cloud.cfg.dbToken))
+    throw new Error(
+      'Connect your Databricks workspace, SQL warehouse ID, and access token in Settings first. I can also analyze the workbook locally.',
+    );
   const names = (await readdir(root)).filter((name) => /^[^\\/]+\.xlsx$/i.test(name));
   const filename = requestedName
     ? names.find((name) => name.toLowerCase() === requestedName.toLowerCase())
@@ -108,6 +124,7 @@ export async function analyzeSpreadsheet(root: string, question: string, request
       filename,
       sheet: sheet.name,
       rows: rows.length,
+      provider: 'local' as const,
       summary: `${noun} has ${rows.length} data rows and columns: ${headers.join(', ')}. I did not find a mostly numeric measure to total.`,
     };
   const total = measure.values.reduce((sum, value) => sum + value, 0);
@@ -126,6 +143,27 @@ export async function analyzeSpreadsheet(root: string, question: string, request
       .some((word) => word.length > 2 && new RegExp(`\\b${word}\\b`, 'i').test(question)),
   );
   const category = requestedCategory ?? categories.find((item) => categoryHint.test(item.header));
+  if (useDatabricks && cloud) {
+    const selected = rows.flatMap((row) => {
+      const value = row[measure.col];
+      const label = category ? row[category.col] : null;
+      return typeof value === 'number' && Number.isFinite(value)
+        ? [{ value, category: typeof label === 'string' ? label : null }]
+        : [];
+    });
+    const result = await analyzeWorkbookOnDatabricks(selected, cloud.cfg, cloud.signal);
+    let cloudSummary = `${noun} has ${rows.length} data rows. Databricks calculated ${measure.header}: total ${number(result.total)} across ${result.count} numeric cells; average ${number(result.average)}.`;
+    if (category && result.highest)
+      cloudSummary += ` Highest ${category.header}: ${result.highest.category} with ${number(result.highest.total)} ${measure.header}.`;
+    return {
+      filename,
+      sheet: sheet.name,
+      rows: rows.length,
+      summary: cloudSummary,
+      provider: result.provider,
+      queryReference: result.queryReference,
+    };
+  }
   if (category) {
     const groups = new Map<string, number>();
     for (const row of rows) {
@@ -138,5 +176,5 @@ export async function analyzeSpreadsheet(root: string, question: string, request
     if (ranked.length)
       summary += ` Highest ${category.header}: ${ranked[0][0]} with ${number(ranked[0][1])} ${measure.header}.`;
   }
-  return { filename, sheet: sheet.name, rows: rows.length, summary };
+  return { filename, sheet: sheet.name, rows: rows.length, summary, provider: 'local' as const };
 }

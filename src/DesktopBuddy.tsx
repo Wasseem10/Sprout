@@ -6,6 +6,7 @@ import {
   Code2,
   Eye,
   FolderOpen,
+  Globe,
   Maximize2,
   Minus,
   Pause,
@@ -13,6 +14,7 @@ import {
   Presentation,
   Settings2,
   Square,
+  Table2,
   Volume2,
   VolumeX,
 } from 'lucide-react';
@@ -31,6 +33,7 @@ type Props = {
   speechReady: boolean;
   shortcut: boolean | null;
   state: ComputerState;
+  resultView: 'home' | 'code' | 'office' | 'browser' | 'screen';
   request: string;
   messages: { id: string; role: 'user' | 'assistant' | 'error'; text: string }[];
   inputRef: RefObject<HTMLTextAreaElement | null>;
@@ -45,23 +48,27 @@ type Props = {
   screen: () => void;
   toggleSpeech: () => void;
   setRequest: (text: string) => void;
+  suggest: (text: string) => void;
   send: () => void;
   run: () => void;
   editor: () => void;
   openPresentation: () => void;
+  openSpreadsheet: () => void;
 };
 export default function DesktopBuddy(p: Props) {
-  const status = p.busy
-    ? 'Working…'
-    : p.voicePhase === 'listening'
-      ? 'Listening…'
+  const status = p.conversationActive
+    ? p.voicePhase === 'speaking'
+      ? 'Speaking · listening'
+      : p.busy || p.voicePhase === 'processing'
+        ? 'Working · listening'
+        : p.voicePhase === 'transcribing'
+          ? 'Understanding · listening'
+          : 'Listening…'
+    : p.busy
+      ? 'Working…'
       : p.voicePhase === 'starting'
         ? 'Opening mic…'
-        : p.voicePhase === 'transcribing'
-          ? 'Understanding…'
-          : p.voicePhase === 'speaking'
-            ? 'Speaking…'
-            : 'Ready to talk';
+        : 'Ready to talk';
   const conversation = p.messages.filter((m) => m.id !== 'welcome');
   return (
     <section
@@ -145,13 +152,28 @@ export default function DesktopBuddy(p: Props) {
                 <span className="buddy-eyebrow">A LITTLE HELP. RIGHT HERE.</span>
                 <h1>What’s on your mind?</h1>
                 <p>
-                  Press play once and talk naturally. Interrupt me anytime. I can make slides,
-                  analyze a workbook, browse the web, describe your screen, and click a named button
-                  you can see.
+                  Press Play and talk naturally. I’ll keep listening, even while I reply. Ask me to
+                  find a job, open an app, describe your screen, or make slides.
                 </p>
-                <div className="buddy-suggestion">
-                  <Code2 size={15} />
-                  <span>“Write a Python program, run it, and open it in VS Code.”</span>
+                <div className="buddy-suggestions" aria-label="Ideas to try">
+                  <button
+                    disabled={!p.enabled || p.busy}
+                    onClick={() => p.suggest('Find jobs near me')}
+                  >
+                    <Globe size={15} /> Find jobs near me
+                  </button>
+                  <button
+                    disabled={!p.enabled || p.busy}
+                    onClick={() => p.suggest('Open Calculator')}
+                  >
+                    <Maximize2 size={15} /> Open Calculator
+                  </button>
+                  <button
+                    disabled={!p.enabled || p.busy}
+                    onClick={() => p.suggest('Describe my screen')}
+                  >
+                    <Eye size={15} /> Describe my screen
+                  </button>
                 </div>
               </div>
             )}
@@ -164,7 +186,7 @@ export default function DesktopBuddy(p: Props) {
               </div>
             ))}
           </div>
-          {p.state.presentation && (
+          {p.resultView === 'office' && p.state.presentation && (
             <div className="buddy-result">
               <div>
                 <Presentation size={15} />
@@ -178,7 +200,32 @@ export default function DesktopBuddy(p: Props) {
               </div>
             </div>
           )}
-          {p.state.code && (
+          {p.resultView === 'office' && p.state.spreadsheet && (
+            <div className="buddy-result">
+              <div>
+                <Table2 size={15} />
+                <span>{p.state.spreadsheet.filename}</span>
+                <small>
+                  {p.state.spreadsheet.provider === 'databricks'
+                    ? 'Databricks SQL'
+                    : 'Local analysis'}
+                </small>
+              </div>
+              <div className="buddy-result-actions">
+                <button disabled={p.busy || !p.enabled} onClick={p.openSpreadsheet}>
+                  Open Excel ↗
+                </button>
+              </div>
+              {p.state.spreadsheet.provider === 'databricks' &&
+                p.state.spreadsheet.queryReference && (
+                  <details className="buddy-reference">
+                    <summary>Query reference</summary>
+                    <code>{p.state.spreadsheet.queryReference}</code>
+                  </details>
+                )}
+            </div>
+          )}
+          {p.resultView === 'code' && p.state.code && (
             <div className="buddy-result">
               <div>
                 <Code2 size={15} />
@@ -260,8 +307,8 @@ export default function DesktopBuddy(p: Props) {
                 className="buddy-icon"
                 disabled={p.busy}
                 onClick={p.folder}
-                aria-label="Choose code folder"
-                title="Choose folder"
+                aria-label="Change save folder"
+                title="Change save folder"
               >
                 <FolderOpen size={17} />
               </button>

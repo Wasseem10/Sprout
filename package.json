@@ -24,6 +24,7 @@
     "verify:clean": "node scripts/verify-clean.mjs"
   },
   "dependencies": {
+    "@elevenlabs/react": "^1.17.0",
     "@fastify/cookie": "^11.0.0",
     "@fastify/multipart": "^9.0.0",
     "@fastify/static": "^10.1.6",

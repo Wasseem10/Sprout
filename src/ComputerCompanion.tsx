@@ -42,6 +42,29 @@ function visibleScreenTarget(request: string, hasControlledBrowser: boolean) {
   return contextual?.[1].replace(/[.!?]+$/, '').trim() ?? null;
 }
 
+function needsFileWorkspace(request: string, action?: ComputerAction) {
+  if (action?.tool === 'createCode' || action?.tool === 'createPresentation') return true;
+  if (action?.tool === 'analyzeSpreadsheet')
+    return /\b(?:sample|demo|synthetic)\b/i.test(action.question);
+  const intent = request
+    .trim()
+    .replace(/^(?:please|can you|could you|would you|i want you to)\s+/i, '');
+  if (
+    /^(?:search|find|look up|show me|google|browse|open|click|read|describe|what|how|why)\b/i.test(
+      intent,
+    )
+  )
+    return false;
+  if (
+    /\b(?:analy[sz]e|summari[sz]e)\b.{0,120}\b(?:excel|spreadsheet|workbook)\b/i.test(intent) &&
+    !/\b(?:sample|demo|synthetic)\b/i.test(intent)
+  )
+    return false;
+  return /\b(?:create|make|build|write|generate|prepare|analy[sz]e|summari[sz]e)\b.{0,120}\b(?:powerpoint|presentation|slides?|python|program|script|code|excel|spreadsheet|workbook)\b/i.test(
+    intent,
+  );
+}
+
 export default function ComputerCompanion() {
   const desktopBuddy = new URLSearchParams(window.location.search).get('desktop') === 'buddy';
   const [dockMode, setDockMode] = useState(desktopBuddy);
@@ -54,13 +77,13 @@ export default function ComputerCompanion() {
     {
       id: 'welcome',
       role: 'assistant',
-      text: 'Tell me what you want to do. I can write code, create PowerPoint slides, analyze an Excel workbook, browse the web, fill a form with your confirmation, or describe your screen.',
+      text: 'Hi, I can help you use your computer. Ask me to search the web, open an app, describe your screen, fill a form, or make something for you.',
     },
   ]);
   const [request, setRequest] = useState(''),
     [busy, setBusy] = useState(false),
     [phase, setPhase] = useState('Ready when you are');
-  const [tab, setTab] = useState<'code' | 'office' | 'browser' | 'screen'>('code'),
+  const [tab, setTab] = useState<'home' | 'code' | 'office' | 'browser' | 'screen'>('home'),
     [modal, setModal] = useState<'settings' | 'screens' | null>(null);
   const [sources, setSources] = useState<Source[]>([]),
     [speech, setSpeech] = useState(() =>
@@ -100,6 +123,7 @@ export default function ComputerCompanion() {
     if (/navigate|search|SearchResult|click|fill|readPage|goBack/.test(tool ?? ''))
       setTab('browser');
     else if (/describeScreen|screenAction/.test(tool ?? '')) setTab('screen');
+    else if (/openApp/.test(tool ?? '')) setTab('home');
     else if (/Presentation|Spreadsheet/.test(tool ?? '')) setTab('office');
     else if (/Code|Editor/.test(tool ?? '')) setTab('code');
   };
@@ -129,8 +153,15 @@ export default function ComputerCompanion() {
         )
           void voice.speak(acknowledgment);
       }, 350);
-    const before = state;
+    let before = state;
     try {
+      if (!before.folder && needsFileWorkspace(text, action)) {
+        setPhase('Preparing a local file workspace');
+        const next = await api<ComputerState>('/computer/demo-folder', {}, abort.signal);
+        if (abort.signal.aborted) return;
+        setState(next);
+        before = next;
+      }
       const scrollDirection =
         !action && window.insightos?.scrollCurrentScreen
           ? (text.match(/\bscroll\s+(up|down)\b/i)?.[1]?.toLowerCase() as 'up' | 'down' | undefined)
@@ -225,12 +256,28 @@ export default function ComputerCompanion() {
           { tool: 'describeScreen' },
           abort.signal,
         );
-      } else
-        result = await api<ComputerResult>(
-          action ? '/computer/action' : '/computer/request',
-          action ?? { request: text },
-          abort.signal,
-        );
+      } else {
+        const endpoint = action ? '/computer/action' : '/computer/request';
+        const payload = action ?? { request: text };
+        try {
+          result = await api<ComputerResult>(endpoint, payload, abort.signal);
+        } catch (error) {
+          if (
+            before.folder ||
+            abort.signal.aborted ||
+            !(error instanceof Error) ||
+            !needsFileWorkspace(text, action) ||
+            !/\b(?:needs? a folder|choose a folder|selected folder)\b/i.test(error.message)
+          )
+            throw error;
+          setPhase('Preparing a local file workspace');
+          const next = await api<ComputerState>('/computer/demo-folder', {}, abort.signal);
+          if (abort.signal.aborted) return;
+          setState(next);
+          before = next;
+          result = await api<ComputerResult>(endpoint, payload, abort.signal);
+        }
+      }
       if (result.pointer) {
         // A planner may ask to click a visible desktop control. Always locate it
         // again from a fresh capture so the click cannot use stale coordinates.
@@ -246,6 +293,7 @@ export default function ComputerCompanion() {
           ? 'describeScreen'
           : action?.tool;
       if (!tool) {
+        if (result.state.lastApp?.name !== before.lastApp?.name) tool = 'openApp';
         if (result.state.browser?.capturedAt !== before.browser?.capturedAt) tool = 'readPage';
         if (result.state.presentation?.filename !== before.presentation?.filename)
           tool = 'createPresentation';
@@ -403,9 +451,7 @@ export default function ComputerCompanion() {
           return;
         }
         await backend.session();
-        let next = await api<ComputerState>('/computer/state');
-        if (desktopBuddy && cfg.computer?.local && !next.folder)
-          next = await api<ComputerState>('/computer/demo-folder', {});
+        const next = await api<ComputerState>('/computer/state');
         if (active) setState(next);
       } catch (error) {
         if (active)
@@ -538,6 +584,7 @@ export default function ComputerCompanion() {
           speechReady={!!status?.integrations.elevenLabs.ttsConfigured}
           shortcut={globalVoice}
           state={state}
+          resultView={tab}
           request={request}
           messages={messages}
           inputRef={input}
@@ -555,12 +602,14 @@ export default function ComputerCompanion() {
           folder={() => void setup(window.insightos ? 'folder' : 'demo')}
           screen={() => void setup('screen')}
           setRequest={setRequest}
+          suggest={(text) => void perform(text)}
           send={() => void perform(request)}
           run={() => void perform('Run my program', { tool: 'runCode' })}
           editor={() => void perform('Open in VS Code', { tool: 'openEditor' })}
           openPresentation={() =>
             void perform('Open the presentation', { tool: 'openPresentation' })
           }
+          openSpreadsheet={() => void perform('Open the spreadsheet', { tool: 'openSpreadsheet' })}
         />
       ) : (
         <>
@@ -628,8 +677,8 @@ export default function ComputerCompanion() {
                   <div className="eyebrow">
                     <span /> LESS FRICTION. MORE FREEDOM.
                   </div>
-                  <h1>Just say the next step.</h1>
-                  <p>Create something. Explore the web. See what’s in front of you.</p>
+                  <h1>Tell me what you need done.</h1>
+                  <p>Search, open apps, use your screen, or make something together.</p>
                 </div>
                 <div className={`companion-orb ${active ? 'is-active' : ''}`} aria-hidden="true">
                   <AudioLines size={37} />
@@ -637,10 +686,11 @@ export default function ComputerCompanion() {
               </div>
               <nav className="computer-tabs" aria-label="Computer tools">
                 {[
+                  { id: 'home', title: 'Start here', icon: Sparkles },
+                  { id: 'browser', title: 'Browse & act', icon: Globe },
+                  { id: 'screen', title: 'My screen', icon: Eye },
+                  { id: 'office', title: 'Slides & Excel', icon: Presentation },
                   { id: 'code', title: 'Create & run', icon: Code2 },
-                  { id: 'office', title: 'Office tasks', icon: Presentation },
-                  { id: 'browser', title: 'Browse the web', icon: Globe },
-                  { id: 'screen', title: 'See my screen', icon: Eye },
                 ].map(({ id, title, icon: Icon }) => (
                   <button
                     key={id}
@@ -652,6 +702,83 @@ export default function ComputerCompanion() {
                   </button>
                 ))}
               </nav>
+              {tab === 'home' && (
+                <section
+                  className="computer-artifact computer-home"
+                  aria-label="Start with InsightOS"
+                >
+                  <div className="computer-artifact-heading">
+                    <div>
+                      <span className="small-label">YOUR COMPUTER, WITHIN REACH</span>
+                      <h2>What can I help with?</h2>
+                      <p>
+                        Press Play on the buddy or type a request. I can take a step, tell you what
+                        happened, and keep the conversation going.
+                      </p>
+                    </div>
+                    <Sparkles size={25} aria-hidden="true" />
+                  </div>
+                  <div className="computer-starters">
+                    <button
+                      disabled={!enabled || busy}
+                      onClick={() => void perform('Find jobs near me')}
+                    >
+                      <Globe size={20} aria-hidden="true" />
+                      <span>
+                        <strong>Find jobs nearby</strong>
+                        <small>Search, open a result, and continue to Apply.</small>
+                      </span>
+                    </button>
+                    <button
+                      disabled={!enabled || busy}
+                      onClick={() =>
+                        window.insightos?.captureCurrentScreen
+                          ? void perform('Describe my screen')
+                          : setTab('screen')
+                      }
+                    >
+                      <Eye size={20} aria-hidden="true" />
+                      <span>
+                        <strong>Describe my screen</strong>
+                        <small>Find out what is visible and what to do next.</small>
+                      </span>
+                    </button>
+                    <button
+                      disabled={!enabled || busy}
+                      onClick={() => void perform('Open Calculator')}
+                    >
+                      <Sparkles size={20} aria-hidden="true" />
+                      <span>
+                        <strong>Open an app</strong>
+                        <small>Try Calculator, your browser, or another supported app.</small>
+                      </span>
+                    </button>
+                    <button
+                      disabled={!enabled || busy}
+                      onClick={() => {
+                        setRequest('Create a four-slide PowerPoint about ');
+                        input.current?.focus();
+                      }}
+                    >
+                      <Presentation size={20} aria-hidden="true" />
+                      <span>
+                        <strong>Make slides</strong>
+                        <small>Give me a topic and I’ll create an editable PowerPoint.</small>
+                      </span>
+                    </button>
+                  </div>
+                  <p className="computer-home-note">
+                    I’ll prepare a local work folder when a file task needs one. You can choose a
+                    different folder anytime.
+                  </p>
+                  {state.lastApp && (
+                    <p className="computer-home-note" role="status">
+                      {state.lastApp.mode === 'focused' ? 'Switched to' : 'Opened'}{' '}
+                      {state.lastApp.name}.
+                    </p>
+                  )}
+                </section>
+              )}
               {tab === 'code' && (
                 <section className="computer-artifact" aria-label="Python workspace">
                   <div className="computer-artifact-heading">
@@ -660,8 +787,8 @@ export default function ComputerCompanion() {
                       <h2>{state.code?.filename ?? 'Make your first program.'}</h2>
                       <p>
                         {state.folder
-                          ? `Folder: ${state.folder.name}`
-                          : 'Choose where to create your files.'}
+                          ? `Saving in ${state.folder.name}`
+                          : 'I’ll make a local work folder when you create a file.'}
                       </p>
                     </div>
                     <Code2 size={25} aria-hidden="true" />
@@ -674,19 +801,12 @@ export default function ComputerCompanion() {
                         onClick={() => void setup('folder')}
                       >
                         <FolderOpen size={16} aria-hidden="true" />
-                        Choose folder
+                        Change save folder
                       </button>
                     )}
                     <button
-                      className="secondary-button"
-                      disabled={!enabled || busy}
-                      onClick={() => void setup('demo')}
-                    >
-                      Use demo folder
-                    </button>
-                    <button
                       className="primary-button"
-                      disabled={!enabled || busy || !state.folder}
+                      disabled={!enabled || busy}
                       onClick={() =>
                         void perform('Write a Python program that computes 20 Fibonacci numbers', {
                           tool: 'createCode',
@@ -768,8 +888,7 @@ export default function ComputerCompanion() {
                       <h3>“Write a Fibonacci program.”</h3>
                       <p>Your request becomes a file you can run and open in VS Code.</p>
                       <div className="computer-step">
-                        <span>01</span> Select a folder <span>02</span> Create your program{' '}
-                        <span>03</span> Run & inspect
+                        <span>01</span> Ask for a program <span>02</span> Run & inspect
                       </div>
                     </div>
                   )}
@@ -783,8 +902,8 @@ export default function ComputerCompanion() {
                       <h2>Work with slides and spreadsheets</h2>
                       <p>
                         {state.folder
-                          ? `Folder: ${state.folder.name}`
-                          : 'Choose a folder for your files.'}
+                          ? `Saving in ${state.folder.name}`
+                          : 'I’ll make a local work folder when you need one.'}
                       </p>
                     </div>
                     <Presentation size={25} aria-hidden="true" />
@@ -792,7 +911,7 @@ export default function ComputerCompanion() {
                   <p className="computer-caption">
                     Say “Create a four-slide PowerPoint about job interview preparation” or “Analyze
                     the Excel workbook and tell me the top region.” Workbooks must be .xlsx files in
-                    the selected folder.
+                    your local work folder.
                   </p>
                   <div className="computer-toolbar">
                     {window.insightos && (
@@ -801,19 +920,12 @@ export default function ComputerCompanion() {
                         disabled={!enabled || busy}
                         onClick={() => void setup('folder')}
                       >
-                        <FolderOpen size={16} aria-hidden="true" /> Choose folder
+                        <FolderOpen size={16} aria-hidden="true" /> Change save folder
                       </button>
                     )}
                     <button
-                      className="secondary-button"
-                      disabled={!enabled || busy}
-                      onClick={() => void setup('demo')}
-                    >
-                      Use demo folder
-                    </button>
-                    <button
                       className="primary-button"
-                      disabled={!enabled || busy || !state.folder}
+                      disabled={!enabled || busy}
                       onClick={() =>
                         void perform(
                           'Create a four slide PowerPoint about preparing for a job interview',
@@ -824,9 +936,11 @@ export default function ComputerCompanion() {
                     </button>
                     <button
                       className="secondary-button"
-                      disabled={!enabled || busy || !state.folder}
+                      disabled={!enabled || busy}
                       onClick={() =>
-                        void perform('Analyze the Excel sales workbook and tell me the top region')
+                        void perform(
+                          'Analyze the synthetic sample Excel sales workbook and tell me the top region',
+                        )
                       }
                     >
                       Analyze sample Excel
@@ -858,6 +972,19 @@ export default function ComputerCompanion() {
                   {state.spreadsheet && (
                     <div className="office-result">
                       <h3>{state.spreadsheet.filename}</h3>
+                      <div className="office-provider" aria-label="Workbook analysis provider">
+                        <strong>
+                          {state.spreadsheet.provider === 'databricks'
+                            ? 'Analyzed with Databricks SQL'
+                            : 'Analyzed locally'}
+                        </strong>
+                        {state.spreadsheet.provider === 'databricks' &&
+                          state.spreadsheet.queryReference && (
+                            <small>
+                              Query reference: <code>{state.spreadsheet.queryReference}</code>
+                            </small>
+                          )}
+                      </div>
                       <p>{state.spreadsheet.summary}</p>
                       <button
                         className="secondary-button"
@@ -886,6 +1013,13 @@ export default function ComputerCompanion() {
                     <button
                       className="primary-button"
                       disabled={!enabled || busy}
+                      onClick={() => void perform('Find jobs near me')}
+                    >
+                      Find nearby jobs
+                    </button>
+                    <button
+                      className="secondary-button"
+                      disabled={!enabled || busy}
                       onClick={() =>
                         void perform('Open the public practice book catalog', {
                           tool: 'navigate',
@@ -893,7 +1027,7 @@ export default function ComputerCompanion() {
                         })
                       }
                     >
-                      Open practice book catalog
+                      Open practice website
                     </button>
                     <button
                       className="secondary-button"
@@ -985,10 +1119,10 @@ export default function ComputerCompanion() {
                       <span className="empty-glyph">
                         <Globe size={35} aria-hidden="true" />
                       </span>
-                      <h3>“Find a mechanical keyboard online.”</h3>
+                      <h3>“Find jobs near me.”</h3>
                       <p>
-                        Navigate, read and interact in a separate Chromium window. The practice
-                        catalog is a real public website for testing, with no checkout.
+                        I can search, open a result, read the page, and click observed links such as
+                        Apply. You stay in control of forms and final submissions.
                       </p>
                     </div>
                   )}
@@ -1000,13 +1134,26 @@ export default function ComputerCompanion() {
                     <div>
                       <span className="small-label">YOUR CHOICE. ONE SNAPSHOT.</span>
                       <h2>{state.screen?.name || 'A second pair of eyes.'}</h2>
-                      <p>Choose a window to capture. Request a description when you’re ready.</p>
+                      <p>Ask about your current display, or choose a window to inspect.</p>
                     </div>
                     <Eye size={25} aria-hidden="true" />
                   </div>
                   <div className="computer-toolbar">
+                    {window.insightos?.captureCurrentScreen && (
+                      <button
+                        className="primary-button"
+                        disabled={!enabled || busy}
+                        onClick={() => void perform('Describe my screen')}
+                      >
+                        Describe current screen
+                      </button>
+                    )}
                     <button
-                      className="primary-button"
+                      className={
+                        window.insightos?.captureCurrentScreen
+                          ? 'secondary-button'
+                          : 'primary-button'
+                      }
                       disabled={!enabled || busy}
                       onClick={() => void setup('screen')}
                     >
@@ -1073,8 +1220,9 @@ export default function ComputerCompanion() {
                       </span>
                       <h3>“What’s on this screen?”</h3>
                       <p>
-                        You choose what it sees. Capture first, preview it, then ask for a
-                        description.
+                        {window.insightos?.captureCurrentScreen
+                          ? 'Ask me and I’ll describe the current display. You can also choose a specific window.'
+                          : 'Select a screenshot to get a description of what is visible.'}
                       </p>
                     </div>
                   )}
@@ -1084,8 +1232,8 @@ export default function ComputerCompanion() {
                 <ShieldCheck size={15} aria-hidden="true" />
                 <span>
                   {status?.integrations.huggingFace.configured
-                    ? 'Hugging Face selected for AI commands and code'
-                    : 'Starter commands available · connect Hugging Face for flexible AI'}{' '}
+                    ? 'Hugging Face helps interpret requests and create files'
+                    : 'Connect Hugging Face for flexible requests'}{' '}
                   · Stop ends the current task
                 </span>
               </div>
@@ -1145,12 +1293,12 @@ export default function ComputerCompanion() {
                     : voice.phase === 'starting'
                       ? 'Opening microphone…'
                       : voice.phase === 'listening'
-                        ? 'Listening — I will respond when you finish speaking'
+                        ? 'Listening — speak whenever you are ready'
                         : voice.phase === 'transcribing'
-                          ? 'Transcribing your request…'
+                          ? 'Understanding your request · microphone still listening'
                           : voice.phase === 'processing'
-                            ? 'Working on your request…'
-                            : 'Reading the answer aloud'}
+                            ? 'Working on your request · microphone still listening'
+                            : 'Speaking · interrupt me anytime'}
                 </span>
                 {active && (
                   <button onClick={() => void stop()} className="computer-stop">
@@ -1217,8 +1365,8 @@ export default function ComputerCompanion() {
                 </div>
               </form>
               <p className="computer-voice-note">
-                Ctrl+Shift+Space starts or pauses conversation. Speak naturally; silence sends each
-                request. Esc stops the task and audio.
+                Ctrl+Shift+Space starts or pauses conversation. Speak anytime, including during a
+                reply. Esc stops the task and audio.
               </p>
             </aside>
           </div>

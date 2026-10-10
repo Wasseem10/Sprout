@@ -17,10 +17,12 @@ async function setup(
       w.trackSets = [];
       w.gains = [];
       w.playbackPauses = 0;
+      w.playbackStarts = 0;
       w.Audio = class {
         onended: (() => void) | null = null;
         onerror: (() => void) | null = null;
         play() {
+          w.playbackStarts++;
           setTimeout(() => this.onended?.(), w.playbackMs ?? 80);
           return Promise.resolve();
         }
@@ -70,6 +72,9 @@ async function setup(
         },
       };
     if (pathname === '/api/computer/state' || pathname === '/api/computer/stop') json = empty;
+    // The batch-recorder tests must never request a real, billable Scribe socket.
+    if (pathname === '/api/voice/realtime-token')
+      return route.fulfill({ status: 503, json: { error: 'Realtime mocked offline' } });
     if (pathname === '/api/computer/request') {
       commands.push(route.request().postDataJSON().request);
       json = { state: empty, summary: 'Your voice command reached the task handler.' };
@@ -82,6 +87,143 @@ async function setup(
   await expect(page.getByRole('button', { name: 'Start conversation' })).toBeEnabled();
   return commands;
 }
+
+async function setupRealtime(page: Page) {
+  await page.addInitScript(() => {
+    const w = window as any;
+    w.fakeSockets = [];
+    class FakeScribeSocket {
+      static OPEN = 1;
+      readyState = 0;
+      listeners = new Map<string, Array<(event: any) => void>>();
+      constructor(readonly address: string) {
+        w.fakeSockets.push(this);
+        setTimeout(() => {
+          if (this.readyState !== 0) return;
+          this.readyState = FakeScribeSocket.OPEN;
+          this.emit('open', {});
+          this.emitServer({ message_type: 'session_started' });
+        }, 0);
+      }
+      addEventListener(event: string, listener: (event: any) => void) {
+        this.listeners.set(event, [...(this.listeners.get(event) ?? []), listener]);
+      }
+      send() {
+        w.realtimeAudioChunks = (w.realtimeAudioChunks ?? 0) + 1;
+      }
+      close() {
+        if (this.readyState === 3) return;
+        this.readyState = 3;
+        this.emit('close', { code: 1000 });
+      }
+      emit(event: string, payload: any) {
+        for (const listener of this.listeners.get(event) ?? []) listener(payload);
+      }
+      emitServer(payload: object) {
+        this.emit('message', { data: JSON.stringify(payload) });
+      }
+    }
+    w.WebSocket = FakeScribeSocket;
+    w.emitScribe = (payload: object) => w.fakeSockets.at(-1)?.emitServer(payload);
+  });
+  const commands = await setup(page);
+  await page.route('**/api/voice/realtime-token', (route) =>
+    route.fulfill({ json: { token: 'test-realtime-token' } }),
+  );
+  return commands;
+}
+
+test('realtime mic stays open during processing and delayed speech; a new utterance wins', async ({
+  page,
+}) => {
+  const commands = await setupRealtime(page);
+  let releaseFirst!: () => void;
+  const firstSpeechGate = new Promise<void>((resolve) => (releaseFirst = resolve));
+  let speechRequests = 0;
+  await page.route('**/api/voice/speak', async (route) => {
+    speechRequests++;
+    if (speechRequests === 1) await firstSpeechGate;
+    await route.fulfill({ body: 'mock-audio', contentType: 'audio/mpeg' }).catch(() => {});
+  });
+  await page.keyboard.press('Control+Shift+Space');
+  await expect.poll(() => page.evaluate(() => (window as any).fakeSockets.length)).toBe(1);
+  await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBe(1);
+  await page.evaluate(() =>
+    (window as any).emitScribe({ message_type: 'committed_transcript', text: 'Find jobs' }),
+  );
+  await expect.poll(() => commands.length).toBe(1);
+  await expect.poll(() => speechRequests).toBe(1);
+  expect(await page.evaluate(() => (window as any).micCalls)).toBe(1);
+
+  await page.evaluate(() =>
+    (window as any).emitScribe({ message_type: 'partial_transcript', text: 'Open result one' }),
+  );
+  await page.evaluate(() =>
+    (window as any).emitScribe({ message_type: 'committed_transcript', text: 'Open result one' }),
+  );
+  await expect.poll(() => commands.length).toBe(2);
+  await expect.poll(() => speechRequests).toBe(2);
+  await expect.poll(() => page.evaluate(() => (window as any).playbackStarts)).toBe(1);
+  releaseFirst();
+  await page.waitForTimeout(200);
+  expect(await page.evaluate(() => (window as any).playbackStarts)).toBe(1);
+  expect(await page.evaluate(() => (window as any).micCalls)).toBe(1);
+  expect(commands).toEqual(['Find jobs', 'Open result one']);
+
+  await page.getByRole('button', { name: 'Pause conversation' }).click();
+  expect(
+    await page.evaluate(() =>
+      (window as any).trackSets.flat().every((track: MediaStreamTrack) => track.readyState === 'ended'),
+    ),
+  ).toBe(true);
+  await page.evaluate(() =>
+    (window as any).emitScribe({ message_type: 'committed_transcript', text: 'Open another job' }),
+  );
+  await page.waitForTimeout(100);
+  expect(commands).toEqual(['Find jobs', 'Open result one']);
+});
+
+test('realtime partial transcript immediately interrupts speech playback', async ({ page }) => {
+  await setupRealtime(page);
+  const commands: string[] = [];
+  let spokenReply = '';
+  await page.route('**/api/computer/request', (route) => {
+    commands.push(route.request().postDataJSON().request);
+    return route.fulfill({
+      json: { state: empty, summary: 'I found the jobs. You can say stop to interrupt me.' },
+    });
+  });
+  page.on('request', (request) => {
+    if (new URL(request.url()).pathname === '/api/voice/speak')
+      spokenReply = request.postDataJSON().text;
+  });
+  await page.evaluate(() => ((window as any).playbackMs = 60000));
+  await page.keyboard.press('Control+Shift+Space');
+  await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBe(1);
+  await page.evaluate(() =>
+    (window as any).emitScribe({ message_type: 'committed_transcript', text: 'Find jobs' }),
+  );
+  await expect.poll(() => page.evaluate(() => (window as any).playbackStarts)).toBe(1);
+  await expect.poll(() => spokenReply.includes('stop')).toBe(true);
+  const echo = spokenReply.split(/\s+/).slice(0, 6).join(' ');
+  await page.evaluate((text) => {
+    (window as any).emitScribe({ message_type: 'partial_transcript', text });
+    (window as any).emitScribe({ message_type: 'committed_transcript', text });
+  }, echo);
+  await page.waitForTimeout(100);
+  expect(await page.evaluate(() => (window as any).playbackPauses)).toBe(0);
+  expect(commands).toEqual(['Find jobs']);
+  await page.evaluate(() =>
+    (window as any).emitScribe({ message_type: 'partial_transcript', text: 'stop' }),
+  );
+  await expect.poll(() => page.evaluate(() => (window as any).playbackPauses)).toBeGreaterThanOrEqual(1);
+  await page.evaluate(() =>
+    (window as any).emitScribe({ message_type: 'committed_transcript', text: 'Open result one' }),
+  );
+  await expect.poll(() => commands.length).toBe(2);
+  expect(await page.evaluate(() => (window as any).micCalls)).toBe(1);
+  await page.getByRole('button', { name: 'Pause conversation' }).click();
+});
 
 test('one activation sends after silence, speaks, then listens again until paused', async ({
   page,
@@ -160,7 +302,7 @@ test('speaking can be interrupted by a new utterance without pressing play again
     await route.fulfill({ json: { text: utterance === 1 ? 'Find jobs' : 'Open result one' } });
   });
   await page.keyboard.press('Control+Shift+Space');
-  await expect(page.getByText('Reading the answer aloud')).toBeVisible();
+  await expect(page.getByText('Speaking · interrupt me anytime')).toBeVisible();
   await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBeGreaterThanOrEqual(2);
   await page.evaluate(() => {
     const gain: GainNode = (window as any).gains.at(-1);
@@ -181,7 +323,7 @@ test('pause stops microphone and audio immediately while the buddy speaks', asyn
     route.fulfill({ json: { text: 'Find jobs' } }),
   );
   await page.keyboard.press('Control+Shift+Space');
-  await expect(page.getByText('Reading the answer aloud')).toBeVisible();
+  await expect(page.getByText('Speaking · interrupt me anytime')).toBeVisible();
   await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBe(2);
   await page.getByRole('button', { name: 'Pause conversation' }).click();
   await expect(page.getByRole('button', { name: 'Start conversation' })).toBeEnabled();
@@ -217,7 +359,7 @@ test('interrupting a spoken acknowledgment replaces the in-flight task', async (
   });
   await page.keyboard.press('Control+Shift+Space');
   await expect.poll(() => requests.length).toBe(1);
-  await expect(page.getByText('Reading the answer aloud')).toBeVisible();
+  await expect(page.getByText('Speaking · interrupt me anytime')).toBeVisible();
   await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBe(2);
   await page.evaluate(() => {
     const gain: GainNode = (window as any).gains[1];
@@ -272,7 +414,7 @@ test('muting during a spoken reply stops audio but keeps the session active', as
     route.fulfill({ json: { text: 'Run my program' } }),
   );
   await page.keyboard.press('Control+Shift+Space');
-  await expect(page.getByText('Reading the answer aloud')).toBeVisible();
+  await expect(page.getByText('Speaking · interrupt me anytime')).toBeVisible();
   await page.getByRole('button', { name: 'Turn spoken replies off' }).click();
   await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBe(2);
   await expect(page.getByRole('button', { name: 'Pause conversation' })).toBeEnabled();
@@ -352,7 +494,7 @@ test('canceled transcription cannot submit a late command', async ({ page }) => 
     await route.fulfill({ json: { text: 'Run my program' } }).catch(() => {});
   });
   await page.keyboard.press('Control+Shift+Space');
-  await expect(page.getByText('Transcribing your request…')).toBeVisible();
+  await expect(page.getByText('Understanding your request', { exact: false })).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(page.getByRole('button', { name: 'Start conversation' })).toBeEnabled();
   release();

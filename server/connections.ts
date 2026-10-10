@@ -299,7 +299,7 @@ export class Connections {
               headers: { 'xi-api-key': this.cfg.elevenKey, 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 text: 'Insight OS is ready to help you use your computer.',
-                model_id: 'eleven_multilingual_v2',
+                model_id: this.cfg.elevenTtsModel,
               }),
               signal,
             },

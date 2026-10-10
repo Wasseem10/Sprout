@@ -11,7 +11,9 @@ Official source: [Knight Hacks IX Devpost](https://knight-hacks-ix.devpost.com/)
 
 Gemini is **not required** for these targets. Overall and Best AI judging are automatic; select Hugging Face, ElevenLabs and Adobe as sponsor/category prize entries on Devpost. Sponsor prizes require attending the announced judging room(s) Sunday morning.
 
-**Do not select yet:** Tiger Data has no integration or time-series feature in InsightOS; a database added only to qualify would be weak. Neon has an adapter but no live database or buddy-critical persistence. Databricks has an analytics adapter but no verified warehouse and tells a different story from the desktop buddy. OneEthos requires measurable local environmental impact, which this prototype does not have. Figma requires an actual editable file URL and screenshot. Vultr, Gemini, Solana, Presage, AMD, GoDaddy and the hardware tracks have no meaningful demonstrated use here. The team is not eligible for Best First-Time Hacker.
+**Databricks is a coherent additional target once connected:** the buddy can send a workbook's selected numeric measure/category to a SQL warehouse and speak the calculated totals and highest group. Show the actual statement ID and warehouse query in the demo. The code path is implemented and tested with fixtures, but this laptop still lacks the warehouse ID/token and no live result has passed. A local ExcelJS calculation does not count as Databricks use.
+
+**Do not select yet:** Tiger Data has no integration or time-series feature in InsightOS; a database added only to qualify would be weak. Neon has an adapter but no live database or buddy-critical persistence. OneEthos requires measurable local environmental impact, which this prototype does not have. Figma requires an actual editable file URL and screenshot. Vultr, Gemini, Solana, Presage, AMD, GoDaddy and the hardware tracks have no meaningful demonstrated use here. The team is not eligible for Best First-Time Hacker.
 
 ## Rubric: what the demo must show
 

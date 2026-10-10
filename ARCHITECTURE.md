@@ -1,6 +1,6 @@
 # How InsightOS works
 
-The first supported workflow is CSV revenue exploration. The same UI and cancellation engine support typed or committed voice requests.
+The main product is a native Windows buddy for conversation and computer tasks. The older CSV revenue workspace remains an optional view. Both accept typed or transcribed requests; they use separate task controllers.
 
 ```mermaid
 flowchart LR
@@ -22,13 +22,13 @@ There is one computed AnalysisResult, not separate AI numbers for each view. It 
 
 Before-state versions support actual undo. Save includes the dataset, result, view, versions, preferences, and last settled task summary; Neon and local storage implement the same project contract. The private-session owner is intentionally a single-user pilot. Provider secrets stay on the backend. In-flight database writes may finish after cancellation; Stop prevents stale UI changes and further queued actions, not transactional rollback of remote effects.
 
-Voice records one push-to-talk utterance (maximum 30 seconds), sends it once to batch ElevenLabs transcription, then uses the same engine. Generation checks suppress late transcription/playback, recording stops the microphone tracks, and starting a new request stops spoken feedback. The full text remains accessible when voice is disabled or unavailable. Provider requests have bounded timeouts. Live ElevenLabs STT/TTS passed; real laptop microphone and speaker behavior still need manual verification.
+The buddy's primary voice transport is ElevenLabs Scribe v2 Realtime, authenticated with a single-use token issued by our backend. The permanent key stays server-side. Partial speech can interrupt output; committed speech enters the computer controller. Flash v2.5 supplies short spoken responses. The recorded Scribe path remains available as fallback and for the older data workspace. Generation checks suppress stale playback, and Stop closes media/network resources. Live synthetic streaming transcription and Flash generation passed; real laptop microphone and speaker echo behavior still need manual verification.
 
 Electron uses sandboxing, context isolation, no renderer Node, media permission limited to its trusted app origin, blocked external navigation/popups, and a narrow CSV-selection IPC bridge. Browser mode uses a real file input. A deployed UI/API can use one HTTPS origin, with the desktop optionally loading it; that remote path is not yet tested.
 
 To add another workflow: define its validated state in the workspace schema union, add tool argument schemas, implement WorkflowModule, register it, and render its artifact view. Keep microphone, session, planner validation, task engine, and storage. Only the data state is registered today; a registry is not proof of additional working workflows.
 
-A separate computer controller now implements real Python files/execution, VS Code launch, headed Chromium navigation and selected-window capture. Pixel interpretation passed live Hugging Face requests with a synthetic fixture and native buddy screenshot; the end-to-end user-selected window flow still needs rehearsal. Native Excel, presentation export and unrestricted OS automation remain outside scope. This team's live routes use Qwen3 Coder and Qwen3 VL; the older Qwen2.5 code fallbacks may be unavailable on another account. Databricks and Neon adapters still need live execution.
+A separate computer controller implements Python files/execution, installed-app launching, editable PowerPoint creation, Excel workbook analysis, headed Chromium navigation and screen capture. This team's live routes use Qwen3 Coder and Qwen3 VL; the older Qwen2.5 code fallbacks may be unavailable on another account. Arbitrary application editing and unrestricted OS automation are not implemented.
 
 ## Computer action layer
 
@@ -36,6 +36,8 @@ A separate computer controller now implements real Python files/execution, VS Co
 
 The native folder picker grants a directory using a private bridge key unavailable to the renderer. Files use exclusive creation and unique names; Python verifies SHA-256 and runs disk source through a restricted computation runner. Editor launch uses a configured executable without a shell. This is not an OS sandbox for hostile code.
 
-Playwright uses a separate headed Chromium context, bounded observation, snapshot IDs and pre-action label checks. Guards stop checkout/payment/personal/account and unknown-button actions for manual review. Public HTTPS routing excludes private destinations, downloads and popups.
+Playwright uses a separate headed Chromium context, bounded observation, snapshot IDs and pre-action label checks. Job/product workflows can take several observed steps from one request. It keeps a short recent conversation context for follow-ups. Final payments, application submission and credential entry remain blocked; personal contact fields use a separate confirmation. Public HTTPS routing excludes private destinations and downloads. Only expected click-triggered popups are followed.
 
-Screen IPC requires a chooser and one source. A fresh snapshot is previewed locally; only an explicit description request uploads it to HF vision. Images are omitted from planning and saved CSV projects. Computer state is ephemeral; written files persist. See [COMPUTER-DEMO.md](COMPUTER-DEMO.md).
+Screen IPC captures the main display for an explicit screen request or a chosen window. Named desktop clicks use an HF vision target signed against the capture, a Windows accessibility lookup and a fresh image check before the real pointer moves. It supports one named native click or scroll per request; browser goals do not imply arbitrary native desktop autonomy. Images are omitted from ordinary command planning and saved CSV projects. Computer state is ephemeral; written files persist. See [COMPUTER-DEMO.md](COMPUTER-DEMO.md).
+
+`server/providers/workbookAnalytics.ts` connects the buddy's Excel feature to Databricks. An explicit request to use Databricks sends only the selected numeric measure and category in a parameterized VALUES query. SQL calculates count, total, average and the highest aggregate category; the returned statement ID is retained in the result. This path does not create user tables. Ordinary Excel requests remain local, and missing or failed Databricks access never becomes a falsely labelled cloud result. The current laptop still needs warehouse credentials and a real query rehearsal.

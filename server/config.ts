@@ -47,6 +47,7 @@ export function config() {
     dbSchema: process.env.DATABRICKS_SCHEMA || 'insightos',
     elevenKey: process.env.ELEVENLABS_API_KEY ?? '',
     elevenVoice: process.env.ELEVENLABS_VOICE_ID ?? '',
+    elevenTtsModel: process.env.ELEVENLABS_TTS_MODEL_ID || 'eleven_flash_v2_5',
     neonUrl: process.env.DATABASE_URL ?? '',
     origins: [
       `http://127.0.0.1:${port}`,

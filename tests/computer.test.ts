@@ -142,7 +142,7 @@ it('blocks private URLs and never converts missing vision credentials into a can
   expect(starterPlan('order everything and pay for it', controller.snapshot()).action).toBeNull();
   expect(
     starterPlan('order everything and pay for it', controller.snapshot()).clarification,
-  ).toContain('cannot place orders');
+  ).toContain('Checkout completion is not implemented yet');
 });
 it.skipIf(!config().pythonBin)(
   'completes an explicitly requested create-and-run workflow in one task',
@@ -176,6 +176,131 @@ it('maps a spoken Google request to search without inventing a website action', 
     tool: 'search',
     query: 'accessible Python tutorials',
   });
+});
+it('routes natural app, shopping, and job requests without requiring a code folder', () => {
+  const state = { folder: null, code: null, browser: null, screen: null };
+  expect(starterPlan('Open Calculator', state).action).toEqual({
+    tool: 'openApp',
+    app: 'calculator',
+  });
+  expect(starterPlan('Open VS Code', state).action).toEqual({ tool: 'openApp', app: 'vsCode' });
+  expect(starterPlan('Find me information about George Washington', state).action).toEqual({
+    tool: 'search',
+    query: 'information about George Washington',
+  });
+  expect(starterPlan('Find me a library assistant job near Orlando', state).action).toEqual({
+    tool: 'pursueBrowserGoal',
+    kind: 'job',
+    query: 'Find me a library assistant job near Orlando',
+  });
+  expect(starterPlan('Buy blue headphones under $30 on Amazon', state).action).toEqual({
+    tool: 'pursueBrowserGoal',
+    kind: 'shopping',
+    query: 'Buy blue headphones under $30 on Amazon',
+  });
+});
+it('carries a job request from search to a grounded Apply link and stops before submission', async () => {
+  let submitted = false;
+  const server = createServer((req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    if (req.url?.startsWith('/search'))
+      res.end(
+        '<html><title>Search</title><body><div id="b_results"><div class="b_algo"><h2><a href="/vacation">Vacation rentals</a></h2><p>Book a trip</p></div><div class="b_algo"><h2><a href="/job">Library assistant role in Orlando</a></h2><p>Local opening</p></div></div></body></html>',
+      );
+    else if (req.url === '/job')
+      res.end(
+        '<html><title>Library assistant job</title><body><h1>Library assistant in Orlando</h1><a href="/application">Apply now</a></body></html>',
+      );
+    else if (req.url === '/application')
+      res.end(
+        '<html><title>Application</title><body><form action="/submitted" method="post"><label>Email<input name="email"></label><button>Submit application</button></form></body></html>',
+      );
+    else if (req.url === '/submitted') {
+      submitted = true;
+      res.end('submitted');
+    } else res.end('<html><title>Other</title></html>');
+  });
+  servers.push(server);
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const origin = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
+  const { controller } = await setup({
+    headless: true,
+    searchUrl: (query) => `${origin}/search?q=${encodeURIComponent(query)}`,
+    validateUrl: async (url) => {
+      if (new URL(url).origin !== origin) throw new Error('Test origin only');
+      return url;
+    },
+  });
+  const result = await controller.request('Find me a library assistant job near Orlando', signal());
+  expect(result.summary).toContain('followed its Apply link');
+  expect(result.state.browser?.url).toBe(`${origin}/application`);
+  expect(
+    result.state.browser?.controls.find((control) => control.name === 'Submit application')
+      ?.blocked,
+  ).toBe(true);
+  expect(submitted).toBe(false);
+});
+it('preserves a requested shopping merchant and stops at product review', async () => {
+  let inCart = false;
+  let purchased = false;
+  const server = createServer((req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    if (req.url?.startsWith('/search'))
+      res.end(
+        '<html><title>Search</title><body><div id="b_results"><div class="b_algo"><h2><a href="/product">Blue headphones product</a></h2><p>$24 headphones</p></div></div></body></html>',
+      );
+    else if (req.url === '/product')
+      res.end(
+        '<html><title>Blue headphones product</title><body><h1>Blue headphones $24</h1><form action="/cart" method="post"><button>Add to cart</button></form><a href="/pay">Place order</a></body></html>',
+      );
+    else if (req.url === '/cart') {
+      inCart = true;
+      res.end(
+        '<html><title>Cart</title><body>Blue headphones in cart <a href="/checkout">Checkout</a></body></html>',
+      );
+    } else if (req.url === '/checkout') {
+      res.end(
+        '<html><title>Checkout</title><body>Blue headphones $24 <a href="/pay">Place order</a></body></html>',
+      );
+    } else if (req.url === '/pay') {
+      purchased = true;
+      res.end('purchased');
+    } else res.end('<html><title>Other</title></html>');
+  });
+  servers.push(server);
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const origin = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
+  const { controller } = await setup({
+    headless: true,
+    searchUrl: (query) => `${origin}/search?q=${encodeURIComponent(query)}`,
+    validateUrl: async (url) => {
+      if (new URL(url).origin !== origin) throw new Error('Test origin only');
+      return url;
+    },
+  });
+  const merchant = await controller.request('Buy blue headphones under $30 on Amazon', signal());
+  expect(merchant.summary).toContain('none of the visible results came from amazon.com');
+  expect(merchant.state.browser?.url).toContain('/search');
+  const product = await controller.request('Buy blue headphones', signal());
+  expect(product.state.browser?.url).toBe(`${origin}/product`);
+  expect(product.summary).toContain('Review the exact product');
+  expect(inCart).toBe(false);
+  const cart = product.state.browser!.controls.find((control) => control.name === 'Add to cart');
+  expect(cart?.blocked).toBe(false);
+  const added = await controller.request('Click Add to cart', signal());
+  expect(added.state.browser?.url).toBe(`${origin}/cart`);
+  expect(inCart).toBe(true);
+  const checkout = added.state.browser!.controls.find((control) => control.name === 'Checkout')!;
+  expect(checkout.blocked).toBe(false);
+  const review = await controller.request('Click Checkout', signal());
+  expect(review.state.browser?.url).toBe(`${origin}/checkout`);
+  const pay = review.state.browser!.controls.find((control) => control.name === 'Place order')!;
+  const blocked = await controller.action(
+    { tool: 'click', controlId: pay.id, pageId: review.state.browser!.id },
+    signal(),
+  );
+  expect(blocked.summary).toContain('Stopped for review');
+  expect(purchased).toBe(false);
 });
 it('opens an explicitly named HTTPS job listing without relying on model parsing', async () => {
   const state = { folder: null, code: null, browser: null, screen: null };

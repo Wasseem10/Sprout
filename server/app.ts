@@ -309,6 +309,19 @@ export async function buildApp(cfg: Config = config()) {
     });
     return { text: z.string().max(2000).parse(result.text), provider: 'elevenlabs' };
   });
+  app.post('/api/voice/realtime-token', async () => {
+    if (!cfg.elevenKey)
+      throw new Error('Voice input needs ELEVENLABS_API_KEY in the backend .env.');
+    const result = await fetchJson(
+      'https://api.elevenlabs.io/v1/single-use-token/realtime_scribe',
+      {
+        method: 'POST',
+        headers: { 'xi-api-key': cfg.elevenKey },
+        signal: AbortSignal.timeout(15000),
+      },
+    );
+    return { token: z.string().min(10).max(1000).parse(result.token) };
+  });
   app.post('/api/voice/speak', async (req, reply) => {
     if (!cfg.elevenKey || !cfg.elevenVoice)
       throw new Error('Voice output needs ELEVENLABS_API_KEY and ELEVENLABS_VOICE_ID.');
@@ -323,7 +336,7 @@ export async function buildApp(cfg: Config = config()) {
       {
         method: 'POST',
         headers: { 'xi-api-key': cfg.elevenKey, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: body.text, model_id: 'eleven_multilingual_v2' }),
+        body: JSON.stringify({ text: body.text, model_id: cfg.elevenTtsModel }),
         signal,
       },
     );
@@ -337,7 +350,7 @@ export async function buildApp(cfg: Config = config()) {
       if (!req.url.startsWith('/api'))
         reply.header(
           'Content-Security-Policy',
-          "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self' blob:; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'",
+          "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self' blob:; connect-src 'self' wss://api.elevenlabs.io; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'",
         );
       return payload;
     });
