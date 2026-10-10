@@ -1,0 +1,12 @@
+.env
+.env.*
+.local
+.git
+node_modules
+dist
+dist-server
+artifacts
+test-results
+playwright-report
+.vercel
+*.log

@@ -9,6 +9,7 @@
     "dev": "concurrently --kill-others-on-fail -n api,ui,desktop \"tsx watch server/start.ts\" \"vite --host 127.0.0.1\" \"wait-on http://127.0.0.1:5173 http://127.0.0.1:4311/health && electron . --dev\"",
     "dev:web": "concurrently -k -n api,ui \"tsx watch server/start.ts\" \"vite --host 127.0.0.1\"",
     "build": "tsc --noEmit && vite build && tsc -p tsconfig.server.json",
+    "build:public": "tsc --noEmit && vite build --mode public",
     "start": "electron .",
     "start:web": "node dist-server/server/start.js",
     "test": "vitest run",

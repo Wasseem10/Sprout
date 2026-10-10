@@ -1,46 +1,42 @@
 # Knight Hacks IX: InsightOS submission plan
 
-Official source: [Knight Hacks IX Devpost](https://knight-hacks-ix.devpost.com/), checked October 10, 2026. Its banner says **October 11, 11:00 AM EDT**, while its requirements say **submit by 10:00 AM** and **stop GitHub commits by 11:00 AM**. Use **10:00 AM EDT** as the submission deadline unless the organizers clarify it.
+One pitch: **Your finances are personal. Understanding them should be, too.** InsightOS helps blind and low-vision people understand bills, compare affordable options, and review their next step through conversation.
 
-## Prize targets
+## Published links
 
-1. **Hugging Face: Best Use of Open Source AI** (three winners). The two Qwen open models power command planning, presentation outlines, code generation and screen description. This is the strongest sponsor fit, backed by live inference evidence.
-2. **[MLH] Best Use of ElevenLabs** (one winner). Transcription and speech generation passed real API checks. Physical microphone and speaker use still need a human rehearsal before the live demo.
-3. **Best AI Hack** (automatic category judging). Show the completed voice → model → real computer action → output loop.
-4. **Adobe: Prettiest Hack** (three winners). Select it if the final video clearly shows the compact buddy, expanded conversation, typography and cohesive colors. The prompt judges visual quality; no Adobe API is required.
+- Public source: https://github.com/Wasseem10/insightos
+- Interactive sample: https://insightos-livid.vercel.app/
 
-Gemini is **not required** for these targets. Overall and Best AI judging are automatic; select Hugging Face, ElevenLabs and Adobe as sponsor/category prize entries on Devpost. Sponsor prizes require attending the announced judging room(s) Sunday morning.
+The public sample runs browser calculations and speech. Live Hugging Face, Databricks and ElevenLabs sponsor functionality runs in the desktop companion; do not present the public sample as a live sponsor API demo.
 
-**Databricks is a coherent additional target once connected:** the buddy can send a workbook's selected numeric measure/category to a SQL warehouse and speak the calculated totals and highest group. Show the actual statement ID and warehouse query in the demo. The code path is implemented and tested with fixtures, but this laptop still lacks the warehouse ID/token and no live result has passed. A local ExcelJS calculation does not count as Databricks use.
+## Sponsor targets
 
-**Do not select yet:** Tiger Data has no integration or time-series feature in InsightOS; a database added only to qualify would be weak. Neon has an adapter but no live database or buddy-critical persistence. OneEthos requires measurable local environmental impact, which this prototype does not have. Figma requires an actual editable file URL and screenshot. Vultr, Gemini, Solana, Presage, AMD, GoDaddy and the hardware tracks have no meaningful demonstrated use here. The team is not eligible for Best First-Time Hacker.
+| Entry                                       | Demonstration and status                                                                                                                                                               |
+| ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Hugging Face: Best Use of Open Source AI    | Open text and vision models extract bill fields and interpret requests. Real provider rehearsal passed. Primary target.                                                                |
+| Databricks: Best Use of Databricks          | Real parameterized SQL verifies confirmed bill-change components and retains a statement reference. Connected and verified. Primary target.                                            |
+| MLH Best Use of ElevenLabs                  | Streaming transcription and short replies support the voice workflow. Real API checks passed; physical microphone and interruption rehearsal remains required.                         |
+| BNY: Financial Services Challenge           | Accessible financial-data analysis, affordability comparison and a practice application workflow. Proposed fit with no bank-specific API requirement in the supplied challenge prompt. |
+| Adobe: Prettiest Hack                       | Blue glass companion, coherent typography and accessible visual workspace. Visual quality is judged; no Adobe API requirement in the supplied prompt.                                  |
+| OneEthos: Innovation for Good — conditional | Local household conservation extension. Clearly label projected reductions, real program information, and the follow-up measurement plan. No achieved environmental impact is claimed. |
 
-## Rubric: what the demo must show
+Overall and Best AI category consideration is automatic according to the event requirements. The strongest demonstrated sponsor fits are Hugging Face and Databricks; this does not predict placement.
 
-| Published criterion | InsightOS proof to show |
-| --- | --- |
-| Originality | A floating desktop buddy that completes a supported hands-free task rather than another website chat box. |
-| Technical Understanding | Explain Electron/native shortcuts, Hugging Face models, ElevenLabs speech, bounded tools, and where Codex helped. State limitations plainly. |
-| Functionality | Show one-button conversation creating an editable PowerPoint and following a real job listing's Apply control to its form. Show Excel analysis as a second recorded example; have a typed backup if venue audio fails. |
-| Design | Start with the compact buddy, expand it, and show the clear task transcript/output. |
-| Wow Factor | Hands off keyboard: press play once, speak two requests without touching the microphone again, and show real PowerPoint and a real application form opening. |
+Do not select Gemini, Tiger Data, Neon or Vultr based solely on an adapter or an account: no meaningful live integration is demonstrated for these. Figma requires an actual project Figma file link and a picture of that file. The team is not eligible for Best First-Time Hacker.
 
-The event page publishes these five criteria without numeric weights. No placement is guaranteed.
+## Finish the recording
 
-## Record this 90-second video
+Use [FINAL-TWO-HOURS.md](FINAL-TWO-HOURS.md) and the focused bill script in [COMPUTER-DEMO.md](COMPUTER-DEMO.md). Demonstrate source review, the real Databricks result, a $60 → $30 budget correction, preserved applicant answers and the affordable $25 option. Keep synthetic labels visible and state that nothing is submitted. Do not pivot to unrelated computer tasks in the main recording.
 
-1. **0–10s:** Show the compact buddy hovering over the Windows desktop. Click its center play button once. Say: “InsightOS helps people use a computer through conversation.”
-2. **10–33s:** Ask for a four-slide PowerPoint. Let the buddy send after silence, reply, and listen again without another click. Show the editable deck opening in PowerPoint.
-3. **33–62s:** Show the rehearsed public job listing. Say “click Apply” and show the actual form fields the buddy finds. State clearly that the person reviews and submits the application. The tested listing and evidence are in [COMPUTER-DEMO.md](COMPUTER-DEMO.md) and `artifacts/job-apply.json`.
-4. **62–79s:** Ask what is on the screen, or use the reliable Excel result if vision is slow. For Excel, label the workbook as synthetic and show the real calculated East/2,700 result.
-5. **79–90s:** Show pause and Stop. State that Hugging Face handles planning/slides/vision and ElevenLabs handles the conversation.
+The published rubric covers originality, technical understanding, functionality, design and wow factor, without numeric weights. A reliable end-to-end demonstration is the priority.
 
-Use a real recording of the app. Keep the screen uncluttered and readable; show the result long enough to read. The Devpost description is drafted in [DEVPOST-DRAFT.md](DEVPOST-DRAFT.md).
+## Submission checklist
 
-## Must finish before submission
+- [ ] Rehearse with the actual laptop microphone, speakers/headphones and spoken interruption.
+- [ ] Record, watch and attach the final narrated demo video.
+- [ ] Include public GitHub and public sample links, screenshots and the description in DEVPOST-DRAFT.md.
+- [ ] Add both teammates and select the relevant sponsor prizes.
+- [ ] Attend the sponsor judging rooms announced by organizers.
+- [ ] Submit by **October 11 at 10 AM EDT**; stop GitHub commits by 11 AM. The event header says 11 AM but its eligibility requirements say submission by 10 AM. Follow newer organizer instructions if provided.
 
-- [ ] Human-test the new play → speak → reply → listen loop on the actual microphone and speakers; rehearse once in the venue. Test a screen description if it will appear in the video.
-- [ ] Record and attach the final narrated demo video. Current automated clips are not the final video.
-- [ ] Create a **public** GitHub repository with the source and README. Confirm `.env` and `.local` are absent; check the public view while signed out. There is no Git remote yet.
-- [ ] Add **both teammates** to the Devpost team and select Hugging Face and ElevenLabs sponsor prizes. Overall/category judging is automatic.
-- [ ] Include screenshots and the clear project description; submit before **10:00 AM EDT October 11**. Stop GitHub commits by 11:00 AM EDT.
+Official source, checked October 10: https://knight-hacks-ix.devpost.com/

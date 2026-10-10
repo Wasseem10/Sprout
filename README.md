@@ -1,5 +1,13 @@
 # InsightOS
 
+**Your finances are personal. Understanding them should be, too.** InsightOS is a voice-first desktop companion built to help blind and low-vision people understand household bills, compare affordable choices, and prepare their next step.
+
+- **[Try the public interactive sample](https://insightos-livid.vercel.app/)**: review/correct bill numbers, change a payment limit, compare fictional efficiency quotes, and review a practice application. This Vercel build runs deterministic calculations in the browser, uses browser speech, and makes no cloud AI calls. It does not access your desktop or extract uploaded bills. Data stays in this browser session.
+- **[Source](https://github.com/Wasseem10/insightos)** · **[Full desktop demo script](COMPUTER-DEMO.md)** · **[Submission description](DEVPOST-DRAFT.md)**.
+- The full Windows companion uses **Hugging Face** for document extraction and request interpretation, **ElevenLabs** for voice, and **Databricks** for live SQL bill verification. The bill workflow passed a real provider rehearsal; physical microphone and speaker testing is still required.
+
+![InsightOS bill workspace](artifacts/bill-workspace.png)
+
 **Bills, understood:** Open **Bills & energy** or `http://127.0.0.1:5173/?workspace=energy`. Choose PDF/PNG/JPEG bills (5 MB each, up to four), or say “find my latest two electricity bills in Downloads.” Insight lists matching filenames first and reads them after “yes.” Each document has editable extracted fields, a first-page preview and source quotes. Confirm every bill before comparing usage, effective rate and other current charges. Say “review bill 2026-09” to correct a confirmed document and recalculate. Missing, inconsistent or duplicate-month fields require review. Bill text/images go to the configured AI provider; original files are unchanged, and extracted documents stay in the current session. Saving an energy plan stores its numeric baseline and answers, not the PDF.
 
 Recording sequence: “Read sample PDF bills” → “yes” → “confirm this bill” twice → “I can only afford thirty dollars a month” → “choose weather sealing” → “prepare my energy application” → “use demo details.” Two synthetic PDFs show $195 → $240, with a $45 usage effect. The OUC card links to real local information; quotes and the browser application are fictional. `npm run test:bills` checks live Hugging Face text/vision extraction, calculations, budget correction and owned-form verification. Physical microphone/speaker rehearsal remains outstanding.
@@ -8,7 +16,7 @@ Recording sequence: “Read sample PDF bills” → “yes” → “confirm thi
 
 For the focused hackathon demo, say: “Start the finance demo” → “Why did my spending increase?” → “What happens if I spend one hundred dollars less on groceries?” → “Check a $1200 loan at 12% APR over 24 months with a $30 limit” → “Change the payment limit to $60” → “Export my finance Excel workbook.” Sample data is labeled. Calculations use integer cents; the AI interprets requests rather than inventing totals. `npm run test:finance` exercises the real HF intent call and generated Excel/PPTX files. See [recording sequence](COMPUTER-DEMO.md#finance-recording-sequence).
 
-Finance Databricks SQL is implemented with bound parameters and exact reconciliation, but warehouse credentials are still missing. Vultr Settings now accepts an HTTPS inference origin and its passphrase; the service must actually be deployed before claiming Vultr use. Existing community energy tools remain available under **Energy & affordability**. Current verified sponsor use is Hugging Face and ElevenLabs.
+Finance Databricks SQL is implemented with bound parameters and exact reconciliation. The real bill-comparison SQL workflow is connected and verified; the separate finance SQL path has fixture coverage. Vultr Settings accepts an HTTPS inference origin and its passphrase, but no Vultr service is deployed. Neon is not connected. Current verified sponsor services are Hugging Face, ElevenLabs, and Databricks.
 
 A voice-first desktop companion for people who have difficulty seeing or operating a computer. Start a conversation with the center Play button, interrupt a reply, and ask it to open an app, find a job or product, make an editable PowerPoint, analyze a workbook, write/run code, or describe and click a named screen control. It starts as a general assistant; file tasks prepare a local workspace only when needed. The CSV module remains under **Data workspace**. See [computer setup and demo](COMPUTER-DEMO.md).
 
@@ -24,7 +32,9 @@ The desktop shortcut **InsightOS** opens the buddy without a terminal. Its launc
 
 The buddy now supports an observe → act → check loop for multi-step browser and office goals. For a read-only rehearsal, ask “Open https://books.toscrape.com and then open Travel. Tell me the first book's price.” A real Hugging Face rehearsal completed navigation and read the displayed result; see `artifacts/goal-rehearsal.json`. Requests may ask for clarification or stop at site barriers. This does not establish reliable shopping checkout or arbitrary application control.
 
-Say “Remember that I prefer remote jobs,” then “What do you remember about me?” Explicit preferences survive restart locally, or in Neon when `DATABASE_URL` is connected. Goal/browser sessions do not survive backend restart. Optional Vultr-hosted inference uses `INSIGHTOS_CLOUD_URL` and `INSIGHTOS_CLOUD_PASSPHRASE` while the desktop stays local; see the deployment guide. Cloud/Neon/Databricks account checks remain outstanding.
+Say “Remember that I prefer remote jobs,” then “What do you remember about me?” Explicit preferences survive restart locally, or in Neon when `DATABASE_URL` is connected. Goal/browser sessions do not survive backend restart. Optional Vultr-hosted inference uses `INSIGHTOS_CLOUD_URL` and `INSIGHTOS_CLOUD_PASSPHRASE` while the desktop stays local; see the deployment guide. Neon and Vultr deployments remain outstanding; live Databricks bill SQL is verified.
+
+## Run the desktop app
 
 Use Node 24 and npm. From this folder:
 
@@ -32,13 +42,17 @@ Use Node 24 and npm. From this folder:
 npm ci
 npm run setup:desktop
 npx playwright install chromium
-Copy-Item .env.example .env
+if (!(Test-Path .env)) { Copy-Item .env.example .env }
 npm run dev
 ```
 
 No cloud account is needed in default sample mode. `setup:desktop` downloads the Electron runtime if npm's install-script policy skipped it. Keep HOST=127.0.0.1 and PORT=4311 for local Electron. Do not run two copies against the same ports. Close the desktop and stop the development terminal with Ctrl+C.
 
-For a production desktop: `npm run build` then `npm start`. For browser development: `npm run dev:web`, then open `http://127.0.0.1:5173`. For the compiled browser app: build then `npm run start:web`, and open `http://127.0.0.1:4311`.
+For a production desktop: `npm run build` then `npm start`. For browser development: `npm run dev:web`, then open `http://127.0.0.1:5173`. For the compiled browser app: build then `npm run start:web`, and open `http://127.0.0.1:4311`. On this configured laptop, the existing InsightOS shortcut starts the desktop app; the launcher is `scripts/open-insightos.ps1`.
+
+## Public Vercel demo
+
+Vercel uses `vercel.json` and `npm run build:public` to publish the public sample. The same bill comparison and quote calculations are shared with the desktop, but the public sample does not call its API or use provider credentials. Use `/?demo=public` locally to preview. See [Vercel deployment](deploy/VERCEL.md). After a local public build, run `npm run build` before launching the production desktop again.
 
 Set `PYTHON_BIN` and `VSCODE_BIN` to installed executable paths; this laptop is already configured in ignored `.env`. The Office flows detect the standard Windows Office16 location, or use `POWERPOINT_BIN` and `EXCEL_BIN` for custom installations. The default screen is the companion; see [COMPUTER-DEMO.md](COMPUTER-DEMO.md).
 
@@ -99,6 +113,6 @@ E2E starts its own local backend/UI. Desktop smoke requires the build and a free
 
 Read [COMPUTER-DEMO.md](COMPUTER-DEMO.md) for the buddy demo, [ARCHITECTURE.md](ARCHITECTURE.md) for technical explanations, [deploy/README.md](deploy/README.md) for the unverified Docker/Vultr handoff, and [DEVPOST-DRAFT.md](DEVPOST-DRAFT.md) for submission copy. [SUBMISSION-PLAN.md](SUBMISSION-PLAN.md) lists the judging targets, deadlines and remaining evidence.
 
-The product opens a fixed set of installed Windows apps, creates and runs computation-only Python, creates editable PowerPoint decks, analyzes Excel workbooks, and operates a dedicated Chromium browser. Job/product goals can search and open an observed result; a unique safe Apply control can lead to an application form. It preserves a short conversation context for follow-ups. The streaming microphone stays available through thinking and speech. Native screen control remains a named visible click or scroll with fresh screenshot/accessibility checks. Universal autonomous control across arbitrary apps, Amazon purchase completion, native Excel editing, automatic job submission, multi-user authentication, and an installer are not implemented. Databricks, Neon, Docker/Vultr, the revised voice loop on the physical laptop, and actual screen-reader usability remain unverified. No accessibility certification or award is claimed.
+The product opens a fixed set of installed Windows apps, creates and runs computation-only Python, creates editable PowerPoint decks, analyzes Excel workbooks, and operates a dedicated Chromium browser. Job/product goals can search and open an observed result; a unique safe Apply control can lead to an application form. It preserves a short conversation context for follow-ups. The streaming microphone stays available through thinking and speech. Native screen control remains a named visible click or scroll with fresh screenshot/accessibility checks. Universal autonomous control across arbitrary apps, Amazon purchase completion, native Excel editing, automatic job submission, multi-user authentication, and an installer are not implemented. Neon, Docker/Vultr, the revised voice loop on the physical laptop, and actual screen-reader usability remain unverified. Live Databricks bill SQL is verified. No accessibility certification or award is claimed.
 
-[Knight Hacks requirements](https://knight-hacks-ix.devpost.com/) checked October 10: submit by October 11 at 10 AM local event time; stop GitHub commits at 11 AM. Plan on Eastern time and follow any newer organizer instructions. Include both teammates, a public repository, and demo video. Nothing has been published or submitted by this build.
+[Knight Hacks requirements](https://knight-hacks-ix.devpost.com/) checked October 10: submit by October 11 at 10 AM local event time; stop GitHub commits at 11 AM. Plan on Eastern time and follow any newer organizer instructions. Include both teammates, a public repository, and demo video. The source and public sample are published; Devpost submission and the final video still need completion.
