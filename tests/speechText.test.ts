@@ -24,6 +24,28 @@ function reply(summary: string, view: BrowserView | null): ComputerResult {
 }
 
 describe('spoken computer replies', () => {
+  it('speaks the current clarification even if stale state is incorrectly labeled as a code result', () => {
+    const result: ComputerResult = {
+      summary: 'Hi, I am here. What would you like to do?',
+      clarification: true,
+      state: {
+        folder: null,
+        browser: null,
+        screen: null,
+        code: {
+          filename: 'old.py',
+          code: 'print(1)',
+          provider: 'hugging-face',
+          sha256: 'old',
+          output: '1',
+          exitCode: 0,
+          status: 'completed',
+          editorOpened: true,
+        },
+      },
+    };
+    expect(spokenComputerReply(result, 'runCode')).toBe(result.summary);
+  });
   it('omits navigation URLs while naming the current page', () => {
     const speech = spokenComputerReply(
       reply(

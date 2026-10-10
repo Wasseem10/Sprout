@@ -37,6 +37,153 @@ async function setup(
   return { controller, cfg };
 }
 const signal = () => new AbortController().signal;
+it('keeps shopping follow-ups on the active merchant and asks for exact medicine details', async () => {
+  const state = {
+    folder: null,
+    code: null,
+    screen: null,
+    browser: {
+      id: crypto.randomUUID(),
+      url: 'https://www.amazon.com/s?k=example',
+      title: 'Store',
+      text: '',
+      image: '',
+      capturedAt: '',
+      searchResults: [],
+      controls: [
+        { id: 'cart', name: 'Add to cart', role: 'button', blocked: false, sensitive: false },
+      ],
+    },
+  };
+  expect(starterPlan('buy it', state).action).toBeNull();
+  expect(starterPlan('buy the medicine', state).clarification).toContain('Which exact medicine');
+  expect(starterPlan('order medicine off amazon', state).action).toBeNull();
+  expect(starterPlan('buy paper towels', state).action).toEqual({
+    tool: 'searchCurrentSite',
+    query: 'paper towels',
+  });
+  expect(starterPlan('add it to cart', state).action).toEqual({
+    tool: 'click',
+    controlId: 'cart',
+    pageId: state.browser.id,
+  });
+  const plan = await computerPlan(
+    'Example 10 mg 20 tablets',
+    state,
+    { ...config(), hfToken: '' },
+    signal(),
+    [
+      {
+        request: 'order medicine off amazon',
+        outcome:
+          'Which exact medicine do you want? Tell me the product name, strength, and pack size.',
+      },
+    ],
+  );
+  expect(plan.action).toEqual({ tool: 'searchCurrentSite', query: 'Example 10 mg 20 tablets' });
+});
+
+it('searches within the same store, opens an observed product and visibly points before adding to cart', async () => {
+  let searched = '',
+    cartClicks = 0,
+    pointed = false;
+  const server = createServer((req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    if (req.url === '/cart-event') {
+      cartClicks++;
+      res.end('ok');
+      return;
+    }
+    if (req.url === '/pointer-event') {
+      pointed = true;
+      res.end('ok');
+      return;
+    }
+    if (req.url?.startsWith('/search')) {
+      searched = new URL(req.url, 'http://test').searchParams.get('q') ?? '';
+      res.end(
+        '<html><title>Store results</title><body><div data-component-type="s-search-result"><a href="/product"><h2>Blue notebook</h2></a></div></body></html>',
+      );
+    } else if (req.url === '/product')
+      res.end(
+        `<html><title>Blue notebook</title><body><h1>Blue notebook</h1><button onclick="fetch('/cart-event'); this.textContent='Added to cart'">Add to cart</button><script>document.addEventListener('mousemove', () => { if(document.getElementById('insightos-action-pointer')) fetch('/pointer-event'); }, {once:true});</script></body></html>`,
+      );
+    else
+      res.end(
+        '<html><title>Example store</title><body><form action="/search"><label>Search products<input name="q"></label><button>Search</button></form></body></html>',
+      );
+  });
+  servers.push(server);
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const origin = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
+  const { controller } = await setup({
+    headless: true,
+    validateUrl: async (url) => {
+      if (new URL(url).origin !== origin) throw new Error('Attempted to leave the store');
+      return url;
+    },
+  });
+  await controller.action({ tool: 'navigate', url: origin }, signal());
+  const results = await controller.request('search here for blue notebook', signal());
+  expect(searched).toBe('blue notebook');
+  expect(results.state.browser?.searchResults[0].title).toBe('Blue notebook');
+  const product = await controller.request('open the first product', signal());
+  expect(product.state.browser?.url).toBe(origin + '/product');
+  const added = await controller.request('add it to cart', signal());
+  expect(added.state.browser?.text).toContain('Added to cart');
+  expect(cartClicks).toBe(1);
+  expect(pointed).toBe(true);
+});
+
+it('interrupts pending planning without closing the current browser or losing the next click', async () => {
+  const server = createServer((_req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    res.end(
+      '<html><title>Current page</title><body><button onclick="this.textContent=\'Menu open\'">Menu</button></body></html>',
+    );
+  });
+  servers.push(server);
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const origin = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
+  const { controller } = await setup(
+    {
+      headless: true,
+      validateUrl: async (url) => {
+        if (new URL(url).origin !== origin) throw new Error('Test origin only');
+        return url;
+      },
+    },
+    { hfToken: 'test-token' },
+  );
+  await controller.action({ tool: 'navigate', url: origin }, signal());
+  let planning = false;
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(
+      (_url, options) =>
+        new Promise((_resolve, reject) => {
+          planning = true;
+          options.signal.addEventListener(
+            'abort',
+            () => reject(new DOMException('Cancelled', 'AbortError')),
+            { once: true },
+          );
+        }),
+    ),
+  );
+  const pending = controller.request('Tell me about this page', signal());
+  const rejected = expect(pending).rejects.toMatchObject({ name: 'AbortError' });
+  await vi.waitFor(() => expect(planning).toBe(true));
+  const kept = await controller.interrupt();
+  await rejected;
+  expect(kept.browser?.title).toBe('Current page');
+  const control = kept.browser!.controls.find((c) => c.name === 'Menu')!;
+  const result = await controller.action(
+    { tool: 'click', controlId: control.id, pageId: kept.browser!.id },
+    signal(),
+  );
+  expect(result.state.browser?.text).toContain('Menu open');
+});
 it('creates a real file only in an authorized folder, verifies content, and rejects tampering', async () => {
   const { controller, cfg } = await setup();
   await expect(controller.authorizeFolder(cfg.localDir, 'fake-key')).rejects.toThrow(
@@ -278,8 +425,8 @@ it('preserves a requested shopping merchant and stops at product review', async 
       return url;
     },
   });
-  const merchant = await controller.request('Buy blue headphones under $30 on Amazon', signal());
-  expect(merchant.summary).toContain('none of the visible results came from amazon.com');
+  const merchant = await controller.request('Buy blue headphones under $30 on Walmart', signal());
+  expect(merchant.summary).toContain('none of the visible results came from walmart.com');
   expect(merchant.state.browser?.url).toContain('/search');
   const product = await controller.request('Buy blue headphones', signal());
   expect(product.state.browser?.url).toBe(`${origin}/product`);

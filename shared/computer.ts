@@ -54,6 +54,9 @@ export const computerActionSchema = z.discriminatedUnion('tool', [
   z.object({ tool: z.literal('search'), query: z.string().min(1).max(500) }).strict(),
   z.object({ tool: z.literal('readPage') }).strict(),
   z
+    .object({ tool: z.literal('searchCurrentSite'), query: z.string().trim().min(1).max(300) })
+    .strict(),
+  z
     .object({
       tool: z.literal('openSearchResult'),
       index: z.number().int().min(1).max(5),
@@ -160,6 +163,7 @@ export type ScreenPointer = {
   authorization: { nonce: string; expiresAt: number; proof: string };
 };
 export type ComputerResult = {
+  tool?: ComputerAction['tool'];
   summary: string;
   state: ComputerState;
   clarification?: boolean;

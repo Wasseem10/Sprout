@@ -228,6 +228,8 @@ function browserSpeech(browser: BrowserView, summary: string, tool?: string): st
 
 export function spokenComputerReply(result: ComputerResult, tool?: string): string {
   const { summary, state } = result;
+  // Conversation replies must never be replaced by a result from an older task.
+  if (result.clarification) return cleanSpeechText(summary, 360);
   if (tool === 'openApp' && state.lastApp)
     return state.lastApp.mode === 'focused'
       ? `I switched to ${state.lastApp.name}.`

@@ -71,7 +71,8 @@ async function setup(
           elevenLabs: { configured: true, ttsConfigured: true },
         },
       };
-    if (pathname === '/api/computer/state' || pathname === '/api/computer/stop') json = empty;
+    if (['/api/computer/state', '/api/computer/stop', '/api/computer/interrupt'].includes(pathname))
+      json = empty;
     // The batch-recorder tests must never request a real, billable Scribe socket.
     if (pathname === '/api/voice/realtime-token')
       return route.fulfill({ status: 503, json: { error: 'Realtime mocked offline' } });
@@ -133,6 +134,85 @@ async function setupRealtime(page: Page) {
   return commands;
 }
 
+test('buddy greets generally on Play and never narrates an old code artifact', async ({ page }) => {
+  await setupRealtime(page);
+  const oldState = {
+    ...empty,
+    code: {
+      filename: 'old.py',
+      code: 'print(1)',
+      output: '1',
+      status: 'completed',
+      editorOpened: true,
+      exitCode: 0,
+      sha256: 'old',
+      provider: 'hugging-face',
+    },
+  };
+  const spoken: string[] = [];
+  await page.route('**/api/computer/state', (route) => route.fulfill({ json: oldState }));
+  await page.route('**/api/computer/request', (route) =>
+    route.fulfill({
+      json: {
+        state: oldState,
+        summary: 'Hi, I am here. Tell me what you want to do on your computer.',
+        clarification: true,
+      },
+    }),
+  );
+  await page.route('**/api/voice/speak', (route) => {
+    spoken.push(route.request().postDataJSON().text);
+    return route.fulfill({ body: 'audio', contentType: 'audio/mpeg' });
+  });
+  await page.goto('/?desktop=buddy');
+  await page.getByRole('button', { name: 'Start voice conversation', exact: true }).click();
+  await expect.poll(() => spoken.length).toBe(1);
+  expect(spoken[0]).toBe("Hi, I'm Insight. What would you like to do?");
+  await page.evaluate(() =>
+    (window as any).emitScribe({ message_type: 'committed_transcript', text: 'Hi' }),
+  );
+  await expect.poll(() => spoken.length).toBe(2);
+  expect(spoken.join(' ')).not.toMatch(/python|vs code/i);
+  await expect(
+    page.getByRole('button', { name: 'Pause voice conversation', exact: true }),
+  ).toBeVisible();
+});
+
+test('a voice follow-up interrupts work through the page-preserving endpoint', async ({ page }) => {
+  await setupRealtime(page);
+  const calls: string[] = [];
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route('**/api/computer/request', async (route) => {
+    const text = route.request().postDataJSON().request;
+    calls.push(text);
+    if (text === 'Find a notebook') await gate;
+    await route.fulfill({ json: { state: empty, summary: 'Ready.' } }).catch(() => {});
+  });
+  await page.route('**/api/computer/interrupt', (route) => {
+    calls.push('interrupt');
+    release();
+    return route.fulfill({ json: empty });
+  });
+  await page.route('**/api/computer/stop', (route) => {
+    calls.push('closed');
+    return route.fulfill({ json: empty });
+  });
+  await page.keyboard.press('Control+Shift+Space');
+  await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBe(1);
+  await page.evaluate(() =>
+    (window as any).emitScribe({ message_type: 'committed_transcript', text: 'Find a notebook' }),
+  );
+  await expect.poll(() => calls.length).toBe(1);
+  await page.evaluate(() =>
+    (window as any).emitScribe({ message_type: 'committed_transcript', text: 'Read this page' }),
+  );
+  await expect.poll(() => calls.length).toBe(3);
+  expect(calls).toEqual(['Find a notebook', 'interrupt', 'Read this page']);
+});
+
 test('realtime mic stays open during processing and delayed speech; a new utterance wins', async ({
   page,
 }) => {
@@ -153,7 +233,7 @@ test('realtime mic stays open during processing and delayed speech; a new uttera
   );
   await expect.poll(() => commands.length).toBe(1);
   await expect.poll(() => speechRequests).toBe(1);
-  expect(await page.evaluate(() => (window as any).micCalls)).toBe(1);
+  await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBe(1);
 
   await page.evaluate(() =>
     (window as any).emitScribe({ message_type: 'partial_transcript', text: 'Open result one' }),
@@ -173,7 +253,9 @@ test('realtime mic stays open during processing and delayed speech; a new uttera
   await page.getByRole('button', { name: 'Pause conversation' }).click();
   expect(
     await page.evaluate(() =>
-      (window as any).trackSets.flat().every((track: MediaStreamTrack) => track.readyState === 'ended'),
+      (window as any).trackSets
+        .flat()
+        .every((track: MediaStreamTrack) => track.readyState === 'ended'),
     ),
   ).toBe(true);
   await page.evaluate(() =>
@@ -216,7 +298,9 @@ test('realtime partial transcript immediately interrupts speech playback', async
   await page.evaluate(() =>
     (window as any).emitScribe({ message_type: 'partial_transcript', text: 'stop' }),
   );
-  await expect.poll(() => page.evaluate(() => (window as any).playbackPauses)).toBeGreaterThanOrEqual(1);
+  await expect
+    .poll(() => page.evaluate(() => (window as any).playbackPauses))
+    .toBeGreaterThanOrEqual(1);
   await page.evaluate(() =>
     (window as any).emitScribe({ message_type: 'committed_transcript', text: 'Open result one' }),
   );
@@ -469,7 +553,7 @@ test('Escape cancels pending microphone permission and stops a stream arriving l
   await page.keyboard.press('Control+Shift+Space');
   await expect(page.getByText('Opening microphone…')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Pause conversation' })).toBeEnabled();
-  expect(await page.evaluate(() => (window as any).micCalls)).toBe(1);
+  await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBe(1);
   await page.keyboard.press('Escape');
   await expect(page.getByRole('button', { name: 'Start conversation' })).toBeEnabled();
   await page.evaluate(() => (window as any).releaseMic());

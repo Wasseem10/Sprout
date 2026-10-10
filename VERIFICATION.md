@@ -1,5 +1,15 @@
 # Verification record — October 10, 2026
 
+## Page continuity and general conversation fixes
+
+The latest changes fix two concrete regressions: speech formatting could substitute an old Python result for a new conversational clarification, and voice interruption used the destructive Stop endpoint, closing the active browser. The buddy now greets on its first Play activation with “Hi, I'm Insight. What would you like to do?”; clarification speech takes priority over old artifacts. Interrupt uses a separate cancellation path that retains the tab and waits for the old task to finish before the next request. Errors are spoken while voice conversation remains active.
+
+Amazon requests now use the store's observed search field. “Buy it” and vague medicine requests stay contextual and ask for missing product details rather than starting a Google search. Explicit product selection and Add to cart use observed page controls. A blue browser automation pointer marks the real mouse-move target before browser clicks and fills; this is not a system-wide Windows cursor. Control metadata is collected in one browser evaluation to reduce repeated browser round trips.
+
+Controlled fixtures verified store search → observed product → Add to cart, actual mouse-move events, and interruption followed by a successful click on the retained tab. All 70 unit/backend tests passed; the affected computer/speech tests were rerun after the final routing changes. All 18 voice browser tests passed across the suite and targeted reruns (one microphone-permission timing assertion was updated to wait for the pending request). Production build passed. Physical microphone and speaker behavior still requires user rehearsal.
+
+A read-only live Amazon check on October 10 returned HTTP 202 with an empty body to headless Chromium; no search field or product result was available, and no purchase was attempted. This is a live-site limitation, not a successful shopping demo. Evidence: `artifacts/amazon-browsing-verification.json`. Final checkout and autonomous control across arbitrary desktop applications remain unimplemented. Hugging Face and ElevenLabs remain connected; Databricks remains awaiting warehouse ID and token.
+
 ## Streaming conversation, general startup and workbook SQL
 
 The primary buddy voice now uses ElevenLabs Scribe v2 Realtime through a backend-issued single-use token, with a self-hosted audio worklet. A live check streamed the existing synthetic Windows voice fixture in paced 200 ms PCM chunks through the real WebSocket service and received the correct transcript. Its committed text arrived 93 ms after the final chunk in this one manual-commit test; this is not microphone-to-answer latency and does not include production VAD silence. Evidence: `artifacts/realtime-voice-verification.json`; replay: `npx tsx scripts/smoke-realtime-voice.ts` with the synthetic fixture present. No physical microphone was recorded.

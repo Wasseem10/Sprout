@@ -27,6 +27,7 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
   const monitoringPlayback = useRef(false);
   const speechInterrupted = useRef(false);
   const transcriptHandler = useRef(onTranscript);
+  const pendingGreeting = useRef<string | undefined>(undefined);
   const errorHandler = useRef(onError);
   transcriptHandler.current = onTranscript;
   errorHandler.current = onError;
@@ -42,7 +43,12 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
       workletPaths: { scribeAudioProcessor: '/scribeAudioProcessor.js' },
     },
     onSessionStarted: () => {
-      if (conversation.current && voiceMode.current === 'realtime') setPhase('listening');
+      if (conversation.current && voiceMode.current === 'realtime') {
+        setPhase('listening');
+        const greeting = pendingGreeting.current;
+        pendingGreeting.current = undefined;
+        if (greeting) void speakRealtime(greeting);
+      }
     },
     onPartialTranscript: ({ text }) => handleRealtimePartial(text),
     onCommittedTranscript: ({ text }) => handleRealtimeCommit(text),
@@ -70,7 +76,11 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
 
   function isPlaybackEcho(value: string) {
     if (!audio.current && Date.now() - speechEndedAt.current > 800) return false;
-    const normalize = (text: string) => text.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    const normalize = (text: string) =>
+      text
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, ' ')
+        .trim();
     const heard = normalize(value);
     // A short word may be a command even when it also appears in the reply:
     // “stop”, “no”, and “open” must always be able to interrupt. Only skip a
@@ -141,6 +151,7 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
   }
 
   function stop() {
+    pendingGreeting.current = undefined;
     conversation.current = false;
     setConversationActive(false);
     voiceMode.current = 'off';
@@ -354,11 +365,12 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
     }
   }
 
-  async function startConversation() {
+  async function startConversation(greeting?: string) {
     if (conversation.current) return;
     conversation.current = true;
     setConversationActive(true);
     clearMedia();
+    pendingGreeting.current = greeting;
     const id = generation.current;
     voiceMode.current = 'connecting';
     setPhase('starting');
@@ -379,7 +391,9 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
       // Still offer continuous conversation with the local recorder if the
       // account, browser, or network cannot start streaming transcription.
       voiceMode.current = 'batch';
-      void start(true);
+      pendingGreeting.current = undefined;
+      if (greeting) void speak(greeting);
+      else void start(true);
     }
   }
 

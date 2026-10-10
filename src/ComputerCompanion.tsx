@@ -102,6 +102,7 @@ export default function ComputerCompanion() {
     generation = useRef(0),
     inFlight = useRef(false);
   const acknowledgmentTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const greeted = useRef(false);
   const input = useRef<HTMLTextAreaElement>(null),
     transcript = useRef<HTMLDivElement>(null),
     dialog = useRef<HTMLDialogElement>(null),
@@ -291,8 +292,8 @@ export default function ComputerCompanion() {
         ? 'screenAction'
         : spokenScreenRequest
           ? 'describeScreen'
-          : action?.tool;
-      if (!tool) {
+          : (result.tool ?? action?.tool);
+      if (!tool && !result.clarification) {
         if (result.state.lastApp?.name !== before.lastApp?.name) tool = 'openApp';
         if (result.state.browser?.capturedAt !== before.browser?.capturedAt) tool = 'readPage';
         if (result.state.presentation?.filename !== before.presentation?.filename)
@@ -322,10 +323,15 @@ export default function ComputerCompanion() {
       if (current !== generation.current || abort.signal.aborted) return;
       if (acknowledgmentTimer.current) clearTimeout(acknowledgmentTimer.current);
       acknowledgmentTimer.current = null;
-      add('error', error instanceof Error ? error.message : 'Task could not complete.');
+      const failure = error instanceof Error ? error.message : 'Task could not complete.';
+      add('error', failure);
       setPhase('Needs attention');
       await sync().catch(() => {});
-      if (fromVoice) voice.resumeConversation();
+      if (fromVoice && voice.isConversationActive() && !voice.hasPendingInterruption()) {
+        if (speech && status?.integrations.elevenLabs.ttsConfigured)
+          void voice.speak(failure.slice(0, 300));
+        else voice.resumeConversation();
+      }
     } finally {
       if (current === generation.current) {
         if (acknowledgmentTimer.current) clearTimeout(acknowledgmentTimer.current);
@@ -342,14 +348,16 @@ export default function ComputerCompanion() {
       // A new utterance during an acknowledgment supersedes the older request.
       if (acknowledgmentTimer.current) clearTimeout(acknowledgmentTimer.current);
       acknowledgmentTimer.current = null;
-      ++generation.current;
-      controller.current?.abort();
-      controller.current = null;
+      const interruption = ++generation.current;
+      const previousRequest = controller.current;
       try {
-        applyState(await api<ComputerState>('/computer/stop', {}));
+        applyState(await api<ComputerState>('/computer/interrupt', {}));
       } catch {
-        // A failed stop is surfaced by the new task if the backend remains busy.
+        // A failed interruption is surfaced if the backend remains busy.
       }
+      previousRequest?.abort();
+      if (generation.current !== interruption) return;
+      controller.current = null;
       inFlight.current = false;
       setBusy(false);
     }
@@ -497,7 +505,12 @@ export default function ComputerCompanion() {
     if (!enabled || inFlight.current || voicePending || !status?.integrations.elevenLabs.configured)
       return;
     if (dockMode) setDockExpanded(true);
-    voice.startConversation();
+    const greeting =
+      desktopBuddy && !greeted.current && speech
+        ? "Hi, I'm Insight. What would you like to do?"
+        : undefined;
+    greeted.current = true;
+    void voice.startConversation(greeting);
   };
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {

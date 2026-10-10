@@ -18,6 +18,7 @@ import { generateCode, computerPlan, chat } from './planner.js';
 import { generatePresentationOutline, writePresentation } from './presentation.js';
 import { analyzeSpreadsheet, ensureDemoWorkbook } from './spreadsheet.js';
 import { openNativeApp } from './native-apps.js';
+import { pointAt } from './browser-pointer.js';
 
 const hosted = (cfg: Config) => !['127.0.0.1', 'localhost', '::1'].includes(cfg.host);
 const payment =
@@ -27,6 +28,8 @@ const benignButton =
   /^(search|go|filter|add to (?:cart|basket)|view cart|cart|checkout|sign in|log in|close|menu|next|back|previous|load more|show more|read more|view details|apply|apply now|apply for (?:this|the) job|apply on (?:company|employer) (?:site|website)|start (?:an? |the )?application)$/i;
 const applyControl =
   /^(?:apply(?: now| for (?:this|the) job| on (?:company|employer) (?:site|website))?|start (?:an? |the )?application)$/i;
+const resultSelector =
+  '#b_results .b_algo h2 a, #search a:has(h3), [data-component-type="s-search-result"] h2 a, [data-component-type="s-search-result"] a:has(h2)';
 const personal =
   /password|credit|\bcard\b|cvv|cvc|payment|\bssn\b|social security|email|phone|address|first.?name|last.?name|full.?name/i;
 const neverFill = /password|credit|\bcard\b|cvv|cvc|payment|\bssn\b|social security/i;
@@ -100,6 +103,8 @@ export class ComputerController {
   private acceptingPopup = false;
   private controls = new Map<string, Locator>();
   private controller: AbortController | null = null;
+  private taskFinished: Promise<void> = Promise.resolve();
+  private preservePageOnAbort = false;
   private child: ChildProcess | null = null;
   private pendingFill: { controlId: string; pageId: string; value: string; name: string } | null =
     null;
@@ -218,11 +223,14 @@ export class ComputerController {
         });
         this.conversation = this.conversation.slice(-4);
       }
-      return result;
+      return { ...result, ...(plan.action ? { tool: plan.action.tool } : {}) };
     });
   }
   async action(action: ComputerAction, parent: AbortSignal) {
-    return this.task(parent, (signal) => this.perform(action, signal));
+    return this.task(parent, async (signal) => ({
+      ...(await this.perform(action, signal)),
+      tool: action.tool,
+    }));
   }
   private async task(
     parent: AbortSignal,
@@ -233,10 +241,15 @@ export class ComputerController {
       throw new Error('Computer task is already running. Stop it before another request.');
     const controller = new AbortController();
     this.controller = controller;
+    this.preservePageOnAbort = false;
+    let finish!: () => void;
+    this.taskFinished = new Promise<void>((resolve) => {
+      finish = resolve;
+    });
     const signal = AbortSignal.any([controller.signal, parent, AbortSignal.timeout(90000)]);
     const cancel = () => {
       this.child?.kill();
-      void this.page?.close().catch(() => {});
+      if (!this.preservePageOnAbort) void this.page?.close().catch(() => {});
     };
     signal.addEventListener('abort', cancel, { once: true });
     try {
@@ -250,7 +263,27 @@ export class ComputerController {
     } finally {
       signal.removeEventListener('abort', cancel);
       if (this.controller === controller) this.controller = null;
+      finish();
     }
+  }
+  async interrupt() {
+    this.preservePageOnAbort = true;
+    this.controller?.abort();
+    this.pendingFill = null;
+    // Cancel loading without throwing away the active tab, cookies or page context.
+    if (this.page && !this.page.isClosed()) {
+      const session = await this.page
+        .context()
+        .newCDPSession(this.page)
+        .catch(() => null);
+      if (session) {
+        await session.send('Page.stopLoading').catch(() => {});
+        await session.detach().catch(() => {});
+      }
+    }
+    await this.taskFinished;
+    if (this.state.code?.status === 'running') this.state.code.status = 'cancelled';
+    return this.snapshot();
   }
   async stop() {
     this.controller?.abort();
@@ -488,16 +521,20 @@ export class ComputerController {
       };
     }[] = [];
     this.controls.clear();
-    for (
-      let i = 0, length = Math.min(await candidates.count(), 300);
-      i < length && observed.length < 160;
-      i++
-    ) {
-      const loc = candidates.nth(i);
-      if (!(await loc.isVisible()) || !(await loc.isEnabled())) continue;
-      const info = await loc.evaluate((el: Element) => {
+    // Read control metadata in one browser round-trip instead of hundreds of RPCs.
+    const candidateInfo = await candidates.evaluateAll((elements) =>
+      elements.slice(0, 1200).map((el, index) => {
         const element = el as HTMLElement;
         const input = el as HTMLInputElement;
+        const rect = element.getBoundingClientRect();
+        if (
+          !rect.width ||
+          !rect.height ||
+          getComputedStyle(element).visibility === 'hidden' ||
+          element.matches(':disabled') ||
+          element.getAttribute('aria-disabled') === 'true'
+        )
+          return null;
         const labels =
           'labels' in input && input.labels
             ? Array.from(input.labels)
@@ -505,6 +542,7 @@ export class ComputerController {
                 .join(' ')
             : '';
         return {
+          index,
           tag: el.tagName.toLowerCase(),
           type: el.getAttribute('type') ?? '',
           name: (
@@ -530,15 +568,18 @@ export class ComputerController {
             !!(input.form || el.closest('form')),
           inForm: !!(input.form || el.closest('form')),
         };
-      });
-      if (!info.name) continue;
-      observed.push({ locator: loc, info });
+      }),
+    );
+    for (const info of candidateInfo) {
+      if (!info?.name) continue;
+      observed.push({ locator: candidates.nth(info.index), info });
     }
     // Job boards can have dozens of header links before the Apply control.
     // Surface actions and form fields first while retaining observed locators.
     observed.sort((a, b) => {
       const priority = (item: (typeof observed)[number]) =>
-        applyControl.test(item.info.name.trim())
+        applyControl.test(item.info.name.trim()) ||
+        /^(?:add to (?:cart|basket)|checkout|view cart)$/i.test(item.info.name.trim())
           ? 2
           : (item.info.tag === 'input' &&
                 !/^(?:checkbox|radio|file|submit|image|button|reset)$/i.test(item.info.type)) ||
@@ -581,12 +622,14 @@ export class ComputerController {
       controls.push({ id, name: info.name, role, sensitive, blocked });
       this.controls.set(id, loc);
     }
-    const resultLinks = page.locator('#b_results .b_algo h2 a, #search a:has(h3)');
+    const resultLinks = page.locator(resultSelector);
     const searchResults: BrowserView['searchResults'] = [];
     for (let i = 0, count = Math.min(await resultLinks.count(), 5); i < count; i++) {
       const result = await resultLinks.nth(i).evaluate((element) => {
         const anchor = element as HTMLAnchorElement;
-        const card = anchor.closest('.b_algo') || anchor.parentElement?.parentElement;
+        const card =
+          anchor.closest('[data-component-type="s-search-result"], .b_algo') ||
+          anchor.parentElement?.parentElement;
         return {
           title: (anchor.innerText || '').trim().slice(0, 180),
           href: anchor.href,
@@ -619,6 +662,26 @@ export class ComputerController {
     action: Extract<ComputerAction, { tool: 'pursueBrowserGoal' }>,
     signal: AbortSignal,
   ): Promise<ComputerResult> {
+    if (action.kind === 'shopping' && /\bamazon\b/i.test(action.query)) {
+      if (
+        !this.state.browser ||
+        !/(^|\.)amazon\.com$/i.test(new URL(this.state.browser.url).hostname)
+      ) {
+        const opened = await this.perform(
+          { tool: 'navigate', url: 'https://www.amazon.com/' },
+          signal,
+        );
+        if (opened.clarification) return opened;
+      }
+      const query = action.query
+        .replace(
+          /^(?:please\s+)?(?:buy|order|purchase|shop for|find|search for|look for)\s+(?:me\s+)?/i,
+          '',
+        )
+        .replace(/\s+(?:on|off|from)\s+amazon[.!?]*$/i, '')
+        .trim();
+      return this.perform({ tool: 'searchCurrentSite', query }, signal);
+    }
     // At most one search, one observed result, and one observed page control.
     // Every step goes through perform(), which re-observes and validates the page.
     const searchQuery = action.kind === 'job' ? `${action.query} jobs` : `${action.query} product`;
@@ -1094,6 +1157,39 @@ export class ComputerController {
           authorization: { nonce, expiresAt, proof },
         },
       };
+    } else if (action.tool === 'searchCurrentSite') {
+      if (!this.page || this.page.isClosed() || !this.state.browser)
+        throw new Error('Open the store first so I can search on its page.');
+      await this.observe();
+      const view = this.state.browser!;
+      const inputs = view.controls.filter(
+        (c) => c.role === 'textbox' && !c.blocked && !c.sensitive && /search/i.test(c.name),
+      );
+      if (inputs.length !== 1)
+        return {
+          state: this.snapshot(),
+          clarification: true,
+          summary:
+            'I am staying on this page, but cannot find a unique search field. The site may need sign-in or verification; ask me to read the page.',
+        };
+      const input = this.controls.get(inputs[0].id)!;
+      await pointAt(this.page, input, signal);
+      await input.fill(action.query);
+      signal.throwIfAborted();
+      await input.press('Enter');
+      await this.page.waitForLoadState('domcontentloaded');
+      signal.throwIfAborted();
+      await this.observe();
+      const results = this.state.browser?.searchResults ?? [];
+      return {
+        state: this.snapshot(),
+        summary: results.length
+          ? `Searched this site for ${action.query}. ${results
+              .slice(0, 3)
+              .map((r, i) => `${i + 1}. ${r.title}`)
+              .join(' ')} Which one would you like to open?`
+          : `Searched this site for ${action.query}, but I could not identify product links. I can read the page to check what is blocking us.`,
+      };
     } else {
       const page = await this.ensurePage();
       signal.throwIfAborted();
@@ -1129,7 +1225,7 @@ export class ComputerController {
           throw new Error('Search results changed. Search again before choosing a result.');
         const observed = view.searchResults[action.index - 1];
         if (!observed) throw new Error('That result is not available. Choose a listed result.');
-        const links = page.locator('#b_results .b_algo h2 a, #search a:has(h3)');
+        const links = page.locator(resultSelector);
         let stillPresent = false;
         for (let i = 0, count = await links.count(); i < count; i++) {
           const current = await links.nth(i).evaluate((element) => ({
@@ -1137,6 +1233,7 @@ export class ComputerController {
             url: (element as HTMLAnchorElement).href,
           }));
           if (current.title === observed.title && current.url === observed.url) {
+            await pointAt(page, links.nth(i), signal);
             stillPresent = true;
             break;
           }
@@ -1235,6 +1332,7 @@ export class ComputerController {
               clarification: true,
             };
           }
+          await pointAt(page, locator, signal);
           await locator.fill(action.value);
         } else {
           if (control.role !== 'link' && control.role !== 'button')
@@ -1244,6 +1342,7 @@ export class ComputerController {
               new URL(current.href, page.url()).toString(),
             );
           clickedApply = applyControl.test(control.name.trim());
+          await pointAt(page, locator, signal);
           if (current.href && current.target === '_blank') {
             // Job boards often put Apply in a new tab. Open the observed URL in
             // our existing controlled tab so the next spoken request can continue.
@@ -1274,6 +1373,13 @@ export class ComputerController {
       await this.observe();
       const view = this.state.browser;
       if (!view) throw new Error('Computer browser was closed. Open the website again.');
+      if (!view.text.trim() && !view.controls.length)
+        return {
+          state: this.snapshot(),
+          clarification: true,
+          summary:
+            'The website returned an empty page, so I cannot read or interact with it yet. I have kept the tab open; no item was selected or purchased.',
+        };
       if (action.tool === 'search') {
         const results = view.searchResults
           .map((result, index) => `${index + 1}. ${result.title}. ${result.snippet}`)

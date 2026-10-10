@@ -226,6 +226,7 @@ export async function buildApp(cfg: Config = config()) {
     return computer.request(body.request, taskSignal(req, reply));
   });
   app.post('/api/computer/stop', async () => computer.stop());
+  app.post('/api/computer/interrupt', async () => computer.interrupt());
   app.post('/api/import', async (req) => {
     const body = z
       .object({ name: z.string().min(1).max(160), text: z.string().max(1024 * 1024) })
