@@ -7,9 +7,11 @@ Official source: [Knight Hacks IX Devpost](https://knight-hacks-ix.devpost.com/)
 1. **Hugging Face: Best Use of Open Source AI** (three winners). The two Qwen open models are essential to the buddy's command planning, code generation and screen description. This is the strongest sponsor fit, backed by live inference evidence.
 2. **[MLH] Best Use of ElevenLabs** (one winner). Transcription and speech generation passed real API checks. Physical microphone and speaker use still need a human rehearsal before the live demo.
 3. **Best AI Hack** (automatic category judging). Show the completed voice → model → real computer action → output loop.
-4. **Adobe: Prettiest Hack** (three winners) is optional after the buddy's native visual presentation and video look polished. No Adobe API is claimed.
+4. **Adobe: Prettiest Hack** (three winners). Select it if the final video clearly shows the compact buddy, expanded conversation, typography and cohesive colors. The prompt judges visual quality; no Adobe API is required.
 
-Gemini is **not required** for these targets. Only select its separate MLH prize if Gemini actually becomes a meaningful part of the shipped demo. Do not claim Databricks, Neon, Vultr or Figma sponsor usage without their live requirements and evidence. Figma specifically requires an editable file link plus a picture of that file.
+Gemini is **not required** for these targets. Overall and Best AI judging are automatic; select Hugging Face, ElevenLabs and Adobe as sponsor/category prize entries on Devpost. Sponsor prizes require attending the announced judging room(s) Sunday morning.
+
+**Do not select yet:** Tiger Data has no integration or time-series feature in InsightOS; a database added only to qualify would be weak. Neon has an adapter but no live database or buddy-critical persistence. Databricks has an analytics adapter but no verified warehouse and tells a different story from the desktop buddy. OneEthos requires measurable local environmental impact, which this prototype does not have. Figma requires an actual editable file URL and screenshot. Vultr, Gemini, Solana, Presage, AMD, GoDaddy and the hardware tracks have no meaningful demonstrated use here. The team is not eligible for Best First-Time Hacker.
 
 ## Rubric: what the demo must show
 
