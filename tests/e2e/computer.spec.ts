@@ -135,3 +135,89 @@ test('the buddy shows task progress without hiding the conversation controls', a
     true,
   );
 });
+
+test('recovers a stale save folder after the backend restarts', async ({ page }) => {
+  const state = {
+    folder: { id: 'stale', name: 'Previous session' },
+    code: null,
+    browser: null,
+    screen: null,
+  };
+  let attempts = 0;
+  let prepared = 0;
+  await page.route('**/api/computer/state', (route) => route.fulfill({ json: state }));
+  await page.route('**/api/computer/demo-folder', (route) => {
+    prepared++;
+    return route.fulfill({
+      json: { ...state, folder: { id: 'fresh', name: 'Insight workspace' } },
+    });
+  });
+  await page.route('**/api/computer/request', (route) => {
+    attempts++;
+    return attempts === 1
+      ? route.fulfill({
+          status: 400,
+          json: {
+            error: 'Computer needs a folder first. Choose a folder before making a presentation.',
+          },
+        })
+      : route.fulfill({
+          json: {
+            state,
+            summary: 'Created your George Washington presentation.',
+            tool: 'createPresentation',
+          },
+        });
+  });
+  await page.goto('/');
+  await expect(page.getByRole('region', { name: 'Start with InsightOS' })).toBeVisible();
+  const input = page.getByLabel('Tell your computer what to do');
+  await input.fill('Can you make me a PowerPoint on George Washington?');
+  await input.press('Enter');
+  await expect(page.locator('.computer-message.assistant').last()).toContainText(
+    'Created your George Washington',
+  );
+  expect(attempts).toBe(2);
+  expect(prepared).toBe(1);
+});
+
+test('energy demo supports a payment limit and exposes assumptions accessibly', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Energy & affordability', exact: true }).click();
+  await page.getByRole('button', { name: 'Try the sample household' }).click();
+  const panel = page.getByRole('region', { name: 'Energy and affordability plan' });
+  await expect(panel).toContainText('SAMPLE BILLS');
+  await panel.getByRole('button', { name: 'Try a $30 limit' }).click();
+  await expect(panel).toContainText('$30.00/mo');
+  await expect(panel).toContainText('Above limit');
+  await expect(panel).toContainText('hypothetical rebate');
+  await page.screenshot({ path: 'artifacts/energy-workspace.png', fullPage: true });
+  const audit = await new AxeBuilder({ page }).analyze();
+  expect(audit.violations).toEqual([]);
+});
+
+test('energy plan fits the floating buddy and leaves conversation controls available', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 440, height: 580 });
+  await page.goto('/?desktop=buddy');
+  await page.getByRole('button', { name: 'Expand conversation', exact: true }).click();
+  const input = page.getByLabel('Tell your buddy what to do');
+  await input.fill('Start the energy demo');
+  await input.press('Enter');
+  const panel = page.getByRole('region', { name: 'Energy and affordability plan' });
+  await expect(panel).toBeVisible();
+  await panel.getByRole('button', { name: 'Try a $30 limit' }).click();
+  await expect(panel).toContainText('$30.00/mo');
+  await expect(input).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Start voice conversation' })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+  await input.blur();
+  await page.screenshot({ path: 'artifacts/energy-buddy.png' });
+  const audit = await new AxeBuilder({ page }).analyze();
+  expect(audit.violations).toEqual([]);
+});

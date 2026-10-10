@@ -129,3 +129,15 @@ it('live mode never silently falls back to sample planning or analytics', async 
   expect(analysis.statusCode).toBe(400);
   expect(analysis.json().error).toContain('DATABRICKS');
 });
+
+it('returns an actionable folder error for presentations without a workspace', async () => {
+  const { app, cookie } = await setup();
+  const response = await app.inject({
+    method: 'POST',
+    url: '/api/computer/request',
+    headers: { cookie },
+    payload: { request: 'Can you make me a PowerPoint on George Washington?' },
+  });
+  expect(response.statusCode).toBe(400);
+  expect(response.json().error).toContain('Computer needs a folder');
+});

@@ -1,5 +1,15 @@
 # Verification record — October 10, 2026
 
+## Accessible energy and affordability workflow
+
+The desktop buddy now has a bounded bill-analysis, budget-comparison and application-rehearsal workflow. A real browser opens an owned, clearly labeled demo application, fills user-provided answers, moves its visible browser pointer, and compares all eight review values against the plan. Lowering the gross payment limit invalidates previous verification; an unaffordable plan requires another choice. Readback checks the current browser without overwriting manually changed answers. Sample bills require an explicit demo request. Imported CSV supports 2–36 distinct months, validates all numeric values, and separates usage, effective rate and other-charge effects. Short spoken answers and a concise spoken summary are supported.
+
+`npm run test:energy` passed the browser application, interruption-preserved context, $60→$30 budget correction, sample weather-sealing review, explicit local saving and follow-up usage comparison. It generated a real editable four-slide PPTX through live Hugging Face inference. Evidence: `artifacts/energy-rehearsal.json`, `artifacts/energy-application.png`. This was a headless browser rehearsal and simulated turn interruption, not a physical microphone/speaker rehearsal. Estimates and fictional financing do not establish real environmental impact or credit eligibility.
+
+The full unit suite passed 89 tests before the final short-answer and Neon-store checks were added. Subsequent affected-suite checks passed, including 10 energy/store tests covering live DOM filling, manually altered-review rejection, local restart recovery, bound owner-scoped Neon SQL with simulated responses, and Databricks parameter binding/result verification with simulated responses. The workspace and compact buddy browser checks passed automated accessibility scans; the first buddy scan identified a missing main landmark/heading, which was fixed. Screenshots: `artifacts/energy-workspace.png`, `artifacts/energy-buddy.png`. The stale-folder PowerPoint regression also passed. Build and type checking passed.
+
+Hugging Face and ElevenLabs remain configured. Neon, Databricks and Vultr are not connected/live verified. The new energy SQL and Neon plan store are implemented, not evidence of deployed sponsor use. Tiger Data is not included. The reference program is [OUC Efficiency Delivered](https://www.ouc.com/solutions-programs/savings/efficiency-delivered/homeowners-renter/), checked October 10, 2026; the demo form is not affiliated with OUC and transmits no application.
+
 ## Goal coordinator, explicit memory and hybrid cloud inference
 
 The coordinator now retains a goal, observes the active browser after each action, and asks Hugging Face for a validated next step. It can ask a question and continue with the same goal when answered. Six-action turn limits, unchanged-state repetition detection, interruption, and manual boundaries for submissions remain in effect. Native Windows automation is still the separate named-click/scroll path; this is not unrestricted autonomous desktop control.

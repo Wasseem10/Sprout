@@ -8,6 +8,10 @@ A voice-first desktop companion for people who have difficulty seeing or operati
 
 ## Run locally
 
+**Energy and affordability demo:** say “Start the energy demo,” give a monthly payment limit, choose an improvement, then ask “Prepare my energy application.” Use “use demo details” for a fictional applicant. Insight fills and verifies a real browser rehearsal, catches payments above the stated limit, and reads the answers back. Say “save my energy plan” to save explicitly and “resume my energy plan” to restore it. Saved plans use Neon when connected, otherwise local storage. No application is sent to a utility or lender. See the energy sequence in [COMPUTER-DEMO.md](COMPUTER-DEMO.md). `npm run test:energy` exercises correction, browser verification, and live Hugging Face slide generation when configured.
+
+The desktop shortcut **InsightOS** opens the buddy without a terminal. Its launcher reuses running development services or starts the compiled app when they are stopped. Run `npm run build` after code changes before using the compiled app.
+
 The buddy now supports an observe → act → check loop for multi-step browser and office goals. For a read-only rehearsal, ask “Open https://books.toscrape.com and then open Travel. Tell me the first book's price.” A real Hugging Face rehearsal completed navigation and read the displayed result; see `artifacts/goal-rehearsal.json`. Requests may ask for clarification or stop at site barriers. This does not establish reliable shopping checkout or arbitrary application control.
 
 Say “Remember that I prefer remote jobs,” then “What do you remember about me?” Explicit preferences survive restart locally, or in Neon when `DATABASE_URL` is connected. Goal/browser sessions do not survive backend restart. Optional Vultr-hosted inference uses `INSIGHTOS_CLOUD_URL` and `INSIGHTOS_CLOUD_PASSPHRASE` while the desktop stays local; see the deployment guide. Cloud/Neon/Databricks account checks remain outstanding.
@@ -57,8 +61,8 @@ Open **Settings & connections → Connect your accounts**. Enter credentials in 
 | `DATABRICKS_WAREHOUSE_ID`                   | Existing SQL warehouse ID with permission to run queries.                                                                                                                                |
 | `DATABRICKS_TOKEN`                          | Authorized personal access token for this pilot. OAuth is not implemented.                                                                                                               |
 | `DATABRICKS_CATALOG`, `DATABRICKS_SCHEMA`   | Default main/insightos; token needs catalog/schema access and table creation/insert/select permissions. Warehouse availability is not assumed from account signup.                       |
-| `ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID` | Account API key and an accessible voice ID. Primary voice uses Scribe v2 Realtime with temporary client tokens; recorded Scribe remains as fallback. |
-| `ELEVENLABS_TTS_MODEL_ID` | Defaults to `eleven_flash_v2_5` for short conversational replies. |
+| `ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID` | Account API key and an accessible voice ID. Primary voice uses Scribe v2 Realtime with temporary client tokens; recorded Scribe remains as fallback.                                     |
+| `ELEVENLABS_TTS_MODEL_ID`                   | Defaults to `eleven_flash_v2_5` for short conversational replies.                                                                                                                        |
 | `DATABASE_URL`                              | Neon Postgres connection string with permission to create/update insightos_projects. Keep it private.                                                                                    |
 | `SESSION_PASSPHRASE`, `CLIENT_ORIGIN`       | Hosted single-user session password and exact HTTPS frontend origin. See deployment guide.                                                                                               |
 | `INSIGHTOS_APP_URL`                         | Optional production desktop HTTPS origin for a deployed backend/UI. Leave empty locally.                                                                                                 |

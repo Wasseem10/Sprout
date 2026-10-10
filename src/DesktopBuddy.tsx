@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import type { ComputerState } from '../shared/computer';
 import './buddy.css';
+import EnergyPanel from './EnergyPanel';
 
 type Props = {
   expanded: boolean;
@@ -33,7 +34,7 @@ type Props = {
   speechReady: boolean;
   shortcut: boolean | null;
   state: ComputerState;
-  resultView: 'home' | 'code' | 'office' | 'browser' | 'screen';
+  resultView: 'home' | 'code' | 'office' | 'browser' | 'screen' | 'energy';
   request: string;
   messages: { id: string; role: 'user' | 'assistant' | 'error'; text: string }[];
   inputRef: RefObject<HTMLTextAreaElement | null>;
@@ -71,10 +72,11 @@ export default function DesktopBuddy(p: Props) {
         : 'Ready to talk';
   const conversation = p.messages.filter((m) => m.id !== 'welcome');
   return (
-    <section
+    <main
       className={`buddy ${p.expanded ? 'expanded' : 'collapsed'} ${p.active ? 'active' : ''}`}
       aria-label="InsightOS desktop buddy"
     >
+      <h1 className="sr-only">InsightOS desktop assistant</h1>
       <header className="buddy-bar">
         <button
           className={`buddy-face ${p.active ? 'awake' : ''}`}
@@ -156,12 +158,18 @@ export default function DesktopBuddy(p: Props) {
             {!conversation.length && !p.state.task && (
               <div className="buddy-welcome">
                 <span className="buddy-eyebrow">A LITTLE HELP. RIGHT HERE.</span>
-                <h1>What’s on your mind?</h1>
+                <h2>What’s on your mind?</h2>
                 <p>
                   Press Play and talk naturally. I’ll keep listening, even while I reply. Ask me to
                   find a job, open an app, describe your screen, or make slides.
                 </p>
                 <div className="buddy-suggestions" aria-label="Ideas to try">
+                  <button
+                    disabled={!p.enabled || p.busy}
+                    onClick={() => p.suggest('Start the energy demo')}
+                  >
+                    Lower my energy bill
+                  </button>
                   <button
                     disabled={!p.enabled || p.busy}
                     onClick={() => p.suggest('Find jobs near me')}
@@ -192,6 +200,14 @@ export default function DesktopBuddy(p: Props) {
               </div>
             ))}
           </div>
+          {p.resultView === 'energy' && p.state.energy && (
+            <EnergyPanel
+              state={p.state.energy}
+              compact
+              disabled={p.busy || !p.enabled}
+              ask={p.suggest}
+            />
+          )}
           {p.state.task && (
             <div className="buddy-task" aria-label="Current task">
               <strong>
@@ -360,6 +376,6 @@ export default function DesktopBuddy(p: Props) {
           </footer>
         </div>
       )}
-    </section>
+    </main>
   );
 }

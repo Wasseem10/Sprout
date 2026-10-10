@@ -1,5 +1,7 @@
 # How InsightOS works
 
+The energy workflow uses `EnergyAssistant` as a bounded conversational coordinator. It handles explicit sample/imported bills, payment limits, improvement choices and user-provided applicant answers. Calculations separate bill-change contributors and compare gross payments against the budget. Browser execution serves exactly one owned synthetic HTTPS document through Playwright interception, fills fixed controls with a visible automation pointer, and compares all eight review values against the plan. No private-network navigation exception or lender submission is added. Readback validates the current DOM without altering it; changes to a plan invalidate prior verification. User-requested saving uses parameterized owner-scoped Neon JSONB storage when connected, otherwise an atomic local file. A restored plan requires fresh browser verification. Optional Databricks uses bound charge/usage parameters, and its results must match independently computed totals before provider attribution. Applicant identity is omitted from the energy slide-generation context. This is a domain workflow, not a general autonomous financial adviser or arbitrary browser application solver.
+
 The main product is a native Windows buddy for conversation and computer tasks. The older CSV revenue workspace remains an optional view. Both accept typed or transcribed requests; they use separate task controllers.
 
 ```mermaid

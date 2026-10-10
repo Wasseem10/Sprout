@@ -228,6 +228,10 @@ function browserSpeech(browser: BrowserView, summary: string, tool?: string): st
 
 export function spokenComputerReply(result: ComputerResult, tool?: string): string {
   const { summary, state } = result;
+  // Keep the budget question and application readback intact; generic shortening
+  // can cut off the next question and strand a voice-only user.
+  if (result.tool === 'energyHelp' || tool === 'energyHelp')
+    return cleanSpeechText(result.spokenSummary ?? summary, 1000);
   // Conversation replies must never be replaced by a result from an older task.
   if (result.clarification) return cleanSpeechText(summary, 360);
   if (tool === 'openApp' && state.lastApp)

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { EnergyState } from './energy.js';
 
 export const nativeAppSchema = z.enum([
   'browser',
@@ -14,6 +15,7 @@ export const nativeAppSchema = z.enum([
 export type NativeAppId = z.infer<typeof nativeAppSchema>;
 
 export const computerActionSchema = z.discriminatedUnion('tool', [
+  z.object({ tool: z.literal('energyHelp'), request: z.string().trim().min(1).max(2000) }).strict(),
   z.object({ tool: z.literal('openApp'), app: nativeAppSchema }).strict(),
   z
     .object({
@@ -130,6 +132,7 @@ export type ScreenView = {
   description: string | null;
 };
 export type ComputerState = {
+  energy?: EnergyState | null;
   task?: {
     id: string;
     goal: string;
@@ -171,6 +174,7 @@ export type ScreenPointer = {
   authorization: { nonce: string; expiresAt: number; proof: string };
 };
 export type ComputerResult = {
+  spokenSummary?: string;
   tool?: ComputerAction['tool'];
   summary: string;
   state: ComputerState;

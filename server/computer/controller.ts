@@ -21,6 +21,9 @@ import { openNativeApp } from './native-apps.js';
 import { pointAt } from './browser-pointer.js';
 import { AssistantMemory } from '../providers/assistantMemory.js';
 import { decideGoal, needsGoalLoop, observationKey } from './goal.js';
+import { EnergyAssistant } from './energy-assistant.js';
+import { money, newEnergyState, parseEnergyCsv } from './energy.js';
+import { energyDemoUrl, energyProgramUrl, type EnergyState } from '../../shared/energy.js';
 
 const hosted = (cfg: Config) => !['127.0.0.1', 'localhost', '::1'].includes(cfg.host);
 const payment =
@@ -110,6 +113,8 @@ export class ComputerController {
   private child: ChildProcess | null = null;
   private pendingFill: { controlId: string; pageId: string; value: string; name: string } | null =
     null;
+  private energyAssistant: EnergyAssistant;
+  private ownedEnergyDemo: string | null = null;
   constructor(
     private cfg: Config,
     private options: {
@@ -117,7 +122,117 @@ export class ComputerController {
       validateUrl?: typeof publicUrl;
       searchUrl?: (query: string) => string;
     } = {},
-  ) {}
+  ) {
+    this.energyAssistant = new EnergyAssistant(cfg, this.state, {
+      importBills: async (filename) => {
+        const root = this.state.folder && this.folders.get(this.state.folder.id);
+        if (!root) throw new Error('Computer choose the folder containing your energy CSV first.');
+        if (path.basename(filename) !== filename || !/\.csv$/i.test(filename))
+          throw new Error('Computer energy CSV must be a filename inside the selected folder.');
+        const file = path.join(root, filename);
+        if ((await lstat(file)).isSymbolicLink() || (await realpath(file)) !== file)
+          throw new Error('Computer energy CSV cannot be a redirected file.');
+        return newEnergyState(parseEnergyCsv(await readFile(file, 'utf8')), filename, 'imported');
+      },
+      application: (state, signal, readOnly) =>
+        this.prepareEnergyApplication(state, signal, readOnly),
+      openProgram: async (signal) => {
+        await this.perform({ tool: 'navigate', url: energyProgramUrl }, signal);
+      },
+    });
+  }
+  private async prepareEnergyApplication(
+    state: EnergyState,
+    signal: AbortSignal,
+    readOnly = false,
+  ) {
+    const quote = state.quotes.find((q) => q.id === state.selected)!;
+    const expected = [
+      state.applicant.name,
+      state.applicant.ownership,
+      quote.name,
+      money(state.budget!),
+      `${money(quote.payment)} for ${quote.months} months`,
+      money(quote.financed),
+      `${quote.apr}% assumed`,
+      `${quote.annualKwh} kWh; not measured savings`,
+    ];
+    state.applicationVerified = false;
+    if (readOnly) {
+      signal.throwIfAborted();
+      if (
+        !this.page ||
+        this.page.isClosed() ||
+        this.page.url() !== energyDemoUrl ||
+        !(await this.page.locator('#ready').isVisible())
+      )
+        return false;
+      const values = await this.page.locator('#answers dd').allTextContents();
+      await this.observe();
+      return JSON.stringify(values) === JSON.stringify(expected);
+    }
+    this.ownedEnergyDemo ??= await readFile(
+      path.resolve('data/energy-application-demo.html'),
+      'utf8',
+    );
+    const page = await this.ensurePage();
+    const step = async (message: string, run: () => Promise<unknown>) => {
+      signal.throwIfAborted();
+      if (this.state.task) {
+        this.state.task.status = 'running';
+        this.state.task.message = message;
+      }
+      await run();
+      signal.throwIfAborted();
+      if (this.state.task) this.state.task.steps.push({ tool: 'energyHelp', summary: message });
+    };
+    const click = async (id: string) => {
+      const target = page.locator('#' + id);
+      await pointAt(page, target, signal);
+      await target.click();
+    };
+    const fill = async (id: string, value: string) => {
+      const target = page.locator('#' + id);
+      await pointAt(page, target, signal);
+      await target.fill(value);
+      if ((await target.inputValue()) !== value)
+        throw new Error('Computer application field did not retain the requested value.');
+    };
+    await step('Opening the labeled application rehearsal', async () => {
+      if (page.url() !== energyDemoUrl) await page.goto(energyDemoUrl);
+      await page.bringToFront();
+      if (await page.locator('#ready').isVisible()) await click('edit');
+      if (await page.locator('#plan').isVisible()) await click('back');
+    });
+    await step('Entering only the applicant details you provided', async () => {
+      await fill('name', state.applicant.name);
+      const ownership = page.locator('#ownership');
+      await pointAt(page, ownership, signal);
+      await ownership.selectOption(state.applicant.ownership!);
+      if ((await ownership.inputValue()) !== state.applicant.ownership)
+        throw new Error('Computer application property status did not match.');
+      await click('next');
+      await page.locator('#plan').waitFor({ state: 'visible' });
+    });
+    await step('Checking the selected improvement against your payment limit', async () => {
+      const improvement = page.locator('#improvement');
+      await pointAt(page, improvement, signal);
+      await improvement.selectOption(state.selected!);
+      await fill('budget', String(state.budget));
+      if ((await improvement.inputValue()) !== state.selected)
+        throw new Error('Computer application improvement did not match.');
+      await click('review');
+    });
+    const ready = await page.locator('#ready').isVisible();
+    if (ready) {
+      const values = await page.locator('#answers dd').allTextContents();
+      if (JSON.stringify(values) !== JSON.stringify(expected))
+        throw new Error('Computer application review does not match your answers.');
+    }
+    await this.observe();
+    if (this.state.task) this.state.task.steps = this.state.task.steps.slice(-24);
+    return ready;
+  }
   async init() {
     if (hosted(this.cfg)) return;
     const keyFile = path.join(this.cfg.localDir, 'desktop-bridge-key');
@@ -228,6 +343,7 @@ export class ComputerController {
       'openPresentation',
       'openSpreadsheet',
       'openApp',
+      'energyHelp',
     ]);
     let last: ComputerResult | undefined;
     let lastTool: ComputerAction['tool'] | undefined;
@@ -303,6 +419,8 @@ export class ComputerController {
   }
   async request(request: string, parent: AbortSignal): Promise<ComputerResult> {
     return this.task(parent, async (signal) => {
+      const energy = await this.energyAssistant.request(request, signal);
+      if (energy) return energy;
       const memory = new AssistantMemory(this.cfg);
       const remember = request.match(/^(?:please\s+)?remember (?:that\s+)?(.+)$/i);
       if (
@@ -661,6 +779,19 @@ export class ComputerController {
       const validate = this.options.validateUrl ?? publicUrl;
       await context.route('**/*', async (route) => {
         const url = route.request().url();
+        // Only this exact owned document is served locally; no private-network
+        // exception is granted to browser navigation or model-generated URLs.
+        if (url === energyDemoUrl && this.ownedEnergyDemo && route.request().method() === 'GET') {
+          return route.fulfill({
+            status: 200,
+            contentType: 'text/html',
+            body: this.ownedEnergyDemo,
+            headers: {
+              'Content-Security-Policy':
+                "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; form-action 'none'; connect-src 'none'",
+            },
+          });
+        }
         if (/^(data:|blob:)/.test(url)) return route.continue();
         try {
           const host = new URL(url).origin;
@@ -700,7 +831,8 @@ export class ComputerController {
       return;
     }
     const page = this.page;
-    await (this.options.validateUrl ?? publicUrl)(page.url());
+    if (!(page.url() === energyDemoUrl && this.ownedEnergyDemo))
+      await (this.options.validateUrl ?? publicUrl)(page.url());
     const text = (await page.locator('body').innerText({ timeout: 7000 })).slice(0, 12000);
     const candidates = page.locator(
       'a,button,input:not([type="hidden"]),textarea,select,[role="button"]',
@@ -1032,6 +1164,15 @@ export class ComputerController {
   }
   private async perform(action: ComputerAction, signal: AbortSignal): Promise<ComputerResult> {
     signal.throwIfAborted();
+    if (action.tool === 'energyHelp') {
+      return (
+        (await this.energyAssistant.request(action.request, signal)) ?? {
+          state: this.snapshot(),
+          summary: 'Ask me to start the energy demo or analyze your energy bills.',
+          clarification: true,
+        }
+      );
+    }
     if (action.tool !== 'fill' && action.tool !== 'confirmFill') this.pendingFill = null;
     let summary = '';
     if (action.tool === 'openApp') {
@@ -1111,9 +1252,23 @@ export class ComputerController {
     } else if (action.tool === 'createPresentation') {
       const root = this.state.folder && this.folders.get(this.state.folder.id);
       if (!root)
-        throw new Error('Choose a folder or use the demo folder before making a presentation.');
+        throw new Error(
+          'Computer needs a folder first. Choose a folder before making a presentation.',
+        );
       const outline = await generatePresentationOutline(
-        action.request,
+        action.request +
+          (this.state.energy && /energy|utility|bill|saving|efficiency/i.test(action.request)
+            ? '\nUse these verified calculations. Contractor quotes and savings are hypothetical; the bill source is labeled. Do not claim achieved environmental impact: ' +
+              JSON.stringify({
+                source: this.state.energy.source,
+                comparison: this.state.energy.comparison,
+                budget: this.state.energy.budget,
+                selected: this.state.energy.selected,
+                quotes: this.state.energy.quotes,
+                observedPostUpgrade: this.state.energy.observedPostUpgrade,
+                provider: this.state.energy.provider,
+              })
+            : ''),
         action.slides ?? 4,
         this.cfg,
         signal,

@@ -25,6 +25,7 @@ import { spokenComputerReply, spokenRequestAcknowledgment } from './speechText';
 import './computer.css';
 import ConnectionsPanel from './ConnectionsPanel';
 import DesktopBuddy from './DesktopBuddy';
+import EnergyPanel from './EnergyPanel';
 
 const empty: ComputerState = { folder: null, code: null, browser: null, screen: null };
 type Message = { id: string; role: 'user' | 'assistant' | 'error'; text: string };
@@ -83,7 +84,9 @@ export default function ComputerCompanion() {
   const [request, setRequest] = useState(''),
     [busy, setBusy] = useState(false),
     [phase, setPhase] = useState('Ready when you are');
-  const [tab, setTab] = useState<'home' | 'code' | 'office' | 'browser' | 'screen'>('home'),
+  const [tab, setTab] = useState<'home' | 'code' | 'office' | 'browser' | 'screen' | 'energy'>(
+      'home',
+    ),
     [modal, setModal] = useState<'settings' | 'screens' | null>(null);
   const [sources, setSources] = useState<Source[]>([]),
     [speech, setSpeech] = useState(() =>
@@ -121,7 +124,8 @@ export default function ComputerCompanion() {
   const sync = async () => setState(await api<ComputerState>('/computer/state'));
   const applyState = (next: ComputerState, tool?: string) => {
     setState(next);
-    if (/navigate|search|SearchResult|click|fill|readPage|goBack/.test(tool ?? ''))
+    if (tool === 'energyHelp') setTab('energy');
+    else if (/navigate|search|SearchResult|click|fill|readPage|goBack/.test(tool ?? ''))
       setTab('browser');
     else if (/describeScreen|screenAction/.test(tool ?? '')) setTab('screen');
     else if (/openApp/.test(tool ?? '')) setTab('home');
@@ -264,7 +268,6 @@ export default function ComputerCompanion() {
           result = await api<ComputerResult>(endpoint, payload, abort.signal);
         } catch (error) {
           if (
-            before.folder ||
             abort.signal.aborted ||
             !(error instanceof Error) ||
             !needsFileWorkspace(text, action) ||
@@ -724,6 +727,7 @@ export default function ComputerCompanion() {
               <nav className="computer-tabs" aria-label="Computer tools">
                 {[
                   { id: 'home', title: 'Start here', icon: Sparkles },
+                  { id: 'energy', title: 'Energy & affordability', icon: Sparkles },
                   { id: 'browser', title: 'Browse & act', icon: Globe },
                   { id: 'screen', title: 'My screen', icon: Eye },
                   { id: 'office', title: 'Slides & Excel', icon: Presentation },
@@ -739,6 +743,32 @@ export default function ComputerCompanion() {
                   </button>
                 ))}
               </nav>
+              {tab === 'energy' &&
+                (state.energy ? (
+                  <EnergyPanel
+                    state={state.energy}
+                    disabled={!enabled || busy}
+                    ask={(text) => void perform(text)}
+                  />
+                ) : (
+                  <section className="computer-artifact" aria-label="Start an energy plan">
+                    <h2>Independence at home</h2>
+                    <p>
+                      Understand your energy bills, compare sample financing, and prepare an
+                      application through conversation.
+                    </p>
+                    <button
+                      disabled={!enabled || busy}
+                      onClick={() => void perform('Start the energy demo')}
+                    >
+                      Try the sample household
+                    </button>
+                    <p>
+                      For your own bills, choose their folder and say “import energy.csv.” Required
+                      columns: month, days, kwh, energyCharge, otherCharges.
+                    </p>
+                  </section>
+                ))}
               {tab === 'home' && (
                 <section
                   className="computer-artifact computer-home"

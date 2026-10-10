@@ -1,0 +1,173 @@
+{
+  "checkedAt": "2026-10-10T19:26:18.856Z",
+  "steps": [
+    {
+      "request": "Start the energy demo",
+      "reply": "Using clearly labeled sample bills. Your bill rose $45.00, from $195.00 to $240.00. Usage changed from 30 to 40 kilowatt-hours a day. The bill change breaks down into $45.00 from usage, $0.00 from the effective energy rate, and $0.00 from other charges. This does not identify which appliance caused the change. What monthly improvement payment could you afford?",
+      "milliseconds": 18
+    },
+    {
+      "request": "I can afford $60 a month",
+      "reply": "With a $60.00 monthly payment limit, duct repair fits at $41.67 a month for 24 months. The sample quote assumes $1,200.00 cost, $200.00 rebate, and 0% interest. Estimated savings are $15.00 a month and 1200 kilowatt-hours a year. The monthly payment minus estimated savings is $26.67. These are hypothetical quotes, not an approval or achieved savings. Would you like to choose duct repair or compare another option?",
+      "milliseconds": 2
+    },
+    {
+      "request": "Choose duct repair",
+      "reply": "With a $60.00 monthly payment limit, duct repair fits at $41.67 a month for 24 months. The sample quote assumes $1,200.00 cost, $200.00 rebate, and 0% interest. Estimated savings are $15.00 a month and 1200 kilowatt-hours a year. The monthly payment minus estimated savings is $26.67. These are hypothetical quotes, not an approval or achieved savings. Would you like to choose duct repair or compare another option?",
+      "milliseconds": 1
+    },
+    {
+      "request": "Prepare my energy application",
+      "reply": "What name should appear on the demo application? You can say “use demo details” for fictional information.",
+      "milliseconds": 0
+    },
+    {
+      "request": "Use demo details",
+      "reply": "I verified the demo application in the browser. Name: Alex Demo. Property status: homeowner. Improvement: Duct repair. Payment limit: $60.00. Sample payment: $41.67 for 24 months at 0% interest. Estimated reduction: 1200 kilowatt-hours a year. Nothing was submitted. You can change an answer or say “save my energy plan.”",
+      "milliseconds": 2928
+    },
+    {
+      "request": "Wait, I can only afford $30 per month",
+      "reply": "Duct repair costs $41.67 a month, above your $30.00 payment limit. Weather sealing is $25 a month and thermostat is $12.50 in the sample quotes. Which would you prefer?",
+      "milliseconds": 1
+    },
+    {
+      "request": "Choose weather sealing",
+      "reply": "I verified the demo application in the browser. Name: Alex Demo. Property status: homeowner. Improvement: Weather sealing. Payment limit: $30.00. Sample payment: $25.00 for 24 months at 0% interest. Estimated reduction: 600 kilowatt-hours a year. Nothing was submitted. You can change an answer or say “save my energy plan.”",
+      "milliseconds": 3549
+    },
+    {
+      "request": "Save my energy plan",
+      "reply": "I saved your bill baseline, budget, selected improvement and application answers on this computer. Say “resume my energy plan” to return to it. Nothing was submitted.",
+      "milliseconds": 8
+    },
+    {
+      "request": "Record usage 1000 kilowatt-hours over 30 days",
+      "reply": "Recorded 1000 kilowatt-hours over 30 days. Daily usage is 6.67 kilowatt-hours lower than your baseline. The baseline is synthetic, so this is a demo comparison. Weather and occupancy can affect usage; this comparison does not prove the upgrade caused the change.",
+      "milliseconds": 0
+    }
+  ],
+  "energy": {
+    "source": "synthetic",
+    "sourceName": "Orlando household · synthetic bills",
+    "bills": [
+      {
+        "month": "2026-08",
+        "days": 30,
+        "kwh": 900,
+        "energyCharge": 135,
+        "otherCharges": 60
+      },
+      {
+        "month": "2026-09",
+        "days": 30,
+        "kwh": 1200,
+        "energyCharge": 180,
+        "otherCharges": 60
+      }
+    ],
+    "budget": 30,
+    "selected": "sealing",
+    "phase": "review",
+    "applicant": {
+      "name": "Alex Demo",
+      "ownership": "homeowner"
+    },
+    "comparison": {
+      "previousBill": 195,
+      "currentBill": 240,
+      "billChange": 45,
+      "usageChange": 300,
+      "usageEffect": 45,
+      "rateEffect": 0,
+      "otherEffect": 0,
+      "previousDailyKwh": 30,
+      "currentDailyKwh": 40,
+      "rate": 0.15
+    },
+    "quotes": [
+      {
+        "id": "sealing",
+        "name": "Weather sealing",
+        "cost": 600,
+        "rebate": 0,
+        "estimatedMonthlyKwh": 50,
+        "months": 24,
+        "apr": 0,
+        "financed": 600,
+        "payment": 25,
+        "totalRepayment": 600,
+        "interest": 0,
+        "estimatedSavings": 7.5,
+        "netMonthlyCost": 17.5,
+        "annualKwh": 600,
+        "fitsBudget": true
+      },
+      {
+        "id": "ducts",
+        "name": "Duct repair",
+        "cost": 1200,
+        "rebate": 200,
+        "estimatedMonthlyKwh": 100,
+        "months": 24,
+        "apr": 0,
+        "financed": 1000,
+        "payment": 41.67,
+        "totalRepayment": 1000,
+        "interest": 0,
+        "estimatedSavings": 15,
+        "netMonthlyCost": 26.67,
+        "annualKwh": 1200,
+        "fitsBudget": false
+      },
+      {
+        "id": "thermostat",
+        "name": "Thermostat",
+        "cost": 300,
+        "rebate": 0,
+        "estimatedMonthlyKwh": 25,
+        "months": 24,
+        "apr": 0,
+        "financed": 300,
+        "payment": 12.5,
+        "totalRepayment": 300,
+        "interest": 0,
+        "estimatedSavings": 3.75,
+        "netMonthlyCost": 8.75,
+        "annualKwh": 300,
+        "fitsBudget": true
+      }
+    ],
+    "provider": "local",
+    "saved": null,
+    "applicationVerified": true,
+    "observedPostUpgrade": {
+      "kwh": 1000,
+      "days": 30,
+      "dailyChange": -6.67
+    },
+    "updatedAt": "2026-10-10T19:26:12.871Z"
+  },
+  "presentation": {
+    "filename": "energy-bill-analysis-and-efficiency-plan-9c6d4398.pptx",
+    "title": "Energy Bill Analysis and Efficiency Plan",
+    "slideCount": 4,
+    "slideTitles": [
+      "Energy Bill Analysis and Efficiency Plan",
+      "Current Energy Usage and Costs",
+      "Selected Efficiency Improvement - Weather Sealing",
+      "Alternative Options and Budget Considerations"
+    ],
+    "opened": false,
+    "sha256": "c964e114db7e21e44322d1664e1acf7dfdcf99a362fa152f846ee4dc43b76db4",
+    "bytes": 82325,
+    "provider": "live Hugging Face inference"
+  },
+  "limits": [
+    "Synthetic bills and fictional contractor quotes",
+    "Demo browser application; no lender submission",
+    "Local persistence verified; Neon not exercised",
+    "Local calculations; Databricks not exercised",
+    "Physical microphone interruption not exercised"
+  ]
+}

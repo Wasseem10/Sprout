@@ -17,6 +17,7 @@
     "check:providers": "tsx scripts/check-providers.ts",
     "check:cloud": "tsx scripts/check-cloud.ts",
     "test:goal": "tsx scripts/smoke-goal.ts",
+    "test:energy": "tsx scripts/smoke-energy.ts",
     "seed:databricks": "tsx scripts/seed-databricks.ts",
     "setup:desktop": "node node_modules/electron/install.js",
     "test:desktop": "node scripts/smoke-desktop.mjs",

@@ -35,7 +35,15 @@ export async function api<T>(url: string, body?: unknown, signal?: AbortSignal):
     signal,
     credentials: 'same-origin',
   });
-  const result = await response.json();
+  const text = await response.text();
+  let result;
+  try {
+    result = JSON.parse(text);
+  } catch {
+    throw new Error(
+      'Insight’s local service returned an incomplete response. It may be restarting. Please try again in a moment.',
+    );
+  }
   if (!response.ok) throw new Error(result.error ?? `Request failed (${response.status}).`);
   return result as T;
 }

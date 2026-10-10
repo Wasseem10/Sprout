@@ -48,3 +48,31 @@ Stop terminates Python and closes the controlled page. It cannot undo completed 
 `npm test` covers real disk/Python, tampering, invalid model actions, private URLs, actual browser controls, purchase/personal-field review and cancellation. `npm run test:e2e` includes the new UI, accessibility scans and narrow layout, plus CSV tests.
 
 Close the running app/API, build, then run `npm run test:computer`. Production Electron opens a real file in VS Code, captures that selected window and navigates a public website. Only native dialog selection is stubbed; interactive OS-picker operation remains manual. Evidence: `artifacts/computer-verification.json`. `npm run test:desktop` still checks the CSV module.
+
+## Energy, accessibility and affordability demonstration
+
+This is a bounded accessibility workflow inside the existing desktop buddy. The bill math and application verification use deterministic tools; open models remain responsible for general planning, vision and generated presentations. The application rehearsal is a known, owned browser form, not proof of general autonomous lending applications.
+
+Try these commands, with Play running:
+
+1. “Start the energy demo.” Insight labels the bills synthetic and asks a payment limit.
+2. “I can afford sixty dollars a month.”
+3. “Choose duct repair.”
+4. “Prepare my energy application.”
+5. “Use demo details.” This explicitly authorizes fictional Alex Demo/homeowner details.
+6. Interrupt or follow up: “Wait, I can only afford thirty dollars per month.” Insight invalidates the previous verification and flags the $41.67 payment above the new limit.
+7. “Choose weather sealing.” The browser changes to $25/month, verifies all eight review values, and reads the corrected answers back.
+8. “Save my energy plan.” Only this command saves the baseline, budget and application answers. “Resume my energy plan” restores them after a backend restart but requires new browser verification.
+9. “Create a four slide PowerPoint about my energy savings plan.” The real Hugging Face model receives calculated findings and explicit synthetic/estimate labels. Applicant identity is excluded from presentation context.
+
+The payment limit applies to the gross financing payment, not payment minus predicted bill savings. If a $30 budget is set, the hypothetical $41.67/month duct repair remains unaffordable even though its payment minus predicted savings is $26.67. No qualifying contribution, credit approval, rebate or achieved energy reduction is promised.
+
+For personal bills, choose their folder with the buddy’s folder button, then say “import energy.csv.” CSV columns are `month,days,kwh,energyCharge,otherCharges`; use 2–36 distinct months. `data/energy-bills-synthetic.csv` illustrates the schema. Imported bills stay labeled imported, never silently replaced with sample values. Comparison separates consumption, effective variable charge per kWh, and other charges; daily usage accounts for billing-period length. It does not identify which appliance caused an increase.
+
+“Record usage 1000 kilowatt-hours over 30 days” records a subsequent observation and compares daily usage against the baseline. This is not weather-normalized and does not prove that an upgrade caused a reduction. A synthetic baseline cannot substantiate real community impact.
+
+“Analyze my energy bills using Databricks” sends six bound usage/charge values to a real SQL statement when configured. Returned billing contributions must match the independently checked totals. It errors without the host, warehouse and token; it does not substitute local results under a Databricks badge.
+
+“Open the real OUC program” opens the official program page. Reference: https://www.ouc.com/solutions-programs/savings/efficiency-delivered/homeowners-renter/ (checked October 10, 2026). OUC’s process starts with a conservation audit; its own eligibility and actual offers govern. The owned rehearsal is independent of OUC and no real application is submitted.
+
+Sponsor story: Hugging Face and ElevenLabs support accessible task execution; the energy workflow provides a BNY financial-process demonstration and a OneEthos local environmental use case with transparent projections and a measurement path. Neither challenge eligibility nor a prize is guaranteed. Neon and Databricks must be connected and rehearsed live before claiming use. Vultr remains optional inference hosting; Tiger Data is not included.

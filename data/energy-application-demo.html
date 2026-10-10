@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Home efficiency · Application rehearsal</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #0a1426;
+        color: #ecf4ff;
+        font:
+          17px/1.5 system-ui,
+          sans-serif;
+      }
+      main {
+        max-width: 880px;
+        margin: 44px auto;
+        padding: 30px;
+        border: 1px solid #385575;
+        border-radius: 26px;
+        background: linear-gradient(130deg, #1e3555, #102039);
+      }
+      .badge {
+        display: inline-block;
+        background: #25436a;
+        color: #d7eaff;
+        border-radius: 30px;
+        padding: 7px 14px;
+        font-size: 13px;
+      }
+      .eyebrow {
+        letter-spacing: 0.16em;
+        font-size: 12px;
+        color: #a8cffa;
+      }
+      h1 {
+        font-size: 38px;
+        line-height: 1.15;
+      }
+      h2 {
+        font-size: 24px;
+      }
+      .muted {
+        color: #c2d3e9;
+      }
+      .progress {
+        display: flex;
+        gap: 14px;
+        margin: 25px 0;
+        color: #acd1fc;
+      }
+      .progress span {
+        border-bottom: 3px solid #45658a;
+        padding: 8px;
+      }
+      .progress .active {
+        border-color: #8bc8ff;
+        color: white;
+      }
+      label {
+        display: block;
+        margin: 20px 0 7px;
+        font-weight: 600;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 14px;
+        border: 1px solid #7498c0;
+        border-radius: 12px;
+        background: #0e1e34;
+        color: white;
+        font: inherit;
+      }
+      button {
+        border: 0;
+        border-radius: 12px;
+        background: #aad7ff;
+        color: #08203c;
+        padding: 13px 23px;
+        font: 600 17px system-ui;
+        cursor: pointer;
+        margin: 22px 10px 0 0;
+      }
+      button.secondary {
+        background: #2c4769;
+        color: #e2efff;
+      }
+      button:focus-visible,
+      input:focus-visible,
+      select:focus-visible {
+        outline: 3px solid white;
+        outline-offset: 4px;
+      }
+      .error {
+        color: #ffd3b6;
+        min-height: 25px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      .panel {
+        padding: 20px;
+        border: 1px solid #45658a;
+        border-radius: 15px;
+      }
+      dl {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      dd {
+        margin: 0;
+        font-weight: 600;
+      }
+      dt {
+        color: #bfd3e9;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      @media (max-width: 600px) {
+        main {
+          margin: 12px;
+          padding: 20px;
+        }
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        h1 {
+          font-size: 30px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <span class="badge">DEMO · No lender or utility receives this form</span>
+      <p class="eyebrow">INSIGHT / INDEPENDENCE AT HOME</p>
+      <h1>Make your home easier to afford.</h1>
+      <p class="muted">
+        A browser application rehearsal using fictional quotes. This is not an OUC application, loan
+        offer, or credit decision.
+      </p>
+      <nav class="progress" aria-label="Application steps">
+        <span id="p1" class="active">1 · Your details</span><span id="p2">2 · Your plan</span
+        ><span id="p3">3 · Review</span>
+      </nav>
+      <section id="details">
+        <h2>Your details</h2>
+        <label for="name">Applicant name</label
+        ><input id="name" autocomplete="off" maxlength="80" /><label for="ownership"
+          >Property status</label
+        ><select id="ownership">
+          <option value="">Choose a status</option>
+          <option value="homeowner">Homeowner</option>
+          <option value="renter">Renter</option>
+        </select>
+        <p id="detailsError" class="error" role="alert"></p>
+        <button id="next" type="button">Next</button>
+      </section>
+      <section id="plan" hidden>
+        <h2>Choose your sample plan</h2>
+        <label for="improvement">Improvement</label
+        ><select id="improvement">
+          <option value="sealing">Weather sealing</option>
+          <option value="ducts">Duct repair</option>
+          <option value="thermostat">Thermostat</option></select
+        ><label for="budget">Maximum monthly payment ($)</label
+        ><input id="budget" type="number" min="0" max="10000" step="0.01" />
+        <div class="panel">
+          <p id="quote"></p>
+          <p class="muted">
+            Savings are estimates. Your payment must fit your budget even if the energy savings do
+            not occur.
+          </p>
+        </div>
+        <p id="planError" class="error" role="alert"></p>
+        <button id="back" class="secondary" type="button">Back</button
+        ><button id="review" type="button">Review application</button>
+      </section>
+      <section id="ready" hidden>
+        <h2>Ready for your review</h2>
+        <p>
+          Nothing has been submitted. Check these answers with Insight before taking any real
+          action.
+        </p>
+        <dl id="answers"></dl>
+        <button id="edit" class="secondary" type="button">Edit plan</button>
+      </section>
+      <p class="muted">
+        Orlando context: OUC offers conservation audits and efficiency improvements. Actual costs,
+        contributions and eligibility require the utility's assessment.
+      </p>
+    </main>
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const options = {
+        sealing: { name: 'Weather sealing', cost: 600, rebate: 0, payment: 25, kwh: 50 },
+        ducts: { name: 'Duct repair', cost: 1200, rebate: 200, payment: 1000 / 24, kwh: 100 },
+        thermostat: { name: 'Thermostat', cost: 300, rebate: 0, payment: 12.5, kwh: 25 },
+      };
+      const usd = (n) =>
+        new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n);
+      function show(id, index) {
+        ['details', 'plan', 'ready'].forEach((s) => ($(s).hidden = s !== id));
+        [1, 2, 3].forEach((i) => ($('p' + i).className = i === index ? 'active' : ''));
+      }
+      function describe() {
+        const q = options[$('improvement').value];
+        $('quote').textContent =
+          q.name +
+          ': ' +
+          usd(q.cost) +
+          ' cost, ' +
+          usd(q.rebate) +
+          ' hypothetical rebate; ' +
+          usd(q.payment) +
+          ' per month for 24 months at 0% interest. Estimated energy reduction: ' +
+          q.kwh +
+          ' kWh/month.';
+      }
+      $('improvement').onchange = describe;
+      describe();
+      $('next').onclick = () => {
+        if (!$('name').value.trim() || !$('ownership').value) {
+          $('detailsError').textContent = 'Enter your name and property status to continue.';
+          return;
+        }
+        show('plan', 2);
+      };
+      $('back').onclick = () => show('details', 1);
+      $('edit').onclick = () => show('plan', 2);
+      $('review').onclick = () => {
+        const q = options[$('improvement').value];
+        const budget = Number($('budget').value);
+        if (!$('budget').value || !Number.isFinite(budget) || budget < 0 || budget > 10000) {
+          $('planError').textContent = 'Enter a valid monthly payment limit.';
+          return;
+        }
+        if (Math.round(q.payment * 100) / 100 > budget) {
+          $('planError').textContent =
+            'This payment exceeds your monthly limit. Choose another improvement or change your limit.';
+          return;
+        }
+        const entries = [
+          ['Applicant', $('name').value.trim()],
+          ['Property status', $('ownership').value],
+          ['Improvement', q.name],
+          ['Monthly payment limit', usd(budget)],
+          ['Sample payment', usd(q.payment) + ' for 24 months'],
+          ['Financed amount', usd(q.cost - q.rebate)],
+          ['Interest', '0% assumed'],
+          ['Estimated annual reduction', q.kwh * 12 + ' kWh; not measured savings'],
+        ];
+        $('answers').replaceChildren();
+        for (const [key, value] of entries) {
+          const dt = document.createElement('dt'),
+            dd = document.createElement('dd');
+          dt.textContent = key;
+          dd.textContent = value;
+          $('answers').append(dt, dd);
+        }
+        show('ready', 3);
+      };
+    </script>
+  </body>
+</html>
