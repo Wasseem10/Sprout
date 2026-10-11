@@ -1,6 +1,6 @@
 # Consolidated implementation prompt — Sprout / Prism
 
-Revision **3**, **2026-10-10**. Consolidated after the upstream and stack/audio audits. Reuse the implemented voice/rendering paths and add only the missing character/presentation work. This supersedes the earlier Ripple/required-steel brief. The portrait layout below is the chosen starting prototype and must be reviewed in the actual app; it is not a completed or frozen layout.
+Revision **4**, **2026-10-10**. Prepared for implementation with Astra Ultra and an optional persistent Goal. Reuse the implemented voice/rendering paths and add only the missing character/presentation work. This supersedes the earlier Ripple/required-steel brief. The portrait layout below is the chosen starting prototype and must be reviewed in the actual app; it is not a completed or frozen layout.
 
 The text under **Copyable prompt** is the full implementation brief. Its references provide detailed contracts and review recipes. This document has not executed generation, edited Blender or changed the runtime.
 
@@ -8,17 +8,31 @@ The text under **Copyable prompt** is the full implementation brief. Its referen
 
 Build the next visual version of **InsightOS** around **Sprout**, an original interactive jelly creature in the **Prism** palette. Create a beautiful, expressive floating companion and a compact expandable conversation panel. Scope this work to presentation, original assets and their UI integration. Preserve the cousin's backend, financial logic, OCR/database verification, provider sessions and existing voice/task interruption behavior.
 
+### Execution and completion
+
+Implement this brief now. Make reasonable visual and reversible implementation decisions from the selected references. Continue through asset creation, integration, running the app, inspecting the actual result and correcting observed defects. Planning, generated concept images and a first unreviewed implementation are intermediate outputs. The packet's planning/status labels describe the baseline; this prompt authorizes implementation within the stated scope, without reconfirming routine local work.
+
+Work in **D:\hackathon2026\insightos-ui**, branch **ui/presentation-polish**, updating [the existing draft UI PR](https://github.com/Wasseem10/insightos/pull/1). The design packet is **D:\hackathon2026\insightos-ui\design\buddy\frutiger-aero**. Confirm checkout, branch and current changes before editing; fetch/compare upstream without resetting, switching or merging the cousin's work. Preserve unrelated changes. Continue local authoring, UI fixes, asset exports, appropriate checks and commits/pushes to this UI branch within the existing authorization. Production deployment and merging remain separate user decisions.
+
+Delegate independent reference review, panel implementation and verification when useful, with explicit file ownership. Name one live-Blender editor before scene work; other agents may inspect saved outputs but must not mutate that session. If Higgsfield generation/bridge modules are unavailable, use supported native Blender tools for the original asset and continue independent UI work. If the Blender host itself is unavailable, preserve partial outputs and report that concrete blocker rather than claiming an asset is finished. Optional generation with no verified price or spending allowance must not block Blender authoring.
+
+The first milestone is a real clay Sprout with four exported clips working at actual sizes in the existing renderer. The overall finish line is the authored Prism Sprout and compact panel working in the current desktop app and web studio, with the evidence below. Complete current-host acceptance before a separately scoped R3F/Next packaging pass.
+
+Completion requires: editable Blender source plus a versioned validated GLB and PNG fallback; readable eyes/silhouette near 40–44px and 96px; clean Idle/Listen/Click/Blink playback and interrupted transitions; a usable open/type/stop/collapse/reopen flow preserving the draft and focus; tested reduced/paused-motion and no-WebGL paths; verified existing voice/task behavior plus supported output-level response; and recorded production performance on the reference desktop. Measure progress toward 60fps during active motion and correct visible stalls; report achieved intervals and any remaining shortfall honestly. Distinguish simulated studio signals from real local voice checks. Deliver stills, recordings, checks, asset provenance and the reviewable UI diff. An unavailable required proof is a reported blocker, not an assumed pass.
+
 ### Inspect and preserve
 
 Work in the isolated InsightOS UI checkout and its existing **ui/presentation-polish** branch/draft PR. Read applicable AGENTS instructions and this folder's README, PRODUCTION-WORKFLOW, HIGGSFIELD-UPSTREAM, ANIMATION-WORKFLOW, INTERACTION-MOTION-WORKFLOW and REFERENCE-RECIPES before editing. Inspect the running app, asset inventory and live Blender state. Keep existing Ribbon assets available until the replacement passes its gates.
 
 Read STACK-AUDIO-AUDIT for implemented versus planned work. Reuse existing ElevenLabs Scribe/TTS, interruptions, phase mapping, TypeScript, desktop controls, and the UI branch's Blender/GLB/Three rendering path. Voice is already implemented on upstream master; the Ribbon renderer is in the draft UI branch. Refresh those refs before implementation. This is InsightOS visual work; aerospace projects and portfolio navigation in the pasted reference are examples, not new product scope.
 
-The current host is React 19/Vite/Electron/direct Three, without Next.js or R3F. Prove the exported character there first. Package the proven avatar/controller into a bounded R3F component reusable by the desktop host and a later Next.js browser shell. Verify compatible dependencies; R3F 9 is the React 19 line. Read the actual host's installed Next documentation before Next code. The unrelated Next project at the workspace root is outside this task.
+The current host is React 19/Vite/Electron/direct Three, without Next.js or R3F. Prove the exported character there first. Keep the proven avatar/controller modular for later bounded R3F packaging reusable by the desktop host and an optional Next.js browser shell. That migration is outside the current-host completion gate. Verify compatible dependencies before that later pass; R3F 9 is the React 19 line. Read the actual host's installed Next documentation before Next code. The unrelated Next project at the workspace root is outside this task.
 
 Use GLB and Sprout's custom rig. Mixamo, VRM and three-vrm are omitted from this workflow because their humanoid structure does not match Sprout. R3F/Drei remain later packaging; use their helpers selectively, with one mixer update per frame. Keep CSS/WAAPI for the first panel proof. GSAP scroll sequences, Zustand, Rapier and an extra spring/UI library are deferred until a named unmet requirement justifies one bounded experiment.
 
 Before Blender mutations, load the connected bridge's core and relevant scene/modeling/lookdev/lighting/animation/audit modules, check the live host, inspect the scene, record a Scene Passport, and checkpoint broad changes. One agent owns the live Blender scene. Preserve unrelated objects and the active file path.
+
+Save owned versioned Sprout **.blend copies/checkpoints** and reconstruction scripts in this checkout while preserving the live active filepath and unrelated source files. This extends the historical Ribbon workflow's recovery-copy policy to deliver an editable Sprout source; its earlier exclusion of a final save does not prohibit these owned copies. Inspect that saved source and report its exact path.
 
 ### Character and visual identity
 
@@ -54,7 +68,7 @@ Status, Stop and interruption remain immediate. Begin with real phase-driven exp
 
 ### Add measured sound reactivity through the existing voice owner
 
-The existing fallback microphone RMS analyser is internal and does not expose avatar levels; realtime Scribe input has no verified visual-level source. Current TTS uses HTMLAudio playback without an output analyser. Add a narrow presentation snapshot/ref only where the voice owner can supply a supported source: authoritative phase, optional normalized input/output level, availability, freshness and playback generation. Keep unavailable sources null rather than opening a second microphone or switching to Conversation SDK for volume getters.
+The existing fallback microphone RMS analyser is internal and does not expose avatar levels; realtime Scribe input has no verified visual-level source. Current TTS uses HTMLAudio playback without an output analyser. After the clay proof, minimal instrumentation inside the existing voice owner for a read-only presentation signal is in scope. Implement and verify measured TTS output reactivity while preserving playback. Reuse supported input metering where practical; realtime input metering may remain unavailable. Expose authoritative phase, optional normalized input/output level, availability, freshness and playback generation. Keep unavailable sources null rather than opening a second microphone or switching to Conversation SDK for volume getters. Report an unsupported output-analysis path as a concrete blocker and retain phase-only fallback; never fabricate a real-audio pass.
 
 Observe existing playback with a supported Web Audio analyser branch while preserving audible output, user activation, interruption, pause/error/end and cleanup. Measured output is zero or unavailable during fetch, before playback, pause, completion and cancellation. A speaking phase alone is not evidence of audible samples. On interruption discard the old output generation immediately; smoothing must not keep obsolete speech motion alive.
 

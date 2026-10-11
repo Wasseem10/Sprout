@@ -103,4 +103,10 @@ The user supplied an interactive audio-avatar/portfolio architecture and asked t
 
 The three interaction levels describe capabilities, not three systems to rebuild: conversation already exists, expressive Sprout is planned, and measured sound reactivity is the unimplemented signal integration. Aerospace examples do not expand InsightOS scope. This turn changes documentation only; no voice graph, microphone access, dependency or runtime was changed.
 
+### Implementation launch prompt — 2026-10-10
+
+The user requested the final prompt for Astra Ultra and referred to "gold mode," interpreted conditionally as Goal mode. [Official Models guidance](https://learn.chatgpt.com/docs/models?surface=app) describes Ultra's parallel subagent work; [Goals guidance](https://developers.openai.com/cookbook/examples/codex/using_goals_in_codex) calls for an outcome, verification surface and constraints. [Astra prompting guidance](https://developers.openai.com/api/docs/guides/latest-model#prompting-best-practices) supports explicit continuation, delegation and appropriate verification.
+
+MASTER-PROMPT revision 4 names the checkout/branch/PR, separates current-host completion from later R3F/Next packaging, defines actual asset/UI/voice/performance evidence, assigns one live-Blender editor and permits owned Sprout source copies. Unsupported paid generation cannot block native Blender work. Minimal existing-voice instrumentation for measured output is in scope after the clay proof; unavailable realtime input stays optional. SPROUT-LAUNCH-PROMPT.txt is derived from the complete copyable brief with a persistent Goal objective. This turn prepares the prompt only; it does not activate a Goal, change the model or implement Sprout.
+
 Append future entries with observed defects, source revisions, controlled comparisons and actual artifact links. Do not report planned budgets, generated concept pixels, or untested audio responses as completed implementation.

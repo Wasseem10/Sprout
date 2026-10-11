@@ -10,7 +10,7 @@ Its personality comes from a clear face and restrained motion: blink, local gaze
 
 Read [PRODUCTION-WORKFLOW.md](PRODUCTION-WORKFLOW.md) for the build order, actual app stack, examples, outputs and review gates.
 
-The [full copyable implementation prompt](MASTER-PROMPT.md) consolidates the selected direction. [HIGGSFIELD-UPSTREAM.md](HIGGSFIELD-UPSTREAM.md) audits the additional generation/blocking/animation/export workflow point by point and records current connector capabilities.
+The [full copyable implementation prompt](MASTER-PROMPT.md) consolidates the selected direction. Revision 4 adds an implementation/completion contract for Astra Ultra. The [paste-ready Goal prompt](SPROUT-LAUNCH-PROMPT.txt) contains the complete brief with its Goal objective. [HIGGSFIELD-UPSTREAM.md](HIGGSFIELD-UPSTREAM.md) audits the additional generation/blocking/animation/export workflow point by point and records current connector capabilities.
 
 The [stack and audio audit](STACK-AUDIO-AUDIT.md) distinguishes upstream voice implementation from the draft UI branch's GLB renderer, existing workflow decisions, missing numeric audio signals and tools omitted/deferred for Sprout. The master prompt reuses implemented work.
 
