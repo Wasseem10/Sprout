@@ -1041,3 +1041,25 @@
     font-size: 23px;
   }
 }
+.character-settings {
+  margin: 0 0 20px;
+  padding: 16px;
+  border: 1px solid currentColor;
+  border-radius: 14px;
+}
+.character-settings legend {
+  padding: 0 6px;
+  font-weight: 650;
+}
+.character-settings-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.character-settings-actions button {
+  min-height: 44px;
+  padding: 8px 16px;
+}
+.character-settings p {
+  margin: 12px 0 0;
+}

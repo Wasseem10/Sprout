@@ -5,9 +5,9 @@ const argument = (name, fallback) => {
   const prefix = `--${name}=`;
   return process.argv.find((value) => value.startsWith(prefix))?.slice(prefix.length) || fallback;
 };
-export const proofAssetFile = argument('asset', 'sprout-v003.glb');
-export const proofCanonicalFile = argument('canonical', 'sprout-prism-v003.glb');
-const tag = argument('proof-tag', 'glossy-v003');
+export const proofAssetFile = argument('asset', 'sprout-v004.glb');
+export const proofCanonicalFile = argument('canonical', 'sprout-prism-v004.glb');
+const tag = argument('proof-tag', 'glass-sprout-v004');
 for (const filename of [proofAssetFile, proofCanonicalFile]) {
   if (!/^sprout-[a-zA-Z0-9-]+\.glb$/.test(filename))
     throw new Error('Proof assets must be owned Sprout GLB filenames.');

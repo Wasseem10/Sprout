@@ -372,10 +372,15 @@ app
         if (windowMode !== 'workspace') dockPosition = { x: previous.x, y: previous.y };
         const area = screen.getDisplayMatching(previous).workArea;
         windowMode = mode;
-        win.setAlwaysOnTop(mode !== 'workspace');
         win.setSkipTaskbar(mode !== 'workspace');
         win.setResizable(mode === 'workspace');
         win.setBounds(buddyBounds(mode, area, dockPosition, win.webContents.getZoomFactor()));
+        // Electron 44's Windows floating level can lose topmost placement when
+        // moved behind the taskbar. Bounds above remain inside the work area.
+        win.setAlwaysOnTop(
+          mode !== 'workspace',
+          process.platform === 'win32' ? 'pop-up-menu' : 'floating',
+        );
       }
       const bounds = win.getBounds();
       const content = win.getContentBounds();

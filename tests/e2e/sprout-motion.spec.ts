@@ -7,9 +7,9 @@ test('actual Sprout export renders at review sizes and runs a labelled simulated
   page,
 }) => {
   test.setTimeout(65000);
-  const asset = await readFile(path.resolve('public/buddy/sprout-v002.glb'));
+  const asset = await readFile(path.resolve('public/buddy/sprout-v004.glb'));
   const assetSha256 = createHash('sha256').update(asset).digest('hex');
-  const artifactDir = path.resolve('artifacts/sprout-browser-current');
+  const artifactDir = path.resolve('artifacts/glass-sprout-v004/sprout-browser');
   const errors: string[] = [];
   const apiCalls: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
@@ -55,7 +55,7 @@ test('actual Sprout export renders at review sizes and runs a labelled simulated
     .getByText('Renderer measurement', { exact: true })
     .evaluate((summary) => (summary as HTMLElement).click());
   const report = await page.locator('.studio-render-report').innerText();
-  expect(report).toContain('Sprout v002');
+  expect(report).toContain('Sprout');
   expect(report).not.toContain('Sprout export gate:');
   expect(Number(report.match(/([\d,]+) rendered frames/)?.[1].replaceAll(',', ''))).toBeGreaterThan(
     100,

@@ -1,5 +1,7 @@
 # Sprout v003 delivery
 
+Historical delivery. [Sprout v004](DELIVERY-v004.md) is now current and replaces the interior below with more translucent glass while adding joy, sleep, wake and Done animations.
+
 Status: the clear-rim Prism look is selected after actual browser comparison. The exact GLB and source-backed fallback are promoted, and final local native integration evidence is complete in [GLOSSY-REFINEMENT-AUDIT.md](GLOSSY-REFINEMENT-AUDIT.md). This guide belongs to the glossy refinement; [README.md](README.md) and the v002 evidence remain historical.
 
 ## Muted Prism panel followup

@@ -29,6 +29,8 @@ import FinancePanel from './FinancePanel';
 import BillWorkspace from './BillWorkspace';
 import type { BillValues } from '../shared/bills';
 import type { BuddyReadingMemory } from './useBuddyPanel';
+import type { BuddyBehaviorInput, BuddyBehaviorSnapshot } from './buddyBehavior';
+import { BuddyCompletionGate } from './buddyCompletion';
 
 const empty: ComputerState = { folder: null, code: null, browser: null, screen: null };
 type Message = { id: string; role: 'user' | 'assistant' | 'error'; text: string };
@@ -122,6 +124,27 @@ export default function ComputerCompanion() {
     upload = useRef<HTMLInputElement>(null),
     lastFocus = useRef<HTMLElement | null>(null);
   const runRef = useRef<(text: string) => Promise<void>>(async () => {});
+  const [completionGate] = useState(() => new BuddyCompletionGate());
+  const characterGeneration = useRef(0);
+  const characterRequest = useRef(0);
+  const [characterIntent, setCharacterIntent] = useState<
+    Pick<BuddyBehaviorInput, 'generation' | 'request' | 'done'>
+  >({ generation: 0 });
+  const [characterSnapshot, setCharacterSnapshot] = useState<BuddyBehaviorSnapshot | null>(null);
+  const [characterNotice, setCharacterNotice] = useState('');
+  const interruptCharacter = () => {
+    const next = ++characterGeneration.current;
+    setCharacterIntent({ generation: next });
+    return next;
+  };
+  const switchDockMode = (next: boolean) => {
+    if (next !== dockMode) {
+      // A new canvas must not consume the old controller's one-shot requests.
+      interruptCharacter();
+      setCharacterSnapshot(null);
+    }
+    setDockMode(next);
+  };
   const add = (role: Message['role'], text: string) => {
     setMessages((old) => [...old, { id: crypto.randomUUID(), role, text }]);
     setAnnouncement(text);
@@ -131,7 +154,11 @@ export default function ComputerCompanion() {
     (text) => add('error', text),
   );
   const enabled = !!status && !locked && !!status.computer?.local;
-  const sync = async () => setState(await api<ComputerState>('/computer/state'));
+  const sync = async () => {
+    const next = await api<ComputerState>('/computer/state');
+    completionGate.seed(next.task);
+    setState(next);
+  };
   const applyState = (next: ComputerState, tool?: string) => {
     setState(next);
     if (tool === 'financeHelp') setTab('finance');
@@ -145,6 +172,8 @@ export default function ComputerCompanion() {
   };
   const perform = async (text: string, action?: ComputerAction, fromVoice = false) => {
     if (!enabled || inFlight.current || !text.trim()) return;
+    completionGate.seed(state.task);
+    const visualGeneration = interruptCharacter();
     if (acknowledgmentTimer.current) clearTimeout(acknowledgmentTimer.current);
     acknowledgmentTimer.current = null;
     if (!fromVoice) voice.stop();
@@ -326,6 +355,17 @@ export default function ComputerCompanion() {
       applyState(result.state, tool);
       if (tool === 'fill' || tool === 'confirmFill') setFieldValue('');
       add('assistant', result.summary);
+      const completion = completionGate.accept(result.state.task, current, generation.current);
+      if (
+        completion &&
+        visualGeneration === characterGeneration.current &&
+        !voice.hasPendingInterruption() &&
+        document.visibilityState === 'visible'
+      )
+        setCharacterIntent({
+          generation: visualGeneration,
+          done: { id: completion, generation: visualGeneration, issuedAt: performance.now() },
+        });
       setPhase(result.clarification ? 'Choose your next step' : 'Result received');
       if (fromVoice && !voice.isConversationActive()) return;
       // The result remains in the transcript. Only its spoken reply is skipped:
@@ -360,6 +400,7 @@ export default function ComputerCompanion() {
   };
   runRef.current = async (text) => {
     if (inFlight.current) {
+      interruptCharacter();
       // A new utterance during an acknowledgment supersedes the older request.
       if (acknowledgmentTimer.current) clearTimeout(acknowledgmentTimer.current);
       acknowledgmentTimer.current = null;
@@ -379,6 +420,7 @@ export default function ComputerCompanion() {
     await perform(text, undefined, true);
   };
   const stop = async () => {
+    interruptCharacter();
     if (acknowledgmentTimer.current) clearTimeout(acknowledgmentTimer.current);
     acknowledgmentTimer.current = null;
     ++generation.current;
@@ -406,6 +448,7 @@ export default function ComputerCompanion() {
   };
   const setup = async (kind: 'folder' | 'demo' | 'screen') => {
     if (!enabled || inFlight.current) return;
+    interruptCharacter();
     inFlight.current = true;
     setBusy(true);
     try {
@@ -433,6 +476,7 @@ export default function ComputerCompanion() {
   };
   const capture = async (source: Source) => {
     if (inFlight.current) return;
+    interruptCharacter();
     inFlight.current = true;
     setBusy(true);
     try {
@@ -475,7 +519,10 @@ export default function ComputerCompanion() {
         }
         await backend.session();
         const next = await api<ComputerState>('/computer/state');
-        if (active) setState(next);
+        if (active) {
+          completionGate.seed(next.task);
+          setState(next);
+        }
       } catch (error) {
         if (active)
           add('error', error instanceof Error ? error.message : 'Start the backend first.');
@@ -536,8 +583,48 @@ export default function ComputerCompanion() {
     }
   }, [modal]);
   const active = busy || voice.conversationActive || voice.phase !== 'idle';
+  const characterBehavior: BuddyBehaviorInput = {
+    ...characterIntent,
+    manualEligible: !active,
+    isInterrupted: voice.hasPendingInterruption,
+  };
+  const requestCharacter = (action: 'joy' | 'sleep' | 'wake') => {
+    const eligible = !inFlight.current && !voice.isConversationActive() && voice.phase === 'idle';
+    const capability =
+      action === 'joy'
+        ? characterSnapshot?.capabilities.joy
+        : characterSnapshot?.capabilities.sleep;
+    const available = !!characterSnapshot?.visible;
+    const canCelebrate = characterSnapshot?.moving && characterSnapshot.mode === 'normal';
+    if (
+      !available ||
+      !capability ||
+      (action !== 'wake' && !eligible) ||
+      (action === 'joy' && !canCelebrate)
+    ) {
+      setCharacterNotice(
+        !available
+          ? 'The character view is loading, hidden or unavailable. Try again when Sprout is visible.'
+          : !capability
+            ? 'This character view does not support that animation.'
+            : !eligible
+              ? 'Pause the voice conversation and finish the current task first.'
+              : !characterSnapshot.moving
+                ? 'Celebration needs avatar motion. Rest and Wake remain available with motion paused or reduced.'
+                : 'Wake Sprout and let the character settle before celebrating.',
+      );
+      return;
+    }
+    setCharacterIntent({
+      generation: characterGeneration.current,
+      request: { id: ++characterRequest.current, action },
+    });
+    setCharacterNotice('');
+    setModal(null);
+  };
   const billOperation = async (operation: (signal: AbortSignal) => Promise<ComputerResult>) => {
     if (!enabled || inFlight.current) return;
+    interruptCharacter();
     inFlight.current = true;
     setBusy(true);
     setPhase('Reading bill documents');
@@ -603,6 +690,7 @@ export default function ComputerCompanion() {
       add('error', 'Choose a finance CSV or XLSX under 3 MB.');
       return;
     }
+    interruptCharacter();
     inFlight.current = true;
     setBusy(true);
     setPhase('Reading the finance file');
@@ -648,11 +736,13 @@ export default function ComputerCompanion() {
   const voicePending = voice.phase === 'starting' || voice.phase === 'transcribing';
   const toggleRecording = () => {
     if (voice.isConversationActive()) {
+      interruptCharacter();
       voice.pauseConversation();
       return;
     }
     if (!enabled || inFlight.current || voicePending || !status?.integrations.elevenLabs.configured)
       return;
+    interruptCharacter();
     if (dockMode) setDockExpanded(true);
     const greeting =
       desktopBuddy && !greeted.current && speech
@@ -684,6 +774,7 @@ export default function ComputerCompanion() {
     status?.integrations.elevenLabs.configured,
   ]);
   const hideBuddy = async () => {
+    interruptCharacter();
     if (active) await stop();
     setDockExpanded(false);
     await window.insightos?.hideBuddy?.();
@@ -698,10 +789,10 @@ export default function ComputerCompanion() {
       return;
     }
     if (command === 'workspace') {
-      setDockMode(false);
+      switchDockMode(false);
       return;
     }
-    setDockMode(true);
+    switchDockMode(true);
     setDockExpanded(true);
     if (command === 'settings') setModal('settings');
     if (command === 'voice' && !modal) toggleRecording();
@@ -741,6 +832,8 @@ export default function ComputerCompanion() {
           enabled={enabled}
           voicePhase={voice.phase}
           audio={voice.presentationAudio}
+          behavior={characterBehavior}
+          onBehaviorChange={setCharacterSnapshot}
           conversationActive={voice.conversationActive}
           voiceReady={!!status?.integrations.elevenLabs.configured}
           speech={speech}
@@ -753,7 +846,10 @@ export default function ComputerCompanion() {
           inputRef={input}
           transcriptRef={transcript}
           readingMemory={buddyReadingMemory}
-          expand={() => setDockExpanded((expanded) => !expanded)}
+          expand={() => {
+            interruptCharacter();
+            setDockExpanded((expanded) => !expanded);
+          }}
           expansionFailed={() => setDockExpanded(false)}
           hide={() => void hideBuddy()}
           talk={toggleRecording}
@@ -765,7 +861,7 @@ export default function ComputerCompanion() {
           }}
           workspace={() => {
             setTab(tab === 'energy' ? 'energy' : 'finance');
-            setDockMode(false);
+            switchDockMode(false);
           }}
           folder={() => void setup(window.insightos ? 'folder' : 'demo')}
           screen={() => void setup('screen')}
@@ -786,7 +882,7 @@ export default function ComputerCompanion() {
               <span>InsightOS workspace</span>
               <button
                 onClick={() => {
-                  setDockMode(true);
+                  switchDockMode(true);
                   setDockExpanded(false);
                 }}
               >
@@ -849,6 +945,8 @@ export default function ComputerCompanion() {
                 <AssistantSignal
                   phase={buddyVisualState(voice.phase, busy)}
                   audio={voice.presentationAudio}
+                  behavior={characterBehavior}
+                  onBehaviorChange={setCharacterSnapshot}
                 />
               </div>
               <nav className="computer-tabs" aria-label="Computer tools">
@@ -1640,6 +1738,47 @@ export default function ComputerCompanion() {
           </>
         ) : modal === 'settings' ? (
           <>
+            <fieldset className="character-settings">
+              <legend>Sprout</legend>
+              <div className="character-settings-actions">
+                <button
+                  type="button"
+                  disabled={
+                    !characterSnapshot?.visible ||
+                    !characterSnapshot.capabilities.joy ||
+                    !characterSnapshot.moving ||
+                    characterSnapshot.mode !== 'normal' ||
+                    active
+                  }
+                  onClick={() => requestCharacter('joy')}
+                >
+                  Celebrate
+                </button>
+                <button
+                  type="button"
+                  disabled={
+                    !characterSnapshot?.visible ||
+                    !characterSnapshot.capabilities.sleep ||
+                    (!characterSnapshot.sleeping && active)
+                  }
+                  onClick={() => requestCharacter(characterSnapshot?.sleeping ? 'wake' : 'sleep')}
+                >
+                  {characterSnapshot?.sleeping ? 'Wake Sprout' : 'Rest Sprout'}
+                </button>
+              </div>
+              <p>
+                {!characterSnapshot?.visible || !characterSnapshot.capabilities.sleep
+                  ? 'Character animations are loading or unavailable in this view.'
+                  : active
+                    ? 'Pause the voice conversation and finish the current task to rest or celebrate.'
+                    : !characterSnapshot.moving
+                      ? 'Celebration needs avatar motion. Rest and Wake remain available with motion paused or reduced.'
+                      : characterSnapshot.mode !== 'normal'
+                        ? 'Wake Sprout and let the character settle before celebrating. Your controls stay available.'
+                        : 'Rest changes Sprout’s pose. Your controls stay available.'}
+              </p>
+              {characterNotice && <p role="status">{characterNotice}</p>}
+            </fieldset>
             <label className="computer-setting">
               <span>Large text</span>
               <input

@@ -36,6 +36,12 @@ import {
   SproutMotionController,
 } from './buddyMotionController';
 import { observeDesktopVisibility } from './desktopVisibility';
+import {
+  NO_BUDDY_BEHAVIORS,
+  SPROUT_BEHAVIOR_CLIPS,
+  type BuddyBehaviorInput,
+  type BuddyBehaviorSnapshot,
+} from './buddyBehavior';
 
 export type BuddyAsset = 'sprout' | 'ribbon';
 export type BuddyReflectionProfile = 'rectangular' | 'tapered';
@@ -53,6 +59,12 @@ export type BuddyRendererSettings = {
   reflectionProfile?: BuddyReflectionProfile;
   /** Creation-only built-in output study; no shader or material overrides. */
   toneMapping?: BuddyToneMapping;
+  behavior?: BuddyBehaviorInput;
+  /** Discrete state/capability/lifecycle changes, never a per-frame React callback. */
+  onBehaviorChange?: (snapshot: BuddyBehaviorSnapshot) => void;
+  /** Creation-only measured stage envelope; integration owns corresponding native layout. */
+  stageFraming?: number;
+  stageTargetY?: number;
 };
 export type BuddyRendererDiagnostics = {
   asset: BuddyAsset;
@@ -71,6 +83,8 @@ export type BuddyRendererDiagnostics = {
   drawCalls: number;
   resolution: string;
   attention: ReturnType<SproutAttentionController['snapshot']> | null;
+  behavior: BuddyBehaviorSnapshot;
+  stage: { framing: number; targetY: number };
   materials: {
     name: string;
     type: string;
@@ -238,6 +252,7 @@ async function loadModel(
 } | null> {
   const issues: string[] = [];
   const candidates: [string, BuddyAsset][] = [
+    ['/buddy/sprout-v004.glb', 'sprout'],
     ['/buddy/sprout-v003.glb', 'sprout'],
     ['/buddy/sprout-v002.glb', 'sprout'],
     ['/buddy/insight-core-v1.glb', 'ribbon'],
@@ -341,14 +356,31 @@ export async function createBuddyRenderer(
   }
   scene.environment = environmentMap.texture;
   scene.environmentIntensity = 1;
-  const framing = asset === 'sprout' ? 1.4 : 1.38;
+  const extendedStage =
+    asset === 'sprout' &&
+    SPROUT_BEHAVIOR_CLIPS.every((name) => gltf.animations.some((clip) => clip.name === name));
+  const framing =
+    Number.isFinite(initial.stageFraming) && initial.stageFraming! > 0
+      ? initial.stageFraming!
+      : asset === 'sprout'
+        ? extendedStage
+          ? 1.72
+          : 1.4
+        : 1.38;
   const camera = new OrthographicCamera(-framing, framing, framing, -framing, 0.1, 30);
   camera.position.set(
     asset === 'sprout' ? 0.1 : 0.35,
     asset === 'sprout' ? 0.24 : 0.75,
     asset === 'sprout' ? 6 : 5.8,
   );
-  camera.lookAt(0, asset === 'sprout' ? 0.08 : 0, 0);
+  const targetY = Number.isFinite(initial.stageTargetY)
+    ? initial.stageTargetY!
+    : asset === 'sprout'
+      ? extendedStage
+        ? 0.24
+        : 0.08
+      : 0;
+  camera.lookAt(0, targetY, 0);
   const keyBase = asset === 'sprout' ? 1.7 : 2.3;
   const key = new DirectionalLight(0xf1faff, keyBase);
   if (asset === 'sprout') key.position.set(-3.5, 3.8, 3);
@@ -435,6 +467,51 @@ export async function createBuddyRenderer(
   const shouldAnimate = () => moving() && canDraw() && !contextLost && !disposed;
   controller?.setPhase(settings.phase);
   controller?.setMotion(moving());
+  controller?.setBehavior(settings.behavior);
+  const headPosition = new Vector3();
+  const lidBounds = new Box3();
+  const oneLidBounds = new Box3();
+  let lastBehaviorKey = '';
+  const behaviorSnapshot = (): BuddyBehaviorSnapshot => {
+    const state = controller?.behaviorSnapshot();
+    let headAnchor: BuddyBehaviorSnapshot['headAnchor'] = null;
+    if (state?.mode === 'sleep') {
+      model.updateMatrixWorld(true);
+      camera.updateMatrixWorld(true);
+      lidBounds.makeEmpty();
+      for (const name of ['LID_L', 'LID_R']) {
+        const lid = model.getObjectByName(name);
+        if (lid) lidBounds.union(oneLidBounds.setFromObject(lid, true));
+      }
+      if (!lidBounds.isEmpty()) {
+        lidBounds.getCenter(headPosition);
+        headPosition.y = lidBounds.max.y + 0.05;
+        headPosition.project(camera);
+        headAnchor = { x: (headPosition.x + 1) / 2, y: (1 - headPosition.y) / 2 };
+      }
+    }
+    return {
+      mode: state?.mode ?? 'normal',
+      sleeping: state?.sleeping ?? false,
+      moving: moving(),
+      visible: canDraw() && !contextLost && !disposed,
+      capabilities: state?.capabilities ?? { ...NO_BUDDY_BEHAVIORS },
+      doneActive: state?.doneActive ?? false,
+      headAnchor,
+      revision: state?.revision ?? 0,
+    };
+  };
+  const notifyBehavior = () => {
+    const state = controller?.behaviorSnapshot();
+    const key = `${state?.mode ?? 'normal'}:${state?.sleeping ?? false}:${moving()}:${canDraw() && !contextLost && !disposed}:${state?.doneActive ?? false}`;
+    if (key === lastBehaviorKey) return;
+    lastBehaviorKey = key;
+    try {
+      settings.onBehaviorChange?.(behaviorSnapshot());
+    } catch {
+      if (!issues.includes('Behavior observer failed')) issues.push('Behavior observer failed');
+    }
+  };
   const diagnostics = (): BuddyRendererDiagnostics => ({
     asset,
     assetUrl: loaded.assetUrl,
@@ -452,6 +529,8 @@ export async function createBuddyRenderer(
     drawCalls: renderer.info.render.calls,
     resolution: `${canvas.width} × ${canvas.height}`,
     attention: attention?.snapshot() ?? null,
+    behavior: behaviorSnapshot(),
+    stage: { framing, targetY },
     materials: [...materials].map((material) => {
       const physical = material instanceof MeshPhysicalMaterial ? material : null;
       return {
@@ -554,15 +633,20 @@ export async function createBuddyRenderer(
       }
       elapsed += delta;
       if (controller) {
-        const gaze = attentionFocused ? (settings.gaze ?? pointer) : { x: 0, y: 0 };
+        controller.setBehavior(settings.behavior, now);
+        const gaze =
+          attentionFocused && controller.allowsAttention()
+            ? (settings.gaze ?? pointer)
+            : { x: 0, y: 0 };
         attention?.setTarget(gaze.x, gaze.y);
         controller.setAttentionCompression(attention?.update(delta) ?? 0);
         controller.setGaze(gaze.x, gaze.y);
-        if (elapsed >= nextBlink) {
+        if (elapsed >= nextBlink && controller.allowsBlink()) {
           controller.react('Sprout_Blink');
           nextBlink = elapsed + 4.8;
         }
-        controller.update(delta);
+        controller.update(delta, now);
+        notifyBehavior();
       } else
         ribbonMixer?.update(
           delta *
@@ -581,7 +665,10 @@ export async function createBuddyRenderer(
     cancelAnimationFrame(frame);
     frame = 0;
     lastFrame = lastRenderedAt = 0;
+    controller?.setVisible(canDraw() && !contextLost);
     controller?.setMotion(moving());
+    controller?.setBehavior(settings.behavior);
+    controller?.update(0);
     if (!moving() || !canDraw()) {
       pointer = { x: 0, y: 0 };
       attention?.reset();
@@ -589,6 +676,7 @@ export async function createBuddyRenderer(
       controller?.setAttentionCompression(0);
     }
     if (canDraw()) draw();
+    notifyBehavior();
     if (shouldAnimate()) frame = requestAnimationFrame(tick);
   };
   const resize = () => {
@@ -631,6 +719,7 @@ export async function createBuddyRenderer(
   const lost = (event: Event) => {
     event.preventDefault();
     contextLost = true;
+    controller?.setVisible(false);
     cancelAnimationFrame(frame);
     frame = 0;
     envelope.reset();
@@ -639,6 +728,7 @@ export async function createBuddyRenderer(
     controller?.setAttentionCompression(0);
     onReady(false);
     reportedReady = false;
+    notifyBehavior();
   };
   const restored = () => {
     if (disposed) return;
@@ -677,6 +767,7 @@ export async function createBuddyRenderer(
       settings = next;
       if (next.phase !== previousPhase) controller?.setPhase(next.phase);
       controller?.setMotion(moving());
+      controller?.setBehavior(next.behavior);
       if ((next.reaction ?? 0) !== lastReaction) {
         lastReaction = next.reaction ?? 0;
         controller?.react('Sprout_Click');
@@ -691,6 +782,9 @@ export async function createBuddyRenderer(
     dispose() {
       if (disposed) return;
       disposed = true;
+      controller?.setVisible(false);
+      notifyBehavior();
+      onReady(false);
       cancelAnimationFrame(frame);
       resizeObserver.disconnect();
       visibilityObserver.disconnect();

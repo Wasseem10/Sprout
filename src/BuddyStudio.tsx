@@ -13,6 +13,7 @@ import {
 import AssistantSignal, { type BuddyVisualState } from './AssistantSignal';
 import type { AudioPresentationSample } from './audioPresentation';
 import type { BuddyRendererDiagnostics } from './buddyRenderer';
+import type { BuddyBehaviorInput, BuddyBehaviorSnapshot } from './buddyBehavior';
 import { SPROUT_REPLAY, SPROUT_REPLAY_DURATION } from './buddyReplay';
 import BuddyPanelPreview from './BuddyPanelPreview';
 import './buddy-studio.css';
@@ -47,15 +48,14 @@ const states: {
     description: 'The speaking pose can use measured output levels when available.',
     icon: MessageSquare,
   },
-  {
-    phase: 'success',
-    label: 'Done',
-    description: 'A settled glow marks a completed step.',
-    icon: Check,
-  },
 ];
 
 export default function BuddyStudio() {
+  const reviewAssetName = new URLSearchParams(window.location.search).get('asset');
+  const reviewAssetUrl =
+    reviewAssetName && ['sprout-v003', 'sprout-v004'].includes(reviewAssetName)
+      ? `/buddy/${reviewAssetName}.glb`
+      : undefined;
   const [phase, setPhase] = useState<BuddyVisualState>('idle');
   const [expanded, setExpanded] = useState(false);
   const [panelVisited, setPanelVisited] = useState(false);
@@ -68,6 +68,12 @@ export default function BuddyStudio() {
   const [replayRunning, setReplayRunning] = useState(false);
   const [replayTime, setReplayTime] = useState(0);
   const [diagnostics, setDiagnostics] = useState<BuddyRendererDiagnostics | null>(null);
+  const [character, setCharacter] = useState<BuddyBehaviorSnapshot | null>(null);
+  const [characterInput, setCharacterInput] = useState<BuddyBehaviorInput>({
+    generation: 0,
+    manualEligible: true,
+  });
+  const characterSequence = useRef(0);
   const audio = useRef<AudioPresentationSample>({
     inputLevel: null,
     outputLevel: null,
@@ -79,7 +85,41 @@ export default function BuddyStudio() {
   });
   const launcher = useRef<HTMLButtonElement>(null);
   const hasOpened = useRef(false);
-  const current = states.find((state) => state.phase === phase)!;
+  const current = states.find((state) => state.phase === phase) ?? states[0];
+  const behavior = { ...characterInput, manualEligible: phase === 'idle' };
+  const changePhase = (value: BuddyVisualState) => {
+    setCharacterInput((previous) => ({
+      generation: previous.generation + 1,
+      manualEligible: value === 'idle',
+    }));
+    setPhase(value);
+  };
+  const requestCharacter = (action: 'joy' | 'sleep' | 'wake') => {
+    // The active renderer reports system reduction and the panel's own pause.
+    // Consume neither a request ID nor a replay action when it cannot run.
+    if (
+      !character?.visible ||
+      !(action === 'joy' ? character.capabilities.joy : character.capabilities.sleep) ||
+      (action !== 'wake' && phase !== 'idle') ||
+      (action === 'joy' && (motionPaused || !character.moving || character.mode !== 'normal')) ||
+      (action === 'wake' && !character.sleeping)
+    )
+      return;
+    setReplayRunning(false);
+    const id = ++characterSequence.current;
+    setCharacterInput((previous) => ({ ...previous, done: null, request: { id, action } }));
+  };
+  const previewDone = () => {
+    setReplayRunning(false);
+    if (phase === 'thinking') setPhase('idle');
+    const id = `studio-${++characterSequence.current}`;
+    const issuedAt = performance.now();
+    setCharacterInput((previous) => ({
+      ...previous,
+      request: undefined,
+      done: { id, generation: previous.generation, issuedAt },
+    }));
+  };
 
   useEffect(() => {
     const generation = audio.current.playbackGeneration + 1;
@@ -207,18 +247,22 @@ export default function BuddyStudio() {
               }
               style={{ '--studio-signal-size': `${size}px` } as CSSProperties}
               onClick={() => {
+                changePhase(phase);
                 setPanelVisited(true);
                 setReaction((value) => value + 1);
                 setExpanded(!expanded);
               }}
             >
               <AssistantSignal
+                assetUrl={reviewAssetUrl}
                 phase={phase}
                 motion={!motionPaused}
                 audio={audio}
                 reaction={reaction}
                 blink={blink}
                 gaze={gaze}
+                behavior={behavior}
+                onBehaviorChange={!expanded ? setCharacter : undefined}
                 onDiagnostics={setDiagnostics}
               />
               <span className="studio-launcher-caption" aria-hidden="true">
@@ -232,16 +276,22 @@ export default function BuddyStudio() {
                 <BuddyPanelPreview
                   embedded
                   expanded={expanded}
-                  onToggle={() => setExpanded(false)}
+                  onToggle={() => {
+                    changePhase(phase);
+                    setExpanded(false);
+                  }}
                   phase={phase}
-                  onPhaseChange={setPhase}
+                  onPhaseChange={changePhase}
                   audio={audio}
                   visual={{
+                    assetUrl: reviewAssetUrl,
                     phase,
                     motion: !motionPaused,
                     reaction,
                     blink,
                     gaze,
+                    behavior,
+                    onBehaviorChange: expanded ? setCharacter : undefined,
                     onDiagnostics: setDiagnostics,
                   }}
                 />
@@ -251,7 +301,9 @@ export default function BuddyStudio() {
             <div className="studio-preview-status" role="status" aria-live="polite">
               <span className={`studio-state-light state-${phase}`} aria-hidden="true" />
               <span>
-                <strong>{current.label}</strong>
+                <strong>
+                  {character?.doneActive ? 'Done' : character?.sleeping ? 'Resting' : current.label}
+                </strong>
                 <span>Simulated state</span>
               </span>
             </div>
@@ -270,13 +322,16 @@ export default function BuddyStudio() {
                   aria-pressed={phase === state.phase}
                   onClick={() => {
                     setReplayRunning(false);
-                    setPhase(state.phase);
+                    changePhase(state.phase);
                   }}
                 >
                   <state.icon size={17} aria-hidden="true" />
                   {state.label}
                 </button>
               ))}
+              <button type="button" onClick={previewDone} disabled={!character?.capabilities.done}>
+                <Check size={17} aria-hidden="true" /> Done
+              </button>
             </div>
             <div className="studio-controls-footer">
               <p>{current.description}</p>
@@ -298,6 +353,62 @@ export default function BuddyStudio() {
               </button>
             </div>
             <div className="studio-proof-controls">
+              <div
+                className="studio-reaction-buttons"
+                role="group"
+                aria-label="Preview character animation"
+              >
+                <button
+                  type="button"
+                  disabled={
+                    phase !== 'idle' ||
+                    motionPaused ||
+                    !character?.visible ||
+                    !character.moving ||
+                    character.mode !== 'normal' ||
+                    !character.capabilities.joy
+                  }
+                  onClick={() => requestCharacter('joy')}
+                >
+                  Celebrate
+                </button>
+                <button
+                  type="button"
+                  disabled={
+                    phase !== 'idle' ||
+                    !character?.visible ||
+                    !character.capabilities.sleep ||
+                    character.sleeping
+                  }
+                  onClick={() => requestCharacter('sleep')}
+                >
+                  Sleep
+                </button>
+                <button
+                  type="button"
+                  disabled={
+                    !character?.visible || !character.capabilities.sleep || !character.sleeping
+                  }
+                  onClick={() => requestCharacter('wake')}
+                >
+                  Wake
+                </button>
+              </div>
+              <p className="studio-replay-note">
+                {!character?.visible
+                  ? 'Character actions are unavailable while the view is loading, hidden or without WebGL.'
+                  : !character.capabilities.sleep
+                    ? 'This fallback character does not support Celebrate, Sleep or Wake.'
+                    : phase !== 'idle'
+                      ? 'Celebrate and Sleep are available in Idle.'
+                      : motionPaused || !character.moving
+                        ? 'Celebrate needs avatar motion; panel pause and system reduced motion are respected. Sleep and Wake still use a static pose.'
+                        : character.mode !== 'normal'
+                          ? 'Wake Sprout and let the character settle before celebrating.'
+                          : 'Celebrate and Sleep are available in Idle.'}{' '}
+                Done previews one confirmed completion while keeping the current Listening or
+                Speaking state.
+              </p>
               <fieldset>
                 <legend>Actual-size comparison</legend>
                 <div className="studio-size-buttons">

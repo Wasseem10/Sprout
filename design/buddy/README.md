@@ -1,6 +1,6 @@
 # InsightOS buddy — Sprout / Prism
 
-**Sprout v003 is the current implemented character.** Start with the [current delivery guide](sprout/DELIVERY-v003.md), including the muted Prism panel followup. The next requested work is specified in the [glass, joy and sleep prompt](frutiger-aero/GLASS-JOY-SLEEP-MASTER-PROMPT.md); those changes are not yet implemented.
+**Sprout v004 is the current implemented character.** Start with the [current delivery guide](sprout/DELIVERY-v004.md): translucent Prism panel, centred Mic/Pause control, authored joy/sleep/wake and confirmed-completion acknowledgement. The [glass, joy and sleep prompt](frutiger-aero/GLASS-JOY-SLEEP-MASTER-PROMPT.md) records the implementation contract; [v003](sprout/DELIVERY-v003.md) preserves the preceding delivery.
 
 The v002 inventory below is retained history. The original blue jelly creature has unequal rounded buds, navy eyes, white glints, a small smile and a restrained violet/coral lower streak. Blender-authored geometry, rig and animation are exported to GLB and rendered by the existing React/Vite/Three/Electron application.
 

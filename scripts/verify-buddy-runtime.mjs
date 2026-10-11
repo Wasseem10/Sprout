@@ -352,7 +352,8 @@ try {
     'sprout',
     { timeout: 30000 },
   );
-  await page.goto('about:blank');
+  // Keep the trusted URL: the real shell correctly rejects about:blank.
+  // The navigation below installs the compiled fixture in a fresh document.
   const errors = [];
   const apiCalls = [];
   const servedAvatarAssets = [];

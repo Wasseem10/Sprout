@@ -1,6 +1,6 @@
 # Sprout / Prism — glossy refinement launch prompt
 
-**Next implementation brief:** [Glass interior, centred voice control, state-linked Sprout, joy, sleep and Done](GLASS-JOY-SLEEP-MASTER-PROMPT.md), prepared and updated 2026-10-11, with [worker prompts](GLASS-JOY-SLEEP-WORKER-PROMPTS.md). Those requested changes are not yet implemented. That brief supersedes this retained revision's near-opaque panel direction and extends its six-clip animation contract. The revision-6 brief below remains delivery history.
+**Current implementation:** [Sprout v004 delivery](../sprout/DELIVERY-v004.md) records the glass interior, centred voice control, state-linked Sprout, joy, sleep and Done. Its [implementation brief](GLASS-JOY-SLEEP-MASTER-PROMPT.md) and [worker prompts](GLASS-JOY-SLEEP-WORKER-PROMPTS.md), prepared 2026-10-11, supersede this retained revision's near-opaque panel direction and extend its six-clip animation contract. The revision-6 brief below remains delivery history.
 
 Revision **6**, **2026-10-10**. This implementation brief was prepared after reviewing the user's two-page reference PDF and delivered Sprout v002. Its implementation is recorded in the [v003 delivery guide](../sprout/DELIVERY-v003.md) and [refinement audit](../sprout/GLOSSY-REFINEMENT-AUDIT.md). The previous completion contract remains available in [revision 5](MASTER-PROMPT-v005.md); its outstanding external acceptance is not erased.
 

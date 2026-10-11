@@ -1,6 +1,6 @@
 # Sprout / Prism — glass, voice states, joy, sleep and Done
 
-Prepared 2026-10-11. **Implementation prompt; these new changes are not yet implemented.** This brief supersedes the earlier near-opaque cloud-white panel direction and extends the delivered six-clip animation contract. Retain historical evidence rather than marking this work complete from older tests.
+Prepared 2026-10-11. **Implemented as Sprout v004; see the [delivery and verification record](../sprout/DELIVERY-v004.md) for exact evidence and remaining external acceptance.** This retained brief supersedes the earlier near-opaque cloud-white panel direction and extends the delivered six-clip animation contract. Historical evidence remains separate from the new checks.
 
 ## Copyable implementation prompt
 

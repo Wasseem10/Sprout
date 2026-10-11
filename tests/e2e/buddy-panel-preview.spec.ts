@@ -12,7 +12,7 @@ test('actual panel preview keeps all simulated interactions local and readable',
   // Only the actual selected binary may satisfy this WebGL panel proof.
   // An older model remains a production fallback, but cannot pass this regression.
   await page.route('**/buddy/*.glb', (route) =>
-    new URL(route.request().url()).pathname === '/buddy/sprout-v003.glb'
+    new URL(route.request().url()).pathname === '/buddy/sprout-v004.glb'
       ? route.continue()
       : route.abort(),
   );

@@ -1,0 +1,425 @@
+{
+  "checkedAt": "2026-10-11T06:27:36.586Z",
+  "results": [
+    {
+      "host": "standalone",
+      "phase": "idle",
+      "interaction": "normal",
+      "name": "Start voice conversation",
+      "pressed": "false",
+      "disabled": false,
+      "width": 44,
+      "height": 44,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(16, 71, 161)",
+      "centre": [
+        0,
+        0
+      ],
+      "iconContrast": 8.613727565045481
+    },
+    {
+      "host": "standalone",
+      "phase": "idle",
+      "interaction": "hover",
+      "name": "Start voice conversation",
+      "pressed": "false",
+      "disabled": false,
+      "width": 44,
+      "height": 44,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(16, 63, 145)",
+      "centre": [
+        0,
+        0
+      ],
+      "iconContrast": 9.804373292831595
+    },
+    {
+      "host": "standalone",
+      "phase": "idle",
+      "interaction": "focus",
+      "name": "Start voice conversation",
+      "pressed": "false",
+      "disabled": false,
+      "width": 44,
+      "height": 44,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(16, 71, 161)",
+      "centre": [
+        0,
+        0
+      ],
+      "iconContrast": 8.613727565045481
+    },
+    {
+      "host": "standalone",
+      "phase": "listening",
+      "interaction": "normal",
+      "name": "Pause voice conversation",
+      "pressed": "true",
+      "disabled": false,
+      "width": 44,
+      "height": 44,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(20, 57, 111)",
+      "centre": [
+        0,
+        0
+      ],
+      "iconContrast": 11.384983784259099
+    },
+    {
+      "host": "standalone",
+      "phase": "listening",
+      "interaction": "hover",
+      "name": "Pause voice conversation",
+      "pressed": "true",
+      "disabled": false,
+      "width": 44,
+      "height": 44,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(16, 63, 145)",
+      "centre": [
+        0,
+        0
+      ],
+      "iconContrast": 9.804373292831595
+    },
+    {
+      "host": "standalone",
+      "phase": "listening",
+      "interaction": "focus",
+      "name": "Pause voice conversation",
+      "pressed": "true",
+      "disabled": false,
+      "width": 44,
+      "height": 44,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(20, 57, 111)",
+      "centre": [
+        0,
+        0
+      ],
+      "iconContrast": 11.384983784259099
+    },
+    {
+      "host": "standalone",
+      "phase": "speaking",
+      "interaction": "normal",
+      "name": "Pause voice conversation",
+      "pressed": "true",
+      "disabled": false,
+      "width": 44,
+      "height": 44,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(20, 57, 111)",
+      "centre": [
+        0,
+        0
+      ],
+      "iconContrast": 11.384983784259099
+    },
+    {
+      "host": "standalone",
+      "phase": "speaking",
+      "interaction": "hover",
+      "name": "Pause voice conversation",
+      "pressed": "true",
+      "disabled": false,
+      "width": 44,
+      "height": 44,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(16, 63, 145)",
+      "centre": [
+        0,
+        0
+      ],
+      "iconContrast": 9.804373292831595
+    },
+    {
+      "host": "standalone",
+      "phase": "speaking",
+      "interaction": "focus",
+      "name": "Pause voice conversation",
+      "pressed": "true",
+      "disabled": false,
+      "width": 44,
+      "height": 44,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(20, 57, 111)",
+      "centre": [
+        0,
+        0
+      ],
+      "iconContrast": 11.384983784259099
+    },
+    {
+      "host": "embedded",
+      "phase": "idle",
+      "interaction": "normal",
+      "name": "Start voice conversation",
+      "pressed": "false",
+      "disabled": false,
+      "width": 44,
+      "height": 44,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(16, 71, 161)",
+      "centre": [
+        0,
+        0
+      ],
+      "iconContrast": 8.613727565045481
+    },
+    {
+      "host": "embedded",
+      "phase": "idle",
+      "interaction": "hover",
+      "name": "Start voice conversation",
+      "pressed": "false",
+      "disabled": false,
+      "width": 44,
+      "height": 44,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(16, 63, 145)",
+      "centre": [
+        0,
+        0
+      ],
+      "iconContrast": 9.804373292831595
+    },
+    {
+      "host": "embedded",
+      "phase": "idle",
+      "interaction": "focus",
+      "name": "Start voice conversation",
+      "pressed": "false",
+      "disabled": false,
+      "width": 44,
+      "height": 44,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(16, 71, 161)",
+      "centre": [
+        0,
+        0
+      ],
+      "iconContrast": 8.613727565045481
+    },
+    {
+      "host": "embedded",
+      "phase": "listening",
+      "interaction": "normal",
+      "name": "Pause voice conversation",
+      "pressed": "true",
+      "disabled": false,
+      "width": 44,
+      "height": 44,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(20, 57, 111)",
+      "centre": [
+        0,
+        0
+      ],
+      "iconContrast": 11.384983784259099
+    },
+    {
+      "host": "embedded",
+      "phase": "listening",
+      "interaction": "hover",
+      "name": "Pause voice conversation",
+      "pressed": "true",
+      "disabled": false,
+      "width": 44,
+      "height": 44,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(16, 63, 145)",
+      "centre": [
+        0,
+        0
+      ],
+      "iconContrast": 9.804373292831595
+    },
+    {
+      "host": "embedded",
+      "phase": "listening",
+      "interaction": "focus",
+      "name": "Pause voice conversation",
+      "pressed": "true",
+      "disabled": false,
+      "width": 44,
+      "height": 44,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(20, 57, 111)",
+      "centre": [
+        0,
+        0
+      ],
+      "iconContrast": 11.384983784259099
+    },
+    {
+      "host": "embedded",
+      "phase": "speaking",
+      "interaction": "normal",
+      "name": "Pause voice conversation",
+      "pressed": "true",
+      "disabled": false,
+      "width": 44,
+      "height": 44,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(20, 57, 111)",
+      "centre": [
+        0,
+        0
+      ],
+      "iconContrast": 11.384983784259099
+    },
+    {
+      "host": "embedded",
+      "phase": "speaking",
+      "interaction": "hover",
+      "name": "Pause voice conversation",
+      "pressed": "true",
+      "disabled": false,
+      "width": 44,
+      "height": 44,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(16, 63, 145)",
+      "centre": [
+        0,
+        0
+      ],
+      "iconContrast": 9.804373292831595
+    },
+    {
+      "host": "embedded",
+      "phase": "speaking",
+      "interaction": "focus",
+      "name": "Pause voice conversation",
+      "pressed": "true",
+      "disabled": false,
+      "width": 44,
+      "height": 44,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "foreground": "rgb(255, 255, 255)",
+      "background": "rgb(20, 57, 111)",
+      "centre": [
+        0,
+        0
+      ],
+      "iconContrast": 11.384983784259099
+    }
+  ],
+  "api": [],
+  "errors": [],
+  "limits": [
+    "Actual local preview hosts and browser-computed geometry/colours. No actual microphone, AI, native compositor or physical assistive technology.",
+    "Enabled icon contrast uses opaque computed foreground/background colours; antialiased edge pixels are not the contrast definition. Native and forced-colour checks remain separately scoped."
+  ]
+}

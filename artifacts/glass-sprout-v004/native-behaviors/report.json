@@ -1,0 +1,663 @@
+{
+  "startedAt": "2026-10-11T06:56:40.450Z",
+  "pass": true,
+  "implementation": "compiled dist in actual isolated Electron main/preload at trusted 5173 origin",
+  "assetSha256": "77d4b92bc5d06e440706243f6ac9e6745073ba6f98d173b972114fabb02bde7c",
+  "assetBytes": 1463568,
+  "requiredClips": [
+    "Sprout_JoyJump",
+    "Sprout_SleepEnter",
+    "Sprout_SleepLoop",
+    "Sprout_Wake",
+    "Sprout_Done"
+  ],
+  "compiledIndexSha256": "13cf4c6085d390104539d2df4d41eaa7172e4cbe5b553b64d234c9f810006370",
+  "recording": true,
+  "apiFixtures": [
+    {
+      "pathname": "/api/status",
+      "method": "GET"
+    },
+    {
+      "pathname": "/api/session",
+      "method": "POST"
+    },
+    {
+      "pathname": "/api/computer/state",
+      "method": "GET"
+    },
+    {
+      "pathname": "/api/connections",
+      "method": "GET"
+    },
+    {
+      "pathname": "/api/connections",
+      "method": "GET"
+    },
+    {
+      "pathname": "/api/connections",
+      "method": "GET"
+    },
+    {
+      "pathname": "/api/voice/realtime-token",
+      "method": "POST"
+    },
+    {
+      "pathname": "/api/voice/speak",
+      "method": "POST"
+    },
+    {
+      "pathname": "/api/connections",
+      "method": "GET"
+    },
+    {
+      "pathname": "/api/voice/transcribe",
+      "method": "POST"
+    },
+    {
+      "pathname": "/api/computer/request",
+      "method": "POST"
+    },
+    {
+      "pathname": "/api/voice/speak",
+      "method": "POST"
+    },
+    {
+      "pathname": "/api/connections",
+      "method": "GET"
+    },
+    {
+      "pathname": "/api/connections",
+      "method": "GET"
+    }
+  ],
+  "servedAssets": [
+    {
+      "url": "http://127.0.0.1:5173/buddy/sprout-v004.glb",
+      "status": 200,
+      "bytes": 1463568,
+      "sha256": "77d4b92bc5d06e440706243f6ac9e6745073ba6f98d173b972114fabb02bde7c"
+    }
+  ],
+  "sequence": [
+    {
+      "step": "96-collapsed-bottom-right",
+      "native": {
+        "bounds": {
+          "x": 1624,
+          "y": 904,
+          "width": 296,
+          "height": 128
+        },
+        "contentBounds": {
+          "x": 1624,
+          "y": 904,
+          "width": 296,
+          "height": 128
+        },
+        "workArea": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 1032
+        },
+        "scaleFactor": 1,
+        "visible": true,
+        "minimized": false,
+        "zoomFactor": 1
+      },
+      "html": {
+        "at": 1811.7999999523163,
+        "width": 96,
+        "height": 96,
+        "left": 8,
+        "top": 8,
+        "right": 104,
+        "bottom": 104,
+        "viewport": {
+          "width": 296,
+          "height": 128
+        },
+        "mode": "normal",
+        "done": null,
+        "phase": "idle",
+        "stage": "closed",
+        "z": [],
+        "draft": ""
+      }
+    },
+    {
+      "step": "72-expanded-native-clamped",
+      "native": {
+        "bounds": {
+          "x": 1512,
+          "y": 360,
+          "width": 408,
+          "height": 672
+        },
+        "contentBounds": {
+          "x": 1512,
+          "y": 360,
+          "width": 408,
+          "height": 672
+        },
+        "workArea": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 1032
+        },
+        "scaleFactor": 1,
+        "visible": true,
+        "minimized": false,
+        "zoomFactor": 1
+      },
+      "html": {
+        "at": 1962.6000000238419,
+        "width": 72,
+        "height": 72,
+        "left": 28,
+        "top": 20,
+        "right": 100,
+        "bottom": 92,
+        "viewport": {
+          "width": 408,
+          "height": 672
+        },
+        "mode": "normal",
+        "done": null,
+        "phase": "idle",
+        "stage": "open",
+        "z": [],
+        "draft": "Keep this draft while Sprout celebrates, rests and wakes."
+      }
+    },
+    {
+      "step": "joy-real-character-control",
+      "native": {
+        "bounds": {
+          "x": 1512,
+          "y": 360,
+          "width": 408,
+          "height": 672
+        },
+        "contentBounds": {
+          "x": 1512,
+          "y": 360,
+          "width": 408,
+          "height": 672
+        },
+        "workArea": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 1032
+        },
+        "scaleFactor": 1,
+        "visible": true,
+        "minimized": false,
+        "zoomFactor": 1
+      },
+      "html": {
+        "at": 3085,
+        "width": 72,
+        "height": 72,
+        "left": 28,
+        "top": 20,
+        "right": 100,
+        "bottom": 92,
+        "viewport": {
+          "width": 408,
+          "height": 672
+        },
+        "mode": "joy",
+        "done": null,
+        "phase": "idle",
+        "stage": "open",
+        "z": [],
+        "draft": "Keep this draft while Sprout celebrates, rests and wakes."
+      }
+    },
+    {
+      "step": "lying-down-sleep-with-head-anchored-Zs",
+      "native": {
+        "bounds": {
+          "x": 1512,
+          "y": 360,
+          "width": 408,
+          "height": 672
+        },
+        "contentBounds": {
+          "x": 1512,
+          "y": 360,
+          "width": 408,
+          "height": 672
+        },
+        "workArea": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 1032
+        },
+        "scaleFactor": 1,
+        "visible": true,
+        "minimized": false,
+        "zoomFactor": 1
+      },
+      "html": {
+        "at": 7554.899999976158,
+        "width": 72,
+        "height": 72,
+        "left": 28,
+        "top": 20,
+        "right": 100,
+        "bottom": 92,
+        "viewport": {
+          "width": 408,
+          "height": 672
+        },
+        "mode": "sleep",
+        "done": null,
+        "phase": "idle",
+        "stage": "open",
+        "z": [
+          {
+            "left": 76.6715316772461,
+            "top": 36.97727584838867,
+            "right": 81.75651550292969,
+            "bottom": 45.34331130981445
+          }
+        ],
+        "draft": "Keep this draft while Sprout celebrates, rests and wakes."
+      }
+    },
+    {
+      "step": "paused-sleep-static350ms-draft-preserved",
+      "native": {
+        "bounds": {
+          "x": 1512,
+          "y": 360,
+          "width": 408,
+          "height": 672
+        },
+        "contentBounds": {
+          "x": 1512,
+          "y": 360,
+          "width": 408,
+          "height": 672
+        },
+        "workArea": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 1032
+        },
+        "scaleFactor": 1,
+        "visible": true,
+        "minimized": false,
+        "zoomFactor": 1
+      },
+      "html": {
+        "at": 8543.299999952316,
+        "width": 72,
+        "height": 72,
+        "left": 28,
+        "top": 20,
+        "right": 100,
+        "bottom": 92,
+        "viewport": {
+          "width": 408,
+          "height": 672
+        },
+        "mode": "sleep",
+        "done": null,
+        "phase": "idle",
+        "stage": "open",
+        "z": [
+          {
+            "left": 74.65625,
+            "top": 43.65625,
+            "right": 80.734375,
+            "bottom": 53.65625
+          }
+        ],
+        "draft": "Keep this draft while Sprout celebrates, rests and wakes."
+      }
+    },
+    {
+      "step": "fresh-completed-task-Done-with-continuous-voice",
+      "native": {
+        "bounds": {
+          "x": 1512,
+          "y": 360,
+          "width": 408,
+          "height": 672
+        },
+        "contentBounds": {
+          "x": 1512,
+          "y": 360,
+          "width": 408,
+          "height": 672
+        },
+        "workArea": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 1032
+        },
+        "scaleFactor": 1,
+        "visible": true,
+        "minimized": false,
+        "zoomFactor": 1
+      },
+      "html": {
+        "at": 15180.600000023842,
+        "width": 72,
+        "height": 72,
+        "left": 28,
+        "top": 20,
+        "right": 100,
+        "bottom": 92,
+        "viewport": {
+          "width": 408,
+          "height": 672
+        },
+        "mode": "normal",
+        "done": "true",
+        "phase": "speaking",
+        "stage": "open",
+        "z": [],
+        "draft": "Keep this draft while Sprout celebrates, rests and wakes."
+      }
+    },
+    {
+      "step": "top-left-edge-reduced-motion-authored-static-sleep",
+      "native": {
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 408,
+          "height": 672
+        },
+        "contentBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 408,
+          "height": 672
+        },
+        "workArea": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 1032
+        },
+        "scaleFactor": 1,
+        "visible": true,
+        "minimized": false,
+        "zoomFactor": 1
+      },
+      "html": {
+        "at": 17221.799999952316,
+        "width": 72,
+        "height": 72,
+        "left": 28,
+        "top": 20,
+        "right": 100,
+        "bottom": 92,
+        "viewport": {
+          "width": 408,
+          "height": 672
+        },
+        "mode": "sleep",
+        "done": null,
+        "phase": "idle",
+        "stage": "open",
+        "z": [
+          {
+            "left": 74.65625,
+            "top": 43.65625,
+            "right": 80.734375,
+            "bottom": 53.65625
+          }
+        ],
+        "draft": "Keep this draft while Sprout celebrates, rests and wakes."
+      }
+    },
+    {
+      "step": "reduced-collapsed-96",
+      "native": {
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 296,
+          "height": 128
+        },
+        "contentBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 296,
+          "height": 128
+        },
+        "workArea": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 1032
+        },
+        "scaleFactor": 1,
+        "visible": true,
+        "minimized": false,
+        "zoomFactor": 1
+      },
+      "html": {
+        "at": 17600.399999976158,
+        "width": 96,
+        "height": 96,
+        "left": 8,
+        "top": 8,
+        "right": 104,
+        "bottom": 104,
+        "viewport": {
+          "width": 296,
+          "height": 128
+        },
+        "mode": "normal",
+        "done": null,
+        "phase": "idle",
+        "stage": "closed",
+        "z": [],
+        "draft": "Keep this draft while Sprout celebrates, rests and wakes."
+      }
+    },
+    {
+      "step": "show-keyboard-reopen-draft-focus-preserved",
+      "native": {
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 408,
+          "height": 672
+        },
+        "contentBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 408,
+          "height": 672
+        },
+        "workArea": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 1032
+        },
+        "scaleFactor": 1,
+        "visible": true,
+        "minimized": false,
+        "zoomFactor": 1
+      },
+      "html": {
+        "at": 17781.399999976158,
+        "width": 72,
+        "height": 72,
+        "left": 28,
+        "top": 20,
+        "right": 100,
+        "bottom": 92,
+        "viewport": {
+          "width": 408,
+          "height": 672
+        },
+        "mode": "normal",
+        "done": null,
+        "phase": "idle",
+        "stage": "open",
+        "z": [],
+        "draft": "Keep this draft while Sprout celebrates, rests and wakes."
+      }
+    }
+  ],
+  "errors": [],
+  "limits": [
+    "Real Character settings and task/voice adapters; task completion is an explicitly local API fixture, not a successful provider task.",
+    "Continuous voice uses a controlled oscillator stream, local transcription fixture and short local PCM WAV; no physical microphone, live provider, device audibility or spoken interruption claim.",
+    "CapturePage/Playwright video record actual Electron content and alpha, not underlying desktop pixels or operating-system compositor presentation.",
+    "Bounds/readback prove the current monitor work area; not physical multi-monitor/DPI coverage.",
+    "HTML avatar/Z bounds are checked at named checkpoints. Exhaustive animated-mesh camera containment belongs to the separate exported-vertex proof; framebuffer sampling is excluded because non-preserved WebGL buffers are cleared by Chromium.",
+    "Collapse/hide intentionally interrupt cosmetic actions; 96px collapsed stills therefore show the real normal pose, while the Character actions run at the actual 72px expanded size."
+  ],
+  "bootstrap": {
+    "existingApiRequestsCancelled": [
+      "http://127.0.0.1:5173/api/status",
+      "http://127.0.0.1:5173/api/status"
+    ]
+  },
+  "security": {
+    "sandbox": true,
+    "contextIsolation": true,
+    "nodeIntegration": false,
+    "webSecurity": true
+  },
+  "syntheticUtterance": {
+    "at": 13311.299999952316,
+    "durationSeconds": 0.7,
+    "amplitude": 0.22
+  },
+  "hidden": {
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 296,
+      "height": 128
+    },
+    "contentBounds": {
+      "x": 0,
+      "y": 0,
+      "width": 296,
+      "height": 128
+    },
+    "workArea": {
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1032
+    },
+    "scaleFactor": 1,
+    "visible": false,
+    "minimized": false,
+    "zoomFactor": 1
+  },
+  "browserProof": {
+    "modes": [
+      {
+        "at": 2627.7000000476837,
+        "mode": "joy",
+        "phase": "idle"
+      },
+      {
+        "at": 4308.899999976158,
+        "mode": "recover",
+        "phase": "idle"
+      },
+      {
+        "at": 4492.899999976158,
+        "mode": "normal",
+        "phase": "idle"
+      },
+      {
+        "at": 4688.100000023842,
+        "mode": "enter-sleep",
+        "phase": "idle"
+      },
+      {
+        "at": 6376,
+        "mode": "sleep",
+        "phase": "idle"
+      },
+      {
+        "at": 8900.600000023842,
+        "mode": "wake",
+        "phase": "idle"
+      },
+      {
+        "at": 10175.5,
+        "mode": "recover",
+        "phase": "idle"
+      },
+      {
+        "at": 10357.799999952316,
+        "mode": "normal",
+        "phase": "idle"
+      },
+      {
+        "at": 14880.399999976158,
+        "mode": "normal",
+        "phase": "speaking"
+      },
+      {
+        "at": 15724.600000023842,
+        "mode": "normal",
+        "phase": "speaking"
+      },
+      {
+        "at": 16601.700000047684,
+        "mode": "sleep",
+        "phase": "idle"
+      },
+      {
+        "at": 17482.700000047684,
+        "mode": "normal",
+        "phase": "idle"
+      }
+    ],
+    "done": [
+      {
+        "at": 14880.399999976158,
+        "phase": "speaking"
+      }
+    ],
+    "tracks": [
+      {
+        "kind": "audio",
+        "readyState": "ended"
+      },
+      {
+        "kind": "audio",
+        "readyState": "ended"
+      }
+    ],
+    "playbacks": [
+      {
+        "currentTime": 1.2,
+        "paused": true,
+        "ended": true
+      },
+      {
+        "currentTime": 1.2,
+        "paused": true,
+        "ended": true
+      }
+    ]
+  },
+  "video": "D:\\hackathon2026\\insightos-ui\\artifacts\\glass-sprout-v004\\native-behaviors\\native-character-task-voice.webm",
+  "finishedAt": "2026-10-11T06:57:03.692Z"
+}

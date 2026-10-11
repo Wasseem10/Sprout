@@ -34,7 +34,15 @@ export default function BuddyPanelPreview({
   onPhaseChange?: (phase: BuddyVisualState) => void;
   visual?: Pick<
     ComponentProps<typeof AssistantSignal>,
-    'phase' | 'motion' | 'reaction' | 'blink' | 'gaze' | 'onDiagnostics' | 'assetUrl'
+    | 'phase'
+    | 'motion'
+    | 'reaction'
+    | 'blink'
+    | 'gaze'
+    | 'onDiagnostics'
+    | 'assetUrl'
+    | 'behavior'
+    | 'onBehaviorChange'
   >;
   audio?: ComponentProps<typeof AssistantSignal>['audio'];
 }) {

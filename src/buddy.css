@@ -96,6 +96,24 @@ html.desktop-buddy,
 }
 .buddy[data-panel-stage='open'] .buddy-identity {
   align-self: center;
+  justify-self: start;
+  width: fit-content;
+  max-width: 100%;
+  position: relative;
+  isolation: isolate;
+}
+.buddy[data-panel-stage='open'] .buddy-identity::before {
+  content: '';
+  position: absolute;
+  inset: -8px -12px;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 14px;
+  background: #edf8ffed;
+  mask-image:
+    linear-gradient(to right, transparent, #000 12px, #000 calc(100% - 12px), transparent),
+    linear-gradient(to bottom, transparent, #000 8px, #000 calc(100% - 8px), transparent);
+  mask-composite: intersect;
 }
 .buddy[data-panel-stage='open'] .buddy-identity strong {
   font-size: 20px;
@@ -162,6 +180,10 @@ html.desktop-buddy,
   border-radius: 12px;
   color: var(--buddy-ink);
 }
+.buddy[data-panel-stage='open'] .buddy-icon:not(.stop) {
+  background: #edf8ffde;
+  box-shadow: inset 0 1px 0 #ffffffc9;
+}
 .buddy-icon:hover:not(:disabled) {
   background: #e6effc;
   color: #103b85;
@@ -181,6 +203,7 @@ html.desktop-buddy,
   min-width: 44px;
   width: 44px;
   height: 44px;
+  padding: 0;
   border-radius: 13px;
   color: #fff;
   background: var(--buddy-blue);
@@ -189,9 +212,22 @@ html.desktop-buddy,
 .buddy-play {
   border-radius: 50%;
 }
+.buddy-play > svg,
+.buddy-send > svg {
+  display: block;
+}
 .buddy-play.playing {
-  padding-left: 0;
   background: #14396f;
+}
+.buddy-play[data-phase='listening'] {
+  box-shadow:
+    0 0 0 2px #a2d6f0,
+    inset 0 1px 0 #ffffff35;
+}
+.buddy-play[data-phase='speaking'] {
+  box-shadow:
+    0 0 0 2px #c1baf0,
+    inset 0 1px 0 #ffffff35;
 }
 .buddy-play:hover:not(:disabled),
 .buddy-send:hover:not(:disabled) {
@@ -213,16 +249,29 @@ html.desktop-buddy,
   z-index: -1;
   pointer-events: none;
   opacity: 0;
-  background:
-    linear-gradient(145deg, #ffffffc9 0%, #ffffff00 25%, #ffffff00 72%, #ffffffe0),
-    radial-gradient(ellipse at 0% 0%, #67d9ffce, transparent 60%),
-    radial-gradient(ellipse at 0% 95%, #b8a2f4b8, transparent 54%),
-    radial-gradient(ellipse at 100% 90%, #ffc5bac9, transparent 50%), #d9efff99;
+  background: transparent;
   box-shadow:
     0 10px 24px #122c4e25,
     inset 0 1px 1px #ffffff,
     inset 0 -2px 2px #687ea64d;
   transform-origin: 48px 0;
+}
+.buddy-panel-rim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 30px;
+  padding: 7px;
+  /* Keep the approved rim paint, but stop its full-box tint occluding the interior. */
+  background:
+    linear-gradient(145deg, #ffffffc9 0%, #ffffff00 25%, #ffffff00 72%, #ffffffe0),
+    radial-gradient(ellipse at 0% 0%, #67d9ffce, transparent 60%),
+    radial-gradient(ellipse at 0% 95%, #b8a2f4b8, transparent 54%),
+    radial-gradient(ellipse at 100% 90%, #ffc5bac9, transparent 50%), #d9efff99;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
 }
 .buddy-panel-glass::before,
 .buddy-panel-glass::after {
@@ -240,13 +289,13 @@ html.desktop-buddy,
   inset: 7px;
   border-radius: 23px;
   /* The readable surface is owned HTML, not a capture of the desktop behind Electron. */
-  /* Quieter Prism colour than Sprout, with a stable frosted reading surface. */
+  /* Background-responsive frost; sharp content has local backing, never a full opaque slab. */
   background:
-    linear-gradient(125deg, #ffffffb8, #ffffff00 36%, #ffffff42 74%, #ffffff85),
-    radial-gradient(ellipse at 5% 4%, #bdefffbd, transparent 56%),
-    radial-gradient(ellipse at 2% 100%, #c7bceba6, transparent 65%),
-    radial-gradient(ellipse at 100% 76%, #f5cfc6a3, transparent 58%),
-    linear-gradient(160deg, #dfedf8f5, #e7ecf9f5 55%, #e7eaf5f5);
+    linear-gradient(125deg, #ffffff38, #ffffff00 36%, #ffffff2d 74%, #ffffff3b),
+    radial-gradient(ellipse at 5% 4%, #8be8ff54, transparent 56%),
+    radial-gradient(ellipse at 2% 100%, #bba6ea38, transparent 65%),
+    radial-gradient(ellipse at 100% 76%, #ffc2b738, transparent 58%),
+    linear-gradient(160deg, #dff3ff38, #d5e9ff24 55%, #cddfff40);
   backdrop-filter: blur(20px) saturate(115%);
   box-shadow:
     0 0 0 1px #ffffffb8,
@@ -294,6 +343,10 @@ html.desktop-buddy,
 }
 .buddy-message {
   margin: 0 0 22px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: linear-gradient(130deg, #eef8ffe0, #f3f5ffe0);
+  box-shadow: inset 0 1px 0 #ffffff9e;
 }
 .buddy-message > span {
   font-size: 14px;
@@ -309,9 +362,8 @@ html.desktop-buddy,
 }
 .buddy-message.user {
   margin-left: 18px;
-  padding: 12px 14px;
   border: 1px solid #ffffffc9;
-  background: linear-gradient(130deg, #ffffffa6, #f4f7ffb8);
+  background: linear-gradient(130deg, #ffffffde, #f4f7ffde);
   box-shadow:
     0 2px 8px #405b8510,
     inset 0 1px 0 #ffffffb3;
@@ -321,14 +373,16 @@ html.desktop-buddy,
   color: #46566b;
 }
 .buddy-message.error p {
-  color: #962438;
+  color: #781d2e;
 }
 .buddy-result,
 .buddy-task {
-  padding: 12px 0;
+  padding: 12px 14px;
   margin: 0 0 14px;
   border-top: 1px solid #b8cae2;
   color: var(--buddy-ink);
+  border-radius: 12px;
+  background: #eff6ffe0;
 }
 .buddy-result > div {
   display: flex;
@@ -346,7 +400,12 @@ html.desktop-buddy,
   color: var(--buddy-muted);
 }
 .buddy-task strong {
+  display: block;
   font-size: 16px;
+}
+.buddy-task small {
+  display: block;
+  margin-top: 5px;
 }
 .buddy-task p {
   margin: 5px 0;
@@ -364,6 +423,11 @@ html.desktop-buddy,
   margin-top: 7px;
   color: #46566b;
   font-size: 14px;
+}
+.buddy-welcome {
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: #eff6fff0;
 }
 .buddy-reference summary {
   min-height: 44px;
@@ -482,6 +546,9 @@ html.desktop-buddy,
   color: #852238;
   font-size: 13px;
   line-height: 1.4;
+  padding: 3px 5px;
+  border-radius: 6px;
+  background: #eff6fff0;
 }
 .buddy.has-layout-error .buddy-identity strong {
   display: none;
@@ -609,7 +676,10 @@ html.desktop-buddy,
   }
   .buddy-composer,
   .buddy-disclosure-panel,
-  .buddy-message.user {
+  .buddy-message,
+  .buddy-welcome,
+  .buddy-task,
+  .buddy-result {
     background: #f8fbff;
     backdrop-filter: none;
   }
@@ -627,21 +697,31 @@ html.desktop-buddy,
   .buddy-panel-glass {
     display: none;
   }
+  .buddy-identity::before {
+    display: none;
+  }
   .buddy,
   .buddy-panel,
   .buddy-dock-controls,
   .buddy-composer,
   .buddy-disclosure-panel,
-  .buddy-message.user {
+  .buddy-message,
+  .buddy-welcome,
+  .buddy-task,
+  .buddy-result {
     color: CanvasText;
     background: Canvas;
     border-color: CanvasText;
     box-shadow: none;
   }
-  .buddy button {
+  .buddy button,
+  .buddy[data-panel-stage='open'] .buddy-icon:not(.stop),
+  .buddy-play[data-phase='listening'],
+  .buddy-play[data-phase='speaking'] {
     color: ButtonText;
     border: 1px solid ButtonText;
     background: ButtonFace;
+    box-shadow: none;
   }
   .buddy :focus-visible {
     outline-color: Highlight;

@@ -32,6 +32,7 @@ import EnergyPanel from './EnergyPanel';
 import FinancePanel from './FinancePanel';
 import AssistantSignal, { buddyVisualState } from './AssistantSignal';
 import type { AudioPresentationRef } from './audioPresentation';
+import type { BuddyBehaviorInput, BuddyBehaviorSnapshot } from './buddyBehavior';
 import { useBuddyPanel, type BuddyReadingMemory } from './useBuddyPanel';
 import BuddyDisclosure, { type BuddyDisclosureAction } from './BuddyDisclosure';
 
@@ -40,8 +41,18 @@ type Props = {
   /** Presentation-only overrides for the labelled local review studio. */
   visual?: Pick<
     ComponentProps<typeof AssistantSignal>,
-    'phase' | 'motion' | 'reaction' | 'blink' | 'gaze' | 'onDiagnostics' | 'assetUrl'
+    | 'phase'
+    | 'motion'
+    | 'reaction'
+    | 'blink'
+    | 'gaze'
+    | 'onDiagnostics'
+    | 'assetUrl'
+    | 'behavior'
+    | 'onBehaviorChange'
   >;
+  behavior?: BuddyBehaviorInput;
+  onBehaviorChange?: (snapshot: BuddyBehaviorSnapshot) => void;
   expanded: boolean;
   modalOpen: boolean;
   active: boolean;
@@ -125,19 +136,23 @@ export default function DesktopBuddy(p: Props) {
     panel.rememberReadingPosition();
     p.workspace();
   };
-  const status = p.conversationActive
-    ? p.voicePhase === 'speaking'
-      ? 'Speaking · listening'
-      : p.busy || p.voicePhase === 'processing'
-        ? 'Working · listening'
-        : p.voicePhase === 'transcribing'
-          ? 'Understanding · listening'
-          : 'Listening…'
-    : p.busy
-      ? 'Working…'
-      : p.voicePhase === 'starting'
-        ? 'Opening mic…'
-        : 'Ready to talk';
+  const visualPhase = p.visual?.phase ?? buddyVisualState(p.voicePhase, p.busy);
+  const status =
+    p.voicePhase === 'starting'
+      ? 'Opening mic…'
+      : p.conversationActive
+        ? p.voicePhase === 'speaking'
+          ? 'Speaking · listening'
+          : p.busy || p.voicePhase === 'processing'
+            ? 'Working · listening'
+            : p.voicePhase === 'transcribing'
+              ? 'Understanding · listening'
+              : 'Listening…'
+        : p.busy
+          ? 'Working…'
+          : p.voicePhase === 'starting'
+            ? 'Opening mic…'
+            : 'Ready to talk';
   const conversation = p.messages.filter((m) => m.id !== 'welcome');
   const voiceHelp = p.conversationActive
     ? 'Speak anytime, even during my reply. Pause ends the voice conversation; Stop also cancels the task.'
@@ -148,6 +163,7 @@ export default function DesktopBuddy(p: Props) {
     <button
       type="button"
       className={`buddy-play ${p.conversationActive ? 'playing' : ''} ${p.voicePhase === 'listening' ? 'listening' : ''}`}
+      data-phase={visualPhase}
       onClick={p.talk}
       disabled={!p.conversationActive && (!p.enabled || !p.voiceReady || p.busy)}
       aria-label={p.conversationActive ? 'Pause voice conversation' : 'Start voice conversation'}
@@ -244,6 +260,7 @@ export default function DesktopBuddy(p: Props) {
     <Root
       className={`buddy ${p.expanded ? 'expanded' : 'collapsed'} ${p.active ? 'active' : ''} ${panel.error ? 'has-layout-error' : ''}`}
       data-panel-stage={panel.stage}
+      data-phase={visualPhase}
       aria-label="InsightOS desktop buddy"
       onKeyDown={(event) => {
         if (event.key === 'Escape' && p.expanded && !p.modalOpen) {
@@ -268,7 +285,9 @@ export default function DesktopBuddy(p: Props) {
         >
           <AssistantSignal
             {...p.visual}
-            phase={p.visual?.phase ?? buddyVisualState(p.voicePhase, p.busy)}
+            phase={visualPhase}
+            behavior={p.visual?.behavior ?? p.behavior}
+            onBehaviorChange={p.visual?.onBehaviorChange ?? p.onBehaviorChange}
             audio={p.audio}
             reaction={p.visual?.reaction ?? reaction}
             motion={(p.visual?.motion ?? true) && !panel.motionPaused}
@@ -328,7 +347,9 @@ export default function DesktopBuddy(p: Props) {
           </div>
         </div>
       </header>
-      <div ref={panel.shell} className="buddy-panel-glass" aria-hidden="true" />
+      <div ref={panel.shell} className="buddy-panel-glass" aria-hidden="true">
+        <span className="buddy-panel-rim" />
+      </div>
       <section
         className="buddy-panel"
         id="buddy-conversation-panel"

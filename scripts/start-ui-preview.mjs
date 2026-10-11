@@ -66,7 +66,7 @@ try {
     '127.0.0.1',
   ]);
   // Reuse an existing server only when it serves this checkout's authored asset.
-  const buddyAsset = ['sprout-v003.glb', 'sprout-v002.glb', 'insight-core-v1.glb'].find(
+  const buddyAsset = ['sprout-v004.glb', 'sprout-v003.glb', 'sprout-v002.glb', 'insight-core-v1.glb'].find(
     (filename) => existsSync(path.join(workspace, 'public/buddy', filename)),
   );
   if (!buddyAsset) throw new Error('No authored buddy asset is available in this checkout.');

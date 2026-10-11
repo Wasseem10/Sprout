@@ -79,6 +79,62 @@
 .insight-signal.is-small .signal-halo {
   display: none;
 }
+.signal-sleep-zs {
+  left: clamp(15%, calc(var(--sleep-head-x) + 15%), 75%);
+  top: clamp(28%, calc(var(--sleep-head-y) - 12%), 75%);
+  width: 22%;
+  height: 1px;
+  color: #eaf8ff;
+  font:
+    700 clamp(10px, calc(var(--signal-size) * 0.13), 20px)/1 'Segoe UI',
+    sans-serif;
+  -webkit-text-stroke: 0.45px #163a70;
+  text-shadow:
+    0 1px 2px #123357,
+    0 0 4px #e6f4ff80;
+  pointer-events: none;
+}
+.signal-sleep-zs > span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+.signal-sleep-zs[data-moving='true'] > span {
+  animation: sprout-sleep-z 3.6s ease-out infinite;
+}
+.signal-sleep-zs > span:nth-child(2) {
+  animation-delay: 1.2s;
+}
+.signal-sleep-zs > span:nth-child(3) {
+  animation-delay: 2.4s;
+}
+.signal-sleep-zs[data-moving='false'] > span:first-child {
+  opacity: 0.8;
+}
+@keyframes sprout-sleep-z {
+  0%,
+  12% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.72);
+  }
+  25% {
+    opacity: 1;
+  }
+  82%,
+  100% {
+    opacity: 0;
+    transform: translate(60%, -180%) scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .signal-sleep-zs[data-moving='true'] > span {
+    animation: none;
+  }
+  .signal-sleep-zs > span:first-child {
+    opacity: 0.8;
+  }
+}
 @media (forced-colors: active) {
   .signal-halo {
     display: none;

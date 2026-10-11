@@ -1,0 +1,436 @@
+{
+  "source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-prism-behaviours-v004.blend",
+  "source_sha256": "77df8aa69295604c48dec23a0bccb837e2cbdc012f5212c10b76cc37bbf38518",
+  "asset_sha256": "77d4b92bc5d06e440706243f6ac9e6745073ba6f98d173b972114fabb02bde7c",
+  "pass": true,
+  "scene": "INSIGHTOS_Sprout_v004_behaviours",
+  "bones": 9,
+  "meshes": 11,
+  "clips": [
+    "Sprout_Blink",
+    "Sprout_Click",
+    "Sprout_Done",
+    "Sprout_Idle",
+    "Sprout_JoyJump",
+    "Sprout_Listen",
+    "Sprout_SleepEnter",
+    "Sprout_SleepLoop",
+    "Sprout_Speak",
+    "Sprout_Think",
+    "Sprout_Wake"
+  ],
+  "sample_count": 255,
+  "all_mesh_bounds": {
+    "Sprout_JoyJump": {
+      "min": [
+        -1.1479939222335815,
+        -1.0694684982299805,
+        -0.6890788674354553
+      ],
+      "max": [
+        1.1479934453964233,
+        1.8282254934310913,
+        0.8126625418663025
+      ]
+    },
+    "Sprout_SleepEnter": {
+      "min": [
+        -1.1028332710266113,
+        -1.115286946296692,
+        -1.2561579942703247
+      ],
+      "max": [
+        1.1028326749801636,
+        1.225106954574585,
+        0.7480847239494324
+      ]
+    },
+    "Sprout_SleepLoop": {
+      "min": [
+        -1.1099437475204468,
+        -1.1133208274841309,
+        -1.2619614601135254
+      ],
+      "max": [
+        1.1099432706832886,
+        0.37123996019363403,
+        0.6085184812545776
+      ]
+    },
+    "Sprout_Wake": {
+      "min": [
+        -1.1028332710266113,
+        -1.115286946296692,
+        -1.2561579942703247
+      ],
+      "max": [
+        1.1028326749801636,
+        1.225106954574585,
+        0.7480847239494324
+      ]
+    },
+    "Sprout_Done": {
+      "min": [
+        -1.0158635377883911,
+        -1.0787700414657593,
+        -0.6614365577697754
+      ],
+      "max": [
+        1.004191279411316,
+        1.2385309934616089,
+        0.7610428333282471
+      ]
+    }
+  },
+  "minimum_core_clearance": 0.10834168642759323,
+  "keyposes": [
+    {
+      "clip": "Sprout_JoyJump",
+      "frame": 1,
+      "bounds_all11meshes_gltf": {
+        "min": [
+          -1.0038026571273804,
+          -1.0694684982299805,
+          -0.6577997803688049
+        ],
+        "max": [
+          1.0038021802902222,
+          1.225106954574585,
+          0.7480847239494324
+        ]
+      },
+      "outside_core_vertices": 0,
+      "minimum_core_clearance": 0.1195782870054245,
+      "sleep_lids_closed": "not_asserted"
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "frame": 5,
+      "bounds_all11meshes_gltf": {
+        "min": [
+          -1.1269861459732056,
+          -1.0694684982299805,
+          -0.6743186116218567
+        ],
+        "max": [
+          1.1269856691360474,
+          0.9251836538314819,
+          0.8126625418663025
+        ]
+      },
+      "outside_core_vertices": 0,
+      "minimum_core_clearance": 0.10976345092058182,
+      "sleep_lids_closed": "not_asserted"
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "frame": 16,
+      "bounds_all11meshes_gltf": {
+        "min": [
+          -0.9932830929756165,
+          -0.4922301769256592,
+          -0.6712679266929626
+        ],
+        "max": [
+          0.993282675743103,
+          1.8254806995391846,
+          0.7162352800369263
+        ]
+      },
+      "outside_core_vertices": 0,
+      "minimum_core_clearance": 0.11756028980016708,
+      "sleep_lids_closed": "not_asserted"
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "frame": 25,
+      "bounds_all11meshes_gltf": {
+        "min": [
+          -1.1479939222335815,
+          -1.0694684982299805,
+          -0.6890788674354553
+        ],
+        "max": [
+          1.1479934453964233,
+          0.8699350357055664,
+          0.8025654554367065
+        ]
+      },
+      "outside_core_vertices": 0,
+      "minimum_core_clearance": 0.10834168642759323,
+      "sleep_lids_closed": "not_asserted"
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "frame": 41,
+      "bounds_all11meshes_gltf": {
+        "min": [
+          -1.0038026571273804,
+          -1.0694684982299805,
+          -0.6577997803688049
+        ],
+        "max": [
+          1.0038021802902222,
+          1.225106954574585,
+          0.7480847239494324
+        ]
+      },
+      "outside_core_vertices": 0,
+      "minimum_core_clearance": 0.1195782870054245,
+      "sleep_lids_closed": "not_asserted"
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "frame": 1,
+      "bounds_all11meshes_gltf": {
+        "min": [
+          -1.0038026571273804,
+          -1.0694684982299805,
+          -0.6577997803688049
+        ],
+        "max": [
+          1.0038021802902222,
+          1.225106954574585,
+          0.7480847239494324
+        ]
+      },
+      "outside_core_vertices": 0,
+      "minimum_core_clearance": 0.1195782870054245,
+      "sleep_lids_closed": "not_asserted"
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "frame": 23,
+      "bounds_all11meshes_gltf": {
+        "min": [
+          -1.0605452060699463,
+          -1.1028602123260498,
+          -0.9484422206878662
+        ],
+        "max": [
+          1.060544729232788,
+          0.7787249088287354,
+          0.5424708127975464
+        ]
+      },
+      "outside_core_vertices": 0,
+      "minimum_core_clearance": 0.11615434288978577,
+      "sleep_lids_closed": "not_asserted"
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "frame": 41,
+      "bounds_all11meshes_gltf": {
+        "min": [
+          -1.1028332710266113,
+          -1.113248348236084,
+          -1.2561579942703247
+        ],
+        "max": [
+          1.1028326749801636,
+          0.36648428440093994,
+          0.6085039377212524
+        ]
+      },
+      "outside_core_vertices": 0,
+      "minimum_core_clearance": 0.11276580393314362,
+      "sleep_lids_closed": "not_asserted"
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "frame": 1,
+      "bounds_all11meshes_gltf": {
+        "min": [
+          -1.1028332710266113,
+          -1.113248348236084,
+          -1.2561579942703247
+        ],
+        "max": [
+          1.1028326749801636,
+          0.36648428440093994,
+          0.6085039377212524
+        ]
+      },
+      "outside_core_vertices": 0,
+      "minimum_core_clearance": 0.11276580393314362,
+      "sleep_lids_closed": true,
+      "head_emitter_anchor_gltf": [
+        0,
+        0.41648428440093993,
+        0.0839950405061245
+      ]
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "frame": 31,
+      "bounds_all11meshes_gltf": {
+        "min": [
+          -1.1099437475204468,
+          -1.1131761074066162,
+          -1.2619614601135254
+        ],
+        "max": [
+          1.1099432706832886,
+          0.37123996019363403,
+          0.6084893941879272
+        ]
+      },
+      "outside_core_vertices": 0,
+      "minimum_core_clearance": 0.11318519711494446,
+      "sleep_lids_closed": true
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "frame": 121,
+      "bounds_all11meshes_gltf": {
+        "min": [
+          -1.1028332710266113,
+          -1.113248348236084,
+          -1.2561579942703247
+        ],
+        "max": [
+          1.1028326749801636,
+          0.36648428440093994,
+          0.6085039377212524
+        ]
+      },
+      "outside_core_vertices": 0,
+      "minimum_core_clearance": 0.11276580393314362,
+      "sleep_lids_closed": true
+    },
+    {
+      "clip": "Sprout_Wake",
+      "frame": 1,
+      "bounds_all11meshes_gltf": {
+        "min": [
+          -1.1028332710266113,
+          -1.113248348236084,
+          -1.2561579942703247
+        ],
+        "max": [
+          1.1028326749801636,
+          0.36648428440093994,
+          0.6085039377212524
+        ]
+      },
+      "outside_core_vertices": 0,
+      "minimum_core_clearance": 0.11276580393314362,
+      "sleep_lids_closed": "not_asserted"
+    },
+    {
+      "clip": "Sprout_Wake",
+      "frame": 24,
+      "bounds_all11meshes_gltf": {
+        "min": [
+          -1.017376184463501,
+          -1.079158067703247,
+          -0.7215299010276794
+        ],
+        "max": [
+          1.0173757076263428,
+          1.150640606880188,
+          0.6662595868110657
+        ]
+      },
+      "outside_core_vertices": 0,
+      "minimum_core_clearance": 0.118855781853199,
+      "sleep_lids_closed": "not_asserted"
+    },
+    {
+      "clip": "Sprout_Wake",
+      "frame": 31,
+      "bounds_all11meshes_gltf": {
+        "min": [
+          -1.0038026571273804,
+          -1.0694684982299805,
+          -0.6577997803688049
+        ],
+        "max": [
+          1.0038021802902222,
+          1.225106954574585,
+          0.7480847239494324
+        ]
+      },
+      "outside_core_vertices": 0,
+      "minimum_core_clearance": 0.1195782870054245,
+      "sleep_lids_closed": "not_asserted"
+    },
+    {
+      "clip": "Sprout_Done",
+      "frame": 1,
+      "bounds_all11meshes_gltf": {
+        "min": [
+          -1.0038026571273804,
+          -1.0694684982299805,
+          -0.6577997803688049
+        ],
+        "max": [
+          1.0038021802902222,
+          1.225106954574585,
+          0.7480847239494324
+        ]
+      },
+      "outside_core_vertices": 0,
+      "minimum_core_clearance": 0.1195782870054245,
+      "sleep_lids_closed": "not_asserted"
+    },
+    {
+      "clip": "Sprout_Done",
+      "frame": 6,
+      "bounds_all11meshes_gltf": {
+        "min": [
+          -1.0086380243301392,
+          -1.0666546821594238,
+          -0.6614365577697754
+        ],
+        "max": [
+          1.0040497779846191,
+          1.2192115783691406,
+          0.7610428333282471
+        ]
+      },
+      "outside_core_vertices": 0,
+      "minimum_core_clearance": 0.11928877234458923,
+      "sleep_lids_closed": "not_asserted"
+    },
+    {
+      "clip": "Sprout_Done",
+      "frame": 11,
+      "bounds_all11meshes_gltf": {
+        "min": [
+          -1.0081993341445923,
+          -1.0787699222564697,
+          -0.6532737612724304
+        ],
+        "max": [
+          0.9992557168006897,
+          1.238383173942566,
+          0.7418614625930786
+        ]
+      },
+      "outside_core_vertices": 0,
+      "minimum_core_clearance": 0.1197734922170639,
+      "sleep_lids_closed": "not_asserted"
+    },
+    {
+      "clip": "Sprout_Done",
+      "frame": 21,
+      "bounds_all11meshes_gltf": {
+        "min": [
+          -1.0158635377883911,
+          -1.0694684982299805,
+          -0.6535782814025879
+        ],
+        "max": [
+          0.9996100664138794,
+          1.2277898788452148,
+          0.7477330565452576
+        ]
+      },
+      "outside_core_vertices": 0,
+      "minimum_core_clearance": 0.11915339529514313,
+      "sleep_lids_closed": "not_asserted"
+    }
+  ],
+  "scope": "Reopened editable source, complete11mesh authored-frame envelopes and sampled core containment. No save/live scene mutation/GPU/native/display proof."
+}

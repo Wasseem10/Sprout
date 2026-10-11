@@ -19,9 +19,9 @@ import { runSproutReplay } from '../src/buddyReplay';
 // every acceptance check plus a digest of each timestamped pose trace.
 const trace = process.argv.includes('--trace');
 const reportArguments = process.argv.slice(2).filter((argument) => argument !== '--trace');
-const assetPath = path.resolve(reportArguments[0] ?? 'public/buddy/sprout-v003.glb');
+const assetPath = path.resolve(reportArguments[0] ?? 'public/buddy/sprout-v004.glb');
 const reportPath = path.resolve(
-  reportArguments[1] ?? 'artifacts/glossy-v003/sprout-motion-replay.json',
+  reportArguments[1] ?? 'artifacts/glass-sprout-v004/sprout-motion-replay.json',
 );
 // This CPU audit evaluates exported geometry and animation. Browser proofs
 // separately validate embedded image bytes, decoding, colour space and rendering.

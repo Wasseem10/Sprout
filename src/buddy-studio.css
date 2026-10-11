@@ -22,7 +22,7 @@
 .buddy-studio a {
   min-height: 44px;
 }
-.buddy-studio button {
+.buddy-studio :where(button):not(:where(.buddy button)) {
   color: inherit;
   border: 0;
   background: transparent;
@@ -31,7 +31,8 @@
 .buddy-studio button:disabled {
   cursor: not-allowed;
 }
-.buddy-studio :is(a, button, textarea, input, summary, [tabindex]):focus-visible {
+.buddy-studio
+  :is(a, button, textarea, input, summary, [tabindex]):not(:where(.buddy *)):focus-visible {
   outline: 3px solid #d4f5e3;
   outline-offset: 5px;
 }

@@ -1,6 +1,6 @@
 # Glass, voice states, joy, sleep and Done — worker prompts
 
-Prepared 2026-10-11. **Assignments for future implementation; no new animation or glass result is claimed here.** Paste the [full master prompt](GLASS-JOY-SLEEP-MASTER-PROMPT.md) into the lead session. These workers operate under that brief and coordinate through the lead, within the same task.
+Prepared 2026-10-11. **Retained assignments for the implemented [Sprout v004 delivery](../sprout/DELIVERY-v004.md).** The [full master prompt](GLASS-JOY-SLEEP-MASTER-PROMPT.md) remains the design contract; the delivery record contains actual results. These workers operate under that brief and coordinate through the lead, within the same task.
 
 ## Ownership and order
 

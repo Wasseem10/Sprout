@@ -6,10 +6,9 @@ const previewStates = [
   ['Listening', 'listening'],
   ['Thinking', 'thinking'],
   ['Speaking', 'speaking'],
-  ['Done', 'success'],
 ] as const;
-const selectedAsset = '/buddy/sprout-v003.glb';
-const selectedFallback = '/buddy/sprout-v003.png';
+const selectedAsset = '/buddy/sprout-v004.glb';
+const selectedFallback = '/buddy/sprout-v004.png';
 
 function signal(page: Page) {
   return page.locator('.insight-signal:visible');
@@ -41,7 +40,7 @@ async function expectStaticFrames(visual: Locator, explanation: string) {
   expect(first.equals(second), explanation).toBe(true);
 }
 
-test('studio previews five states and preserves a keyboard-controlled conversation without API calls', async ({
+test('studio previews real phases and preserves a keyboard-controlled conversation without API calls', async ({
   page,
 }) => {
   const apiCalls: string[] = [];
@@ -158,8 +157,8 @@ test('a GPU failure uses the authored PNG and leaves preview controls usable', a
   await page.getByRole('button', { name: 'Expand conversation preview' }).click();
   await expect(page.getByRole('button', { name: 'Collapse conversation' })).toBeFocused();
   await page.getByLabel('Tell your buddy what to do').fill('Usable without a GPU.');
-  await page.getByRole('button', { name: 'Done', exact: true }).click();
-  await expect(page.locator('.studio-preview-status')).toContainText('Done');
+  await expect(page.getByRole('button', { name: 'Done', exact: true })).toBeDisabled();
+  await expect(page.locator('.studio-preview-status')).toContainText('Listening');
   await page.getByRole('button', { name: 'Pause motion' }).click();
   await expect(page.getByRole('button', { name: 'Resume motion' })).toBeVisible();
   await page.getByRole('button', { name: 'Collapse conversation' }).click();

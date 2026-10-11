@@ -6,6 +6,7 @@ import { createHash } from 'node:crypto';
 import { mkdtemp, mkdir, readFile, unlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { createCanvas, loadImage } from '@napi-rs/canvas';
 import {
   proofAssetFile,
   proofAssetUrl,
@@ -360,6 +361,14 @@ try {
   assert.equal(workspace.resizable, true);
   await returnButton.click();
   await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'closed');
+  // A newly mounted panel begins closed before its initial native IPC settles.
+  // Observe the OS mode, not just that initial React attribute.
+  await expect
+    .poll(async () => {
+      const native = await nativeSnapshot();
+      return native.alwaysOnTop && !native.resizable;
+    })
+    .toBe(true);
   const returnedPill = await nativeSnapshot();
   sized(returnedPill.bounds, 'pill', returnedPill.workArea);
   assert.equal(returnedPill.alwaysOnTop, true);
@@ -391,105 +400,195 @@ try {
     // This owned opaque fixture covers every captured desktop pixel behind the buddy.
     // It changes only an isolated test window, never the user's desktop background.
     const backgrounds = [
-      { name: 'bright', color: '#f6fafc', paint: '#f6fafc' },
-      { name: 'dark', color: '#0b1013', paint: '#0b1013' },
+      {
+        name: 'bright',
+        color: '#f6fafc',
+        paint: '#f6fafc',
+        sentinel: '#ff00a7',
+        rgb: [255, 0, 167],
+      },
+      { name: 'dark', color: '#0b1013', paint: '#0b1013', sentinel: '#00e89b', rgb: [0, 232, 155] },
       {
         name: 'busy',
         color: '#d8ebf3',
+        sentinel: '#ffb600',
+        rgb: [255, 182, 0],
         paint:
           'repeating-linear-gradient(135deg,transparent 0 24px,#374d8840 24px 48px),radial-gradient(ellipse at 12% 28%,#41d5e9 0,transparent 54%),radial-gradient(ellipse at 85% 12%,#b996ef 0,transparent 50%),radial-gradient(ellipse at 70% 85%,#ffb3a1 0,transparent 55%),#d8ebf3',
       },
     ];
     controlledBackgroundCaptures = [];
     for (const background of backgrounds) {
-      const result = await desktop.evaluate(
-        async ({ BrowserWindow, screen, desktopCapturer }, fixture) => {
-          const window = BrowserWindow.getAllWindows()[0];
-          const bounds = window.getBounds();
-          // Extend beyond the crop so native rounded fixture corners cannot reveal desktop pixels.
-          const fixtureBounds = {
-            x: bounds.x - 24,
-            y: bounds.y - 24,
-            width: bounds.width + 48,
-            height: bounds.height + 48,
-          };
-          const backdrop = new BrowserWindow({
-            ...fixtureBounds,
-            frame: false,
-            transparent: false,
-            backgroundColor: fixture.color,
-            resizable: false,
-            alwaysOnTop: true,
-            show: false,
-            skipTaskbar: true,
-            webPreferences: {
-              sandbox: true,
-              contextIsolation: true,
-              nodeIntegration: false,
-              webSecurity: true,
-            },
-          });
-          try {
-            await backdrop.loadURL(
-              'data:text/html;charset=utf-8,' +
-                encodeURIComponent(
-                  `<html><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:${fixture.paint}}</style><body></body></html>`,
-                ),
-            );
-            backdrop.setBounds(fixtureBounds);
-            backdrop.showInactive();
-            backdrop.moveTop();
-            window.moveTop();
-            window.focus();
-            await new Promise((resolve) => setTimeout(resolve, 160));
-            const appliedFixture = backdrop.getBounds();
-            if (
-              appliedFixture.x >= bounds.x ||
-              appliedFixture.y >= bounds.y ||
-              appliedFixture.x + appliedFixture.width <= bounds.x + bounds.width ||
-              appliedFixture.y + appliedFixture.height <= bounds.y + bounds.height
-            )
-              throw new Error('Controlled backdrop does not cover the complete capture bounds.');
-            const display = screen.getDisplayMatching(bounds);
-            const sources = await desktopCapturer.getSources({
-              types: ['screen'],
-              thumbnailSize: { width: display.bounds.width, height: display.bounds.height },
+      let result;
+      try {
+        result = await desktop.evaluate(
+          async ({ BrowserWindow, screen, desktopCapturer }, fixture) => {
+            const window = BrowserWindow.getAllWindows()[0];
+            const bounds = window.getBounds();
+            // Extend beyond the crop so native rounded fixture corners cannot reveal desktop pixels.
+            const fixtureBounds = {
+              x: bounds.x - 24,
+              y: bounds.y - 24,
+              width: bounds.width + 48,
+              height: bounds.height + 48,
+            };
+            const backdrop = new BrowserWindow({
+              ...fixtureBounds,
+              frame: false,
+              transparent: false,
+              backgroundColor: fixture.color,
+              resizable: false,
+              alwaysOnTop: true,
+              show: false,
+              skipTaskbar: true,
+              webPreferences: {
+                sandbox: true,
+                contextIsolation: true,
+                nodeIntegration: false,
+                webSecurity: true,
+              },
             });
-            const source =
-              sources.find((item) => item.display_id === String(display.id)) ||
-              (sources.length === 1 ? sources[0] : null);
-            if (!source || source.thumbnail.isEmpty())
-              throw new Error('Display capture unavailable for controlled background review.');
-            const size = source.thumbnail.getSize();
-            const xScale = size.width / display.bounds.width;
-            const yScale = size.height / display.bounds.height;
-            const rectangle = {
-              x: Math.round((bounds.x - display.bounds.x) * xScale),
-              y: Math.round((bounds.y - display.bounds.y) * yScale),
-              width: Math.round(bounds.width * xScale),
-              height: Math.round(bounds.height * yScale),
-            };
-            return {
-              background: fixture.name,
-              source: 'actual OS compositor; owned opaque fixture behind isolated buddy only',
-              bounds,
-              fixtureBounds: backdrop.getBounds(),
-              size,
-              rectangle,
-              encoded: source.thumbnail.crop(rectangle).toPNG().toString('base64'),
-            };
-          } finally {
-            backdrop.destroy();
-            window.focus();
-          }
-        },
-        background,
+            try {
+              await backdrop.loadURL(
+                'data:text/html;charset=utf-8,' +
+                  encodeURIComponent(
+                    `<html><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:${fixture.paint}}.sentinel{position:fixed;inset:0;border:16px solid ${fixture.sentinel};box-sizing:border-box;pointer-events:none}</style><body><div class="sentinel"></div></body></html>`,
+                  ),
+              );
+              backdrop.setBounds(fixtureBounds);
+              backdrop.setAlwaysOnTop(true, 'pop-up-menu');
+              backdrop.showInactive();
+              backdrop.moveTop();
+              window.moveTop();
+              window.focus();
+              await new Promise((resolve) => setTimeout(resolve, 250));
+              const appliedFixture = backdrop.getBounds();
+              if (
+                appliedFixture.x >= bounds.x ||
+                appliedFixture.y >= bounds.y ||
+                appliedFixture.x + appliedFixture.width <= bounds.x + bounds.width ||
+                appliedFixture.y + appliedFixture.height <= bounds.y + bounds.height
+              )
+                throw new Error('Controlled backdrop does not cover the complete capture bounds.');
+              const display = screen.getDisplayMatching(bounds);
+              const sources = await desktopCapturer.getSources({
+                types: ['screen'],
+                thumbnailSize: { width: display.bounds.width, height: display.bounds.height },
+              });
+              const source =
+                sources.find((item) => item.display_id === String(display.id)) ||
+                (sources.length === 1 ? sources[0] : null);
+              if (!source || source.thumbnail.isEmpty())
+                throw new Error('Display capture unavailable for controlled background review.');
+              const size = source.thumbnail.getSize();
+              const xScale = size.width / display.bounds.width;
+              const yScale = size.height / display.bounds.height;
+              const rectangle = {
+                x: Math.round((bounds.x - display.bounds.x) * xScale),
+                y: Math.round((bounds.y - display.bounds.y) * yScale),
+                width: Math.round(bounds.width * xScale),
+                height: Math.round(bounds.height * yScale),
+              };
+              // Unique opaque markers outside the buddy crop prove that this
+              // particular fixture actually reached the captured OS compositor.
+              // Never publish a screenshot merely because a BrowserWindow exists.
+              const points = [
+                [bounds.x - 16, bounds.y - 16],
+                [bounds.x + bounds.width / 2, bounds.y - 16],
+                [bounds.x + bounds.width + 16, bounds.y - 16],
+                [bounds.x - 16, bounds.y + bounds.height / 2],
+                [bounds.x + bounds.width + 16, bounds.y + bounds.height / 2],
+                [bounds.x - 16, bounds.y + bounds.height + 16],
+                [bounds.x + bounds.width / 2, bounds.y + bounds.height + 16],
+                [bounds.x + bounds.width + 16, bounds.y + bounds.height + 16],
+              ]
+                .map(([x, y]) => ({
+                  x: Math.round((x - display.bounds.x) * xScale),
+                  y: Math.round((y - display.bounds.y) * yScale),
+                }))
+                .filter(({ x, y }) => x >= 0 && y >= 0 && x < size.width && y < size.height);
+              if (points.length < 3)
+                throw new Error('Insufficient visible fixture sentinel positions.');
+              return {
+                background: fixture.name,
+                source: 'actual OS compositor; owned opaque fixture behind isolated buddy only',
+                bounds,
+                fixtureBounds: backdrop.getBounds(),
+                size,
+                rectangle,
+                sentinel: {
+                  expected: fixture.rgb,
+                  zOrder: 'pop-up-menu',
+                  samples: points.map((point) => ({
+                    ...point,
+                    encoded: source.thumbnail
+                      .crop({ ...point, width: 1, height: 1 })
+                      .toPNG()
+                      .toString('base64'),
+                  })),
+                },
+                encoded: source.thumbnail.crop(rectangle).toPNG().toString('base64'),
+              };
+            } finally {
+              backdrop.destroy();
+              window.focus();
+            }
+          },
+          background,
+        );
+      } catch (error) {
+        controlledBackgroundCaptures.push({
+          background: background.name,
+          status: 'unavailable',
+          available: false,
+          reason: error.message,
+          source: 'No OS image published; fixture/capture validation failed.',
+        });
+        continue;
+      }
+      const canvas = createCanvas(1, 1);
+      const pixels = canvas.getContext('2d');
+      try {
+        for (const sample of result.sentinel.samples) {
+          pixels.clearRect(0, 0, 1, 1);
+          pixels.drawImage(await loadImage(Buffer.from(sample.encoded, 'base64')), 0, 0);
+          sample.rgba = [...pixels.getImageData(0, 0, 1, 1).data];
+          delete sample.encoded;
+        }
+      } catch (error) {
+        delete result.encoded;
+        for (const sample of result.sentinel.samples) delete sample.encoded;
+        result.status = 'unavailable';
+        result.available = false;
+        result.source = 'No OS image published; fixture sentinel could not be decoded.';
+        result.reason = error.message;
+        controlledBackgroundCaptures.push(result);
+        continue;
+      }
+      result.sentinel.validated = result.sentinel.samples.every(
+        (sample) =>
+          sample.rgba[3] === 255 &&
+          result.sentinel.expected.every(
+            (value, index) => Math.abs(value - sample.rgba[index]) <= 8,
+          ),
       );
+      if (!result.sentinel.validated) {
+        delete result.encoded;
+        result.status = 'unavailable';
+        result.available = false;
+        result.source = 'No OS image published; owned fixture sentinel was not visible in capture.';
+        result.reason =
+          'Stale or occluded compositor image: unique background edge pixels did not match.';
+        controlledBackgroundCaptures.push(result);
+        continue;
+      }
       await writeFile(
         path.join(artifacts, `buddy-panel-native-prism-${background.name}.png`),
         Buffer.from(result.encoded, 'base64'),
       );
       delete result.encoded;
+      result.status = 'captured';
+      result.available = true;
       controlledBackgroundCaptures.push(result);
     }
   }
@@ -618,6 +717,21 @@ try {
   console.log(JSON.stringify(report, null, 2));
 } catch (error) {
   if (desktop) {
+    const nativeFailure = await desktop
+      .evaluate(({ BrowserWindow, screen }) => {
+        const window = BrowserWindow.getAllWindows()[0];
+        if (!window) return null;
+        return {
+          bounds: window.getBounds(),
+          alwaysOnTop: window.isAlwaysOnTop(),
+          resizable: window.isResizable(),
+          visible: window.isVisible(),
+          workArea: screen.getDisplayMatching(window.getBounds()).workArea,
+          events: globalThis.__panelBoundsEvents,
+        };
+      })
+      .catch(() => null);
+    console.error(JSON.stringify({ nativeFailure }));
     const failure = await desktop
       .evaluate(async ({ BrowserWindow }) => {
         const window = BrowserWindow.getAllWindows()[0];

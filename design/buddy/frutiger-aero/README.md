@@ -1,10 +1,10 @@
 # Sprout / Prism — implementation and retained studies
 
-**Sprout v003: glossy blue depth, blended lavender/coral undertones, whole-body pointer attention, and one clean glass panel.** The [delivery guide](../sprout/DELIVERY-v003.md) and [refinement audit](../sprout/GLOSSY-REFINEMENT-AUDIT.md) record current assets and verification. The [revision-6 launch prompt](SPROUT-LAUNCH-PROMPT.txt), [readable master](MASTER-PROMPT.md) and [four focused worker prompts](GLOSSY-SPROUT-PROMPT-PACK.md) preserve the complete implementation brief.
+**Sprout v004: translucent Prism glass, centred voice controls, joyful jump, sleep/wake and a restrained Done nod.** The [current delivery guide](../sprout/DELIVERY-v004.md) records assets, usage and verification; the [implementation brief](GLASS-JOY-SLEEP-MASTER-PROMPT.md) and [worker assignments](GLASS-JOY-SLEEP-WORKER-PROMPTS.md) retain its design contract. The [v003 delivery](../sprout/DELIVERY-v003.md) and [refinement audit](../sprout/GLOSSY-REFINEMENT-AUDIT.md) preserve the preceding material and pointer-attention work.
 
-The current application uses React 19, Vite 8, Electron 44 and direct Three.js. Its original Blender-authored character loads from GLB with nine deformation bones, three paired shell/core morphs and six authored clips. R3F/Next.js remain historical packaging ideas; this delivery runs in the existing application.
+The current application uses React 19, Vite 8, Electron 44 and direct Three.js. Its original Blender-authored character loads from GLB with nine deformation bones, three paired shell/core morphs and eleven authored clips. R3F/Next.js remain historical packaging ideas; this delivery runs in the existing application.
 
-The selected v003 material combines a near-neutral transmitting shell, cyan boundary and appendages, and an inset blue/Prism core. Fixed curved reflections respond to body rotation. The preserved v002 asset is the first GLB fallback, followed by Ribbon; the new source-backed PNG provides the no-WebGL path. Accessories remain outside the character's identity.
+The v004 asset preserves the selected v003 material: a near-neutral transmitting shell, cyan boundary and appendages, and an inset blue/Prism core. Fixed curved reflections respond to body rotation. Preserved v003/v002 assets and Ribbon form the GLB fallback chain; source-backed idle and sleeping PNGs provide the graphics-loss path. Accessories remain outside the character's identity.
 
 The panel has one identity/status row, one reading well, Ideas/Tools disclosures and voice beside the composer. Direct Stop, drafts, focus and native resizing retain their existing owners. Voice phases stay authoritative; the avatar consumes the existing numeric presentation samples. The [scene passport](../sprout/SCENE-PASSPORT.md) preserves the original construction history.
 
@@ -12,7 +12,7 @@ The panel has one identity/status row, one reading well, Ideas/Tools disclosures
 
 Double-click **Start InsightOS UI.cmd** at the repository root. Open [the local studio](http://127.0.0.1:5173/?studio=buddy) for actual Sprout sizes and simulated phase/reaction replay, or [the actual panel preview](http://127.0.0.1:5173/?studio=panel) for light/dark/busy backgrounds and Large text. Browser previews use local sample data and start no microphone/provider session.
 
-Current evidence: [v003 manifest](../sprout/sprout-prism-v003.manifest.json), [material/motion comparison](../../../artifacts/sprout-glossy-final/report.json), [native verification folder](../../../artifacts/glossy-v003/) and [refinement audit](../sprout/GLOSSY-REFINEMENT-AUDIT.md).
+Current evidence: [v004 manifest](../sprout/sprout-prism-v004.manifest.json), [asset handoff](../sprout/ASSET-HANDOFF-v004.md), [matched glass comparison](GLASS-PANEL-V005-STUDY.md) and [delivery checks](../sprout/DELIVERY-v004.md). The [v003 material comparison](../../../artifacts/sprout-glossy-final/report.json) remains separate historical evidence.
 
 ## Preserved v002 evidence
 
