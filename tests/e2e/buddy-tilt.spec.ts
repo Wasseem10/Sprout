@@ -120,7 +120,12 @@ test('panel tilts on a fixed surface, holds a pressed pose, then preserves editi
     () => (window as unknown as { __tiltNativeModes: number }).__tiltNativeModes,
   );
   await page.getByRole('button', { name: 'busy', exact: true }).click();
-  const output = path.join(process.cwd(), 'artifacts', 'glass-panel-v006', 'tilt');
+  const output = path.join(
+    process.cwd(),
+    'artifacts',
+    process.env.INSIGHTOS_PROOF_TAG ?? 'glass-panel-v006',
+    'tilt',
+  );
   await mkdir(output, { recursive: true });
   await page.mouse.move(box.x + 8, box.y + box.height / 2);
   await expect(plane).toHaveAttribute('data-tilt', 'active');

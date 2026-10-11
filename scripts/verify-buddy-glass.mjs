@@ -120,7 +120,7 @@ function Fixture(){
  expand:()=>setConfig(current=>({...current,expanded:!current.expanded})),expansionFailed:noop,hide:noop,
  talk:()=>setConfig(current=>({...current,phase:talking?'idle':'listening'})),stop:()=>setConfig(current=>({...current,phase:'idle'})),
  settings:noop,workspace:noop,folder:noop,screen:noop,toggleSpeech:noop,setRequest,suggest:setRequest,send:noop,run:noop,editor:noop,openPresentation:noop,openSpreadsheet:noop,
- visual:{motion:false,assetUrl:'/buddy/sprout-v003.glb'}
+ visual:{motion:false,assetUrl:'/buddy/sprout-v005.glb'}
  })));
 }
 createRoot(document.getElementById('fixture')).render(React.createElement(Fixture));
@@ -394,7 +394,9 @@ try {
   const controlStates = [];
   for (const interaction of ['normal', 'hover', 'focus', 'pressed', 'disabled']) {
     await page.mouse.move(435, 700);
-    await primary.evaluate((element) => element.blur());
+    await page.evaluate(() => {
+      if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+    });
     if (interaction === 'hover') await primary.hover();
     if (interaction === 'focus') await primary.focus();
     if (interaction === 'pressed') {
@@ -466,6 +468,77 @@ try {
   await page
     .locator('.proof-scene')
     .screenshot({ path: path.join(output, 'panel-320css-large-error-dark.png') });
+  const materialPreferences = [];
+  if (stage !== 'before') {
+    const cdp = await context.newCDPSession(page);
+    for (const feature of [
+      { name: 'prefers-reduced-transparency', value: 'reduce' },
+      { name: 'prefers-contrast', value: 'more' },
+    ]) {
+      await cdp.send('Emulation.setEmulatedMedia', {
+        features: [feature, { name: 'prefers-reduced-motion', value: 'reduce' }],
+      });
+      assert.equal(
+        await page.evaluate(
+          ({ name, value }) => matchMedia(`(${name}: ${value})`).matches,
+          feature,
+        ),
+        true,
+      );
+      await page.evaluate(() =>
+        window.__glassFixture.update({ phase: 'speaking', sessionActive: true, error: false }),
+      );
+      await expect(primary).toHaveAttribute('data-phase', 'speaking');
+      await primary.hover();
+      await page.mouse.down();
+      const controls = await page
+        .locator('.buddy-icon, .buddy-play, .buddy-send, .buddy-disclosure-trigger')
+        .evaluateAll((elements) =>
+          elements
+            .filter((element) => element.getClientRects().length)
+            .map((element) => {
+              const style = getComputedStyle(element);
+              return {
+                name: element.getAttribute('aria-label') || element.textContent,
+                background: style.backgroundColor,
+                image: style.backgroundImage,
+                filter: style.backdropFilter,
+                rim: getComputedStyle(element, '::before').display,
+              };
+            }),
+        );
+      await page.mouse.up();
+      assert.ok(controls.length >= 6);
+      for (const control of controls) {
+        assert.match(
+          control.background,
+          /^rgb\(/,
+          'Preference keeps every control opaque, including held Pause and open Collapse.',
+        );
+        assert.equal(control.image, 'none');
+        assert.equal(control.filter, 'none');
+        assert.equal(control.rim, 'none');
+      }
+      await page.evaluate(() => window.__glassFixture.update({ expanded: false }));
+      await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'closed');
+      const dock = await page.locator('.buddy-dock-controls').evaluate((element) => {
+        const style = getComputedStyle(element);
+        return {
+          background: style.backgroundColor,
+          image: style.backgroundImage,
+          filter: style.backdropFilter,
+        };
+      });
+      assert.match(dock.background, /^rgb\(/);
+      assert.equal(dock.image, 'none');
+      assert.equal(dock.filter, 'none');
+      materialPreferences.push({ feature, controls, collapsedDock: dock });
+      await page.evaluate(() => window.__glassFixture.update({ expanded: true }));
+      await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'open');
+    }
+    await cdp.send('Emulation.setEmulatedMedia', { features: [] });
+    await cdp.detach();
+  }
   assert.deepEqual(requests, []);
   assert.deepEqual(browserErrors, []);
   await writeFile(
@@ -478,6 +551,7 @@ try {
         results,
         voiceStates,
         controlStates,
+        materialPreferences,
         errorContrast,
         popup,
         stop,

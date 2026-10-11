@@ -1,6 +1,7 @@
 SPROUT — EXPRESSIVE EYES, PRISM GLASS, SUBTLE DEPTH AND PRODUCT IDENTITY
 Implementation prompt · prepared 2026-10-11
 Status: implemented on ui/presentation-polish. See ../sprout/DELIVERY-v005.md for assets, verification and documented first-use timing/physical native-drag limits. The original brief follows unchanged.
+Panel material follow-up: SPROUT-PRISM-GLASS-v007.md records the later continuous glass surface and stronger button treatment requested in visual review.
 
 Implement this brief in D:/hackathon2026/insightos-ui. The product's visible name is now Sprout. Refine the existing approved creature and compact companion panel: replace the visibly separate blue eyelids with the actual eyes closing into happy arcs; create a sleek, almost borderless Prism glass panel with matching glass buttons; add restrained pointer-driven perspective, lighting and shadow; and update visible product identity. Complete source authoring, integration, visual review and relevant verification. Deliver the actual working app and editable assets.
 

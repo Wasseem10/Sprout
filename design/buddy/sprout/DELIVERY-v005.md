@@ -1,5 +1,7 @@
 # Sprout v005 — happy eyes, thin glass and subtle depth
 
+**Later panel material revision:** [Prism glass v007](../frutiger-aero/SPROUT-PRISM-GLASS-v007.md) replaces the pale reading/nameplate surfaces with continuous tinted glass and stronger source-adapted button reflections. Its captures and verification supersede the panel appearance below; the v005 avatar and behavior delivery remain unchanged.
+
 Implementation on `ui/presentation-polish`, continuing from `5125348`. This delivery refines the existing React/Vite/Three/Electron companion. The finance/backend contracts, ElevenLabs owner, sessions and saved preferences are preserved. The existing draft PR remains the review destination; no merge or production deployment is part of this work.
 
 ## Result

@@ -1,0 +1,2293 @@
+{
+  "checkedAt": "2026-10-11T08:36:15.937Z",
+  "pass": true,
+  "asset": {
+    "url": "/buddy/sprout-v005.glb",
+    "bytes": 1445476,
+    "sha256": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2",
+    "binaryHeader": "glTF",
+    "rendererChunk": "buddyRenderer-Ztm8NTJW.js",
+    "served": [
+      {
+        "url": "/buddy/sprout-v005.glb",
+        "sha256": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2"
+      },
+      {
+        "url": "/buddy/sprout-v005.glb",
+        "sha256": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2"
+      }
+    ]
+  },
+  "scope": {
+    "ui": "Actual compiled dist served at the native shell trusted local origin; actual main/preload/security/IPC, fresh isolated profile. Initial dev avatar warms bootstrap; this is not a cold-load test.",
+    "interaction": "Real panel typing, one delayed local task response driving authoritative thinking/idle, repeated open/close and rapid reversals. No mic, TTS, provider or production backend task.",
+    "timing": "Test-only WebGL/rAF API wrappers add overhead. Document rAF and actual avatar draw callback clocks are proxies, not OS presentation. No screenshot, video, GPU info or memory dump inside the timed interaction.",
+    "resources": "Created/deleted WebGL handle counts, not allocated bytes, physical VRAM or driver reclamation. The live field means created minus explicit delete, not validity after context loss. Test-held references intentionally prevent a GC claim.",
+    "lifecycle": "Actual compiled renderer API in a separate 96px test owner after panel timing; actual IntersectionObserver offscreen and native window hide/show; actual dispose. Native pet counts remain separate."
+  },
+  "tiltWarmup": {
+    "explicit": true,
+    "start": 3161.600000023842,
+    "end": 4281,
+    "scope": "Real pointer tilt in both directions before the measured interval; excludes first-use shader work. Compare the separately retained first-use report."
+  },
+  "native": {
+    "bounds": {
+      "x": 812,
+      "y": 20,
+      "width": 296,
+      "height": 128
+    },
+    "workArea": {
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1032
+    },
+    "preferences": {
+      "sandbox": true,
+      "contextIsolation": true,
+      "nodeIntegration": false,
+      "webSecurity": true,
+      "backgroundThrottling": false
+    },
+    "versions": {
+      "node": "24.21.0",
+      "acorn": "8.18.0",
+      "ada": "4.0.0",
+      "amaro": "1.1.11",
+      "ares": "1.34.8",
+      "brotli": "1.2.0",
+      "cldr": "48.0",
+      "icu": "78.2",
+      "llhttp": "9.4.3",
+      "merve": "1.2.2",
+      "modules": "149",
+      "napi": "10",
+      "nbytes": "0.1.4",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.70.0",
+      "nghttp3": "",
+      "ngtcp2": "",
+      "openssl": "0.0.0",
+      "simdjson": "4.6.7",
+      "simdutf": "7.7.0",
+      "sqlite": "3.53.4",
+      "tz": "2026d",
+      "undici": "7.29.1",
+      "unicode": "17.0",
+      "uv": "1.52.1",
+      "uvwasi": "0.0.23",
+      "v8": "15.2.124.28-electron.0",
+      "zlib": "1.3.2.1-motley",
+      "zstd": "1.6.0",
+      "electron": "44.7.0",
+      "chrome": "152.0.7977.130"
+    },
+    "initialVisibilitySnapshot": {
+      "visible": true,
+      "revision": 2
+    }
+  },
+  "interaction": {
+    "startedAt": 4939.899999976158,
+    "durationMs": 7802.700000047684,
+    "endedAt": 12742.600000023842,
+    "documentRafClock": {
+      "samples": 468,
+      "p95Ms": 16.800000000000182,
+      "maxMs": 17,
+      "above20Ms": 0,
+      "above50Ms": 0
+    },
+    "avatar": [
+      {
+        "id": 1,
+        "label": "native-pet",
+        "drawCallbackClock": {
+          "samples": 468,
+          "p95Ms": 16.800000000000182,
+          "maxMs": 17,
+          "above20Ms": 0,
+          "above50Ms": 0
+        },
+        "callbackCPUP95Ms": 1.7999999523162842,
+        "callbackCPUMaxMs": 5
+      }
+    ],
+    "mutations": [
+      {
+        "at": 4980.700000047684,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 4995.600000023842,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 8629.600000023842,
+        "panelStage": "open",
+        "phase": "thinking"
+      },
+      {
+        "at": 9286.399999976158,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 11149.200000047684,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 11328.5,
+        "panelStage": "closed",
+        "phase": "idle"
+      },
+      {
+        "at": 11412.700000047684,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 11426.899999976158,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 11467.299999952316,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 11528.100000023842,
+        "panelStage": "closed",
+        "phase": "idle"
+      },
+      {
+        "at": 11611.200000047684,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 11626.899999976158,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 11699.899999976158,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 11777.100000023842,
+        "panelStage": "closed",
+        "phase": "idle"
+      },
+      {
+        "at": 11846.100000023842,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 11860.200000047684,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 11915.200000047684,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 11976.899999976158,
+        "panelStage": "closed",
+        "phase": "idle"
+      },
+      {
+        "at": 12062.799999952316,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 12077.399999976158,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 12131,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 12194.100000023842,
+        "panelStage": "closed",
+        "phase": "idle"
+      },
+      {
+        "at": 12279,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 12292.899999976158,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 12302.600000023842,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 12327.700000047684,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 12329.399999976158,
+        "panelStage": "open",
+        "phase": "idle"
+      }
+    ],
+    "pointerSweep": [
+      {
+        "state": "active",
+        "transform": "matrix3d(0.999912, 3.4978e-05, -0.0132599, 7.36664e-06, 0, 0.999997, 0.00263786, -1.46548e-06, 0.01326, -0.00263763, 0.999909, -0.000555505, 0, 0, 0, 1)"
+      },
+      {
+        "state": "active",
+        "transform": "matrix3d(0.999914, -3.2966e-05, 0.013107, -7.28166e-06, 0, 0.999997, 0.00251514, -1.3973e-06, -0.013107, -0.00251492, 0.999911, -0.000555506, 0, 0, 0, 1)"
+      },
+      {
+        "state": "active",
+        "transform": "matrix3d(0.999934, 2.88902e-05, -0.011495, 6.38608e-06, 0, 0.999997, 0.00251329, -1.39627e-06, 0.011495, -0.00251312, 0.999931, -0.000555517, 0, 0, 0, 1)"
+      },
+      {
+        "state": "active",
+        "transform": "matrix3d(0.999937, -2.82323e-05, 0.0112332, -6.24069e-06, 0, 0.999997, 0.00251327, -1.39626e-06, -0.0112333, -0.00251311, 0.999934, -0.000555519, 0, 0, 0, 1)"
+      },
+      {
+        "state": "active",
+        "transform": "matrix3d(1, -1.64497e-06, 0.00065451, -3.63616e-07, 0, 0.999997, 0.00251327, -1.39626e-06, -0.000654512, -0.00251327, 0.999997, -0.000555554, 0, 0, 0, 1)"
+      }
+    ],
+    "settledDecoration": {
+      "intervalMs": 200,
+      "before": [
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 144,
+          "pending": 0
+        }
+      ],
+      "after": [
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 144,
+          "pending": 0
+        }
+      ]
+    },
+    "repetitions": 5,
+    "rapidExitReversal": {
+      "atStage": "closing",
+      "delayMs": 25
+    },
+    "retainedDraft": "Keep this unsent draft through every opening and reversal.",
+    "before": {
+      "at": 4857.100000023842,
+      "hidden": false,
+      "globalPendingAvatarCallbacks": 1,
+      "unassignedPendingAvatarCallbacks": 0,
+      "contexts": [
+        {
+          "id": 1,
+          "label": "native-pet",
+          "draws": 2676,
+          "clears": 611,
+          "avatarCallbacks": 191,
+          "pendingAvatarCallbacks": 1,
+          "resources": {
+            "Texture": {
+              "created": 16,
+              "deleted": 3,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 11,
+              "deleted": 5,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 10,
+              "deleted": 6,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 96,
+                "height": 96
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            9,
+            10
+          ],
+          "contextLost": false
+        }
+      ],
+      "callbacks": [
+        {
+          "id": 1,
+          "kind": "avatar",
+          "executions": 191,
+          "pending": 1
+        },
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 59,
+          "pending": 0
+        }
+      ]
+    },
+    "after": {
+      "at": 12746.200000047684,
+      "hidden": false,
+      "globalPendingAvatarCallbacks": 1,
+      "unassignedPendingAvatarCallbacks": 0,
+      "contexts": [
+        {
+          "id": 1,
+          "label": "native-pet",
+          "draws": 10710,
+          "clears": 2465,
+          "avatarCallbacks": 664,
+          "pendingAvatarCallbacks": 1,
+          "resources": {
+            "Texture": {
+              "created": 27,
+              "deleted": 14,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 33,
+              "deleted": 27,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 43,
+              "deleted": 39,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 72,
+                "height": 72
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            31,
+            32
+          ],
+          "contextLost": false
+        }
+      ],
+      "callbacks": [
+        {
+          "id": 1,
+          "kind": "avatar",
+          "executions": 664,
+          "pending": 1
+        },
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 161,
+          "pending": 0
+        },
+        {
+          "id": 3,
+          "kind": "harness-panel-clock",
+          "executions": 469,
+          "pending": 0
+        }
+      ]
+    },
+    "fixtureTaskRequests": 2
+  },
+  "trace": {
+    "localTrace": ".local\\glass-prism-v007\\buddy-runtime-native\\chromium-trace.json",
+    "traceBytes": 46125149,
+    "traceSha256": "4fb30079aa403d2076e817b1791b5444b2bcd63189d9d8a4c7f1f5ab1df09450",
+    "events": 245642,
+    "clock": "Trace ts/dur are Chromium monotonic microseconds across native processes; browser performance.now/rAF times are document-relative milliseconds. START/END TimeStamp events identify the timed window; different clock origins are not subtracted.",
+    "markers": [
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_RUNTIME_START",
+            "name": "INSIGHTOS_RUNTIME_START",
+            "sampleTraceId": 7294930763723085
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652962985163,
+        "tts": 1619511
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 7294930763723225
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652963028734,
+        "tts": 1632974
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 7294930763724332
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652963043558,
+        "tts": 1644905
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:open/thinking",
+            "name": "INSIGHTOS_STATE:open/thinking",
+            "sampleTraceId": 7294930763712885
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652966677574,
+        "tts": 2550550
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 7294930763714409
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652967334416,
+        "tts": 2632349
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 7294930763716760
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652969197181,
+        "tts": 3072784
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:closed/idle",
+            "name": "INSIGHTOS_STATE:closed/idle",
+            "sampleTraceId": 7294930763717001
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652969376519,
+        "tts": 3110550
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 7294930763718248
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652969460675,
+        "tts": 3129845
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 7294930763718323
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652969474946,
+        "tts": 3139696
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 7294930763718447
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652969515331,
+        "tts": 3160716
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:closed/idle",
+            "name": "INSIGHTOS_STATE:closed/idle",
+            "sampleTraceId": 7294930763718552
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652969576181,
+        "tts": 3182782
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 7294930763717746
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652969659160,
+        "tts": 3202650
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 7294930763717819
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652969674929,
+        "tts": 3213077
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 7294930763717897
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652969747907,
+        "tts": 3238862
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:closed/idle",
+            "name": "INSIGHTOS_STATE:closed/idle",
+            "sampleTraceId": 7294930763718130
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652969825078,
+        "tts": 3261704
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 7294930763735652
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652969894044,
+        "tts": 3279295
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 7294930763735726
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652969908188,
+        "tts": 3289816
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 7294930763735811
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652969963169,
+        "tts": 3307764
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:closed/idle",
+            "name": "INSIGHTOS_STATE:closed/idle",
+            "sampleTraceId": 7294930763736058
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652970024854,
+        "tts": 3330676
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 7294930763735122
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652970110715,
+        "tts": 3349239
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 7294930763735205
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652970125372,
+        "tts": 3360672
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 7294930763735300
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652970178949,
+        "tts": 3379736
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:closed/idle",
+            "name": "INSIGHTOS_STATE:closed/idle",
+            "sampleTraceId": 7294930763735548
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652970242035,
+        "tts": 3399768
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 7294930763736657
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652970327011,
+        "tts": 3417447
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 7294930763736740
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652970340841,
+        "tts": 3427418
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 7294930763736714
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652970350616,
+        "tts": 3432624
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 7294930763736797
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652970375656,
+        "tts": 3439293
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 7294930763736777
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652970377385,
+        "tts": 3440896
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "8847982731985073CEA4CB4CD6A4696D",
+            "message": "INSIGHTOS_RUNTIME_END",
+            "name": "INSIGHTOS_RUNTIME_END",
+            "sampleTraceId": 7294930763736066
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137308,
+        "s": "t",
+        "tid": 100596,
+        "ts": 652970790587,
+        "tts": 3492850
+      }
+    ],
+    "relevantNames": [
+      {
+        "name": "DCompPresenter::CheckPendingFrames",
+        "count": 467
+      },
+      {
+        "name": "Graphics.Pipeline",
+        "count": 15009
+      },
+      {
+        "name": "DisplayScheduler::DrawAndSwap",
+        "count": 470
+      },
+      {
+        "name": "Display::DrawAndSwap",
+        "count": 470
+      },
+      {
+        "name": "SkiaRenderer::SwapBuffers",
+        "count": 469
+      },
+      {
+        "name": "SkiaOutputSurfaceImplOnGpu::SwapBuffers",
+        "count": 469
+      },
+      {
+        "name": "DXGISwapChainImageBacking::Present",
+        "count": 469
+      },
+      {
+        "name": "DCompPresenter::Present",
+        "count": 469
+      },
+      {
+        "name": "FramePresented",
+        "count": 11
+      },
+      {
+        "name": "Swap throttled",
+        "count": 4
+      },
+      {
+        "name": "SubmitCompositorFrameToPresentationCompositorFrame",
+        "count": 1270
+      },
+      {
+        "name": "StartDrawToSwapStart",
+        "count": 1270
+      },
+      {
+        "name": "Swap",
+        "count": 1739
+      },
+      {
+        "name": "SwapEndToPresentationCompositorFrame",
+        "count": 1270
+      },
+      {
+        "name": "Graphics.Pipeline.DrawAndSwap",
+        "count": 939
+      },
+      {
+        "name": "Graphics.Pipeline.Draw",
+        "count": 939
+      },
+      {
+        "name": "Graphics.Pipeline.WaitForSwap",
+        "count": 469
+      },
+      {
+        "name": "DisplayScheduler:pending_swaps",
+        "count": 938
+      },
+      {
+        "name": "WaitForPresentation",
+        "count": 469
+      },
+      {
+        "name": "AnimationFrame::Presentation",
+        "count": 466
+      }
+    ],
+    "presentationFeedback": {
+      "event": "AnimationFrame::Presentation",
+      "samplesFile": "artifacts\\glass-prism-v007\\buddy-runtime-native\\presentation-feedback.csv",
+      "rendererPid": 137308,
+      "fullTimedWindowRetained": true,
+      "eventCount": 466,
+      "uniqueTimestamps": 463,
+      "intervalSamples": 462,
+      "p95Ms": 16.763,
+      "maxMs": 33.39,
+      "above20Ms": 3,
+      "above50Ms": 0,
+      "worstIntervals": [
+        {
+          "fromTs": 652964900891,
+          "toTs": 652964917805,
+          "intervalMs": 16.914
+        },
+        {
+          "fromTs": 652963217593,
+          "toTs": 652963234534,
+          "intervalMs": 16.941
+        },
+        {
+          "fromTs": 652965134277,
+          "toTs": 652965167500,
+          "intervalMs": 33.223
+        },
+        {
+          "fromTs": 652963650924,
+          "toTs": 652963684239,
+          "intervalMs": 33.315
+        },
+        {
+          "fromTs": 652963067597,
+          "toTs": 652963100987,
+          "intervalMs": 33.39
+        }
+      ],
+      "firstSamples": [
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 532,
+              "source_id": 4294967296
+            },
+            "id": "1519eab36cd53141"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x9"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 137308,
+          "tid": 100596,
+          "ts": 652963034263
+        },
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 0,
+              "source_id": 0
+            },
+            "id": "1519eab36cd531a4"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x9"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 137308,
+          "tid": 100596,
+          "ts": 652963040306
+        },
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 533,
+              "source_id": 4294967296
+            },
+            "id": "1519eab36cd531a9"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x9"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 137308,
+          "tid": 100596,
+          "ts": 652963050955
+        }
+      ],
+      "lastSamples": [
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 994,
+              "source_id": 4294967296
+            },
+            "id": "1519eab36cd567c8"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x9"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 137308,
+          "tid": 100596,
+          "ts": 652970734068
+        },
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 995,
+              "source_id": 4294967296
+            },
+            "id": "1519eab36cd567c4"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x9"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 137308,
+          "tid": 100596,
+          "ts": 652970750659
+        },
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 996,
+              "source_id": 4294967296
+            },
+            "id": "1519eab36cd56430"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x9"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 137308,
+          "tid": 100596,
+          "ts": 652970767421
+        }
+      ],
+      "interpretation": "Chromium emits these events with presentation_feedback.timestamp, which strengthens the rAF-only evidence. Captured events include begin-frame IDs but no hardware-clock/completion flags. These are Chromium presentation-feedback timestamps; verified OS/hardware scanout is unclaimed.",
+      "sources": [
+        {
+          "url": "https://chromium.googlesource.com/chromium/src/third_party/+/refs/heads/main/blink/renderer/core/frame/animation_frame_timing_monitor.cc",
+          "function": "ReportPresentationTimeToTrace",
+          "observedSourceBlob": "889d81e50335cb65fbd6a7a507fdadb09012cf92",
+          "checkedAt": "2026-10-10",
+          "limit": "Current primary source; exact packaged Chromium152 source tag was unavailable to the web reader."
+        },
+        {
+          "url": "https://chromium.googlesource.com/chromium/src/+/e3a53f1c01e45bde54be17921f6960f22721efd5/ui/gfx/presentation_feedback.h",
+          "mechanism": "kHWClock and kHWCompletion distinguish hardware-origin/completion feedback from estimates; captured AnimationFrame events do not include these flags."
+        }
+      ]
+    },
+    "strictGates": {
+      "p95PresentedIntervals": "Chromium presentation-feedback intervals measured below; hardware-backed OS presentation remains unverified because feedback flags are absent.",
+      "noAppCausedOver50Ms": "A bounded trace with zero feedback intervals over50ms supports this run only; physical presentation and arbitrary workload attribution are unverified.",
+      "firstResponseWithinTwoPresentedFrames": "Unverified: state markers and frame IDs do not by themselves attribute the first visible pixel change to a causal input frame."
+    }
+  },
+  "measuredPerformanceTargetsMet": true,
+  "strictHardwarePresentationAcceptance": "Unverified; feedback hardware flags and causal first-response pixel/frame attribution are unavailable.",
+  "resourceStability": {
+    "scope": "The original timed native five-cycle panel run, retained unchanged by lifecycle-only followup. A96px closed→72px expanded avatar resizes its Three transmission target; only balanced texture:FBO:RBO1:2:3 reallocation is allowed. Historical same-size exact-equality evidence remains separate and unchanged; no create/dispose-cycle or total-VRAM claim.",
+    "repetitions": 5,
+    "before": {
+      "Texture": {
+        "created": 16,
+        "deleted": 3,
+        "live": 13
+      },
+      "Framebuffer": {
+        "created": 11,
+        "deleted": 5,
+        "live": 6
+      },
+      "Renderbuffer": {
+        "created": 10,
+        "deleted": 6,
+        "live": 4
+      },
+      "Buffer": {
+        "created": 68,
+        "deleted": 40,
+        "live": 28
+      },
+      "Program": {
+        "created": 11,
+        "deleted": 4,
+        "live": 7
+      },
+      "Shader": {
+        "created": 22,
+        "deleted": 22,
+        "live": 0
+      },
+      "VertexArray": {
+        "created": 28,
+        "deleted": 15,
+        "live": 13
+      }
+    },
+    "after": {
+      "Texture": {
+        "created": 27,
+        "deleted": 14,
+        "live": 13
+      },
+      "Framebuffer": {
+        "created": 33,
+        "deleted": 27,
+        "live": 6
+      },
+      "Renderbuffer": {
+        "created": 43,
+        "deleted": 39,
+        "live": 4
+      },
+      "Buffer": {
+        "created": 68,
+        "deleted": 40,
+        "live": 28
+      },
+      "Program": {
+        "created": 11,
+        "deleted": 4,
+        "live": 7
+      },
+      "Shader": {
+        "created": 22,
+        "deleted": 22,
+        "live": 0
+      },
+      "VertexArray": {
+        "created": 28,
+        "deleted": 15,
+        "live": 13
+      }
+    },
+    "stableLiveCounts": true,
+    "exactEquality": false,
+    "resizeCount": 11,
+    "maxExpectedResizes": 13,
+    "balancedCreatesDeletes": {
+      "Texture": {
+        "created": 11,
+        "deleted": 11,
+        "live": 0
+      },
+      "Framebuffer": {
+        "created": 22,
+        "deleted": 22,
+        "live": 0
+      },
+      "Renderbuffer": {
+        "created": 33,
+        "deleted": 33,
+        "live": 0
+      },
+      "Buffer": {
+        "created": 0,
+        "deleted": 0,
+        "live": 0
+      },
+      "Program": {
+        "created": 0,
+        "deleted": 0,
+        "live": 0
+      },
+      "Shader": {
+        "created": 0,
+        "deleted": 0,
+        "live": 0
+      },
+      "VertexArray": {
+        "created": 0,
+        "deleted": 0,
+        "live": 0
+      }
+    },
+    "transmissionDimensions": {
+      "before": {
+        "target": 3553,
+        "internalFormat": 34842,
+        "width": 96,
+        "height": 96
+      },
+      "after": {
+        "target": 3553,
+        "internalFormat": 34842,
+        "width": 72,
+        "height": 72
+      }
+    },
+    "classificationScope": "Endpoint texture dimensions and FBO creation-order accounting prove the bounded resize signature; intermediate dimensions and RBO storage formats are not recorded. All other cumulative counters and texture signatures remain equal. No total-VRAM claim."
+  },
+  "lifecycle": {
+    "ownerId": 2,
+    "nativeVisibilitySnapshots": {
+      "hiddenVisibility": {
+        "visible": false,
+        "revision": 3
+      },
+      "shownVisibility": {
+        "visible": true,
+        "revision": 4
+      },
+      "minimizedVisibility": {
+        "visible": false,
+        "revision": 5
+      },
+      "restoredVisibility": {
+        "visible": true,
+        "revision": 7
+      }
+    },
+    "countsFile": "artifacts\\glass-prism-v007\\buddy-runtime-native\\lifecycle-counts.csv",
+    "localFullSnapshots": ".local\\glass-prism-v007\\buddy-runtime-native\\lifecycle-snapshots.json",
+    "offscreen": {
+      "suspension": {
+        "durationMs": 458,
+        "globalPendingAvatarCallbacks": 1,
+        "unassignedPendingAvatarCallbacks": 0,
+        "contexts": [
+          {
+            "id": 1,
+            "label": "native-pet",
+            "drawDelta": 364,
+            "callbackDelta": 28,
+            "pending": 1
+          },
+          {
+            "id": 2,
+            "label": "isolated-lifecycle-owner",
+            "drawDelta": 0,
+            "callbackDelta": 0,
+            "pending": 0
+          }
+        ]
+      },
+      "restore": {
+        "durationMs": 259.10000002384186,
+        "globalPendingAvatarCallbacks": 2,
+        "unassignedPendingAvatarCallbacks": 0,
+        "contexts": [
+          {
+            "id": 1,
+            "label": "native-pet",
+            "drawDelta": 195,
+            "callbackDelta": 15,
+            "pending": 1
+          },
+          {
+            "id": 2,
+            "label": "isolated-lifecycle-owner",
+            "drawDelta": 195,
+            "callbackDelta": 14,
+            "pending": 1
+          }
+        ]
+      }
+    },
+    "hidden": {
+      "nativeWindowHidden": true,
+      "documentHidden": false,
+      "suspension": {
+        "durationMs": 466.60000002384186,
+        "globalPendingAvatarCallbacks": 0,
+        "unassignedPendingAvatarCallbacks": 0,
+        "contexts": [
+          {
+            "id": 1,
+            "label": "native-pet",
+            "drawDelta": 0,
+            "callbackDelta": 0,
+            "pending": 0
+          },
+          {
+            "id": 2,
+            "label": "isolated-lifecycle-owner",
+            "drawDelta": 0,
+            "callbackDelta": 0,
+            "pending": 0
+          }
+        ]
+      },
+      "settingsUpdate": {
+        "phase": "thinking",
+        "motion": true,
+        "reaction": 1,
+        "source": "simulated direct compiled-owner settings"
+      },
+      "restore": {
+        "durationMs": 274.5,
+        "globalPendingAvatarCallbacks": 2,
+        "unassignedPendingAvatarCallbacks": 0,
+        "contexts": [
+          {
+            "id": 1,
+            "label": "native-pet",
+            "drawDelta": 247,
+            "callbackDelta": 17,
+            "pending": 1
+          },
+          {
+            "id": 2,
+            "label": "isolated-lifecycle-owner",
+            "drawDelta": 234,
+            "callbackDelta": 17,
+            "pending": 1
+          }
+        ]
+      }
+    },
+    "minimized": {
+      "nativeWindowMinimized": true,
+      "documentHidden": false,
+      "suspension": {
+        "durationMs": 459.60000002384186,
+        "globalPendingAvatarCallbacks": 0,
+        "unassignedPendingAvatarCallbacks": 0,
+        "contexts": [
+          {
+            "id": 1,
+            "label": "native-pet",
+            "drawDelta": 0,
+            "callbackDelta": 0,
+            "pending": 0
+          },
+          {
+            "id": 2,
+            "label": "isolated-lifecycle-owner",
+            "drawDelta": 0,
+            "callbackDelta": 0,
+            "pending": 0
+          }
+        ]
+      },
+      "restore": {
+        "durationMs": 285.7999999523163,
+        "globalPendingAvatarCallbacks": 2,
+        "unassignedPendingAvatarCallbacks": 0,
+        "contexts": [
+          {
+            "id": 1,
+            "label": "native-pet",
+            "drawDelta": 234,
+            "callbackDelta": 16,
+            "pending": 1
+          },
+          {
+            "id": 2,
+            "label": "isolated-lifecycle-owner",
+            "drawDelta": 221,
+            "callbackDelta": 16,
+            "pending": 1
+          }
+        ]
+      }
+    },
+    "disposed": {
+      "suspension": {
+        "durationMs": 473.2000000476837,
+        "globalPendingAvatarCallbacks": 1,
+        "unassignedPendingAvatarCallbacks": 0,
+        "contexts": [
+          {
+            "id": 1,
+            "label": "native-pet",
+            "drawDelta": 377,
+            "callbackDelta": 28,
+            "pending": 1
+          },
+          {
+            "id": 2,
+            "label": "isolated-lifecycle-owner",
+            "drawDelta": 0,
+            "callbackDelta": 0,
+            "pending": 0
+          }
+        ]
+      },
+      "contextLost": true,
+      "handles": {
+        "Texture": {
+          "created": 14,
+          "deleted": 8,
+          "live": 6
+        },
+        "Framebuffer": {
+          "created": 7,
+          "deleted": 2,
+          "live": 5
+        },
+        "Renderbuffer": {
+          "created": 4,
+          "deleted": 1,
+          "live": 3
+        },
+        "Buffer": {
+          "created": 68,
+          "deleted": 68,
+          "live": 0
+        },
+        "Program": {
+          "created": 11,
+          "deleted": 11,
+          "live": 0
+        },
+        "Shader": {
+          "created": 22,
+          "deleted": 22,
+          "live": 0
+        },
+        "VertexArray": {
+          "created": 28,
+          "deleted": 28,
+          "live": 0
+        }
+      },
+      "textureClassification": {
+        "signatures": [
+          {
+            "storage": {
+              "target": 3553,
+              "internalFormat": 6408,
+              "width": 1,
+              "height": 1
+            }
+          },
+          {
+            "storage": {
+              "target": 34067,
+              "internalFormat": 6408,
+              "width": 1,
+              "height": 1
+            }
+          },
+          {
+            "storage": {
+              "target": 35866,
+              "internalFormat": 6408,
+              "width": 1,
+              "height": 1,
+              "depth": 1
+            }
+          },
+          {
+            "storage": {
+              "target": 32879,
+              "internalFormat": 6408,
+              "width": 1,
+              "height": 1,
+              "depth": 1
+            }
+          },
+          {
+            "storage": {
+              "target": 3553,
+              "internalFormat": 34842,
+              "width": 96,
+              "height": 96
+            }
+          },
+          {
+            "storage": {
+              "target": 3553,
+              "levels": 1,
+              "internalFormat": 33327,
+              "width": 16,
+              "height": 16
+            },
+            "upload": {
+              "elementType": "Uint16Array",
+              "elements": 512,
+              "bytes": 1024,
+              "firstValues": [
+                12469,
+                15057,
+                12620,
+                14925,
+                13266,
+                14620,
+                13807,
+                14376
+              ]
+            }
+          }
+        ],
+        "dfgLutMatched": true,
+        "expectedUnmatchedHandles": 6,
+        "installedThreeVersion": "0.186.1",
+        "pinnedInstalledSource": [
+          {
+            "path": "src/renderers/WebGLRenderer.js",
+            "sha256": "9e8740aad691246b31b3704014e8f3bbd38a8e7bf4b1b4d23868541b023cc63a",
+            "mechanism": "Lines459–461 create scratch/src/dst FBOs;1094 calls renderStates.dispose;2012–2044 create and size the per-camera multisampled transmission target."
+          },
+          {
+            "path": "src/renderers/webgl/WebGLRenderStates.js",
+            "sha256": "04bebc4f2eab3c34e2583e183aa5fa2a51d7afcfb5465b51eb98889d95dbcc7b",
+            "mechanism": "Lines110–113 replace the render-state WeakMap without disposing its cached transmission target."
+          },
+          {
+            "path": "src/renderers/webgl/WebGLTextures.js",
+            "sha256": "a1947fd09ac98b3a57e40018dc8eccfce9c40f2cf4b6200b3180a00af5406451",
+            "mechanism": "Lines1974/2082/2106–2133 create the depth buffer, resolve/multisample FBOs and colour/depth RBOs;409–464 delete them only upon target disposal."
+          },
+          {
+            "path": "src/core/RenderTarget.js",
+            "sha256": "e2d00d331e0eab1a2b5e53fbd9f2d87c69170b92b7a33c0059a8ea5eb3383820",
+            "mechanism": "Lines365–391: setSize disposes the old target allocations when its dimensions change; subsequent rendering recreates them."
+          },
+          {
+            "path": "src/renderers/webgl/WebGLState.js",
+            "sha256": "fd6adb6c01d75a148ef6ebc8ea948a38acc1a48d3cfdbbb1d12dbde668092431",
+            "mechanism": "emptyTextures contains four internal1×1 fallback texture handles."
+          },
+          {
+            "path": "src/renderers/shaders/DFGLUTData.js",
+            "sha256": "280b75b70d9d55c39d4121d5244c22ee445d27cc05ed6b134c3a5bde6b81b3da",
+            "mechanism": "getDFGLUT supplies the shared16×16 RG16F lookup texture; its exact upload prefix is asserted below."
+          },
+          {
+            "path": "src/renderers/webgl/WebGLMorphtargets.js",
+            "sha256": "2ce90a7fbe8d817b2addec2e70047c5c240dd366ba2b5a4ffb52acf5b5758907",
+            "mechanism": "Lines34–52 encode POSITION+NORMAL as two RGBA32F texels per vertex in a FloatType DataArrayTexture. Lines128–140 attach a geometry-dispose listener that disposes the texture and removes its WeakMap entry."
+          }
+        ],
+        "transmission": {
+          "presentInActualGlb": true,
+          "matched": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 96,
+                "height": 96
+              }
+            }
+          ]
+        },
+        "expectedUnmatchedResources": {
+          "Texture": 6,
+          "Framebuffer": 5,
+          "Renderbuffer": 3,
+          "Buffer": 0,
+          "Program": 0,
+          "Shader": 0,
+          "VertexArray": 0
+        },
+        "explicitlyDisposedTextures": [
+          {
+            "storage": {
+              "target": 3553,
+              "internalFormat": 34842,
+              "width": 384,
+              "height": 512
+            }
+          },
+          {
+            "storage": {
+              "target": 35866,
+              "internalFormat": 34836,
+              "width": 1068,
+              "height": 1,
+              "depth": 1
+            }
+          },
+          {
+            "storage": {
+              "target": 35866,
+              "internalFormat": 34836,
+              "width": 1068,
+              "height": 1,
+              "depth": 1
+            }
+          },
+          {
+            "storage": {
+              "target": 3553,
+              "levels": 1,
+              "internalFormat": 34836,
+              "width": 8,
+              "height": 8
+            }
+          },
+          {
+            "storage": {
+              "target": 35866,
+              "internalFormat": 34836,
+              "width": 1278,
+              "height": 1,
+              "depth": 3
+            }
+          },
+          {
+            "storage": {
+              "target": 3553,
+              "levels": 8,
+              "internalFormat": 35907,
+              "width": 128,
+              "height": 64
+            }
+          },
+          {
+            "storage": {
+              "target": 35866,
+              "internalFormat": 34836,
+              "width": 15288,
+              "height": 1,
+              "depth": 3
+            }
+          }
+        ],
+        "eyeMorphTextures": {
+          "profile": "happy-eyes-v005",
+          "actualGlbEyeNodes": [
+            "EYE_L",
+            "EYE_R"
+          ],
+          "expectedStorage": [
+            {
+              "target": 35866,
+              "internalFormat": 34836,
+              "width": 1068,
+              "height": 1,
+              "depth": 1
+            },
+            {
+              "target": 35866,
+              "internalFormat": 34836,
+              "width": 1068,
+              "height": 1,
+              "depth": 1
+            }
+          ],
+          "explicitlyDeleted": [
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            }
+          ],
+          "residualCount": 0
+        },
+        "ownedModelTexturesExplicitlyDeleted": true,
+        "unmatchedFramebufferCreationOrders": [
+          0,
+          1,
+          2,
+          5,
+          6
+        ],
+        "framebufferSource": "node_modules/three/src/renderers/WebGLRenderer.js:initGLContext creates scratch/src/dst first; dispose contains no deleteFramebuffer call."
+      },
+      "diagnostics": {
+        "asset": "sprout",
+        "assetUrl": "/buddy/sprout-v005.glb",
+        "reflectionProfile": "tapered",
+        "toneMapping": "neutral",
+        "clips": [
+          "Sprout_Click",
+          "Sprout_Idle",
+          "Sprout_Listen",
+          "Sprout_Think",
+          "Sprout_Speak",
+          "Sprout_Blink",
+          "Sprout_Done",
+          "Sprout_JoyJump",
+          "Sprout_SleepEnter",
+          "Sprout_SleepLoop",
+          "Sprout_Wake"
+        ],
+        "eyeProfile": "happy-eyes-v005",
+        "assetIssues": [],
+        "vertices": 9907,
+        "triangles": 19496,
+        "frames": 79,
+        "intervalP95": 16.799999999999272,
+        "intervalMax": 50.099999999998545,
+        "missedBudgets": 1,
+        "renderP95": 1.399999976158142,
+        "drawCalls": 13,
+        "resolution": "96 × 96",
+        "attention": {
+          "x": 0,
+          "y": 0,
+          "target": {
+            "x": 0,
+            "y": 0
+          },
+          "yaw": 0,
+          "pitch": 0,
+          "compression": 0
+        },
+        "behavior": {
+          "mode": "normal",
+          "sleeping": false,
+          "moving": true,
+          "visible": false,
+          "capabilities": {
+            "joy": true,
+            "sleep": true,
+            "done": true
+          },
+          "doneActive": false,
+          "headAnchor": null,
+          "revision": 7
+        },
+        "stage": {
+          "framing": 1.72,
+          "targetY": 0.24
+        },
+        "materials": [
+          {
+            "name": "MAT_Sprout_ClearPrismRim_v003",
+            "type": "MeshPhysicalMaterial",
+            "opacity": 1,
+            "roughness": 0.05999999865889549,
+            "metalness": 0,
+            "transmission": 0.8799999952316284,
+            "thickness": 0.3400000035762787,
+            "ior": 1.399999976158142,
+            "attenuationDistance": 4.499999966472387,
+            "attenuationColor": "bff0ff",
+            "clearcoat": 0.8500000238418579,
+            "emissiveColor": "000000",
+            "emissiveIntensity": 1,
+            "baseColorMap": null,
+            "emissiveMap": null
+          },
+          {
+            "name": "MAT_Sprout_CoreLuminous_v003",
+            "type": "MeshPhysicalMaterial",
+            "opacity": 1,
+            "roughness": 0.15000000596046448,
+            "metalness": 0,
+            "transmission": 0,
+            "thickness": 0,
+            "ior": 1.5,
+            "attenuationDistance": null,
+            "attenuationColor": "ffffff",
+            "clearcoat": 0.03999999910593033,
+            "emissiveColor": "ffffff",
+            "emissiveIntensity": 1.100000023841858,
+            "baseColorMap": {
+              "colorSpace": "srgb",
+              "width": 0,
+              "height": 0
+            },
+            "emissiveMap": {
+              "colorSpace": "srgb",
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "name": "MAT_Sprout_Eyes",
+            "type": "MeshStandardMaterial",
+            "opacity": 1,
+            "roughness": 0.23000000417232513,
+            "metalness": 0,
+            "transmission": 0,
+            "thickness": 0,
+            "ior": 1.5,
+            "attenuationDistance": null,
+            "attenuationColor": "ffffff",
+            "clearcoat": 0,
+            "emissiveColor": "000000",
+            "emissiveIntensity": 1,
+            "baseColorMap": null,
+            "emissiveMap": null
+          },
+          {
+            "name": "MAT_Sprout_Glints",
+            "type": "MeshStandardMaterial",
+            "opacity": 1,
+            "roughness": 0.15000000596046448,
+            "metalness": 0,
+            "transmission": 0,
+            "thickness": 0,
+            "ior": 1.5,
+            "attenuationDistance": null,
+            "attenuationColor": "ffffff",
+            "clearcoat": 0,
+            "emissiveColor": "000000",
+            "emissiveIntensity": 1,
+            "baseColorMap": null,
+            "emissiveMap": null
+          }
+        ],
+        "startup": {
+          "assetBytes": 1445476,
+          "fetchMs": 98,
+          "parseMs": 6.5,
+          "gpuSetupMs": 1686.1999999284744,
+          "firstRenderMs": 1794.1999999284744
+        },
+        "memory": {
+          "geometries": 0,
+          "textures": 2,
+          "geometryAttributeBytes": 1272828,
+          "environmentColorBytesEstimate": 1572864,
+          "note": "Geometry bytes describe CPU attribute storage. Environment estimate is one RGBA16F target; neither measures total GPU allocation or driver overhead."
+        }
+      },
+      "note": "Pinned Three0.186.1 leaves one shared DFG_LUT16×16 RG16F texture, four internal1×1 fallback textures and three constructor scratch/src/dst FBOs unmatched by explicit delete calls. Its per-camera96×96RGBA16F transmission target also remains unmatched, with two resolve/multisample FBOs and three colour/depth RBOs: WebGLRenderStates.dispose only replaces its WeakMap. The actual forced context loss makes all these context handles unusable. Exact signatures/counts are asserted; geometry, model map/bone/morph/PMREM textures, buffers, programs, shaders and VAOs are explicitly disposed. Three info.memory.textures retains2 internal cached entries. The five original panel cycles show no live-handle growth; size changes permit only the bounded balanced transmission allocation signature. Driver VRAM reclamation and GC are unmeasured."
+    }
+  },
+  "errors": [],
+  "apiCalls": [
+    {
+      "pathname": "/api/status",
+      "method": "GET"
+    },
+    {
+      "pathname": "/api/session",
+      "method": "POST"
+    },
+    {
+      "pathname": "/api/computer/state",
+      "method": "GET"
+    },
+    {
+      "pathname": "/api/computer/request",
+      "method": "POST"
+    },
+    {
+      "pathname": "/api/computer/request",
+      "method": "POST"
+    }
+  ],
+  "functionalPass": true
+}

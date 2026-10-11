@@ -13,10 +13,10 @@ html.desktop-buddy,
   background: transparent;
 }
 .buddy {
-  --buddy-ink: #13243d;
-  --buddy-muted: #34445e;
-  --buddy-blue: #1047a1;
-  --buddy-line: #b8cae2;
+  --buddy-ink: #f3f8ff;
+  --buddy-muted: #d6e4f7;
+  --buddy-blue: #9ce6ff;
+  --buddy-line: #92bded38;
   --lime: var(--buddy-blue);
   --muted: var(--buddy-muted);
   --line: var(--buddy-line);
@@ -43,12 +43,12 @@ html.desktop-buddy,
   -webkit-app-region: no-drag;
 }
 .buddy :focus-visible {
-  outline: 3px solid #174dac;
+  outline: 2px solid #c5f4ff;
   outline-offset: 3px;
-  box-shadow: 0 0 0 5px #fff;
+  box-shadow: 0 0 0 5px #07182e;
 }
 .buddy button:disabled {
-  opacity: 0.55;
+  opacity: 0.62;
   cursor: not-allowed;
 }
 .buddy-bar {
@@ -76,12 +76,13 @@ html.desktop-buddy,
 .buddy-dock-controls {
   min-width: 0;
   padding: 2px 10px;
-  border: 1px solid #b9cce4;
+  border: 1px solid #b9eaff4d;
   border-radius: 20px;
-  background: #f7fbfffa;
+  background: linear-gradient(135deg, #163955eb, #172642ed 65%, #30264beb);
+  backdrop-filter: blur(18px) saturate(160%);
   box-shadow:
     0 4px 14px #18365718,
-    inset 0 1px 0 #fff;
+    inset 0 1px 0 #d5f5ff66;
 }
 .buddy[data-panel-stage='open'] .buddy-dock-controls {
   display: contents;
@@ -110,19 +111,7 @@ html.desktop-buddy,
   isolation: isolate;
 }
 .buddy[data-panel-stage='open'] .buddy-identity::before {
-  content: '';
-  position: absolute;
-  inset: -8px -12px;
-  z-index: -1;
-  pointer-events: none;
-  border-radius: 14px;
-  background: radial-gradient(
-    ellipse at center,
-    #f4f9fff2 0%,
-    #f4f9fff2 66%,
-    #f4f9ff9e 84%,
-    #f4f9ff00 100%
-  );
+  content: none;
 }
 .buddy[data-panel-stage='open'] .buddy-identity strong {
   font-size: 20px;
@@ -197,14 +186,27 @@ html.desktop-buddy,
 .buddy-result-actions button {
   position: relative;
   isolation: isolate;
-  border: 1px solid #b6cbd766;
-  background-color: #eaf5ffdc;
-  background-image: linear-gradient(155deg, #ffffff60, #ffffff00 48%, #b8c2ee18);
+  border: 1px solid transparent;
+  background-color: #081b3540;
+  background-image:
+    radial-gradient(ellipse 90% 45% at 88% 114%, #55f0ffc2, #69cffa29 58%, transparent 100%),
+    radial-gradient(ellipse 70% 38% at 90% -8%, #c69aff73, transparent 100%),
+    radial-gradient(ellipse at 5% -28%, #6cbcff66, transparent 57%),
+    linear-gradient(115deg, #b9eaff12, #d4b3ff06 45%, #c5a0ff20);
+  backdrop-filter: blur(12px) saturate(170%);
   box-shadow:
-    inset 0 1px 1px #ffffffbd,
-    inset 0 -2px 3px #6273a21e,
-    0 2px 3px #1024400c;
+    inset 0 1px 2px #e8f7ff59,
+    inset 1px 0 3px #8adaff3d,
+    inset 0 -1px 3px #72d7ed47,
+    0 2px 5px #0209184d;
+  transition:
+    background-color 160ms ease,
+    box-shadow 160ms ease;
 }
+/* Rim masks, paired screen/overlay layers and inset lighting directly adapted
+   from MIT Liquid Glass React (ac48eab, index.tsx:469–565).
+   Notice: design/buddy/frutiger-aero/LIQUID-GLASS-REFERENCE-LICENSE.txt.
+   Native button semantics and our existing pointer controller remain the owners. */
 .buddy-icon::before,
 .buddy-play::before,
 .buddy-send::before,
@@ -215,20 +217,25 @@ html.desktop-buddy,
   position: absolute;
   inset: -1px;
   border-radius: inherit;
-  padding: 1px;
+  padding: 1.25px;
   pointer-events: none;
   background: linear-gradient(
-    130deg,
-    #cbf4fff2,
-    #ffffffaa 22%,
-    #d8c6f530 47%,
-    #e6c7ee99 82%,
-    #eac1b88c
+    135deg,
+    #d2f8ffd9 0%,
+    #67d8ff 16%,
+    #398bfd60 31%,
+    #bda3ff30 44%,
+    #d9a6ff 64%,
+    #9d78fbb8 77%,
+    #5df5ff 91%,
+    #c2feff 100%
   );
   mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
   mask-composite: exclude;
+  mix-blend-mode: screen;
+  opacity: 0.88;
 }
 .buddy-icon::after,
 .buddy-play::after,
@@ -238,28 +245,38 @@ html.desktop-buddy,
 .buddy-result-actions button::after {
   content: '';
   position: absolute;
-  inset: 1px;
+  inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  background: radial-gradient(ellipse at 32% 0%, #ffffff3b, transparent 62%);
-  box-shadow: inset 0 -1px 2px #42557b20;
+  padding: 1.5px;
+  background:
+    radial-gradient(ellipse at 25% 0%, #fff, transparent 68%),
+    linear-gradient(150deg, #fff9, #fff0 45%, #d9bbff99);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  mix-blend-mode: overlay;
+  box-shadow: inset 0 1px 3px #fff8;
+  opacity: 0.48;
 }
 .buddy button:active:not(:disabled) {
+  background-color: #07152d80;
   box-shadow:
-    inset 0 2px 4px #2038562e,
-    inset 0 -1px 1px #ffffffa3;
+    inset 0 2px 5px #02081c8c,
+    inset 0 -1px 2px #b8f3ff8c;
 }
 .buddy[data-panel-stage='open'] .buddy-icon:not(.stop) {
-  background-color: #edf8ffd9;
+  background-color: #12314b40;
 }
 .buddy-icon:hover:not(:disabled) {
-  background-color: #f4faffec;
-  color: #103b85;
+  background-color: #31548166;
+  color: #fff;
 }
 .buddy-icon.stop {
-  color: #a12635;
-  background-color: #fff0f2e8;
-  border: 1px solid #d78f98;
+  color: #ffd1d8;
+  background-color: #67283850;
+  border-color: #e9a3b147;
 }
 .buddy-window-actions .buddy-icon:last-child {
   margin-left: auto;
@@ -274,15 +291,18 @@ html.desktop-buddy,
   padding: 0;
   border-radius: 13px;
   color: #fff;
-  border-color: #84b8e08c;
-  background-color: #123f7bf0;
+  border-color: transparent;
+  background-color: #102a5759;
   background-image:
-    radial-gradient(ellipse at 20% 0%, #66c7ef4d, transparent 66%),
-    linear-gradient(145deg, #ffffff20, #8f91de0a 55%, #b1a2e22e);
+    radial-gradient(ellipse 78% 34% at 65% 108%, #55efffe6, #77d7ff38 68%, transparent 100%),
+    radial-gradient(ellipse 70% 30% at 80% -3%, #d4b0ffa3, transparent 100%),
+    radial-gradient(ellipse 42% 70% at -8% 20%, #6cd2ff5c, transparent 100%),
+    linear-gradient(135deg, #327dc133, #1d326609 45%, #9577ce33);
   box-shadow:
-    inset 0 1px 2px #e0f7ffab,
-    inset 0 -3px 5px #0d204447,
-    0 2px 4px #19385c14;
+    inset 0 1px 3px #def7ff73,
+    inset 1px 0 4px #46caff52,
+    inset 0 -1px 3px #c9c1ff8a,
+    0 2px 5px #040c2340;
 }
 .buddy-play {
   border-radius: 50%;
@@ -292,23 +312,23 @@ html.desktop-buddy,
   display: block;
 }
 .buddy-play.playing {
-  background-color: #14365af5;
+  background-color: #2835656b;
 }
 .buddy-play[data-phase='listening'] {
   box-shadow:
-    0 0 0 2px #a2d6f0,
+    0 0 0 2px #79e5ff66,
     inset 0 1px 2px #e0f7ffab,
     inset 0 -3px 5px #0d204447;
 }
 .buddy-play[data-phase='speaking'] {
   box-shadow:
-    0 0 0 2px #c1baf0,
+    0 0 0 2px #c1a4ff66,
     inset 0 1px 2px #e0f7ffab,
     inset 0 -3px 5px #0d204447;
 }
 .buddy-play:hover:not(:disabled),
 .buddy-send:hover:not(:disabled) {
-  background-color: #164676f5;
+  background-color: #31548480;
 }
 .buddy-panel {
   position: absolute;
@@ -329,7 +349,7 @@ html.desktop-buddy,
   background: transparent;
   /* Own the filter at the animated sheet: its retained opacity animation
      creates a backdrop root that prevents descendant filters sampling the page. */
-  backdrop-filter: blur(14px) saturate(112%);
+  backdrop-filter: blur(22px) saturate(160%);
   box-shadow: inset 0 -1px 1px #182d4b16;
   transform-origin: 48px 0;
 }
@@ -341,9 +361,10 @@ html.desktop-buddy,
   padding: 1px;
   /* Sparse thin-sheet reflections, not the previous seven-pixel painted frame. */
   background:
-    radial-gradient(ellipse at 12% 0%, #ddf8ffb8, transparent 40%),
-    radial-gradient(ellipse at 0% 88%, #b8a2f459, transparent 29%),
-    radial-gradient(ellipse at 100% 92%, #ffd0c452, transparent 30%);
+    radial-gradient(ellipse at 8% 0%, #a5f4ffe0, transparent 45%),
+    radial-gradient(ellipse at 100% 12%, #bda3ffa3, transparent 34%),
+    radial-gradient(ellipse at 0% 88%, #a898ff8a, transparent 35%),
+    radial-gradient(ellipse at 100% 96%, #86edf6a3, transparent 36%);
   mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
@@ -358,20 +379,20 @@ html.desktop-buddy,
 .buddy-panel-glass::before {
   inset: 0;
   border-radius: inherit;
-  box-shadow: inset 0 1px 1px #ffffff45;
+  box-shadow: inset 0 1px 1px #e6f8ff52;
 }
 .buddy-panel-glass::after {
   inset: 0;
   border-radius: inherit;
   /* The readable surface is owned HTML, not a capture of the desktop behind Electron. */
-  /* Background-responsive frost; sharp content has local backing, never a full opaque slab. */
+  /* One continuous tinted lens supports readable light text; no label cutouts. */
   background:
-    linear-gradient(128deg, #ffffff24, #ffffff00 36%, #ffffff12 78%),
-    radial-gradient(ellipse at 0% 0%, #8be8ff26, transparent 52%),
-    radial-gradient(ellipse at 0% 100%, #bba6ea18, transparent 56%),
-    radial-gradient(ellipse at 100% 80%, #ffc2b714, transparent 52%),
-    linear-gradient(160deg, #e0f4ff24, #d5e9ff12 55%, #cddfff24);
-  box-shadow: inset 0 -1px 2px #314c701c;
+    radial-gradient(ellipse 70% 40% at -24% -9%, #52dfff5c, transparent 100%),
+    radial-gradient(ellipse 60% 45% at 128% 20%, #ba8eff66, transparent 100%),
+    radial-gradient(ellipse 80% 40% at 116% 114%, #8ddfff4d, transparent 100%),
+    radial-gradient(ellipse 80% 30% at -20% 112%, #c498ff59, transparent 100%),
+    linear-gradient(155deg, #112d48d4, #102039d4 55%, #18233bd4);
+  box-shadow: inset 0 -1px 2px #7886c83d;
 }
 .buddy-panel-shadow {
   position: absolute;
@@ -425,7 +446,7 @@ html.desktop-buddy,
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
-  scrollbar-color: #849bb8 transparent;
+  scrollbar-color: #b5cfea66 transparent;
   margin: 0 -4px 10px;
   padding: 0 4px;
   scroll-padding: 8px;
@@ -443,8 +464,8 @@ html.desktop-buddy,
   margin: 0 0 22px;
   padding: 12px 14px;
   border-radius: 16px;
-  background: linear-gradient(130deg, #eef8ffe0, #f3f5ffe0);
-  box-shadow: inset 0 1px 0 #ffffff9e;
+  background: transparent;
+  box-shadow: none;
 }
 .buddy-message > span {
   font-size: 14px;
@@ -460,27 +481,25 @@ html.desktop-buddy,
 }
 .buddy-message.user {
   margin-left: 18px;
-  border: 1px solid #ffffffc9;
-  background: linear-gradient(130deg, #ffffffde, #f4f7ffde);
-  box-shadow:
-    0 2px 8px #405b8510,
-    inset 0 1px 0 #ffffffb3;
+  border: 1px solid #badbff26;
+  background: linear-gradient(130deg, #96d6ff05, #b5a0ee06);
+  box-shadow: inset 0 1px 0 #e5f5ff0d;
   border-radius: 16px 16px 5px 16px;
 }
 .buddy-message.user > span {
-  color: #46566b;
+  color: var(--buddy-muted);
 }
 .buddy-message.error p {
-  color: #781d2e;
+  color: #ffd3da;
 }
 .buddy-result,
 .buddy-task {
   padding: 12px 14px;
   margin: 0 0 14px;
-  border-top: 1px solid #b8cae2;
+  border-top: 1px solid var(--buddy-line);
   color: var(--buddy-ink);
   border-radius: 12px;
-  background: #eff6ffe0;
+  background: #8babdd0a;
 }
 .buddy-result > div {
   display: flex;
@@ -514,18 +533,18 @@ html.desktop-buddy,
   min-height: 44px;
   font-size: 16px;
   font-weight: 600;
-  color: #154b9b;
+  color: var(--buddy-ink);
   text-align: left;
 }
 .buddy-reference {
   margin-top: 7px;
-  color: #46566b;
+  color: var(--buddy-muted);
   font-size: 14px;
 }
 .buddy-welcome {
   padding: 12px 14px;
   border-radius: 16px;
-  background: #eff6fff0;
+  background: transparent;
 }
 .buddy-reference summary {
   min-height: 44px;
@@ -542,18 +561,20 @@ html.desktop-buddy,
   position: relative;
   flex-shrink: 0;
   padding: 12px;
-  border: 1px solid #c0d1df66;
+  border: 1px solid #b7d8fd2e;
   border-radius: 22px;
-  background: linear-gradient(125deg, #f4faffdc, #f3f6ffdc 58%, #f8f3ffdc);
-  backdrop-filter: blur(10px);
+  background:
+    radial-gradient(ellipse at 100% 100%, #9069d50f, transparent 65%),
+    linear-gradient(130deg, #0a20394d, #07152c66);
+  backdrop-filter: blur(12px) saturate(140%);
   box-shadow:
-    inset 0 1px 1px #ffffffb8,
-    inset 0 -1px 3px #8999c51a;
+    inset 0 1px 1px #d4ecff30,
+    inset 0 -1px 3px #87a2e312;
 }
 .buddy-composer:focus-within,
 .buddy-composer.listening {
-  border-color: var(--buddy-blue);
-  box-shadow: 0 0 0 1px var(--buddy-blue);
+  border-color: #a8daff80;
+  box-shadow: 0 0 0 1px #a8daff3d;
 }
 .buddy-composer textarea {
   display: block;
@@ -562,7 +583,7 @@ html.desktop-buddy,
   min-height: 54px;
   padding: 0;
   background: transparent;
-  color: #13243d;
+  color: var(--buddy-ink);
   border: 0;
   outline: 0;
   font-size: 18px;
@@ -591,12 +612,12 @@ html.desktop-buddy,
   min-height: 44px;
   padding: 8px 9px;
   color: var(--buddy-ink);
-  border-radius: 16px;
+  border-radius: 999px;
   font-size: 16px;
 }
 .buddy-disclosure-trigger:hover,
 .buddy-disclosure-trigger[aria-expanded='true'] {
-  background-color: #f5fbffee;
+  background-color: #48669247;
 }
 .buddy-disclosure-panel {
   position: absolute;
@@ -608,12 +629,12 @@ html.desktop-buddy,
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 8px;
-  border: 1px solid #96afcf;
+  border: 1px solid #a6d9fa52;
   border-radius: 18px;
-  background: linear-gradient(135deg, #edf8ff, #f1eefb 62%, #fbf0ec);
+  background: linear-gradient(135deg, #17344b, #1c2948 62%, #2b2c4b);
   box-shadow:
     0 8px 26px #182d4e30,
-    inset 0 1px 0 #fff;
+    inset 0 1px 0 #cceeff59;
 }
 .buddy-disclosure-panel[hidden] {
   display: none;
@@ -637,58 +658,58 @@ html.desktop-buddy,
 }
 .buddy-disclosure-panel button:hover:not(:disabled),
 .buddy-disclosure-panel button[aria-pressed='true'] {
-  background: #e6effc;
+  background-color: #52769d42;
 }
 .buddy-layout-error {
   margin: 0;
-  color: #852238;
+  color: #ffd4df;
   font-size: 13px;
   line-height: 1.4;
   padding: 3px 5px;
   border-radius: 6px;
-  background: #eff6fff0;
+  background: #3e2035;
 }
 .buddy.has-layout-error .buddy-identity strong {
   display: none;
 }
-/* Existing financial views retain their actions; these overrides provide the cloud surface. */
+/* Embedded results share the lens without changing their actions or data. */
 .buddy .energy-panel,
 .buddy .finance-mini {
-  --finance-ink: #13243d;
-  --finance-muted: #435368;
-  background: #edf4fc;
-  color: #13243d;
-  border-color: #b8cae2;
+  --finance-ink: #f3f8ff;
+  --finance-muted: #d6e4f7;
+  background: #11243b;
+  color: var(--buddy-ink);
+  border-color: var(--buddy-line);
   margin: 0 0 14px;
 }
 .buddy .energy-panel :is(p, small, span, td, th, caption),
 .buddy .finance-mini :is(p, small, span) {
-  color: #435368;
+  color: var(--buddy-muted);
 }
 .buddy .energy-panel a {
-  color: #154b9b;
+  color: #b1e6ff;
   text-decoration: underline;
 }
 .buddy .energy-panel :is(strong, summary),
 .buddy .finance-mini :is(strong, summary) {
-  color: #13243d;
+  color: var(--buddy-ink);
 }
 .buddy .energy-panel button,
 .buddy .finance-mini button {
   min-height: 44px;
-  background: #fff;
-  color: #154b9b;
-  border-color: #829bc0;
+  background: #1a3654;
+  color: #e1f2ff;
+  border-color: #80add666;
   font-size: 16px;
 }
 .buddy .energy-panel :is(table, thead th),
 .buddy .energy-panel .chosen {
-  background: #f9fcff;
+  background: #183049;
 }
 .buddy .energy-budget-alert {
-  background: #fff4df;
-  color: #624415;
-  border-color: #b19460;
+  background: #392e1e;
+  color: #ffe7b3;
+  border-color: #b1946066;
 }
 .buddy-shell .computer-dialog {
   width: calc(100vw - 24px);
@@ -765,6 +786,11 @@ html.desktop-buddy,
   }
 }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .buddy-dock-controls {
+    background: #101f35;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
   .buddy button::before,
   .buddy button::after {
     display: none;
@@ -772,24 +798,30 @@ html.desktop-buddy,
   .buddy-icon,
   .buddy-disclosure-trigger,
   .buddy-disclosure-panel button,
-  .buddy-result-actions button {
-    background: #f8fbff;
-    box-shadow: none;
+  .buddy-result-actions button,
+  .buddy-play,
+  .buddy-send {
+    /* Accessibility preference overrides all open, hover, active and voice states. */
+    background: var(--buddy-solid-control, #18334d) !important;
+    color: #fff;
+    border-color: #9cbbd4;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
   }
   .buddy-play,
   .buddy-send {
-    background: #123f7b;
-    box-shadow: none;
+    --buddy-solid-control: #153f67;
+    border-color: #b1d6f5;
   }
   .buddy-icon.stop {
-    background: #fff0f2;
+    --buddy-solid-control: #492331;
   }
   .buddy-panel-glass {
-    background: #d6e4f4;
+    background: #101f35;
     backdrop-filter: none;
   }
   .buddy-panel-glass::after {
-    background: #f8fbff;
+    background: #101f35;
     backdrop-filter: none;
   }
   .buddy-composer,
@@ -798,7 +830,7 @@ html.desktop-buddy,
   .buddy-welcome,
   .buddy-task,
   .buddy-result {
-    background: #f8fbff;
+    background: #101f35;
     backdrop-filter: none;
   }
 }
@@ -842,8 +874,9 @@ html.desktop-buddy,
   .buddy-play[data-phase='speaking'] {
     color: ButtonText;
     border: 1px solid ButtonText;
-    background: ButtonFace;
-    box-shadow: none;
+    background: ButtonFace !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
   }
   .buddy :focus-visible {
     outline-color: Highlight;

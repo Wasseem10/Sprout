@@ -111,9 +111,11 @@ try {
     assert.ok(scan.y > 0 && scan.y + scan.height < box.height);
     // Recreate the exact failed filter ownership on otherwise identical current
     // component, angle and retained WAAPI animation, then remove only this style.
+    const filter = await root
+      .locator('.buddy-panel-glass')
+      .evaluate((element) => getComputedStyle(element).backdropFilter);
     const failed = await page.addStyleTag({
-      content:
-        '.buddy-panel-glass{backdrop-filter:none!important}.buddy-panel-glass::after{backdrop-filter:blur(14px) saturate(112%)!important}',
+      content: `.buddy-panel-glass{backdrop-filter:none!important}.buddy-panel-glass::after{backdrop-filter:${filter}!important}`,
     });
     const before = await root.screenshot();
     await page
@@ -143,6 +145,7 @@ try {
     results.push({
       direction,
       pose,
+      filter,
       scan,
       sharpStep,
       frostedStep,
