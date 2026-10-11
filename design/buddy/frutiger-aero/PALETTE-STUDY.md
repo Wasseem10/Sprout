@@ -1,6 +1,6 @@
 # Ripple palette study — Ocean / Prism / Lagoon
 
-Created **2026-10-10**. Status: **Prism selected by the user**. The three-way comparison is retained as provenance. Character silhouette, accessories and final layout are still being explored; no runtime or Blender changes are part of this study.
+Created **2026-10-10**. Status: **Prism selected by the user; Sprout subsequently selected as the character**. The three-way comparison is retained as provenance. Accessories and final layout remain open; no runtime or Blender changes are part of this study. See [PRODUCTION-WORKFLOW.md](PRODUCTION-WORKFLOW.md) for the current build order.
 
 ## Recommendation to compare
 
@@ -24,12 +24,12 @@ Compare the same silhouette, pose, camera, lighting and layout before choosing. 
 - A small identity/status header, one continuous readable conversation region, and a fixed composer with obvious voice/send controls.
 - Requested details appear in a secondary view rather than a permanent dashboard.
 - A luminous exterior glass frame with a stable nearly opaque reading surface.
-- Most visual color lives in Ripple and selected frame highlights. Essential text stays navy or the corresponding high-contrast dark-theme text.
+- Most visual color lives in the selected character and frame highlights. Essential text stays navy or the corresponding high-contrast dark-theme text.
 - Existing controls retain their real meanings. A colorful streak is decorative, not the sole signal for listening, success or error.
 
 The reference concept's wide empty panel and extra slogans are not the final product layout. The portrait specification remains the starting proposal. Any final image/layout pass should show meaningful conversation content and a dark input label/placeholder.
 
-The full implementation prompt will be consolidated after character and final layout choices are settled, incorporating the selected Prism palette. The current MASTER-PROMPT.md is the earlier blue-led draft and is not the consolidated final prompt.
+The full implementation prompt will be consolidated after the final layout review, incorporating selected Sprout and Prism. The current MASTER-PROMPT.md is the earlier blue-led Ripple draft and is not the consolidated final prompt.
 
 ## Assets and provenance
 

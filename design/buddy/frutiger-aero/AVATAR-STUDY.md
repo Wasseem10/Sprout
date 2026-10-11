@@ -1,6 +1,6 @@
 # Avatar exploration — Prism character family
 
-Created **2026-10-10**. **Prism is selected by the user.** Character silhouette, accessories and final panel layout remain under discussion. This pass creates original concept studies only; it changes no runtime, Blender scene or exported model.
+Created **2026-10-10**. **Sprout and the Prism palette are selected by the user.** The comparison is retained as provenance; accessories and final panel layout remain open. This pass creates original concept studies only; it changes no runtime, Blender scene or exported model. The current build order is in [PRODUCTION-WORKFLOW.md](PRODUCTION-WORKFLOW.md).
 
 The user asked whether Ripple was really the strongest possible avatar now that it is a cute being, and clarified that even the steel cradle can be interchangeable. Character identity therefore must work independently of its support.
 
@@ -42,7 +42,7 @@ The body can use fixed topology and broad authored morphs; buds or fins may add 
 
 ## Next design gate
 
-Select the creature silhouette, then make one final compact/expanded layout concept with meaningful conversation content, readable text and the selected Prism palette. Consolidate the full implementation prompt after that review. Existing Blender and interface specifications are working baselines; their earlier Ripple/cradle framing should not be mistaken for a final commitment.
+The user has selected Sprout and asked to focus on the production workflow. Next prove its actual-size clay silhouette and exported animation using [ANIMATION-WORKFLOW.md](ANIMATION-WORKFLOW.md). Then make the final compact/expanded layout study with meaningful conversation content, readable text and Prism materials. Consolidate the full implementation prompt after that review. Earlier Ripple/cradle specifications remain working history.
 
 ## Exact submitted concept prompt
 

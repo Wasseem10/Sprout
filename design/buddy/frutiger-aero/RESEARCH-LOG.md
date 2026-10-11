@@ -71,4 +71,16 @@ The user likes the vibrant blue concept and asked whether a beautiful combinatio
 
 The user asked for other actual character silhouettes before deciding whether Ripple is best, and made the steel cradle interchangeable. [The avatar study](AVATAR-STUDY.md) compares Ripple, Sprout and Drift with Prism materials and no required support. Our preferred challenger is Sprout, with shorter rounded asymmetric buds to test in the next blockout. Steel sweep, glass pebble and free float are independent support ideas. Character selection and final layout remain open; no runtime or Blender model was replaced.
 
+### Production workflow and Sprout selection — 2026-10-10
+
+The user selected **Sprout**, retained **Prism**, and asked to set accessory discussion aside while defining a workflow with working examples and clean animation. The latest direction supersedes the earlier open-character status above. Final compact/expanded layout remains open; the consolidated full prompt is still pending that review.
+
+[PRODUCTION-WORKFLOW.md](PRODUCTION-WORKFLOW.md) records the build order: actual-size clay → minimal rig/four clips → audited GLB motion in current Three → Prism lookdev → bounded R3F reuse → panel choreography → measured delivery. [ANIMATION-WORKFLOW.md](ANIMATION-WORKFLOW.md) defines the rig/clip/export contract, [INTERACTION-MOTION-WORKFLOW.md](INTERACTION-MOTION-WORKFLOW.md) defines native bounds/focus/reversal, and [REFERENCE-RECIPES.md](REFERENCE-RECIPES.md) extracts experiments from official Three/Drei/R3F/Khronos examples with pinned sources and license limits.
+
+The inspected UI checkout is React 19/Vite 8/Electron 44/direct Three 0.186.1, with no Next.js or R3F dependency. Its Vercel public build is Vite. Blender → GLB → R3F → Next.js → Vercel is a valid later browser route, while the existing desktop host can reuse the same asset/controller. The unrelated Next.js project at the workspace root is not part of this plan.
+
+The installed Blender exporter warns that applying modifiers prevents shape-key export. The proposed runtime mesh therefore completes topology operations before keys and exports with Apply Modifiers false. Exported morph normals, logical clips and actual channel ownership require a semantic manifest audit. Current 15/30fps renderer caps are inspected baseline behavior, not proof of the proposed 60fps active-motion target.
+
+This workflow pass changes documentation only. No Sprout scene, rig, clip, runtime controller, framework migration or deployment has been created, and none of its proposed review gates is reported as passed.
+
 Append future entries with observed defects, source revisions, controlled comparisons and actual artifact links. Do not report planned budgets, generated concept pixels, or untested audio responses as completed implementation.
