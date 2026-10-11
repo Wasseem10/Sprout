@@ -1,6 +1,6 @@
 # InsightOS Ribbon — authored source
 
-The approved direction is **Ribbon**. The original Aperture blockout survives in recovery copies; the current hero is one continuous titanium ribbon around a luminous sea-glass pearl. All five visible surfaces are actual authored meshes. There are no procedural displacement or texture dependencies.
+The implemented v001 direction is **Ribbon**. The proposed next direction is [Ripple: a cute ocean-blue jelly character and Aero interface](frutiger-aero/README.md); that planning packet does not change the current runtime. The original Aperture blockout survives in recovery copies; the current hero is one continuous titanium ribbon around a luminous sea-glass pearl. All five visible surfaces are actual authored meshes. There are no procedural displacement or texture dependencies.
 
 Runtime assets are `public/buddy/insight-core-v1.glb` and the transparent 640×640 `insight-core-v1.png`. The GLB contains only the nine model/rig nodes, five mesh surfaces with baked evaluated normals, portable PBR materials, and one six-second loop. The filename stays stable for the UI integration.
 
