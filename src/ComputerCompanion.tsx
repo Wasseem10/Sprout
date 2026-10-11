@@ -24,7 +24,7 @@ import { spokenComputerReply, spokenRequestAcknowledgment } from './speechText';
 import './computer.css';
 import ConnectionsPanel from './ConnectionsPanel';
 import DesktopBuddy from './DesktopBuddy';
-import AssistantSignal from './AssistantSignal';
+import AssistantSignal, { buddyVisualState } from './AssistantSignal';
 import FinancePanel from './FinancePanel';
 import BillWorkspace from './BillWorkspace';
 import type { BillValues } from '../shared/bills';
@@ -839,7 +839,7 @@ export default function ComputerCompanion() {
                   <h1>Tell me what you need done.</h1>
                   <p>Understand your bills. Explore your options. Make something together.</p>
                 </div>
-                <AssistantSignal active={active} />
+                <AssistantSignal phase={buddyVisualState(voice.phase, busy)} />
               </div>
               <nav className="computer-tabs" aria-label="Computer tools">
                 {[

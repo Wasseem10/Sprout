@@ -1,0 +1,207 @@
+{
+  "file": "public/buddy/insight-core-v1.glb",
+  "bytes": 302104,
+  "sha256": "3abccd6bb9bd3f4c4941cff1a052c9a598da7fdde0d503847cda169d515978e7",
+  "meshes": [
+    {
+      "name": "HERO_pearl_core_mesh",
+      "vertices": 4514,
+      "normals": true
+    },
+    {
+      "name": "HERO_flow_cyan_mesh",
+      "vertices": 392,
+      "normals": true
+    },
+    {
+      "name": "HERO_flow_ivory_mesh",
+      "vertices": 392,
+      "normals": true
+    },
+    {
+      "name": "HERO_flow_sage_mesh",
+      "vertices": 392,
+      "normals": true
+    },
+    {
+      "name": "HERO_titanium_ribbon_mesh.001",
+      "vertices": 2576,
+      "normals": true
+    }
+  ],
+  "animation": "INSIGHTOS_Buddy_v001",
+  "durationSeconds": 6,
+  "tracks": [
+    {
+      "node": "HERO_pearl_core",
+      "path": "scale",
+      "keys": 145,
+      "seamError": 0,
+      "maximumStep": 0.0003333091735839844
+    },
+    {
+      "node": "RIG_inner_flow",
+      "path": "rotation",
+      "keys": 145,
+      "seamError": 0,
+      "maximumStep": 0.043638203145403606
+    },
+    {
+      "node": "RIG_ribbon_spin",
+      "path": "rotation",
+      "keys": 145,
+      "seamError": 0,
+      "maximumStep": 0.043638203145403606
+    }
+  ],
+  "extensions": [
+    "KHR_materials_clearcoat",
+    "KHR_materials_transmission",
+    "KHR_materials_ior"
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "emissiveFactor": [
+        0.04949999842047692,
+        0.052799998533725745,
+        0.05005000117123126
+      ],
+      "extensions": {
+        "KHR_materials_clearcoat": {
+          "clearcoatFactor": 0.25,
+          "clearcoatRoughnessFactor": 0.07999999821186066
+        },
+        "KHR_materials_transmission": {
+          "transmissionFactor": 0.9399999976158142
+        },
+        "KHR_materials_ior": {
+          "ior": 1.25
+        }
+      },
+      "name": "MAT_buddy_pearl_glass",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.8999999761581421,
+          0.9599999785423279,
+          0.9100000262260437,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.07000000029802322
+      }
+    },
+    {
+      "doubleSided": true,
+      "emissiveFactor": [
+        0.03825000259280209,
+        0.49299999964237173,
+        0.48450000751018507
+      ],
+      "extensions": {
+        "KHR_materials_clearcoat": {
+          "clearcoatFactor": 0.25,
+          "clearcoatRoughnessFactor": 0.07999999821186066
+        },
+        "KHR_materials_transmission": {
+          "transmissionFactor": 0.30000001192092896
+        },
+        "KHR_materials_ior": {
+          "ior": 1.25
+        }
+      },
+      "name": "MAT_buddy_flow_cyan",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.04500000178813934,
+          0.5799999833106995,
+          0.5699999928474426,
+          1
+        ],
+        "metallicFactor": 0.10000000149011612,
+        "roughnessFactor": 0.20000000298023224
+      }
+    },
+    {
+      "doubleSided": true,
+      "emissiveFactor": [
+        0.21300000202655767,
+        0.240000013113022,
+        0.1890000060796737
+      ],
+      "extensions": {
+        "KHR_materials_clearcoat": {
+          "clearcoatFactor": 0.25,
+          "clearcoatRoughnessFactor": 0.07999999821186066
+        },
+        "KHR_materials_transmission": {
+          "transmissionFactor": 0.20000000298023224
+        },
+        "KHR_materials_ior": {
+          "ior": 1.25
+        }
+      },
+      "name": "MAT_buddy_flow_ivory",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.7099999785423279,
+          0.800000011920929,
+          0.6299999952316284,
+          1
+        ],
+        "metallicFactor": 0.10000000149011612,
+        "roughnessFactor": 0.27000001072883606
+      }
+    },
+    {
+      "doubleSided": true,
+      "emissiveFactor": [
+        0.0675000008940696,
+        0.23849998080730472,
+        0.17099999332427984
+      ],
+      "extensions": {
+        "KHR_materials_clearcoat": {
+          "clearcoatFactor": 0.25,
+          "clearcoatRoughnessFactor": 0.07999999821186066
+        },
+        "KHR_materials_transmission": {
+          "transmissionFactor": 0.25
+        },
+        "KHR_materials_ior": {
+          "ior": 1.25
+        }
+      },
+      "name": "MAT_buddy_flow_sage",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.15000000596046448,
+          0.5299999713897705,
+          0.3799999952316284,
+          1
+        ],
+        "metallicFactor": 0.11999999731779099,
+        "roughnessFactor": 0.23999999463558197
+      }
+    },
+    {
+      "doubleSided": true,
+      "extensions": {
+        "KHR_materials_clearcoat": {
+          "clearcoatFactor": 0.15000000596046448,
+          "clearcoatRoughnessFactor": 0.1599999964237213
+        }
+      },
+      "name": "MAT_buddy_titanium",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.3199999928474426,
+          0.3499999940395355,
+          0.3400000035762787,
+          1
+        ],
+        "roughnessFactor": 0.2549999952316284
+      }
+    }
+  ]
+}

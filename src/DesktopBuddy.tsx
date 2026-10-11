@@ -22,7 +22,7 @@ import type { ComputerState } from '../shared/computer';
 import './buddy.css';
 import EnergyPanel from './EnergyPanel';
 import FinancePanel from './FinancePanel';
-import AssistantSignal from './AssistantSignal';
+import AssistantSignal, { buddyVisualState } from './AssistantSignal';
 
 type Props = {
   expanded: boolean;
@@ -85,7 +85,7 @@ export default function DesktopBuddy(p: Props) {
           onClick={p.expand}
           aria-label={p.expanded ? 'Collapse buddy' : 'Expand buddy'}
         >
-          <AssistantSignal small active={p.active} />
+          <AssistantSignal small phase={buddyVisualState(p.voicePhase, p.busy)} />
         </button>
         <div className="buddy-identity">
           <strong>

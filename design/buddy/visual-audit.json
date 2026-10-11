@@ -1,0 +1,13 @@
+{
+  "png_dimensions": [
+    640,
+    640
+  ],
+  "png_channels": 4,
+  "transparent_pixel_fraction": 0.77541259765625,
+  "opaque_white_clip_fraction": 0.0,
+  "opaque_peak_channel": 0.988235354423523,
+  "readability_render": "renders/readability-160.png",
+  "grayscale_render": "renders/hierarchy-grayscale.png",
+  "visual_review_notes": "PNG transparency must be composited by the viewer; Cycles glass and runtime transmission lighting differ."
+}
