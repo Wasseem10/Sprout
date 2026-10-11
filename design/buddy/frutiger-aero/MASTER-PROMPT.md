@@ -1,6 +1,6 @@
 # Consolidated implementation prompt — Sprout / Prism
 
-Revision **2**, **2026-10-10**. Prepared at the user's request after the upstream workflow audit. This supersedes the earlier Ripple/required-steel brief. The portrait layout below is the chosen starting prototype and must be reviewed in the actual app; it is not a completed or frozen layout.
+Revision **3**, **2026-10-10**. Consolidated after the upstream and stack/audio audits. Reuse the implemented voice/rendering paths and add only the missing character/presentation work. This supersedes the earlier Ripple/required-steel brief. The portrait layout below is the chosen starting prototype and must be reviewed in the actual app; it is not a completed or frozen layout.
 
 The text under **Copyable prompt** is the full implementation brief. Its references provide detailed contracts and review recipes. This document has not executed generation, edited Blender or changed the runtime.
 
@@ -12,7 +12,11 @@ Build the next visual version of **InsightOS** around **Sprout**, an original in
 
 Work in the isolated InsightOS UI checkout and its existing **ui/presentation-polish** branch/draft PR. Read applicable AGENTS instructions and this folder's README, PRODUCTION-WORKFLOW, HIGGSFIELD-UPSTREAM, ANIMATION-WORKFLOW, INTERACTION-MOTION-WORKFLOW and REFERENCE-RECIPES before editing. Inspect the running app, asset inventory and live Blender state. Keep existing Ribbon assets available until the replacement passes its gates.
 
+Read STACK-AUDIO-AUDIT for implemented versus planned work. Reuse existing ElevenLabs Scribe/TTS, interruptions, phase mapping, TypeScript, desktop controls, and the UI branch's Blender/GLB/Three rendering path. Voice is already implemented on upstream master; the Ribbon renderer is in the draft UI branch. Refresh those refs before implementation. This is InsightOS visual work; aerospace projects and portfolio navigation in the pasted reference are examples, not new product scope.
+
 The current host is React 19/Vite/Electron/direct Three, without Next.js or R3F. Prove the exported character there first. Package the proven avatar/controller into a bounded R3F component reusable by the desktop host and a later Next.js browser shell. Verify compatible dependencies; R3F 9 is the React 19 line. Read the actual host's installed Next documentation before Next code. The unrelated Next project at the workspace root is outside this task.
+
+Use GLB and Sprout's custom rig. Mixamo, VRM and three-vrm are omitted from this workflow because their humanoid structure does not match Sprout. R3F/Drei remain later packaging; use their helpers selectively, with one mixer update per frame. Keep CSS/WAAPI for the first panel proof. GSAP scroll sequences, Zustand, Rapier and an extra spring/UI library are deferred until a named unmet requirement justifies one bounded experiment.
 
 Before Blender mutations, load the connected bridge's core and relevant scene/modeling/lookdev/lighting/animation/audit modules, check the live host, inspect the scene, record a Scene Passport, and checkpoint broad changes. One agent owns the live Blender scene. Preserve unrelated objects and the active file path.
 
@@ -42,9 +46,23 @@ Follow ANIMATION-WORKFLOW's minimal nine-bone FK rig, three broad body-jelly key
 
 Give every animated property one owner. One base mixer/compositor owns body bones and the whole body morph vector. Click owns its reaction root, blink its lids, gaze its unkeyed nodes. Retarget current action weights from the visible mixture; never reset an action while it still contributes. Guard completion callbacks with action identity/current operation tokens.
 
+The local controller combines authored GLB clips with live phase, pointer and optional audio inputs. Individual pose updates require no AI/server request. Authored clips are reusable motion components of this interactive system.
+
 Advance the mixer once per rendered frame using elapsed seconds. Use elapsed-time damping for gaze and reset the clock after hidden/restored periods. Target 60fps during active reactions/panel transitions, verified on the reference desktop; existing 15/30fps caps are a baseline to improve. Distinguish looping idle from a parked pose: author a gentle settle/wake path if idle rests on demand, and restart before the first response frame.
 
 Status, Stop and interruption remain immediate. Begin with real phase-driven expression. Optional numeric audio levels come read-only from the existing voice owner; they never detect phase or create a microphone session. Studio events are explicitly simulated. Reduced/paused motion uses a stable readable pose while the controls still work.
+
+### Add measured sound reactivity through the existing voice owner
+
+The existing fallback microphone RMS analyser is internal and does not expose avatar levels; realtime Scribe input has no verified visual-level source. Current TTS uses HTMLAudio playback without an output analyser. Add a narrow presentation snapshot/ref only where the voice owner can supply a supported source: authoritative phase, optional normalized input/output level, availability, freshness and playback generation. Keep unavailable sources null rather than opening a second microphone or switching to Conversation SDK for volume getters.
+
+Observe existing playback with a supported Web Audio analyser branch while preserving audible output, user activation, interruption, pause/error/end and cleanup. Measured output is zero or unavailable during fetch, before playback, pause, completion and cancellation. A speaking phase alone is not evidence of audible samples. On interruption discard the old output generation immediately; smoothing must not keep obsolete speech motion alive.
+
+Voice owns its capture/playback resources and analysis lifecycle. Avatar hide/unmount stops visual sampling/rendering, without stopping voice, closing its AudioContext or changing capture thresholds. Preserve ownership when attaching or detaching consumers.
+
+Sample numeric values in the render controller without per-frame React state. Start with a bounded light/expression envelope; route later body deformation through its one authoritative morph compositor. Do not write shader/mixer/morph values competitively. Use elapsed-time attack/release and keep phase/status immediate. Silence settles intensity, not conversation phase. Observe user-selected audio only when such a source exists; beat detection, music playback and system-audio capture are not required.
+
+Prove current-state transitions first, then test real input/output envelopes as an independent slice before material polish. Studio synthetic levels are explicitly labelled and make no microphone/backend calls. Preserve the current public preview's microphone policy. Volume-driven mouth opening is optional expression, not phoneme/viseme lip-sync; defer a timed viseme subsystem until the character's mouth and an actual timing source warrant it. No new AI provider, WebRTC architecture or conversation backend belongs in this visual task.
 
 ### Export and browser look development
 
@@ -53,6 +71,8 @@ Export versioned **.glb** files, with semantic hierarchy, skins/morphs and separ
 Produce a canonical uncompressed export, semantic manifest, validator report and transparent PNG fallback rendered from the approved authored character. Run the deterministic interrupted clay replay in current Three and Electron before final lookdev. File validity alone is not acceptance.
 
 Use a fixed near-front camera, broad key reflection, soft fill and cool rim. Compare neutral/Prism and glossy-jelly/transmission candidates with identical camera, pose, exposure and render size. Recreate the lighting/reflection structure in Three; GLB does not reproduce an entire Cycles shader/compositor/area-light setup. Match actual silhouette, face, color and highlights rather than claiming identical offline/browser pixels.
+
+Authored morphs provide the initial jelly motion. A custom GLSL deformation is optional after a matched comparison shows a specific missing effect; preserve face/sole masks, correct shading normals and animated bounds. An elastic spring or soft-body simulation must earn its added cost and cannot take ownership of already keyed properties.
 
 ### Compact interface and coordinated motion
 
@@ -85,6 +105,7 @@ Keep the user's work reviewable in the existing draft PR; publish/merge only wit
 ## Supporting packet
 
 - [Upstream audit](HIGGSFIELD-UPSTREAM.md)
+- [Implemented stack and audio audit](STACK-AUDIO-AUDIT.md)
 - [Production runbook](PRODUCTION-WORKFLOW.md)
 - [Canonical animation/export contract](ANIMATION-WORKFLOW.md)
 - [Panel/native motion contract](INTERACTION-MOTION-WORKFLOW.md)

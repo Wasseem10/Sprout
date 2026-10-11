@@ -93,4 +93,14 @@ Compression is a derived build after the canonical asset passes. Preserve gaze a
 
 This turn creates documentation and the copyable prompt only. No Sprout generation, Blender mutation, runtime migration or deployment is reported as completed.
 
+### Existing stack and audio reactivity audit — 2026-10-10
+
+The user supplied an interactive audio-avatar/portfolio architecture and asked to rule out work already in the workflow or implemented on GitHub. Live upstream master was fetched at **f1423fd84e554e307294a02f16c09bfa01bdaa8e**; the UI branch was **a13bd134c0c4238c3db6a0ad3c4b90fadc319dd1** before this documentation change. Both refs have the same voice.ts blob **86b3829ac31db2fd02156fa6ac29f2d27da9c7ac**. The voice path is existing upstream work; the direct Three/Ribbon GLB renderer is implemented in the unmerged UI branch.
+
+[STACK-AUDIO-AUDIT.md](STACK-AUDIO-AUDIT.md) records the classification. ElevenLabs Scribe, TTS and interruption remain in place. The internal automatic fallback RMS analyser is not exposed to the avatar, realtime input has no verified level source, and output playback has no analyser. Current rendered speaking pulses are phase-driven. The proposed addition is a narrow read-only voice-owned phase/level/freshness adapter, preserving playback and cancellation.
+
+[MASTER-PROMPT.md](MASTER-PROMPT.md) revision 3 now makes reuse explicit. Sprout keeps its custom GLB rig; Mixamo and VRM/three-vrm are omitted because of their humanoid structure. R3F/Drei remain planned packaging; GSAP scroll motion, Zustand, additional UI/spring libraries and Rapier are deferred. Current Rapier documentation does support soft bodies; deferral reflects scope and cost, not a claim of incapability. Authored morphs remain the first jelly route, with shaders a bounded later study.
+
+The three interaction levels describe capabilities, not three systems to rebuild: conversation already exists, expressive Sprout is planned, and measured sound reactivity is the unimplemented signal integration. Aerospace examples do not expand InsightOS scope. This turn changes documentation only; no voice graph, microphone access, dependency or runtime was changed.
+
 Append future entries with observed defects, source revisions, controlled comparisons and actual artifact links. Do not report planned budgets, generated concept pixels, or untested audio responses as completed implementation.

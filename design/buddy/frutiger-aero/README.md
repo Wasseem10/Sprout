@@ -12,6 +12,8 @@ Read [PRODUCTION-WORKFLOW.md](PRODUCTION-WORKFLOW.md) for the build order, actua
 
 The [full copyable implementation prompt](MASTER-PROMPT.md) consolidates the selected direction. [HIGGSFIELD-UPSTREAM.md](HIGGSFIELD-UPSTREAM.md) audits the additional generation/blocking/animation/export workflow point by point and records current connector capabilities.
 
+The [stack and audio audit](STACK-AUDIO-AUDIT.md) distinguishes upstream voice implementation from the draft UI branch's GLB renderer, existing workflow decisions, missing numeric audio signals and tools omitted/deferred for Sprout. The master prompt reuses implemented work.
+
 The browser direction is Blender → GLB → R3F/Three → Next.js → Vercel. The inspected app currently uses React/Vite/Electron/direct Three. First prove the actual Sprout export in that working renderer, then package the shared R3F avatar for the desktop host and an optional Next.js browser host.
 
 | Current specification                                            | Purpose                                                                        |
