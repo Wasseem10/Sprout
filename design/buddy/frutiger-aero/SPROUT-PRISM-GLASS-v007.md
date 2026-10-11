@@ -1,5 +1,7 @@
 # Sprout Prism glass: material correction
 
+Historical material. The subsequent [light glass and quiet-menu revision](SPROUT-CLEAR-GLASS-v008.md) supersedes this appearance after the user's visual review.
+
 2026-10-11. This revision responds to the user's review of the pale panel and controls. Earlier glass studies remain historical records; their screenshots do not represent this material.
 
 ## Material and hierarchy

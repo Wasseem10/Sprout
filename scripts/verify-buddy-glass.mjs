@@ -411,7 +411,12 @@ try {
     controlStates.push({
       interaction,
       contrast:
-        interaction === 'disabled' ? null : await actualIconContrast(primary, 'rgb(255,255,255)'),
+        interaction === 'disabled'
+          ? null
+          : await actualIconContrast(
+              primary,
+              await primary.locator('svg').evaluate((element) => getComputedStyle(element).color),
+            ),
     });
     if (interaction === 'pressed') await page.mouse.up();
   }

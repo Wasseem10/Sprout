@@ -13,10 +13,10 @@ html.desktop-buddy,
   background: transparent;
 }
 .buddy {
-  --buddy-ink: #f3f8ff;
-  --buddy-muted: #d6e4f7;
-  --buddy-blue: #9ce6ff;
-  --buddy-line: #92bded38;
+  --buddy-ink: #061526;
+  --buddy-muted: #243b50;
+  --buddy-blue: #125d91;
+  --buddy-line: #547b9e29;
   --lime: var(--buddy-blue);
   --muted: var(--buddy-muted);
   --line: var(--buddy-line);
@@ -43,9 +43,9 @@ html.desktop-buddy,
   -webkit-app-region: no-drag;
 }
 .buddy :focus-visible {
-  outline: 2px solid #c5f4ff;
+  outline: 2px solid #145a8e;
   outline-offset: 3px;
-  box-shadow: 0 0 0 5px #07182e;
+  box-shadow: 0 0 0 5px #f0fbff;
 }
 .buddy button:disabled {
   opacity: 0.62;
@@ -76,13 +76,13 @@ html.desktop-buddy,
 .buddy-dock-controls {
   min-width: 0;
   padding: 2px 10px;
-  border: 1px solid #b9eaff4d;
+  border: 1px solid #ffffff8c;
   border-radius: 20px;
-  background: linear-gradient(135deg, #163955eb, #172642ed 65%, #30264beb);
-  backdrop-filter: blur(18px) saturate(160%);
+  background: linear-gradient(135deg, #f5fcffb8, #f4f5ffb3 65%, #e6faffb8);
+  backdrop-filter: blur(12px) saturate(135%);
   box-shadow:
-    0 4px 14px #18365718,
-    inset 0 1px 0 #d5f5ff66;
+    0 3px 10px #18365712,
+    inset 0 1px 0 #ffffffa6;
 }
 .buddy[data-panel-stage='open'] .buddy-dock-controls {
   display: contents;
@@ -182,28 +182,25 @@ html.desktop-buddy,
 .buddy-play,
 .buddy-send,
 .buddy-disclosure-trigger,
-.buddy-disclosure-panel button,
 .buddy-result-actions button {
   position: relative;
   isolation: isolate;
   border: 1px solid transparent;
-  background-color: #081b3540;
+  background-color: #ffffff38;
   background-image:
-    radial-gradient(ellipse 90% 45% at 88% 114%, #55f0ffc2, #69cffa29 58%, transparent 100%),
-    radial-gradient(ellipse 70% 38% at 90% -8%, #c69aff73, transparent 100%),
-    radial-gradient(ellipse at 5% -28%, #6cbcff66, transparent 57%),
-    linear-gradient(115deg, #b9eaff12, #d4b3ff06 45%, #c5a0ff20);
-  backdrop-filter: blur(12px) saturate(170%);
+    radial-gradient(ellipse 85% 45% at 92% 118%, #70e7f766, transparent 100%),
+    radial-gradient(ellipse 70% 40% at 100% -8%, #c9b5ff59, transparent 100%),
+    linear-gradient(145deg, #ffffff70, #ffffff08 50%, #b0e9f51f);
+  backdrop-filter: blur(8px) saturate(130%);
   box-shadow:
-    inset 0 1px 2px #e8f7ff59,
-    inset 1px 0 3px #8adaff3d,
-    inset 0 -1px 3px #72d7ed47,
-    0 2px 5px #0209184d;
+    inset 0 1px 0 #ffffffb3,
+    inset 0 -1px 1px #8bafc833,
+    0 2px 4px #274b6612;
   transition:
     background-color 160ms ease,
     box-shadow 160ms ease;
 }
-/* Rim masks, paired screen/overlay layers and inset lighting directly adapted
+/* Rim masks, layered reflections and inset lighting adapted
    from MIT Liquid Glass React (ac48eab, index.tsx:469–565).
    Notice: design/buddy/frutiger-aero/LIQUID-GLASS-REFERENCE-LICENSE.txt.
    Native button semantics and our existing pointer controller remain the owners. */
@@ -211,72 +208,69 @@ html.desktop-buddy,
 .buddy-play::before,
 .buddy-send::before,
 .buddy-disclosure-trigger::before,
-.buddy-disclosure-panel button::before,
 .buddy-result-actions button::before {
   content: '';
   position: absolute;
   inset: -1px;
   border-radius: inherit;
-  padding: 1.25px;
+  padding: 1px;
   pointer-events: none;
   background: linear-gradient(
     135deg,
-    #d2f8ffd9 0%,
-    #67d8ff 16%,
-    #398bfd60 31%,
-    #bda3ff30 44%,
-    #d9a6ff 64%,
-    #9d78fbb8 77%,
-    #5df5ff 91%,
-    #c2feff 100%
+    #ffffff 0%,
+    #b6efff 16%,
+    #9ebfed20 31%,
+    #c5b5ee20 44%,
+    #c5a9f3a6 64%,
+    #b49eea66 77%,
+    #8ae2f0a6 91%,
+    #ebfcff 100%
   );
   mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
   mask-composite: exclude;
-  mix-blend-mode: screen;
-  opacity: 0.88;
+  opacity: 0.7;
 }
 .buddy-icon::after,
 .buddy-play::after,
 .buddy-send::after,
 .buddy-disclosure-trigger::after,
-.buddy-disclosure-panel button::after,
 .buddy-result-actions button::after {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  padding: 1.5px;
+  padding: 1px;
   background:
-    radial-gradient(ellipse at 25% 0%, #fff, transparent 68%),
-    linear-gradient(150deg, #fff9, #fff0 45%, #d9bbff99);
+    radial-gradient(ellipse at 25% 0%, #fff, transparent 55%),
+    linear-gradient(150deg, #fff9, #fff0 45%, #dacaff40);
   mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
   mask-composite: exclude;
   mix-blend-mode: overlay;
-  box-shadow: inset 0 1px 3px #fff8;
-  opacity: 0.48;
+  opacity: 0.3;
 }
 .buddy button:active:not(:disabled) {
-  background-color: #07152d80;
-  box-shadow:
-    inset 0 2px 5px #02081c8c,
-    inset 0 -1px 2px #b8f3ff8c;
+  background-color: #9ecade33;
 }
-.buddy[data-panel-stage='open'] .buddy-icon:not(.stop) {
-  background-color: #12314b40;
+.buddy-window-actions .buddy-icon {
+  border-radius: 50%;
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+.buddy-window-actions .buddy-icon::before,
+.buddy-window-actions .buddy-icon::after {
+  content: none;
 }
 .buddy-icon:hover:not(:disabled) {
-  background-color: #31548166;
-  color: #fff;
+  background-color: #ffffff59;
 }
 .buddy-icon.stop {
-  color: #ffd1d8;
-  background-color: #67283850;
-  border-color: #e9a3b147;
+  color: #8b2f4b;
 }
 .buddy-window-actions .buddy-icon:last-child {
   margin-left: auto;
@@ -289,20 +283,18 @@ html.desktop-buddy,
   width: 44px;
   height: 44px;
   padding: 0;
-  border-radius: 13px;
-  color: #fff;
+  border-radius: 50%;
+  color: var(--buddy-ink);
   border-color: transparent;
-  background-color: #102a5759;
+  background-color: #e8f7ff59;
   background-image:
-    radial-gradient(ellipse 78% 34% at 65% 108%, #55efffe6, #77d7ff38 68%, transparent 100%),
-    radial-gradient(ellipse 70% 30% at 80% -3%, #d4b0ffa3, transparent 100%),
-    radial-gradient(ellipse 42% 70% at -8% 20%, #6cd2ff5c, transparent 100%),
-    linear-gradient(135deg, #327dc133, #1d326609 45%, #9577ce33);
+    radial-gradient(ellipse 78% 34% at 65% 115%, #7adfffa6, transparent 100%),
+    radial-gradient(ellipse 70% 35% at 92% -12%, #c4a4ed70, transparent 100%),
+    linear-gradient(145deg, #ffffff99, #ffffff12 55%, #bbecff40);
   box-shadow:
-    inset 0 1px 3px #def7ff73,
-    inset 1px 0 4px #46caff52,
-    inset 0 -1px 3px #c9c1ff8a,
-    0 2px 5px #040c2340;
+    inset 0 1px 0 #ffffffcc,
+    inset 0 -1px 1px #95bcd059,
+    0 2px 5px #23415a14;
 }
 .buddy-play {
   border-radius: 50%;
@@ -312,23 +304,21 @@ html.desktop-buddy,
   display: block;
 }
 .buddy-play.playing {
-  background-color: #2835656b;
+  background-color: #e5e7ff80;
 }
 .buddy-play[data-phase='listening'] {
   box-shadow:
-    0 0 0 2px #79e5ff66,
-    inset 0 1px 2px #e0f7ffab,
-    inset 0 -3px 5px #0d204447;
+    0 0 0 1px #3194b76b,
+    inset 0 1px 0 #fff9;
 }
 .buddy-play[data-phase='speaking'] {
   box-shadow:
-    0 0 0 2px #c1a4ff66,
-    inset 0 1px 2px #e0f7ffab,
-    inset 0 -3px 5px #0d204447;
+    0 0 0 1px #8771ba73,
+    inset 0 1px 0 #fff9;
 }
 .buddy-play:hover:not(:disabled),
 .buddy-send:hover:not(:disabled) {
-  background-color: #31548480;
+  background-color: #ffffff99;
 }
 .buddy-panel {
   position: absolute;
@@ -349,7 +339,7 @@ html.desktop-buddy,
   background: transparent;
   /* Own the filter at the animated sheet: its retained opacity animation
      creates a backdrop root that prevents descendant filters sampling the page. */
-  backdrop-filter: blur(22px) saturate(160%);
+  backdrop-filter: blur(10px) saturate(135%);
   box-shadow: inset 0 -1px 1px #182d4b16;
   transform-origin: 48px 0;
 }
@@ -379,20 +369,20 @@ html.desktop-buddy,
 .buddy-panel-glass::before {
   inset: 0;
   border-radius: inherit;
-  box-shadow: inset 0 1px 1px #e6f8ff52;
+  box-shadow: inset 0 1px 1px #ffffffb3;
 }
 .buddy-panel-glass::after {
   inset: 0;
   border-radius: inherit;
   /* The readable surface is owned HTML, not a capture of the desktop behind Electron. */
-  /* One continuous tinted lens supports readable light text; no label cutouts. */
+  /* A light continuous lens leaves the backdrop visible without local text patches. */
   background:
-    radial-gradient(ellipse 70% 40% at -24% -9%, #52dfff5c, transparent 100%),
-    radial-gradient(ellipse 60% 45% at 128% 20%, #ba8eff66, transparent 100%),
-    radial-gradient(ellipse 80% 40% at 116% 114%, #8ddfff4d, transparent 100%),
-    radial-gradient(ellipse 80% 30% at -20% 112%, #c498ff59, transparent 100%),
-    linear-gradient(155deg, #112d48d4, #102039d4 55%, #18233bd4);
-  box-shadow: inset 0 -1px 2px #7886c83d;
+    radial-gradient(ellipse 65% 38% at -18% -12%, #83edff80, transparent 100%),
+    radial-gradient(ellipse 65% 42% at 122% 12%, #ccbcff80, transparent 100%),
+    radial-gradient(ellipse 70% 38% at 112% 115%, #98e7ef70, transparent 100%),
+    radial-gradient(ellipse 65% 30% at -18% 115%, #d3c5fa66, transparent 100%),
+    linear-gradient(150deg, #fcfeffb8, #f9fcffab 55%, #f3f9ffb3);
+  box-shadow: inset 0 -1px 1px #7999bb26;
 }
 .buddy-panel-shadow {
   position: absolute;
@@ -446,7 +436,7 @@ html.desktop-buddy,
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
-  scrollbar-color: #b5cfea66 transparent;
+  scrollbar-color: #41688766 transparent;
   margin: 0 -4px 10px;
   padding: 0 4px;
   scroll-padding: 8px;
@@ -458,7 +448,7 @@ html.desktop-buddy,
   margin: 0;
   font-size: 18px;
   line-height: 1.65;
-  color: var(--buddy-muted);
+  color: var(--buddy-ink);
 }
 .buddy-message {
   margin: 0 0 22px;
@@ -481,16 +471,15 @@ html.desktop-buddy,
 }
 .buddy-message.user {
   margin-left: 18px;
-  border: 1px solid #badbff26;
-  background: linear-gradient(130deg, #96d6ff05, #b5a0ee06);
-  box-shadow: inset 0 1px 0 #e5f5ff0d;
+  border: 0;
+  background: transparent;
   border-radius: 16px 16px 5px 16px;
 }
 .buddy-message.user > span {
   color: var(--buddy-muted);
 }
 .buddy-message.error p {
-  color: #ffd3da;
+  color: #401223;
 }
 .buddy-result,
 .buddy-task {
@@ -561,20 +550,20 @@ html.desktop-buddy,
   position: relative;
   flex-shrink: 0;
   padding: 12px;
-  border: 1px solid #b7d8fd2e;
+  border: 1px solid #ffffff66;
   border-radius: 22px;
   background:
-    radial-gradient(ellipse at 100% 100%, #9069d50f, transparent 65%),
-    linear-gradient(130deg, #0a20394d, #07152c66);
-  backdrop-filter: blur(12px) saturate(140%);
+    radial-gradient(ellipse at 100% 100%, #b8a5e90d, transparent 65%),
+    linear-gradient(130deg, #ffffff40, #ffffff1a);
+  /* Keep this ancestor clear so the popup can blur transcript content behind it. */
   box-shadow:
-    inset 0 1px 1px #d4ecff30,
-    inset 0 -1px 3px #87a2e312;
+    inset 0 1px 0 #ffffff66,
+    0 1px 3px #29486308;
 }
 .buddy-composer:focus-within,
 .buddy-composer.listening {
-  border-color: #a8daff80;
-  box-shadow: 0 0 0 1px #a8daff3d;
+  border-color: #3479a780;
+  box-shadow: 0 0 0 1px #3479a740;
 }
 .buddy-composer textarea {
   display: block;
@@ -590,7 +579,7 @@ html.desktop-buddy,
   line-height: 1.5;
 }
 .buddy-composer textarea::placeholder {
-  color: var(--buddy-muted);
+  color: var(--buddy-ink);
   opacity: 1;
 }
 .buddy-compose-actions {
@@ -617,7 +606,7 @@ html.desktop-buddy,
 }
 .buddy-disclosure-trigger:hover,
 .buddy-disclosure-trigger[aria-expanded='true'] {
-  background-color: #48669247;
+  background-color: #ffffff70;
 }
 .buddy-disclosure-panel {
   position: absolute;
@@ -628,13 +617,14 @@ html.desktop-buddy,
   max-height: min(340px, var(--buddy-disclosure-height, calc(100dvh - 190px)));
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 8px;
-  border: 1px solid #a6d9fa52;
+  padding: 6px;
+  border: 1px solid #ffffff99;
   border-radius: 18px;
-  background: linear-gradient(135deg, #17344b, #1c2948 62%, #2b2c4b);
+  background: linear-gradient(135deg, #f3fcfff5, #f5f2fff5 62%, #edfafcf5);
+  backdrop-filter: blur(24px) saturate(135%);
   box-shadow:
-    0 8px 26px #182d4e30,
-    inset 0 1px 0 #cceeff59;
+    0 8px 24px #203a5926,
+    inset 0 1px 0 #ffffffb3;
 }
 .buddy-disclosure-panel[hidden] {
   display: none;
@@ -646,7 +636,10 @@ html.desktop-buddy,
   width: 100%;
   min-height: 44px;
   padding: 10px 12px;
+  border: 0;
   border-radius: 10px;
+  background: transparent;
+  box-shadow: none;
   text-align: left;
   color: var(--buddy-ink);
   font-size: 16px;
@@ -658,7 +651,7 @@ html.desktop-buddy,
 }
 .buddy-disclosure-panel button:hover:not(:disabled),
 .buddy-disclosure-panel button[aria-pressed='true'] {
-  background-color: #52769d42;
+  background-color: #6295c21a;
 }
 .buddy-layout-error {
   margin: 0;
@@ -675,9 +668,9 @@ html.desktop-buddy,
 /* Embedded results share the lens without changing their actions or data. */
 .buddy .energy-panel,
 .buddy .finance-mini {
-  --finance-ink: #f3f8ff;
-  --finance-muted: #d6e4f7;
-  background: #11243b;
+  --finance-ink: var(--buddy-ink);
+  --finance-muted: var(--buddy-muted);
+  background: #f7fcffd9;
   color: var(--buddy-ink);
   border-color: var(--buddy-line);
   margin: 0 0 14px;
@@ -687,7 +680,7 @@ html.desktop-buddy,
   color: var(--buddy-muted);
 }
 .buddy .energy-panel a {
-  color: #b1e6ff;
+  color: #145780;
   text-decoration: underline;
 }
 .buddy .energy-panel :is(strong, summary),
@@ -697,18 +690,18 @@ html.desktop-buddy,
 .buddy .energy-panel button,
 .buddy .finance-mini button {
   min-height: 44px;
-  background: #1a3654;
-  color: #e1f2ff;
+  background: #e6f1fa;
+  color: var(--buddy-ink);
   border-color: #80add666;
   font-size: 16px;
 }
 .buddy .energy-panel :is(table, thead th),
 .buddy .energy-panel .chosen {
-  background: #183049;
+  background: #e4eff6;
 }
 .buddy .energy-budget-alert {
-  background: #392e1e;
-  color: #ffe7b3;
+  background: #fff1d6;
+  color: #583e16;
   border-color: #b1946066;
 }
 .buddy-shell .computer-dialog {
@@ -787,7 +780,7 @@ html.desktop-buddy,
 }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
   .buddy-dock-controls {
-    background: #101f35;
+    background: #f3f8ff;
     backdrop-filter: none;
     box-shadow: none;
   }
@@ -802,26 +795,26 @@ html.desktop-buddy,
   .buddy-play,
   .buddy-send {
     /* Accessibility preference overrides all open, hover, active and voice states. */
-    background: var(--buddy-solid-control, #18334d) !important;
-    color: #fff;
+    background: var(--buddy-solid-control, #e9f1f8) !important;
+    color: var(--buddy-ink);
     border-color: #9cbbd4;
     backdrop-filter: none !important;
     box-shadow: none !important;
   }
   .buddy-play,
   .buddy-send {
-    --buddy-solid-control: #153f67;
+    --buddy-solid-control: #dfedf8;
     border-color: #b1d6f5;
   }
   .buddy-icon.stop {
-    --buddy-solid-control: #492331;
+    --buddy-solid-control: #f4e5ed;
   }
   .buddy-panel-glass {
-    background: #101f35;
+    background: #f3f8ff;
     backdrop-filter: none;
   }
   .buddy-panel-glass::after {
-    background: #101f35;
+    background: #f3f8ff;
     backdrop-filter: none;
   }
   .buddy-composer,
@@ -830,7 +823,7 @@ html.desktop-buddy,
   .buddy-welcome,
   .buddy-task,
   .buddy-result {
-    background: #101f35;
+    background: #f3f8ff;
     backdrop-filter: none;
   }
 }
