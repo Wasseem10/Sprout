@@ -31,9 +31,14 @@ html.desktop-buddy,
   isolation: isolate;
 }
 .buddy-visual-plane {
-  position: relative;
+  /* Only the glass tilts. Text, controls and WebGL stay outside the perspective
+     layer so Chromium never resamples their pixels when the pointer moves. */
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
+  z-index: -1;
+  pointer-events: none;
   isolation: isolate;
   transform-origin: 50% 50%;
 }

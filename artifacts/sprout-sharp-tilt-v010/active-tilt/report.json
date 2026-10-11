@@ -1,0 +1,53 @@
+{
+  "checkedAt": "2026-10-11T09:27:06.850Z",
+  "pass": true,
+  "source": {
+    "src/DesktopBuddy.tsx": "9a218afa51bd96962f567d34e37dfd68851d7389fa1f6120e237bca8a10065c2",
+    "src/buddy.css": "abbaa3956e4d096bf611937da172d7b7ab957da29169695c3f3a8263b6912448",
+    "src/useBuddyTilt.ts": "78690c7256f9d9f27e41b55311021b60d47027965ecb8f951eacf289f80d1a07",
+    "src/useBuddyPanel.ts": "bbb2badc52444e25668433318c3c3f43ea6aa46da1f241455a0ebdcbf72194d7"
+  },
+  "animation": [
+    {
+      "playState": "finished",
+      "fill": "both"
+    }
+  ],
+  "results": [
+    {
+      "direction": "left",
+      "pose": "perspective(1800px) rotateX(0deg) rotateY(-1.15102deg)",
+      "filter": "blur(10px) saturate(1.35)",
+      "scan": {
+        "x": 40,
+        "y": 443,
+        "width": 312,
+        "height": 16
+      },
+      "sharpStep": 50,
+      "frostedStep": 2.6666666666666665,
+      "edgeStepRatio": 0.05333333333333333
+    },
+    {
+      "direction": "right",
+      "pose": "perspective(1800px) rotateX(0deg) rotateY(1.15102deg)",
+      "filter": "blur(10px) saturate(1.35)",
+      "scan": {
+        "x": 40,
+        "y": 443,
+        "width": 312,
+        "height": 16
+      },
+      "sharpStep": 50,
+      "frostedStep": 2.6666666666666665,
+      "edgeStepRatio": 0.05333333333333333
+    }
+  ],
+  "requests": [],
+  "errors": [],
+  "limits": [
+    "Actual production DesktopBuddy within its local panel preview; sample messages and PNG avatar, no WebGL or provider/microphone session.",
+    "Matched before recreates failed descendant filter ownership through a temporary CSS override. After is unmodified current product CSS.",
+    "Observed adjacent RGB steps in the empty reading well certify owned webpage stripe softening at nonzero left/right yaw; not OS desktop blur or performance evidence."
+  ]
+}

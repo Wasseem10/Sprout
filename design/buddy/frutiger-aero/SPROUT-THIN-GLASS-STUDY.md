@@ -1,5 +1,7 @@
 # Sprout thin glass and pointer depth
 
+**Current transform ownership:** [Sharp tilt v010](SPROUT-SHARP-TILT-v010.md) moves readable content and the avatar outside the rotating decorative plane to prevent hover blur. The older whole-panel transform description below is retained as historical implementation evidence.
+
 Implementation study, 2026-10-11. Completed browser checks and remaining native gates are distinguished below. The historical `GLASS-PANEL-V005-STUDY.md` describes the previous thick-rim delivery, not the new eye asset version.
 
 ## Material and source treatment

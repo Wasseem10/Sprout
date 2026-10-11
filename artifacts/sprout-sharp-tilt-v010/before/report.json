@@ -1,0 +1,103 @@
+{
+  "stage": "before",
+  "results": [
+    {
+      "mode": "panel",
+      "name": "neutral",
+      "textBounds": {
+        "x": 606,
+        "y": 511.484375,
+        "width": 306,
+        "height": 59.375
+      },
+      "pose": "none",
+      "transforms": []
+    },
+    {
+      "mode": "panel",
+      "name": "top-left",
+      "textBounds": {
+        "x": 606.3268432617188,
+        "y": 511.27783203125,
+        "width": 305.858642578125,
+        "height": 59.83544921875
+      },
+      "pose": "perspective(1800px) rotateX(0.432deg) rotateY(-1.152deg)",
+      "transforms": [
+        {
+          "class": "buddy-visual-plane",
+          "transform": "matrix3d(0.999798, -0.000151585, 0.0201043, -1.1169e-05, 0, 0.999972, 0.00753975, -4.18875e-06, -0.0201048, -0.00753823, 0.999769, -0.000555427, 0, 0, 0, 1)",
+          "filter": "none"
+        }
+      ]
+    },
+    {
+      "mode": "panel",
+      "name": "bottom-right",
+      "textBounds": {
+        "x": 605.6942138671875,
+        "y": 511.1153564453125,
+        "width": 306.0955810546875,
+        "height": 59.8714599609375
+      },
+      "pose": "perspective(1800px) rotateX(-0.432deg) rotateY(1.152deg)",
+      "transforms": [
+        {
+          "class": "buddy-visual-plane",
+          "transform": "matrix3d(0.999798, -0.000151585, -0.0201043, 1.1169e-05, 0, 0.999972, -0.00753975, 4.18875e-06, 0.0201048, 0.00753823, 0.999769, -0.000555427, 0, 0, 0, 1)",
+          "filter": "none"
+        }
+      ]
+    },
+    {
+      "mode": "buddy",
+      "name": "neutral",
+      "textBounds": {
+        "x": 853.21875,
+        "y": 431.890625,
+        "width": 306,
+        "height": 59.375
+      },
+      "pose": "none",
+      "transforms": []
+    },
+    {
+      "mode": "buddy",
+      "name": "top-left",
+      "textBounds": {
+        "x": 853.5491943359375,
+        "y": 431.68212890625,
+        "width": 305.8509521484375,
+        "height": 59.8529052734375
+      },
+      "pose": "perspective(1800px) rotateX(0.432deg) rotateY(-1.152deg)",
+      "transforms": [
+        {
+          "class": "buddy-visual-plane",
+          "transform": "matrix3d(0.999798, -0.000151585, 0.0201043, -1.1169e-05, 0, 0.999972, 0.00753975, -4.18875e-06, -0.0201048, -0.00753823, 0.999769, -0.000555427, 0, 0, 0, 1)",
+          "filter": "none"
+        }
+      ]
+    },
+    {
+      "mode": "buddy",
+      "name": "bottom-right",
+      "textBounds": {
+        "x": 852.9093017578125,
+        "y": 431.5033874511719,
+        "width": 306.103271484375,
+        "height": 59.89495849609375
+      },
+      "pose": "perspective(1800px) rotateX(-0.432deg) rotateY(1.152deg)",
+      "transforms": [
+        {
+          "class": "buddy-visual-plane",
+          "transform": "matrix3d(0.999798, -0.000151586, -0.0201043, 1.1169e-05, 0, 0.999972, -0.00753975, 4.18875e-06, 0.0201048, 0.00753823, 0.999769, -0.000555427, 0, 0, 0, 1)",
+          "filter": "none"
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "scope": "Actual UI, local samples, static fallback avatar so cursor changes isolate panel typography; snapshots preserve actual CSS."
+}

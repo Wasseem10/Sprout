@@ -72,7 +72,7 @@ type Settings = {
   blocked: boolean;
 };
 
-/** One settling-only loop; never owns panel.shell, native bounds, draft or focus. */
+/** Settling-only decorative glass tilt; never transforms readable/interactive content. */
 export function useBuddyTilt(settings: Settings) {
   const latest = useRef(settings);
   latest.current = settings;

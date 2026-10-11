@@ -1,0 +1,79 @@
+{
+  "stage": "after",
+  "results": [
+    {
+      "mode": "panel",
+      "name": "neutral",
+      "textBounds": {
+        "x": 606,
+        "y": 511.484375,
+        "width": 306,
+        "height": 59.375
+      },
+      "pose": "none",
+      "transforms": []
+    },
+    {
+      "mode": "panel",
+      "name": "top-left",
+      "textBounds": {
+        "x": 606,
+        "y": 511.484375,
+        "width": 306,
+        "height": 59.375
+      },
+      "pose": "perspective(1800px) rotateX(0.432deg) rotateY(-1.152deg)",
+      "transforms": []
+    },
+    {
+      "mode": "panel",
+      "name": "bottom-right",
+      "textBounds": {
+        "x": 606,
+        "y": 511.484375,
+        "width": 306,
+        "height": 59.375
+      },
+      "pose": "perspective(1800px) rotateX(-0.432deg) rotateY(1.152deg)",
+      "transforms": []
+    },
+    {
+      "mode": "buddy",
+      "name": "neutral",
+      "textBounds": {
+        "x": 853.21875,
+        "y": 431.890625,
+        "width": 306,
+        "height": 59.375
+      },
+      "pose": "none",
+      "transforms": []
+    },
+    {
+      "mode": "buddy",
+      "name": "top-left",
+      "textBounds": {
+        "x": 853.21875,
+        "y": 431.890625,
+        "width": 306,
+        "height": 59.375
+      },
+      "pose": "perspective(1800px) rotateX(0.432deg) rotateY(-1.152deg)",
+      "transforms": []
+    },
+    {
+      "mode": "buddy",
+      "name": "bottom-right",
+      "textBounds": {
+        "x": 853.21875,
+        "y": 431.890625,
+        "width": 306,
+        "height": 59.375
+      },
+      "pose": "perspective(1800px) rotateX(-0.432deg) rotateY(1.152deg)",
+      "transforms": []
+    }
+  ],
+  "errors": [],
+  "scope": "Actual UI, local samples, static fallback avatar so cursor changes isolate panel typography; snapshots preserve actual CSS."
+}

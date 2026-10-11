@@ -120,6 +120,48 @@ test('panel tilts on a fixed surface, holds a pressed pose, then preserves editi
     () => (window as unknown as { __tiltNativeModes: number }).__tiltNativeModes,
   );
   await page.getByRole('button', { name: 'busy', exact: true }).click();
+  await page.evaluate(() => document.fonts.ready);
+  await expect(plane).toHaveAttribute('data-tilt', 'neutral');
+  const contentGeometry = () =>
+    root.evaluate((surface) =>
+      [
+        '.buddy-bar',
+        '.buddy-identity strong',
+        '.buddy-message p',
+        '.buddy-composer',
+        'textarea',
+        'button',
+        '.buddy-face .insight-signal',
+      ].map((selector) => ({
+        selector,
+        elements: [...surface.querySelectorAll<HTMLElement>(selector)]
+          .filter((element) => element.getClientRects().length > 0)
+          .map((element) => {
+            const rect = element.getBoundingClientRect();
+            const transformedAncestors: string[] = [];
+            for (let node: HTMLElement | null = element; node; node = node.parentElement) {
+              const style = getComputedStyle(node);
+              if (
+                style.transform !== 'none' ||
+                style.rotate !== 'none' ||
+                style.scale !== 'none' ||
+                style.translate !== 'none'
+              )
+                transformedAncestors.push(node.className || node.tagName);
+              if (node === surface) break;
+            }
+            return {
+              bounds: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
+              transformedAncestors,
+            };
+          }),
+      })),
+    );
+  const neutralContent = await contentGeometry();
+  for (const sample of neutralContent) {
+    expect(sample.elements.length, `${sample.selector} must be represented`).toBeGreaterThan(0);
+    for (const element of sample.elements) expect(element.transformedAncestors).toEqual([]);
+  }
   const output = path.join(
     process.cwd(),
     'artifacts',
@@ -127,15 +169,21 @@ test('panel tilts on a fixed surface, holds a pressed pose, then preserves editi
     'tilt',
   );
   await mkdir(output, { recursive: true });
-  await page.mouse.move(box.x + 8, box.y + box.height / 2);
+  await page.mouse.move(box.x + 8, box.y + 8);
   await expect(plane).toHaveAttribute('data-tilt', 'active');
   await expect.poll(() => plane.evaluate((element) => element.style.willChange)).toBe('');
+  // The glass can lean, but readable pixels and their hit targets must never
+  // enter a perspective layer or move by even a fractional CSS pixel.
+  expect(await plane.evaluate((element) => getComputedStyle(element).transform)).not.toBe('none');
+  expect(await contentGeometry()).toEqual(neutralContent);
   await page.locator('.panel-preview-scene').screenshot({
     path: path.join(output, 'tilt-left-busy.png'),
   });
-  await page.mouse.move(box.x + box.width - 8, box.y + box.height / 2);
+  await page.mouse.move(box.x + box.width - 8, box.y + box.height - 8);
   await expect(plane).toHaveAttribute('data-tilt', 'active');
   await expect.poll(() => plane.evaluate((element) => element.style.willChange)).toBe('');
+  expect(await plane.evaluate((element) => getComputedStyle(element).transform)).not.toBe('none');
+  expect(await contentGeometry()).toEqual(neutralContent);
   await page.locator('.panel-preview-scene').screenshot({
     path: path.join(output, 'tilt-right-busy.png'),
   });

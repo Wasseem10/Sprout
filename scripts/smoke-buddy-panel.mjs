@@ -423,7 +423,7 @@ try {
           transform: element.style.transform,
           viewport: { width: innerWidth, height: innerHeight },
           plane: bounds(element),
-          controls: [...element.querySelectorAll('button')]
+          controls: [...element.closest('.buddy').querySelectorAll('button')]
             .filter((button) => button.getClientRects().length && !button.closest('[inert]'))
             .map((button) => ({
               label: button.ariaLabel || button.textContent,
@@ -431,6 +431,7 @@ try {
             })),
         };
       });
+      assert.ok(geometry.controls.length >= 5, 'Inspect actual controls outside the glass plane.');
       for (const bounds of [geometry.plane, ...geometry.controls]) {
         assert.ok(bounds.left >= 0 && bounds.top >= 0, `${label}: tilted content crosses top/left`);
         assert.ok(
@@ -441,6 +442,11 @@ try {
       poses.push(geometry);
       await capture(`buddy-panel-native-${label}-tilt-${x < 0.5 ? 'left' : 'right'}.png`);
     }
+    assert.deepEqual(
+      poses[0].controls,
+      poses[1].controls,
+      'Controls remain fixed while glass tilts.',
+    );
     await page.mouse.move(0, 0);
     await expect(plane).toHaveAttribute('data-tilt', 'neutral');
     assert.deepEqual(
