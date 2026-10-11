@@ -65,7 +65,7 @@ The generated board's strong character silhouette and material separation guide 
 
 ### Color exploration — 2026-10-10
 
-The user likes the vibrant blue concept and asked whether a beautiful combination of colors would improve it. [The palette study](PALETTE-STUDY.md) compares Ocean, Prism and Lagoon with a [saved reference board](../../../artifacts/ripple-palette-study-v003.png). The user subsequently selected **Prism**: blue/aqua with a violet-to-coral side/lower streak, clear face and quieter reading surfaces. Character and final layout remain open; the master implementation prompt is still an earlier draft awaiting consolidation.
+The user likes the vibrant blue concept and asked whether a beautiful combination of colors would improve it. [The palette study](PALETTE-STUDY.md) compares Ocean, Prism and Lagoon with a [saved reference board](../../../artifacts/ripple-palette-study-v003.png). The user subsequently selected **Prism**: blue/aqua with a violet-to-coral side/lower streak, clear face and quieter reading surfaces. At this stage, character and final layout were open and the master prompt was an earlier draft awaiting consolidation; later decisions are recorded below.
 
 ### Creature exploration — 2026-10-10
 
@@ -73,7 +73,7 @@ The user asked for other actual character silhouettes before deciding whether Ri
 
 ### Production workflow and Sprout selection — 2026-10-10
 
-The user selected **Sprout**, retained **Prism**, and asked to set accessory discussion aside while defining a workflow with working examples and clean animation. The latest direction supersedes the earlier open-character status above. Final compact/expanded layout remains open; the consolidated full prompt is still pending that review.
+The user selected **Sprout**, retained **Prism**, and asked to set accessory discussion aside while defining a workflow with working examples and clean animation. This superseded the earlier open-character status above. At this stage, final compact/expanded layout was open and prompt consolidation was pending; the subsequent request and completed brief are recorded below.
 
 [PRODUCTION-WORKFLOW.md](PRODUCTION-WORKFLOW.md) records the build order: actual-size clay → minimal rig/four clips → audited GLB motion in current Three → Prism lookdev → bounded R3F reuse → panel choreography → measured delivery. [ANIMATION-WORKFLOW.md](ANIMATION-WORKFLOW.md) defines the rig/clip/export contract, [INTERACTION-MOTION-WORKFLOW.md](INTERACTION-MOTION-WORKFLOW.md) defines native bounds/focus/reversal, and [REFERENCE-RECIPES.md](REFERENCE-RECIPES.md) extracts experiments from official Three/Drei/R3F/Khronos examples with pinned sources and license limits.
 
@@ -82,5 +82,15 @@ The inspected UI checkout is React 19/Vite 8/Electron 44/direct Three 0.186.1, w
 The installed Blender exporter warns that applying modifiers prevents shape-key export. The proposed runtime mesh therefore completes topology operations before keys and exports with Apply Modifiers false. Exported morph normals, logical clips and actual channel ownership require a semantic manifest audit. Current 15/30fps renderer caps are inspected baseline behavior, not proof of the proposed 60fps active-motion target.
 
 This workflow pass changes documentation only. No Sprout scene, rig, clip, runtime controller, framework migration or deployment has been created, and none of its proposed review gates is reported as passed.
+
+### Upstream audit and consolidated prompt — 2026-10-10
+
+The user supplied a Higgsfield → Blender → GLB → R3F/Next authoring workflow and requested prompt creation after checking it. [HIGGSFIELD-UPSTREAM.md](HIGGSFIELD-UPSTREAM.md) records the point-by-point audit. Official documentation confirms standalone 3D Jutsu's editable scenes and GLB import/export, separately from its Blender plugin. The live host check returned Blender connected and 3D Blocking Studio disconnected. The exposed 3D catalog returned model labels/IDs but no full schemas; this connector exposes no non-spending estimate tool or motion-submission tool. No generation was submitted to probe cost.
+
+[MASTER-PROMPT.md](MASTER-PROMPT.md) revision 2 now covers selected Sprout/Prism, optional generated intake, Blender cleanup/retopology, animation/channel proof, local runtime assets, selective compression/decoder support and a compact portrait starting layout. The user's request authorizes writing this brief now; the layout remains a prototype to review. Earlier Ripple stage prompts are explicitly historical.
+
+Compression is a derived build after the canonical asset passes. Preserve gaze anchors, semantic names, morph normals, skins and clips through selective transforms, and revalidate manifests/playback. Avoid changing topology after deformation authoring without rebuilding/transferring and proving that data. Idle-loop versus parked-demand behavior and the limits of a p95 threshold were also clarified in the animation specification.
+
+This turn creates documentation and the copyable prompt only. No Sprout generation, Blender mutation, runtime migration or deployment is reported as completed.
 
 Append future entries with observed defects, source revisions, controlled comparisons and actual artifact links. Do not report planned budgets, generated concept pixels, or untested audio responses as completed implementation.

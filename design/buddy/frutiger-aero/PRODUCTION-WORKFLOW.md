@@ -35,6 +35,8 @@ flowchart LR
 
 Image generation supplies the reference boards. Use the connected Higgsfield bridge for supported scene inspection/blocking and controlled camera studies during authoring; Blender remains the source of editable geometry and animation. Record actual source scenes, settings and exported results for every comparison. The portfolio method carried forward is annotated reference → clay/pose study → matched lighting → real export → app critique.
 
+The [Higgsfield upstream audit](HIGGSFIELD-UPSTREAM.md) checks the user's additional workflow point by point. Generated meshes and editable 3D Jutsu GLBs may enter as preserved starter assets, followed by scale/topology/UV/rig/clip inspection and Blender refinement. Generated motion is a compatibility-checked starting study; optional background images/video belong to presentation contexts. Shipped interaction uses local assets and has no Higgsfield API, MCP or authoring-session dependency.
+
 Use **GLB** for the production character. Blender's procedural shaders, Cycles softboxes, compositor, constraints and physics do not automatically become browser behavior. Bake authoring motion into portable channels, use supported materials, and recreate the reflection studio in Three. The glTF punctual-light extension covers point, spot and directional lights, rather than Cycles area lights. See the [Blender exporter manual](https://docs.blender.org/manual/en/latest/addons/scene_gltf2.html), [glTF specification](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html) and [light extension](https://github.com/KhronosGroup/glTF/blob/main/extensions/2.0/Khronos/KHR_lights_punctual/README.md).
 
 Match silhouette, eyes, pose, color distribution and broad highlights in the actual app. A generated reference or offline render cannot establish identical WebGL pixels.
@@ -107,6 +109,8 @@ A later Next.js host needs an interactive client boundary and a client-side dyna
 
 The eventual bundle contains a versioned GLB, matching transparent fallback, editable Blender source/checkpoint, camera/light settings, clip/morph/node manifest, validation report, hash and short Blender/browser/desktop recordings. These are proposed outputs, not assets created by this document.
 
+Preserve the uncompressed canonical export. Optional Meshopt/Draco delivery requires matching loader support; KTX2 requires appropriate renderer detection and actual texture benefit. Use selective transforms and compare semantic manifests after each step. Required empty gaze nodes, names, morph normals and animation tracks must survive pruning/deduplication. Geometry-changing reductions happen before deformation authoring or require rebuilding and revalidating that data.
+
 Continue on **ui/presentation-polish**, in the fork and [existing draft UI PR](https://github.com/Wasseem10/insightos/pull/1). One owner mutates the live Blender scene; others research or critique exported stills. Commit assets with their consuming renderer changes. Your cousin owns backend planning, provider sessions, OCR, database verification, financial logic and execution; visuals consume a narrow presentation adapter.
 
-The next concrete pass is the **Sprout clay blockout and four-clip GLB proof**. Consolidate the complete prompt after final compact/expanded layout review, as requested. The earlier master prompt remains a historical draft.
+The next concrete pass is the **Sprout clay blockout and four-clip GLB proof**. The user subsequently requested prompt creation after the upstream audit; [MASTER-PROMPT.md](MASTER-PROMPT.md) now consolidates the implementation brief with a compact portrait starting layout. Its final layout remains subject to actual prototype review.

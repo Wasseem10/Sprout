@@ -1,6 +1,6 @@
-# Focused prompts for refinement
+# Historical focused prompts — Ripple revision 1
 
-Revision **1**, 2026-10-10. These prompts divide the master brief into bounded work. Proposed values are starting points, not measured v002 performance or finished geometry.
+Revision **1**, 2026-10-10. Retained as provenance for the original Ripple study. The selected character is now **Sprout / Prism**; use [MASTER-PROMPT.md](MASTER-PROMPT.md) and its canonical workflow references for implementation. The Ripple/cradle prompts below are historical, not current requirements. Proposed values are starting points, not measured performance.
 
 ## 1. Original concept image
 

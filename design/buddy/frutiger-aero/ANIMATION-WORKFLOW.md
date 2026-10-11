@@ -41,6 +41,8 @@ Export vertex normals and **shape-key normal deltas**. Audit each morph's POSITI
 
 Author at **24 fps** and sample evaluated export motion at one frame per sample for the initial proof. Playback interpolates between those samples; a 24 fps authoring rate does not restrict rendering to 24 fps. For a 6-second loop, frames **1 through 145** provide 144 intervals, including the matching endpoint. After zero-time export the intended clip duration is exactly 6 seconds.
 
+This sampling rate is a starting point, not a smoothness guarantee. If a short reaction visibly loses its authored curve during export/playback, increase sampling for that clip and repeat the actual-size test.
+
 | Proposed clip   | Initial duration                        | Tracks and intended behavior                                                              |
 | --------------- | --------------------------------------- | ----------------------------------------------------------------------------------------- |
 | `Sprout_Idle`   | 6 s, repeat                             | Body/bud/foot bones plus the complete body jelly-weight vector; low-amplitude soft motion |
@@ -106,6 +108,8 @@ This is first-order exponential damping, not a simulated elastic spring. It matc
 
 Render visible interaction and panel transitions at a **60 fps target**, subject to measured device results. Existing 15/30 fps caps are a baseline, not the smoothness target. Quiet idle may settle into demand rendering/static rest. Any new phase, gaze input, click or blink must resume the frame loop immediately and keep it active until movement settles. Suspending motion while hidden should also suspend its animation clock; reset the first resumed delta rather than feeding a large background interval into the mixer. Reduced motion freezes secondary animation at a chosen readable pose while HTML status and controls continue working. Do not silently reduce frame rate during an active reaction to meet an idle power target.
 
+Looping idle and static rest are separate operating modes. Before entering demand/static rest, blend to an authored parked pose; on wake, retarget from that visible pose and schedule the first frame before advancing the reaction. Do not freeze a mid-loop pose and resume with a jump. The first proof may keep idle looping while visible, then add the settle/wake path after its four clips pass.
+
 ## 6. Three working primary examples to study
 
 The examples below are executable references, not Sprout artwork. Source links are pinned to Three commit **11738a9d55e502fb484cefffcea3a66dc44e9fe9**, inspected during this research, so the cited lines stay stable. Verify any adopted APIs against installed Three 0.186.1.
@@ -150,7 +154,7 @@ Reject the proof when any of these gates fails:
 - **Interruption:** resetting a contributing action causes a pop; stale completion changes the current phase; click suppresses blink; or repeated transitions lose weight/phase consistency. Record pose samples at each event and each fade boundary.
 - **Time independence:** the same deterministic events replayed at 30, 60 and 120 update steps/second disagree at shared timestamps beyond an initial 0.2 px projected-pose tolerance, excluding raster differences. Confirm the first visible response starts within two presented frames after a valid event.
 - **Bounds:** valid morph/skin combinations are culled or clipped. Audit the animated envelope, including combined key extremes; static basis bounds are insufficient. Validate render bounds in the actual camera rather than assuming the loader covers every combination.
-- **Smoothness:** measure the proof device during active motion and panel transitions. Initial target is p95 presented-frame interval at or below 20 ms, with no app-caused gap above 50 ms. Record GPU/model/viewport and main-thread/GPU costs before calling 60 fps achieved; tune geometry/material/render scale when it fails.
+- **Smoothness:** measure the proof device during active motion and panel transitions. Initial tolerance is p95 presented-frame interval at or below 20 ms, with no app-caused gap above 50 ms. This tolerance alone does not establish sustained 60fps: report presented frame count over the trace interval, missed 16.7ms budgets, and main-thread/GPU costs alongside GPU/model/viewport. Tune geometry/material/render scale when it fails.
 - **Access:** reduced-motion motion remains visible, keyboard controls fail, canvas blocks meaningful HTML controls, or WebGL failure has no readable static fallback. Avatar click is exposed through an HTML button with a label/focus state; status is semantic HTML rather than encoded solely in movement.
 
 Dispose finished instances by removing event listeners, stopping actions and uncaching the mixer root; dispose only resources the instance owns. Replay mount/unmount and resize to detect duplicated mixers or runaway frame loops.

@@ -42,7 +42,7 @@ The body can use fixed topology and broad authored morphs; buds or fins may add 
 
 ## Next design gate
 
-The user has selected Sprout and asked to focus on the production workflow. Next prove its actual-size clay silhouette and exported animation using [ANIMATION-WORKFLOW.md](ANIMATION-WORKFLOW.md). Then make the final compact/expanded layout study with meaningful conversation content, readable text and Prism materials. Consolidate the full implementation prompt after that review. Earlier Ripple/cradle specifications remain working history.
+The user has selected Sprout and asked to focus on the production workflow. Next prove its actual-size clay silhouette and exported animation using [ANIMATION-WORKFLOW.md](ANIMATION-WORKFLOW.md). Then review the compact/expanded layout with meaningful conversation content, readable text and Prism materials. The user subsequently requested the [consolidated implementation prompt](MASTER-PROMPT.md); it includes a portrait starting layout and its prototype review gate. Earlier Ripple/cradle specifications remain working history.
 
 ## Exact submitted concept prompt
 

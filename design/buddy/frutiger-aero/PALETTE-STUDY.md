@@ -29,7 +29,7 @@ Compare the same silhouette, pose, camera, lighting and layout before choosing. 
 
 The reference concept's wide empty panel and extra slogans are not the final product layout. The portrait specification remains the starting proposal. Any final image/layout pass should show meaningful conversation content and a dark input label/placeholder.
 
-The full implementation prompt will be consolidated after the final layout review, incorporating selected Sprout and Prism. The current MASTER-PROMPT.md is the earlier blue-led Ripple draft and is not the consolidated final prompt.
+At the user's subsequent request, [MASTER-PROMPT.md](MASTER-PROMPT.md) now consolidates selected Sprout and Prism, upstream generation/refinement and a compact portrait starting layout. Review that layout in the actual prototype before treating it as final.
 
 ## Assets and provenance
 

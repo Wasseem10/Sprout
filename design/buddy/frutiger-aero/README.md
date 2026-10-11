@@ -10,6 +10,8 @@ Its personality comes from a clear face and restrained motion: blink, local gaze
 
 Read [PRODUCTION-WORKFLOW.md](PRODUCTION-WORKFLOW.md) for the build order, actual app stack, examples, outputs and review gates.
 
+The [full copyable implementation prompt](MASTER-PROMPT.md) consolidates the selected direction. [HIGGSFIELD-UPSTREAM.md](HIGGSFIELD-UPSTREAM.md) audits the additional generation/blocking/animation/export workflow point by point and records current connector capabilities.
+
 The browser direction is Blender → GLB → R3F/Three → Next.js → Vercel. The inspected app currently uses React/Vite/Electron/direct Three. First prove the actual Sprout export in that working renderer, then package the shared R3F avatar for the desktop host and an optional Next.js browser host.
 
 | Current specification                                            | Purpose                                                                        |
@@ -26,7 +28,7 @@ The browser direction is Blender → GLB → R3F/Three → Next.js → Vercel. T
 
 [CONCEPT-PROMPT.md](CONCEPT-PROMPT.md) preserves the original blue Ripple concept. [BLENDER-V002-SPEC.md](BLENDER-V002-SPEC.md), [INTERFACE-SPEC.md](INTERFACE-SPEC.md) and [RESEARCH-MOTION.md](RESEARCH-MOTION.md) retain the measured Ribbon baseline and earlier Ripple/layout research. Their general geometry, lighting and readable-interface lessons remain useful; the current Sprout workflow takes precedence for rig and clip decisions.
 
-[MASTER-PROMPT.md](MASTER-PROMPT.md) and [PROMPT-PACK.md](PROMPT-PACK.md) are earlier Ripple drafts. The complete prompt will be consolidated after the final layout review.
+The [complete implementation prompt](MASTER-PROMPT.md) now consolidates Sprout, Prism, the upstream Higgsfield audit and a compact portrait starting layout. The layout is reviewed during the actual prototype. [PROMPT-PACK.md](PROMPT-PACK.md) preserves the earlier Ripple prompts as historical provenance.
 
 Concept images are references, not application screenshots or completed 3D assets: [blue concept](../../../artifacts/ripple-aero-concept-v002.png), [palette board](../../../artifacts/ripple-palette-study-v003.png), [creature board](../../../artifacts/prism-avatar-study-v004.png).
 

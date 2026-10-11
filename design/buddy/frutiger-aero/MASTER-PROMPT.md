@@ -1,25 +1,92 @@
-# Curated implementation prompt — Ripple v002
+# Consolidated implementation prompt — Sprout / Prism
 
-Revision **1**, 2026-10-10. The prompt below is a design brief for future implementation, not a report of work already done. Use with the companion specifications in this folder.
+Revision **2**, **2026-10-10**. Prepared at the user's request after the upstream workflow audit. This supersedes the earlier Ripple/required-steel brief. The portrait layout below is the chosen starting prototype and must be reviewed in the actual app; it is not a completed or frozen layout.
+
+The text under **Copyable prompt** is the full implementation brief. Its references provide detailed contracts and review recipes. This document has not executed generation, edited Blender or changed the runtime.
 
 ## Copyable prompt
 
-Build the next visual version of InsightOS around **Ripple**, an original cute ocean-blue jelly character with expressive eyes, supported by a beautiful polished steel ribbon cradle. Work in the isolated UI checkout and preserve the running v001 assets. Read this folder's README, Blender specification, interface specification, and motion research before editing. Inspect applicable repository instructions and the installed framework and Blender APIs.
+Build the next visual version of **InsightOS** around **Sprout**, an original interactive jelly creature in the **Prism** palette. Create a beautiful, expressive floating companion and a compact expandable conversation panel. Scope this work to presentation, original assets and their UI integration. Preserve the cousin's backend, financial logic, OCR/database verification, provider sessions and existing voice/task interruption behavior.
 
-Create a rounded, slightly asymmetric drop with a soft compressed base, two deep navy oval eyes with small white glints, editable eyelids or blink controls, and a tiny optional smile. Keep the face clear and directed toward the user. The ocean-blue body should feel watery and softly gooey, with cyan edges, broad white reflections, and a denser frontal region that keeps the eyes legible. The character should be welcoming and sophisticated at both icon and expanded sizes.
+### Inspect and preserve
 
-Refine the existing continuous ribbon into a substantial steel cradle behind and below the body. Give it rounded edge thickness, smooth normals, clean curvature, and broad, controlled reflections. More polygons are useful only when they visibly improve silhouette, edge profile, or specular continuity. Compare density variants under an identical camera and light rig. Leave a clear eye band throughout all poses. Begin with a restrained rocking range near ±8°, rather than carrying forward a full spin that crosses the face.
+Work in the isolated InsightOS UI checkout and its existing **ui/presentation-polish** branch/draft PR. Read applicable AGENTS instructions and this folder's README, PRODUCTION-WORKFLOW, HIGGSFIELD-UPSTREAM, ANIMATION-WORKFLOW, INTERACTION-MOTION-WORKFLOW and REFERENCE-RECIPES before editing. Inspect the running app, asset inventory and live Blender state. Keep existing Ribbon assets available until the replacement passes its gates.
 
-Author an inspectable Blender v002 with semantic body, face-anchor, eye, lid/glint, cradle, and rig names. Preserve the source scene and v001. Finalize body topology before making broad squash/settle morphs; keep the face region stable. Bake steel modifiers into separate export meshes. Verify installed glTF exporter options: applying modifiers during export can discard shape keys. Export ready mesh copies with morphs intact, audit their actual names, normals, bounds and animation channels, and inspect the resulting GLB in the browser. Keep an original transparent PNG fallback of the same approved pose.
+The current host is React 19/Vite/Electron/direct Three, without Next.js or R3F. Prove the exported character there first. Package the proven avatar/controller into a bounded R3F component reusable by the desktop host and a later Next.js browser shell. Verify compatible dependencies; R3F 9 is the React 19 line. Read the actual host's installed Next documentation before Next code. The unrelated Next project at the workspace root is outside this task.
 
-Make Ripple alive through a calm idle float and occasional blink, damped pointer gaze, a brief click or keyboard squash followed by one soft settle, an attentive listening tilt, a thoughtful upward glance, and gentle speaking motion. Start from the real conversation phase adapter. Clearly label simulated studio states. Measured input/output amplitude is an optional later numeric presentation input from the existing voice owner; animation must not open another microphone, replace Scribe with Conversation SDK, alter interruption logic, or invent a live audio meter. Keep body clips, gaze, blink and cradle transforms independently owned so transitions can interrupt smoothly.
+Before Blender mutations, load the connected bridge's core and relevant scene/modeling/lookdev/lighting/animation/audit modules, check the live host, inspect the scene, record a Scene Passport, and checkpoint broad changes. One agent owns the live Blender scene. Preserve unrelated objects and the active file path.
 
-Use the portfolio's proven process: reference study → original clay silhouette → matched material and lighting variants → actual exported model in React → critique at final display size. Image generation and Higgsfield may support original concept/look-development studies; their pictures are references, not geometry or proof of browser output. Build the actual shapes in Blender. Match camera and reflection structure in Three.js. Prefer native physical materials first; introduce costly custom refraction or metaballs only after a measured comparison shows a useful improvement.
+### Character and visual identity
 
-Pair the character with a colorful, orderly **Frutiger Aero** interface: ocean blue, clear cyan, restrained lime and coral, luminous glass around the frame and controls, and a protected almost-white reading surface. Build a floating assistant that expands into one compact conversation panel. Use a small identity/status header, a scrollable conversation region, and a composer that stays available. Details appear on demand. Use aligned text, meaningful space, consistent corner families, and one primary next action. The finance content may change; the visual shell must support general conversation and other tools.
+Use the saved avatar board's **Sprout** column and the palette board's **Prism** column as visual references. Inspect them before authoring or using them in generation. Model a compact softly pear-shaped jelly body, two short unequal rounded buds, two stubby rounded feet/base lobes, large deep navy oval eyes and small white glints. Shorten the concept's long buds in the clay study, starting around 12–18% of body height. Keep a clear frontal face and stable deformation region. Defer the mouth until the eyes work at tiny size.
 
-Implement labels, status, input, mic and actions as accessible HTML. Preserve draft text, keyboard activation, Escape/focus restoration, drag regions, existing shortcut, native expand/collapse, and current Electron security. Treat a proposed larger freestanding pet as a deliberate native bounds change; the current collapsed window is 360×86 and its icon is around 40–44 px. CSS backdrop blur cannot sample an arbitrary desktop behind Electron; native glass must be verified separately, with a solid readable fallback. Keep decorative glass strongest away from essential text.
+Keep blue/aqua dominant, with one graceful violet-to-coral side/lower sweep and broad controlled white reflections. Encode color with portable vertex color or a baked texture. Keep eyes opaque and independently editable. Supports are optional and deferred; the first proof floats with its feet visible.
 
-Keep the existing lazy renderer, bounded drawing resolution, hidden/offscreen pause, reduced motion, asset cancellation, resource cleanup, PNG fallback and context recovery. Avoid per-frame React updates. Test the actual collapsed and expanded layouts, bright/dark/busy backgrounds, enlarged text, long content, keyboard flow, interrupted state transitions, no-GPU fallback, and measured rendering cost. Show real screenshots and record the critique, correction, and outcome in the research ledger.
+Use image generation for annotated original concepts and matched look studies. Follow the portfolio method: reference extraction → clay and poses → matched lighting → actual exported asset → final-size critique. Record exact prompts, provenance and observed corrections. Generated miniatures are not application measurements.
 
-The result should feel like one original, tactile little companion and its carefully designed home. Its signature is the cute face, beautiful continuous steel highlight, rich ocean-blue jelly, and disciplined readable layout. Avoid decorative metrics, repeated glowing card grids, particle halos, excessive bloom, cheap foil metal, fast noise, and unreadable transparent text. Finish each reversible pass and inspect its concrete output before proceeding; do not claim the concept board has been reproduced until the actual app supports that claim.
+### Higgsfield upstream, Blender quality control
+
+Use a hybrid authoring route when it helps. A supported Higgsfield text/image-to-3D job or editable 3D Jutsu scene may supply an initial mesh or scene blockout. Preserve the untouched output and its provenance. Inspect scale, axes, origins, disconnected geometry, normals, topology, UVs, materials and any actual skins/morphs/clips. Clean, redesign or retopologize in Blender until the approved silhouette and deformation structure work.
+
+Establish local proxies and camera framing before resolving generated assets. For a generated candidate, discover current tool schemas and a non-spending estimate, report the selected model/parameters/cost, then submit within the user's authorized scope. Do not use a paid submission to discover price. If the connected tool set cannot express or estimate that job, record the gap and continue with an original Blender-authored mesh. Local blocking uses no generation credits.
+
+Treat generated motion as an optional editable starting study. Verify rig compatibility, retarget/bake useful channels to Sprout's controls, and refine normal Blender keyframes. Human motion or video is not evidence of a working Sprout rig or GLB animation. Standalone 3D Jutsu export is an intake path, not proof that all desired controls/materials survived.
+
+Higgsfield remains upstream authoring only. Ship owned/versioned local GLBs, textures and fallbacks. Viewing or interacting with Sprout must work without a Higgsfield API, MCP server, temporary result URL or live authoring session.
+
+### Geometry, rig and clean animation
+
+Keep an editable source and a separate runtime basis. Finalize runtime topology, normals and UVs before skinning and relative shape keys. Initially use one verified runtime mesh; add LODs only for measured need, with corresponding weights/morphs independently proved. Preserve broad highlights and silhouette during reductions.
+
+Follow ANIMATION-WORKFLOW's minimal nine-bone FK rig, three broad body-jelly keys, stable face patch, separate lids and unkeyed gaze. Author the four initial clips **Sprout_Idle, Sprout_Listen, Sprout_Click, Sprout_Blink** before Think/Speak. Start at 24fps authoring/sampling; increase short-reaction sampling only if exported playback visibly needs it. Match loop endpoint pose and seam velocity. Inspect combined extreme poses, animated bounds and face intersections.
+
+Give every animated property one owner. One base mixer/compositor owns body bones and the whole body morph vector. Click owns its reaction root, blink its lids, gaze its unkeyed nodes. Retarget current action weights from the visible mixture; never reset an action while it still contributes. Guard completion callbacks with action identity/current operation tokens.
+
+Advance the mixer once per rendered frame using elapsed seconds. Use elapsed-time damping for gaze and reset the clock after hidden/restored periods. Target 60fps during active reactions/panel transitions, verified on the reference desktop; existing 15/30fps caps are a baseline to improve. Distinguish looping idle from a parked pose: author a gentle settle/wake path if idle rests on demand, and restart before the first response frame.
+
+Status, Stop and interruption remain immediate. Begin with real phase-driven expression. Optional numeric audio levels come read-only from the existing voice owner; they never detect phase or create a microphone session. Studio events are explicitly simulated. Reduced/paused motion uses a stable readable pose while the controls still work.
+
+### Export and browser look development
+
+Export versioned **.glb** files, with semantic hierarchy, skins/morphs and separately named logical clips. Bake authoring-only constraints/drivers into supported TRS/weights. Keep export Apply Modifiers false for the morph mesh after topology operations are already complete. Preserve morph positions/normals and audit actual sampled channels for unwanted overlap.
+
+Produce a canonical uncompressed export, semantic manifest, validator report and transparent PNG fallback rendered from the approved authored character. Run the deterministic interrupted clay replay in current Three and Electron before final lookdev. File validity alone is not acceptance.
+
+Use a fixed near-front camera, broad key reflection, soft fill and cool rim. Compare neutral/Prism and glossy-jelly/transmission candidates with identical camera, pose, exposure and render size. Recreate the lighting/reflection structure in Three; GLB does not reproduce an entire Cycles shader/compositor/area-light setup. Match actual silhouette, face, color and highlights rather than claiming identical offline/browser pixels.
+
+### Compact interface and coordinated motion
+
+Prototype a roughly **96px freestanding pet** opening a portrait conversation surface around **392px wide / 560px tall**, adapting to work area and enlarged text. These are starting dimensions. Derive native bounds from pet, panel, shadow and focus geometry; current 360×86 collapsed/440×580 expanded bounds are only the baseline.
+
+Place Sprout beside the upper dock corner, clear of text and controls. Use one identity/status header, one continuous reading well and a fixed composer. Requested detail uses a secondary/replacement view with a clear Back action. Make the reading surface nearly opaque cloud-white with navy text, blue primary controls and restrained Prism highlights on the glass frame.
+
+Use accessible HTML for conversation, status, input and actions. Start with 18px body text, generous line spacing, 44–48px controls and measured contrast; sustained reading should aim at 7:1. Reflow at 320 CSS px and enlarged text. Keep opaque/solid surfaces, keyboard focus and readable status available without the canvas.
+
+One reversible panel coordinator owns latest intent. Acknowledge press immediately; apply and confirm safe native bounds/layout before exposing panel content. Restore focus before hiding content; finish exit decoration before shrinking bounds. Stale callbacks cannot shrink a reopened window. Preserve draft, selection where possible, scroll, dragging, shortcuts and Electron security.
+
+Use restrained CSS/WAAPI transforms for decoration. Keep text, input scale, blur radius and reading surfaces stable. Panel expansion does not start voice or cancel a task. Clicking/keyboard activation performs the real open action even while the avatar reaction continues.
+
+### Optimization, integration and delivery
+
+Preserve the canonical GLB. Build compressed derivatives only after measured need: use Meshopt or Draco with explicit matching GLTFLoader decoders, and KTX2 only for textures that benefit, with supported renderer detection. Compression does not by itself reduce vertices or draw calls.
+
+Use selective transforms, preserving gaze anchors, semantic names, normals, attributes, skins, morphs and animation channels. Do not blindly prune/join/deduplicate or decimate an already morphed mesh. Compare manifests, replay and screenshots after each transform; rebuild deformation data if topology changes. Measure transfer size, decode/first render, active frame intervals, stalls, draw calls and memory, including cold load.
+
+Preserve lazy loading, abort/cleanup, bounded render resolution, hidden/offscreen suspension, static fallback and context recovery. R3F instances clone skinned hierarchies and own mixers; cleanup does not dispose resources shared by a cached template. Mount/unmount and rapid phase changes must not create extra loops or per-frame React state churn.
+
+Optional original background images/video belong to demo or presentation contexts where interaction is unnecessary. Store local optimized assets with provenance and a static fallback; keep the desktop companion and reading well calm. They are not a replacement for the interactive avatar.
+
+Deliver actual-size stills, the animation replay, open/type/interrupt/collapse/reopen recording, reduced-motion/no-WebGL proofs, native edge-docking proof and a production performance trace. Check bright/dark/busy backgrounds, long content, keyboard/screen-reader flow, draft preservation, context recovery and rapid toggles. Verify deployed GLB URLs return binary assets rather than HTML fallback.
+
+Keep the user's work reviewable in the existing draft PR; publish/merge only within the authorized task scope. Report editable source/checkpoints, asset provenance, hashes/manifests, passed checks, remaining defects and deliberate approximations. Follow the source-save policy and never overwrite an unrelated Blender file. Complete each reversible pass, inspect its output and correct the largest visible defect before moving on.
+
+**Begin with the actual-size clay Sprout and four-clip exported motion proof.**
+
+## Supporting packet
+
+- [Upstream audit](HIGGSFIELD-UPSTREAM.md)
+- [Production runbook](PRODUCTION-WORKFLOW.md)
+- [Canonical animation/export contract](ANIMATION-WORKFLOW.md)
+- [Panel/native motion contract](INTERACTION-MOTION-WORKFLOW.md)
+- [Primary example experiments](REFERENCE-RECIPES.md)
+- [Selected character study](AVATAR-STUDY.md) and [palette study](PALETTE-STUDY.md)
