@@ -25,11 +25,12 @@ export function buddyVisualState(voicePhase: string, busy: boolean): BuddyVisual
 /** Match static rest to the requested/loaded generation, keeping closed-eye fallbacks before idle. */
 export function buddyStillPaths(assetUrl: string | undefined, sleeping: boolean) {
   if (assetUrl?.includes('insight-core-v1')) return ['/buddy/insight-core-v1.png'];
-  const version = assetUrl?.match(/v00[2-7](?=\.glb$)/)?.[0] ?? 'v005';
+  const version = assetUrl?.match(/v00[2-8](?=\.glb$)/)?.[0] ?? 'v005';
   const idle = `/buddy/sprout-${version}.png`;
-  if (sleeping && ['v004', 'v005', 'v006', 'v007'].includes(version))
+  if (sleeping && ['v004', 'v005', 'v006', 'v007', 'v008'].includes(version))
     return [
       `/buddy/sprout-${version}-sleep.png`,
+      ...(version === 'v008' ? ['/buddy/sprout-v005-sleep.png'] : []),
       ...(version === 'v007' ? ['/buddy/sprout-v006-sleep.png'] : []),
       ...(['v006', 'v007'].includes(version) ? ['/buddy/sprout-v005-sleep.png'] : []),
       ...(['v005', 'v006', 'v007'].includes(version) ? ['/buddy/sprout-v004-sleep.png'] : []),
@@ -39,6 +40,7 @@ export function buddyStillPaths(assetUrl: string | undefined, sleeping: boolean)
     ];
   return [
     idle,
+    ...(version === 'v008' ? ['/buddy/sprout-v005.png'] : []),
     ...(version === 'v007' ? ['/buddy/sprout-v006.png'] : []),
     ...(['v006', 'v007'].includes(version) ? ['/buddy/sprout-v005.png'] : []),
     ...(['v005', 'v006', 'v007'].includes(version) ? ['/buddy/sprout-v004.png'] : []),

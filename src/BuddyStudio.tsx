@@ -11,7 +11,12 @@ import {
   Sparkles,
 } from 'lucide-react';
 import AssistantSignal, { type BuddyVisualState } from './AssistantSignal';
-import { SPROUT_CURRENT_ASSET, SPROUT_ORIGINAL_ASSET, sproutReviewAsset } from './buddyAppearance';
+import {
+  SPROUT_CURRENT_ASSET,
+  SPROUT_ORIGINAL_ASSET,
+  SPROUT_SOFT_ASSET,
+  sproutReviewAsset,
+} from './buddyAppearance';
 import type { AudioPresentationSample } from './audioPresentation';
 import type { BuddyRendererDiagnostics } from './buddyRenderer';
 import type { BuddyBehaviorInput, BuddyBehaviorSnapshot } from './buddyBehavior';
@@ -468,8 +473,10 @@ export default function BuddyStudio() {
                 >
                   <option value={SPROUT_CURRENT_ASSET}>Daylight · light backgrounds</option>
                   <option value={SPROUT_ORIGINAL_ASSET}>Original</option>
+                  <option value={SPROUT_SOFT_ASSET}>Soft Original · lavender glass</option>
                   {reviewAssetUrl !== SPROUT_CURRENT_ASSET &&
-                    reviewAssetUrl !== SPROUT_ORIGINAL_ASSET && (
+                    reviewAssetUrl !== SPROUT_ORIGINAL_ASSET &&
+                    reviewAssetUrl !== SPROUT_SOFT_ASSET && (
                       <option value={reviewAssetUrl}>Legacy reference</option>
                     )}
                 </select>

@@ -1,5 +1,7 @@
 # Sprout appearance reference and comparison modes
 
+**Follow-up:** [Animated Soft Original v008](SPROUT-SOFT-ORIGINAL-v008.md) now implements the material pass described below, preserving the v007 animations. This document records the earlier reference-only comparison.
+
 The user's preferred compact Sprout screenshot matches the preserved **Original Blender still**, `public/buddy/sprout-v005.png`. Its soft lavender/blue body and restrained rim are the visual target for a future animated-material pass. The image remains unchanged (SHA256 `1142a9ef44f70e13813e0ee542672852a7c2b5bbf5e87f89eb9c747159af6277`).
 
 ## Why two options appeared to produce four looks

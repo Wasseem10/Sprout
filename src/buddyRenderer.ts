@@ -41,6 +41,7 @@ import {
   isSproutDaylightAsset,
   SPROUT_CURRENT_ASSET,
   SPROUT_DAYLIGHT_ASSET,
+  SPROUT_SOFT_ASSET,
 } from './buddyAppearance';
 import {
   NO_BUDDY_BEHAVIORS,
@@ -51,7 +52,7 @@ import {
 } from './buddyBehavior';
 
 export type BuddyAsset = 'sprout' | 'ribbon';
-export type BuddyReflectionProfile = 'rectangular' | 'tapered' | 'daylight';
+export type BuddyReflectionProfile = 'rectangular' | 'tapered' | 'daylight' | 'soft';
 export type BuddyToneMapping = 'agx' | 'neutral';
 export type BuddyRendererSettings = {
   phase: BuddyVisualState;
@@ -139,7 +140,7 @@ function createEnvironment(
   profile: BuddyReflectionProfile,
 ) {
   const studio = new Scene();
-  const shaped = profile === 'tapered' || profile === 'daylight';
+  const shaped = profile === 'tapered' || profile === 'daylight' || profile === 'soft';
   const daylight = profile === 'daylight';
   studio.background =
     asset === 'sprout'
@@ -271,6 +272,8 @@ async function loadModel(
   ];
   // Studies may load owned local models, never an arbitrary remote source.
   if (candidateUrl && /^\/buddy\/[a-z0-9][a-z0-9_.-]*\.glb$/i.test(candidateUrl)) {
+    if (candidateUrl === SPROUT_SOFT_ASSET)
+      candidates.unshift([SPROUT_CURRENT_ASSET, 'sprout'], [SPROUT_DAYLIGHT_ASSET, 'sprout']);
     if (candidateUrl === SPROUT_CURRENT_ASSET)
       candidates.unshift([SPROUT_DAYLIGHT_ASSET, 'sprout']);
     if (candidateUrl !== candidates[0][0]) candidates.unshift([candidateUrl, 'sprout']);
@@ -420,11 +423,13 @@ export async function createBuddyRenderer(
   const scene = new Scene();
   const reflectionProfile =
     initial.reflectionProfile ??
-    (isSproutDaylightAsset(loaded.assetUrl)
-      ? 'daylight'
-      : asset === 'sprout'
-        ? 'tapered'
-        : 'rectangular');
+    (loaded.assetUrl === SPROUT_SOFT_ASSET
+      ? 'soft'
+      : isSproutDaylightAsset(loaded.assetUrl)
+        ? 'daylight'
+        : asset === 'sprout'
+          ? 'tapered'
+          : 'rectangular');
   let environmentMap: ReturnType<typeof createEnvironment>;
   try {
     environmentMap = createEnvironment(renderer, asset, reflectionProfile);
@@ -462,6 +467,57 @@ export async function createBuddyRenderer(
       : 0;
   camera.lookAt(0, targetY, 0);
   const daylight = asset === 'sprout' && reflectionProfile === 'daylight';
+  const soft = asset === 'sprout' && reflectionProfile === 'soft';
+  // The transparent WebGL canvas refracts differently from the authored Cycles studio.
+  // Keep the soft variant's lavender/teal silhouette instead of a white compositing halo.
+  // This is per-instance shading; existing models, clips, eyes, and lighting stay intact.
+  if (soft)
+    model.traverse((object) => {
+      if (!(object instanceof Mesh)) return;
+      for (const material of Array.isArray(object.material) ? object.material : [object.material]) {
+        if (material instanceof MeshPhysicalMaterial && material.transmission > 0) {
+          material.premultipliedAlpha = true;
+          material.onBeforeCompile = (shader) => {
+            // Bind-pose coordinates keep the teal buds/feet attached through morphs and poses.
+            shader.vertexShader =
+              'varying float sproutExtremity;\n' +
+              shader.vertexShader.replace(
+                '#include <begin_vertex>',
+                `
+            #include <begin_vertex>
+            sproutExtremity = smoothstep(0.70, 0.92, abs(position.y));
+          `,
+              );
+            shader.fragmentShader = 'varying float sproutExtremity;\n' + shader.fragmentShader;
+            shader.fragmentShader = shader.fragmentShader
+              .replace(
+                '#include <transmission_fragment>',
+                `
+            #include <transmission_fragment>
+            #ifdef USE_TRANSMISSION
+              float sproutEdge = smoothstep(0.16, 0.62, 1.0 - saturate(dot(normal, geometryViewDir)));
+              float sproutUncovered = 1.0 - transmitted.a;
+              material.transmissionAlpha = mix(material.transmissionAlpha, 1.0, saturate(sproutEdge + sproutUncovered + sproutExtremity));
+            #endif
+          `,
+              )
+              .replace(
+                '#include <opaque_fragment>',
+                `
+            #ifdef USE_TRANSMISSION
+              outgoingLight = mix(outgoingLight, diffuseColor.rgb * 0.16 + outgoingLight * 0.2, sproutUncovered * 0.8);
+              outgoingLight = mix(outgoingLight, outgoingLight * 0.4 + vec3(0.01, 0.13, 0.23), sproutExtremity * 0.8);
+              vec3 sproutRimPigment = mix(vec3(0.15, 0.21, 0.88), vec3(0.02, 0.20, 0.32), sproutExtremity);
+              outgoingLight = mix(outgoingLight, sproutRimPigment, sproutEdge * 0.8);
+            #endif
+            #include <opaque_fragment>
+          `,
+              );
+          };
+          material.customProgramCacheKey = () => 'sprout-soft-shell-v008';
+        }
+      }
+    });
   const keyBase = daylight ? 1.4 : asset === 'sprout' ? 1.7 : 2.3;
   const key = new DirectionalLight(0xf1faff, keyBase);
   if (asset === 'sprout') key.position.set(-3.5, 3.8, 3);

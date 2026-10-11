@@ -5,7 +5,12 @@ import type { BuddyRenderPresentation, BuddyVisualState } from './AssistantSigna
 import type { BuddyReadingMemory } from './useBuddyPanel';
 import type { ComputerState } from '../shared/computer';
 import './buddy-panel-preview.css';
-import { SPROUT_CURRENT_ASSET, SPROUT_ORIGINAL_ASSET, sproutReviewAsset } from './buddyAppearance';
+import {
+  SPROUT_CURRENT_ASSET,
+  SPROUT_ORIGINAL_ASSET,
+  SPROUT_SOFT_ASSET,
+  sproutReviewAsset,
+} from './buddyAppearance';
 
 const empty: ComputerState = { folder: null, code: null, browser: null, screen: null };
 type Message = { id: string; role: 'user' | 'assistant' | 'error'; text: string };
@@ -62,11 +67,13 @@ export default function BuddyPanelPreview({
   );
   const [presentation, setPresentation] = useState<BuddyRenderPresentation | null>(null);
   const appearanceName =
-    previewAsset === SPROUT_ORIGINAL_ASSET
-      ? 'Original'
-      : previewAsset === SPROUT_CURRENT_ASSET
-        ? 'Daylight'
-        : 'Legacy reference';
+    previewAsset === SPROUT_SOFT_ASSET
+      ? 'Soft Original'
+      : previewAsset === SPROUT_ORIGINAL_ASSET
+        ? 'Original'
+        : previewAsset === SPROUT_CURRENT_ASSET
+          ? 'Daylight'
+          : 'Legacy reference';
   const renderStatus =
     presentation?.requestedAssetUrl === previewAsset ? presentation.status : 'loading';
   const olderAssetNote =
@@ -185,8 +192,10 @@ export default function BuddyPanelPreview({
               >
                 <option value={SPROUT_CURRENT_ASSET}>Daylight</option>
                 <option value={SPROUT_ORIGINAL_ASSET}>Original</option>
+                <option value={SPROUT_SOFT_ASSET}>Soft Original</option>
                 {previewAsset !== SPROUT_CURRENT_ASSET &&
-                  previewAsset !== SPROUT_ORIGINAL_ASSET && (
+                  previewAsset !== SPROUT_ORIGINAL_ASSET &&
+                  previewAsset !== SPROUT_SOFT_ASSET && (
                     <option value={previewAsset}>Legacy reference</option>
                   )}
               </select>
