@@ -6,14 +6,6 @@
 
 The updated interface pairs a pearl-glass conversation panel with Sprout, an animated blue-and-lilac avatar. Expand the panel to read the conversation and use the Ideas, Tools, microphone and message controls, or collapse it to a compact companion.
 
-| Conversation panel | Sprout avatar |
-| --- | --- |
-| <img src="docs/images/sprout-conversation.png" alt="Sprout's pearl-glass conversation panel with readable sample messages, Ideas and Tools menus, microphone and send controls" width="340"> | <img src="docs/images/sprout-avatar.png" alt="Sprout, a glossy blue-and-lilac character with dark eyes, a small smile and two rounded antennae" width="340"> |
-
-<img src="docs/images/sprout-compact.png" alt="Sprout's collapsed companion with the avatar and microphone control" width="300">
-
-*Interface screenshots use local sample messages from the desktop UI preview. The avatar image is the authored Soft Original reference; the app renders the character in animated 3D. These visuals do not establish release acceptance for the presentation features described below.*
-
 > **Current build status — October 11, 2026:** the running Windows app keeps edits and Undo in one working presentation. The next source build adds branching diagrams, verified data charts and spoken layout review, but is still under acceptance testing. Do not infer release readiness from older checks or from the public Vercel sample. [Current implementation evidence](AGENTS.md) · [Master build plan](INSIGHTOS-MASTER-BUILD-PROMPT.md).
 
 **Current pitch:** Create visual work you can share, understand how it looks, and change it through conversation. Sprout is a Windows voice companion for blind and low-vision people to create, review and revise editable presentations. Its focused demonstration is precise editing and independent review: direct an image's placement, question a diagram's branch, trace a chart to its source, and undo a change.
@@ -33,8 +25,6 @@ The two built-in bill and finance workflows below remain available. The publishe
 - **[Try the public interactive sample](https://insightos-livid.vercel.app/)**: review/correct bill numbers, change a payment limit, compare fictional efficiency quotes, and review a practice application. This Vercel build runs deterministic calculations in the browser, uses browser speech, and makes no cloud AI calls. It does not access your desktop or extract uploaded bills. Data stays in this browser session.
 - **[Source](https://github.com/Wasseem10/insightos)** · **[Full desktop demo script](COMPUTER-DEMO.md)** · **[Submission description](DEVPOST-DRAFT.md)**.
 - The full Windows companion uses **Hugging Face** for document extraction and request interpretation, **ElevenLabs** for voice, and **Databricks** for live SQL bill verification. The bill workflow passed a real provider rehearsal. The user also reported that the laptop hears speech and interruptions work; a full recording rehearsal remains.
-
-![Sprout bill workspace](artifacts/bill-workspace.png)
 
 **Bills, understood:** Open **Bills & energy** or `http://127.0.0.1:5173/?workspace=energy`. Choose PDF/PNG/JPEG bills (5 MB each, up to four), or say “find my latest two electricity bills in Downloads.” Sprout lists matching filenames first and reads them after “yes.” Each document has editable extracted fields, a first-page preview and source quotes. Confirm every bill before comparing usage, effective rate and other current charges. Say “review bill 2026-09” to correct a confirmed document and recalculate. Missing, inconsistent or duplicate-month fields require review. Bill text/images go to the configured AI provider; original files are unchanged, and extracted documents stay in the current session. Saving an energy plan stores its numeric baseline and answers, not the PDF.
 
