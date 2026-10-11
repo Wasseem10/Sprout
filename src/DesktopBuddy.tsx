@@ -287,7 +287,7 @@ export default function DesktopBuddy(p: Props) {
         {voiceHelp}
       </p>
       <div ref={plane} className="buddy-visual-plane">
-        <header className="buddy-bar">
+        <header className="buddy-bar" title={panel.available ? undefined : 'Drag to move Sprout'}>
           <button
             ref={pet}
             className={`buddy-face ${p.active ? 'awake' : ''}`}
@@ -295,6 +295,7 @@ export default function DesktopBuddy(p: Props) {
             aria-label={`${p.expanded ? (panel.available ? 'Collapse buddy' : 'Cancel opening buddy') : 'Expand buddy'}. ${status}`}
             aria-expanded={panel.available}
             aria-controls="buddy-conversation-panel"
+            title={p.expanded ? 'Close conversation' : 'Open conversation'}
           >
             <AssistantSignal
               {...p.visual}
@@ -308,7 +309,7 @@ export default function DesktopBuddy(p: Props) {
             />
           </button>
           <div className="buddy-dock-controls">
-            <div className="buddy-identity">
+            <div className={`buddy-identity${panel.available ? '' : ' sr-only'}`}>
               <strong>Sprout</strong>
               <span role="status" title={status}>
                 {status}
@@ -334,16 +335,6 @@ export default function DesktopBuddy(p: Props) {
                   title="Stop · Ctrl+Shift+Backspace"
                 >
                   <Square size={15} />
-                </button>
-              )}
-              {!panel.available && (
-                <button
-                  className="buddy-icon"
-                  onClick={p.hide}
-                  aria-label="Hide to system tray"
-                  title="Hide to tray"
-                >
-                  <Minus size={17} />
                 </button>
               )}
               {panel.available && (
