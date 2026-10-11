@@ -343,6 +343,25 @@ app
     win.webContents.on('will-navigate', (event, url) => {
       if (!trusted(url)) event.preventDefault();
     });
+    // Visual consumers observe the real window without changing background timers.
+    let visibilityRevision = 0;
+    const desktopVisibility = () => ({
+      visible: !win.isDestroyed() && win.isVisible() && !win.isMinimized(),
+      revision: visibilityRevision,
+    });
+    const publishVisibility = () => {
+      visibilityRevision++;
+      if (win.isDestroyed() || win.webContents.isDestroyed() || !trusted(win.webContents.getURL()))
+        return;
+      win.webContents.send('insightos:desktop-visibility-changed', desktopVisibility());
+    };
+    for (const event of ['show', 'hide', 'minimize', 'restore']) win.on(event, publishVisibility);
+    ipcMain.handle('insightos:desktop-visibility', (event) => {
+      nativeRequest(event);
+      if (event.sender !== win.webContents || event.senderFrame !== win.webContents.mainFrame)
+        throw new Error('Desktop visibility requires the companion main frame.');
+      return desktopVisibility();
+    });
     const resizeBuddy = (mode, requestId = 0) => {
       if (!['pill', 'panel', 'workspace'].includes(mode))
         throw new Error('Unknown companion mode.');

@@ -22,6 +22,12 @@ contextBridge.exposeInMainWorld('insightos', {
   platform: process.platform,
   setBuddyMode: (mode, requestId) => ipcRenderer.invoke('insightos:buddy-mode', mode, requestId),
   hideBuddy: () => ipcRenderer.invoke('insightos:buddy-hide'),
+  desktopVisibility: () => ipcRenderer.invoke('insightos:desktop-visibility'),
+  onDesktopVisibility: (callback) => {
+    const listener = (_event, snapshot) => callback(snapshot);
+    ipcRenderer.on('insightos:desktop-visibility-changed', listener);
+    return () => ipcRenderer.removeListener('insightos:desktop-visibility-changed', listener);
+  },
   desktopShortcuts: () => ipcRenderer.invoke('insightos:desktop-shortcuts'),
   onDesktopCommand: (callback) => {
     const listener = (_event, command) => callback(command);

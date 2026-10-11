@@ -4,6 +4,13 @@ import {
   waitForBuddyViewport,
   type BuddyPanelStage,
 } from './buddyPanelCoordinator';
+import { observeDesktopVisibility } from './desktopVisibility';
+
+export type BuddyReadingMemory = {
+  scrollTop: number;
+  followLatest: boolean;
+  selection?: { start: number; end: number; direction: 'forward' | 'backward' | 'none' };
+};
 
 type PanelSettings = {
   expanded: boolean;
@@ -12,6 +19,7 @@ type PanelSettings = {
   close: RefObject<HTMLButtonElement | null>;
   input: RefObject<HTMLTextAreaElement | null>;
   feed: RefObject<HTMLDivElement | null>;
+  readingMemory: RefObject<BuddyReadingMemory>;
   expansionFailed: () => void;
 };
 
@@ -30,13 +38,27 @@ export function useBuddyPanel(settings: PanelSettings) {
   reduce.current = reducedMotion || motionPaused;
   const shell = useRef<HTMLDivElement>(null);
   const animation = useRef<Animation | null>(null);
+  const nativeVisibility = useRef<ReturnType<typeof observeDesktopVisibility> | null>(null);
   const coordinator = useRef<ReturnType<typeof createBuddyPanelCoordinator> | null>(null);
   const revealFocus = useRef(false);
-  const scroll = useRef(0);
-  const follow = useRef(true);
-  const selection = useRef<
-    { start: number; end: number; direction: 'forward' | 'backward' | 'none' } | undefined
-  >(undefined);
+  const revealed = useRef(false);
+  const rememberReadingPosition = () => {
+    const current = latest.current;
+    const memory = current.readingMemory.current;
+    const feed = current.feed.current;
+    // The owner also lends these DOM refs to the replacement workspace.
+    if (feed?.classList.contains('buddy-feed')) {
+      memory.scrollTop = feed.scrollTop;
+      memory.followLatest = feed.scrollHeight - feed.scrollTop - feed.clientHeight < 48;
+    }
+    const input = current.input.current;
+    if (input?.closest('.buddy-composer'))
+      memory.selection = {
+        start: input.selectionStart,
+        end: input.selectionEnd,
+        direction: input.selectionDirection,
+      };
+  };
 
   useEffect(() => {
     localStorage.setItem('insightos.buddyMotionPaused', String(motionPaused));
@@ -56,7 +78,10 @@ export function useBuddyPanel(settings: PanelSettings) {
     // Browser zoom changes CSS viewport units as well as devicePixelRatio.
     window.addEventListener('resize', zoomChanged);
     const hidden = () => {
-      if (document.hidden && animation.current?.playState === 'running') {
+      if (
+        (document.hidden || nativeVisibility.current?.isVisible() === false) &&
+        animation.current?.playState === 'running'
+      ) {
         try {
           animation.current.finish();
         } catch {
@@ -64,11 +89,14 @@ export function useBuddyPanel(settings: PanelSettings) {
         }
       }
     };
+    nativeVisibility.current = observeDesktopVisibility(hidden);
     document.addEventListener('visibilitychange', hidden);
     return () => {
       preference.removeEventListener('change', changed);
       window.removeEventListener('resize', zoomChanged);
       document.removeEventListener('visibilitychange', hidden);
+      nativeVisibility.current?.dispose();
+      nativeVisibility.current = null;
     };
   }, []);
 
@@ -79,17 +107,12 @@ export function useBuddyPanel(settings: PanelSettings) {
       stage: setStage,
       beforeHide: () => {
         const current = latest.current;
-        scroll.current = current.feed.current?.scrollTop ?? scroll.current;
-        const input = current.input.current;
-        if (input)
-          selection.current = {
-            start: input.selectionStart,
-            end: input.selectionEnd,
-            direction: input.selectionDirection,
-          };
+        rememberReadingPosition();
+        revealed.current = false;
         if (!current.modalOpen) current.pet.current?.focus({ preventScroll: true });
       },
       afterReveal: () => {
+        revealed.current = true;
         revealFocus.current = !latest.current.modalOpen;
       },
       error: (message) => {
@@ -99,7 +122,12 @@ export function useBuddyPanel(settings: PanelSettings) {
       decorate: (expanded, signal) => {
         const element = shell.current;
         if (!element) return Promise.resolve();
-        if (reduce.current || document.hidden || typeof element.animate !== 'function') {
+        if (
+          reduce.current ||
+          document.hidden ||
+          nativeVisibility.current?.isVisible() === false ||
+          typeof element.animate !== 'function'
+        ) {
           animation.current?.cancel();
           animation.current = null;
           element.style.opacity = expanded ? '1' : '0';
@@ -143,6 +171,8 @@ export function useBuddyPanel(settings: PanelSettings) {
       },
     });
     return () => {
+      // Preserve programmatic/tray workspace switches as well as the visible action.
+      if (revealed.current) rememberReadingPosition();
       coordinator.current?.dispose();
       coordinator.current = null;
       animation.current?.cancel();
@@ -158,12 +188,13 @@ export function useBuddyPanel(settings: PanelSettings) {
   useLayoutEffect(() => {
     if (stage !== 'open') return;
     const current = latest.current;
-    if (current.feed.current) current.feed.current.scrollTop = scroll.current;
-    if (selection.current && current.input.current)
+    const memory = current.readingMemory.current;
+    if (current.feed.current) current.feed.current.scrollTop = memory.scrollTop;
+    if (memory.selection && current.input.current)
       current.input.current.setSelectionRange(
-        selection.current.start,
-        selection.current.end,
-        selection.current.direction,
+        memory.selection.start,
+        memory.selection.end,
+        memory.selection.direction,
       );
     if (revealFocus.current) {
       current.close.current?.focus({ preventScroll: true });
@@ -178,18 +209,21 @@ export function useBuddyPanel(settings: PanelSettings) {
     shell,
     motionPaused,
     reducedMotion,
+    rememberReadingPosition,
     toggleMotion: () => setMotionPaused((paused) => !paused),
     onScroll() {
       const feed = latest.current.feed.current;
       if (!feed || stage !== 'open') return;
-      scroll.current = feed.scrollTop;
-      follow.current = feed.scrollHeight - feed.scrollTop - feed.clientHeight < 48;
+      const memory = latest.current.readingMemory.current;
+      memory.scrollTop = feed.scrollTop;
+      memory.followLatest = feed.scrollHeight - feed.scrollTop - feed.clientHeight < 48;
     },
     followNewContent() {
       const feed = latest.current.feed.current;
-      if (stage === 'open' && feed && follow.current) {
+      const memory = latest.current.readingMemory.current;
+      if (stage === 'open' && feed && memory.followLatest) {
         feed.scrollTop = feed.scrollHeight;
-        scroll.current = feed.scrollTop;
+        memory.scrollTop = feed.scrollTop;
       }
     },
   };

@@ -1,8 +1,8 @@
 import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-async function preparePanel(page: Page) {
-  await page.addInitScript(() => {
+async function preparePanel(page: Page, nativeVisibility = false) {
+  await page.addInitScript((withVisibility) => {
     localStorage.setItem('insightos.buddySpeech', 'false');
     const preview = window as any;
     preview.panelCalls = [];
@@ -12,7 +12,12 @@ async function preparePanel(page: Page) {
     preview.insightos = {
       platform: 'win32',
       desktopShortcuts: async () => ({ voice: false, stop: false }),
-      onDesktopCommand: () => () => {},
+      onDesktopCommand: (listener: (command: string) => void) => {
+        preview.desktopPanelCommand = listener;
+        return () => {
+          preview.desktopPanelCommand = undefined;
+        };
+      },
       setBuddyMode: async (mode: string, requestId: number) => {
         preview.panelCalls.push(mode);
         if (mode === 'panel' && preview.rejectPanel) throw new Error('Native resize unavailable.');
@@ -26,7 +31,17 @@ async function preparePanel(page: Page) {
         };
       },
     };
-  });
+    if (withVisibility) {
+      preview.panelVisibility = { visible: true, revision: 0 };
+      preview.insightos.desktopVisibility = async () => preview.panelVisibility;
+      preview.insightos.onDesktopVisibility = (callback: (snapshot: unknown) => void) => {
+        preview.panelVisibilityListener = callback;
+        return () => {
+          preview.panelVisibilityListener = undefined;
+        };
+      };
+    }
+  }, nativeVisibility);
   const requests: string[] = [];
   const empty = { folder: null, code: null, browser: null, screen: null };
   await page.route('**/api/**', (route) => {
@@ -172,6 +187,140 @@ test('cancelled opening and reversed exit converge on the last keyboard intent',
   await page.waitForTimeout(260); // Allow an obsolete 160ms exit to attempt its completion.
   expect(await page.evaluate(() => (window as any).panelCalls.at(-1))).toBe('panel');
   await expect(pet(page)).toHaveAttribute('aria-expanded', 'true');
+});
+
+test('workspace return preserves the compact draft, selection and manual reading position', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 408, height: 672 });
+  await page.addInitScript(() => {
+    const original = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (
+      this: HTMLCanvasElement,
+      kind: string,
+      ...options: unknown[]
+    ) {
+      return kind.startsWith('webgl') ? null : original.apply(this, [kind, ...options] as any);
+    } as typeof original;
+  });
+  const requests = await preparePanel(page);
+  await pet(page).press('Enter');
+  await composer(page).fill('Make a local summary');
+  await composer(page).press('Enter');
+  await expect(page.locator('.buddy-message.assistant')).toContainText(
+    'A local panel test response',
+  );
+  const draft = 'Keep this draft while we talk.';
+  await composer(page).fill(draft);
+  await composer(page).evaluate((element) =>
+    (element as HTMLTextAreaElement).setSelectionRange(5, 15, 'backward'),
+  );
+  await page.locator('.buddy-feed').evaluate((element) => {
+    element.scrollTop = 160;
+    element.dispatchEvent(new Event('scroll'));
+  });
+  const readPosition = async () => ({
+    selection: await composer(page).evaluate((element) => {
+      const input = element as HTMLTextAreaElement;
+      return [input.selectionStart, input.selectionEnd, input.selectionDirection];
+    }),
+    scrollTop: await page.locator('.buddy-feed').evaluate((element) => element.scrollTop),
+  });
+  const before = await readPosition();
+  expect(before.scrollTop).toBe(160);
+  await page.getByRole('button', { name: 'Open full workspace', exact: true }).click();
+  await page.getByRole('button', { name: 'Return to desktop buddy ↗' }).click();
+  await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'closed');
+  await expect(composer(page)).toHaveCount(0);
+  await pet(page).press('Enter');
+  await expect(composer(page)).toHaveValue(draft);
+  await expect(
+    page.getByRole('button', { name: 'Collapse conversation', exact: true }),
+  ).toBeFocused();
+  const afterWorkspace = await readPosition();
+  console.log('Workspace reading memory:', { before, afterWorkspace });
+  expect(afterWorkspace).toEqual(before);
+  // Ordinary disclosure close/reopen uses the same memory without remounting.
+  await composer(page).press('Escape');
+  await expect(pet(page)).toBeFocused();
+  await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'closed');
+  await pet(page).press('Enter');
+  await expect(composer(page)).toHaveValue(draft);
+  expect(await readPosition()).toEqual(before);
+  // A tray/native command bypasses the visible workspace action; cleanup captures it too.
+  await composer(page).evaluate((element) =>
+    (element as HTMLTextAreaElement).setSelectionRange(2, 11, 'forward'),
+  );
+  await page.locator('.buddy-feed').evaluate((element) => {
+    element.scrollTop = 201;
+    element.dispatchEvent(new Event('scroll'));
+  });
+  const beforeTray = await readPosition();
+  await page.evaluate(() => (window as any).desktopPanelCommand('workspace'));
+  await page.getByRole('button', { name: 'Return to desktop buddy ↗' }).click();
+  await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'closed');
+  await pet(page).press('Enter');
+  await expect(composer(page)).toHaveValue(draft);
+  await expect(
+    page.getByRole('button', { name: 'Collapse conversation', exact: true }),
+  ).toBeFocused();
+  expect(await readPosition()).toEqual(beforeTray);
+  expect(requests.filter((path) => path.includes('/voice/'))).toEqual([]);
+  expect(requests).not.toContain('/api/computer/stop');
+});
+
+test('native visibility finishes an in-flight panel exit while document visibility stays unchanged', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 408, height: 672 });
+  await page.addInitScript(() => {
+    const original = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (
+      this: HTMLCanvasElement,
+      kind: string,
+      ...options: unknown[]
+    ) {
+      return kind.startsWith('webgl') ? null : original.apply(this, [kind, ...options] as any);
+    } as typeof original;
+  });
+  const requests = await preparePanel(page, true);
+  await pet(page).press('Enter');
+  await expect(composer(page)).toBeVisible();
+  await composer(page).fill('Keep the native-hidden draft.');
+  const beforeHide = await page.evaluate(async () => {
+    document
+      .querySelector<HTMLButtonElement>('button[aria-label="Collapse conversation"]')!
+      .click();
+    await new Promise((resolve) => setTimeout(resolve, 25));
+    const stage = document.querySelector<HTMLElement>('.buddy')!.dataset.panelStage;
+    const preview = window as any;
+    preview.panelVisibility = { visible: false, revision: 1 };
+    preview.panelVisibilityListener(preview.panelVisibility);
+    return { stage, documentHidden: document.hidden };
+  });
+  expect(beforeHide).toEqual({ stage: 'closing', documentHidden: false });
+  await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'closed');
+  expect(
+    await page
+      .locator('.buddy-panel-glass')
+      .evaluate(
+        (element) =>
+          element.getAnimations().filter((animation) => animation.playState === 'running').length,
+      ),
+  ).toBe(0);
+  await page.evaluate(() => {
+    const preview = window as any;
+    preview.panelVisibility = { visible: true, revision: 2 };
+    preview.panelVisibilityListener(preview.panelVisibility);
+  });
+  await pet(page).press('Enter');
+  await expect(composer(page)).toHaveValue('Keep the native-hidden draft.');
+  await expect(
+    page.getByRole('button', { name: 'Collapse conversation', exact: true }),
+  ).toBeFocused();
+  expect(requests.filter((path) => path.includes('/voice/'))).toEqual([]);
+  expect(requests).not.toContain('/api/computer/stop');
 });
 
 test('a rejected native expansion stays usable and can be retried', async ({ page }) => {

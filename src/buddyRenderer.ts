@@ -26,6 +26,7 @@ import type { BuddyVisualState } from './AssistantSignal';
 import type { AudioPresentationRef } from './audioPresentation';
 import { BuddyAudioEnvelope } from './buddyAudioEnvelope';
 import { auditSproutModel, SproutMotionController } from './buddyMotionController';
+import { observeDesktopVisibility } from './desktopVisibility';
 
 export type BuddyAsset = 'sprout' | 'ribbon';
 export type BuddyRendererSettings = {
@@ -320,8 +321,10 @@ export async function createBuddyRenderer(
   let lastReport = 0;
   const intervals: number[] = [];
   const renderCosts: number[] = [];
+  let desktopVisibility: ReturnType<typeof observeDesktopVisibility> | undefined;
   const moving = () => settings.motion && !reducedMotion.matches;
-  const shouldAnimate = () => moving() && visible && !document.hidden && !contextLost && !disposed;
+  const canDraw = () => visible && !document.hidden && Boolean(desktopVisibility?.isVisible());
+  const shouldAnimate = () => moving() && canDraw() && !contextLost && !disposed;
   controller?.setPhase(settings.phase);
   controller?.setMotion(moving());
   const diagnostics = (): BuddyRendererDiagnostics => ({
@@ -356,7 +359,7 @@ export async function createBuddyRenderer(
     },
   });
   const draw = (now = performance.now(), dt = 0) => {
-    if (disposed || contextLost || renderer.getContext().isContextLost()) return;
+    if (disposed || !canDraw() || contextLost || renderer.getContext().isContextLost()) return;
     const t = moving() ? elapsed : 0;
     const level = moving() ? envelope.sample(settings.audio?.current, settings.phase, now, dt) : 0;
     if (!moving()) envelope.reset();
@@ -440,7 +443,7 @@ export async function createBuddyRenderer(
     frame = 0;
     lastFrame = lastRenderedAt = 0;
     controller?.setMotion(moving());
-    if (visible && !document.hidden) draw();
+    if (canDraw()) draw();
     if (shouldAnimate()) frame = requestAnimationFrame(tick);
   };
   const resize = () => {
@@ -493,6 +496,9 @@ export async function createBuddyRenderer(
     visible = entry.isIntersecting;
     refresh();
   });
+  // Native windows retain unthrottled task/voice timers, so document.hidden can
+  // remain false after hide/minimize. This read-only bridge suspends graphics.
+  desktopVisibility = observeDesktopVisibility(refresh);
   resizeObserver.observe(owner);
   visibilityObserver.observe(owner);
   owner.addEventListener('pointermove', move, { passive: true });
@@ -525,6 +531,7 @@ export async function createBuddyRenderer(
       cancelAnimationFrame(frame);
       resizeObserver.disconnect();
       visibilityObserver.disconnect();
+      desktopVisibility?.dispose();
       owner.removeEventListener('pointermove', move);
       owner.removeEventListener('pointerleave', leave);
       document.removeEventListener('visibilitychange', refresh);

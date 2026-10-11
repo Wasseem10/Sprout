@@ -70,6 +70,10 @@ declare global {
         requestId?: number,
       ) => Promise<import('./buddyPanelCoordinator').BuddyBoundsAcknowledgement>;
       hideBuddy?: () => Promise<void>;
+      desktopVisibility?: () => Promise<import('./desktopVisibility').DesktopVisibilitySnapshot>;
+      onDesktopVisibility?: (
+        callback: (snapshot: import('./desktopVisibility').DesktopVisibilitySnapshot) => void,
+      ) => () => void;
       desktopShortcuts?: () => Promise<{ voice: boolean; stop: boolean }>;
       onDesktopCommand?: (callback: (command: string) => void) => () => void;
     };

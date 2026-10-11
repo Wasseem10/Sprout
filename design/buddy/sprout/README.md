@@ -2,6 +2,8 @@
 
 Sprout is the original InsightOS jelly buddy selected from the Prism creature study. Its editable Blender master produces the same geometry used in the React/Vite/Three/Electron application. The glossy blue face, cyan crown, rising violet/coral lower streak, unequal buds, glints and smile were refined against actual browser sizes. The material suggests jelly; it is not a physical fluid simulation.
 
+The [acceptance audit](ACCEPTANCE-AUDIT.md) maps the full brief to delivered evidence and identifies the remaining checks.
+
 ## Delivered asset
 
 | Output                              | Location                                                                                                                                                                                                           |
@@ -44,6 +46,8 @@ The native fixture runners are `node scripts/smoke-buddy-panel.mjs` and `node sc
 
 Use `node scripts/verify-sprout-native.mjs --cold-load` for the separate first-avatar-load check and `node scripts/verify-sprout-native.mjs --edge-panel-record` for the bounded native edge/reduced-motion recording. `node scripts/audit-buddy-accessibility.mjs` audits current HTML/styles with local fixtures after a build. Each runner records its actual scope and does not invoke a live provider.
 
+Use `node scripts/verify-buddy-runtime.mjs` after a current default build for panel typing/phase/reversal timing, a bounded Chromium trace, resource counts and offscreen/native-hidden/minimized/disposed lifecycle assertions. Keep GPU/native runs serial; it captures a screenshot only after timing. `node scripts/capture-sprout-loop-pairs.mjs` pairs exact browser Idle times with the saved Blender loop renders; `--assemble-only` rebuilds the comparison board from existing captures without opening a browser. The Blender renders come from `14_loop_pose_proofs.py` in a separate background process with the saved master open.
+
 ## Editable authoring order
 
 | Source                                                                                               | Responsibility                                               |
@@ -61,6 +65,7 @@ Use `node scripts/verify-sprout-native.mjs --cold-load` for the separate first-a
 | [11_prism_lighting.py](11_prism_lighting.py)                                                         | Isolated key/rim/world study and selected lighting           |
 | [12_final_proofs.py](12_final_proofs.py), [13_proof_contact_sheets.mjs](13_proof_contact_sheets.mjs) | Final pose/light renders and inspectable contact sheets      |
 | [inspect_source.py](inspect_source.py)                                                               | Saved-master inventory                                       |
+| [14_loop_pose_proofs.py](14_loop_pose_proofs.py)                                                     | Saved-master Idle opening/midpoint/seam renders without saving or changing the live scene |
 
 Inspect scripts and their checkout path before replaying. The saved master is the editable delivery; do not blindly rerun construction scripts over it. Keep one Blender editor, preserve unrelated scenes and checkpoint copies before mutation. Topology must be fixed before shape keys: a later topology change requires rebuilding the affected keys, weights and exported animation proof. Do not optimize by decimating an already keyed/skinned export.
 
@@ -92,6 +97,20 @@ The separate [cold-avatar compiled-load report](../../../artifacts/sprout-native
 The separate [native replay and panel recording](../../../artifacts/sprout-native-prism-video/native-replay-and-panel.webm) shows the six-clip simulated replay, native pet opening, an unsent draft and collapse. Its [report](../../../artifacts/sprout-native-prism-video/report.json), [initial welcome](../../../artifacts/sprout-native-welcome.png) and [collapsed buddy](../../../artifacts/sprout-native-collapsed.png) are retained. Recording is separate from the timing run and starts no microphone or task request.
 
 The [edge/panel recording](../../../artifacts/sprout-native-prism-edge-panel/native-edge-panel.webm) and [native bounds report](../../../artifacts/sprout-native-prism-edge-panel/report.json) verify open/collapse/keyboard reopen at the bottom-right work-area edge. The native window changes from `(1624, 904, 296, 128)` to `(1512, 360, 408, 672)` inside the tested `1920×1032` work area. The original draft and expected focus survive; reduced-motion avatar pixels match across 450ms. The 11.24-second app-only video does not capture the desktop or prove physical monitor changes; native coordinates establish the tested edge position.
+
+## Final acceptance audit
+
+The [matched Idle board](../../../artifacts/sprout-loop-pairs/matched-idle-board.png) pairs saved-master Blender frames 1/73/145 with the actual browser renderer at 0/3/6 seconds. The [report](../../../artifacts/sprout-loop-pairs/report.json) records camera, asset/source hashes, matrices and pixels. Opening/seam browser pixels and matrices match exactly; the viewed board preserves face, feet and silhouette through the midpoint. Cycles/Three lighting differences remain visible. The background Blender process did not save the master or change the interactive session.
+
+The final audit found that workspace navigation remounted the compact panel and lost its local reading memory. Draft, scroll position, selection range/direction and follow-latest preference now live with the conversation. Focused browser and native regressions verify workspace return, ordinary collapse and the programmatic tray route. This changes navigation continuity without changing finance or task behavior.
+
+Native Electron keeps background timers active for voice/tasks, so `document.hidden` stays false even when the window is hidden or minimized. A trusted, read-only native visibility getter/subscription now controls visual work. Monotonic revisions and connection generations reject stale initial responses; consumers share one listener and unsubscribe when disposed. The renderer stops its own draw/RAF work, and a hidden decorative panel transition finishes safely. The underlying `backgroundThrottling: false` policy and voice ownership remain unchanged. Thirteen focused visibility/coordinator unit tests, two browser regressions and fresh default/isolated-public builds pass.
+
+The separate [native visibility voice proof](../../../artifacts/buddy-voice-native-visibility/report.json), reproduced with `node scripts/smoke-buddy-voice.mjs --native-visibility`, uses the exact final GLB and real voice/audio mechanisms with local oscillator/PCM fixtures. Playback advanced **0.675 seconds while hidden**; the same capture track and recorder remained live, output samples stayed fresh on the same generation, and showing the window restored the speaking state and draft. Explicit Pause then ended capture, paused playback and cleared levels. This verifies retained local audio behavior, not physical audibility or a live provider request.
+
+The [compiled native runtime report](../../../artifacts/buddy-runtime-native/report.json) measures real panel typing, a fixture-driven Thinking/Idle change, repeated open/close and an in-flight reversal. Its timed Chromium trace contains **353 presentation-feedback samples**, with **16.789ms p95**, **17.274ms maximum** and no interval above 20ms or 50ms. The report and compact timestamp CSV retain the tested interval, counts and trace hash. This is Chromium feedback; physical scanout flags and causal event-to-first-visible-frame correlation are unavailable, so the strict two-presented-frame response requirement remains unverified. Instrumented clocks and CPU cost are reported separately. A later lifecycle-only process uses the unchanged compiled renderer and preserves this timing evidence rather than rerunning it.
+
+The same report verifies stable resource counts through five panel cycles, zero avatar draws/callbacks while offscreen or after disposal, and zero global avatar callbacks/draws during actual native hide/minimize despite `document.hidden` remaining false. Showing/restoring resumes rendering with a fresh clock and current phase. Disposal removes owned model/environment resources and loses the actual WebGL context. Three.js retains five internal texture handles (four 1×1 fallback textures and its identified 16×16 DFG lookup texture) and three constructor-created scratch framebuffer handles without explicit delete calls; the lost context invalidates these. Exact counters/signatures are retained rather than relabelled as zero GPU memory. No driver-reclamation or physical VRAM claim is made.
 
 ## References and provenance
 

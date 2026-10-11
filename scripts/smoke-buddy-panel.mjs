@@ -321,6 +321,15 @@ try {
   await expect(composer).toHaveValue(draft);
 
   // The panel coordinator must release geometry ownership when entering the existing workspace.
+  const workspaceReadingPosition = {
+    selection: await composer.evaluate((element) => [
+      element.selectionStart,
+      element.selectionEnd,
+      element.selectionDirection,
+    ]),
+    scrollTop: await page.locator('.buddy-feed').evaluate((element) => element.scrollTop),
+  };
+  assert.ok(workspaceReadingPosition.scrollTop >= 159);
   await page.getByRole('button', { name: 'Open full workspace', exact: true }).click();
   const returnButton = page.getByRole('button', { name: 'Return to desktop buddy ↗' });
   await expect(returnButton).toBeVisible();
@@ -345,6 +354,19 @@ try {
   await pet.press('Enter');
   await expect(composer).toHaveValue(draft);
   await expect(close).toBeFocused();
+  const workspaceRestoredReadingPosition = {
+    selection: await composer.evaluate((element) => [
+      element.selectionStart,
+      element.selectionEnd,
+      element.selectionDirection,
+    ]),
+    scrollTop: await page.locator('.buddy-feed').evaluate((element) => element.scrollTop),
+  };
+  assert.deepEqual(
+    workspaceRestoredReadingPosition,
+    workspaceReadingPosition,
+    'Workspace return must restore compact selection and manual reading position.',
+  );
 
   let controlledBackgroundCaptures;
   let zoomReview;
@@ -544,7 +566,9 @@ try {
     workspace,
     returnedPill,
     workspaceRoundTrip:
-      'existing workspace receives horizontally centered/resizable bounds; returning restores dock anchor, draft and focus on reopened conversation',
+      'existing workspace receives horizontally centered/resizable bounds; returning restores dock anchor, draft, selection5..17, manually scrolled feed and focus on reopened conversation',
+    workspaceReadingPosition,
+    workspaceRestoredReadingPosition,
     modalFocus:
       'Escape closes Settings without collapsing the conversation and restores focus to Settings; draft retained',
     controlledBackgroundCaptures,

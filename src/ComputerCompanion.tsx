@@ -28,6 +28,7 @@ import AssistantSignal, { buddyVisualState } from './AssistantSignal';
 import FinancePanel from './FinancePanel';
 import BillWorkspace from './BillWorkspace';
 import type { BillValues } from '../shared/bills';
+import type { BuddyReadingMemory } from './useBuddyPanel';
 
 const empty: ComputerState = { folder: null, code: null, browser: null, screen: null };
 type Message = { id: string; role: 'user' | 'assistant' | 'error'; text: string };
@@ -86,6 +87,7 @@ export default function ComputerCompanion() {
   const [request, setRequest] = useState(''),
     [busy, setBusy] = useState(false),
     [phase, setPhase] = useState('Ready when you are');
+  const buddyReadingMemory = useRef<BuddyReadingMemory>({ scrollTop: 0, followLatest: true });
   const [tab, setTab] = useState<
       'home' | 'code' | 'office' | 'browser' | 'screen' | 'energy' | 'finance'
     >(
@@ -750,6 +752,7 @@ export default function ComputerCompanion() {
           messages={messages}
           inputRef={input}
           transcriptRef={transcript}
+          readingMemory={buddyReadingMemory}
           expand={() => setDockExpanded((expanded) => !expanded)}
           expansionFailed={() => setDockExpanded(false)}
           hide={() => void hideBuddy()}

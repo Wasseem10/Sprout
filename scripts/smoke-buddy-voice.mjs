@@ -8,7 +8,12 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 
 const recordVideo = process.argv.includes('--record');
-const artifacts = path.resolve('artifacts/buddy-voice-native-final');
+const nativeVisibilityProof = process.argv.includes('--native-visibility');
+const artifacts = path.resolve(
+  nativeVisibilityProof
+    ? 'artifacts/buddy-voice-native-visibility'
+    : 'artifacts/buddy-voice-native-final',
+);
 const assetBytes = await readFile('public/buddy/sprout-v002.glb');
 const assetSha256 = createHash('sha256').update(assetBytes).digest('hex');
 assert.equal(
@@ -61,6 +66,7 @@ let report = {
   assetSha256,
   assetBytes: assetBytes.length,
   recordingActive: recordVideo,
+  nativeVisibilityProof,
   implementation:
     'actual useVoice, MediaRecorder, HTMLAudio, Web Audio meter and final animated Sprout in isolated Electron --dev',
   input: 'local oscillator, no physical microphone capture',
@@ -95,13 +101,30 @@ try {
   await page.waitForURL('http://127.0.0.1:5173/?desktop=buddy', { waitUntil: 'domcontentloaded' });
   video = recordVideo ? page.video() : undefined;
   const context = page.context();
-  await context.addInitScript(() => {
+  await context.addInitScript((inspectVisibility) => {
     localStorage.setItem('insightos.buddySpeech', 'true');
     localStorage.setItem('insightos.buddyMotionPaused', 'false');
     const NativeContext = AudioContext;
     const NativeAudio = Audio;
-    window.__voiceProof = { gains: [], tracks: [], playbacks: [], input: [], samples: [] };
+    window.__voiceProof = {
+      gains: [],
+      tracks: [],
+      playbacks: [],
+      input: [],
+      samples: [],
+      recorders: [],
+    };
     const proof = window.__voiceProof;
+    if (inspectVisibility) {
+      // Retain read-only handles to the real recorder; capture behavior is unchanged.
+      const NativeRecorder = MediaRecorder;
+      window.MediaRecorder = class extends NativeRecorder {
+        constructor(...args) {
+          super(...args);
+          proof.recorders.push(this);
+        }
+      };
+    }
     window.Audio = class {
       constructor(src) {
         const audio = new NativeAudio(src);
@@ -140,7 +163,7 @@ try {
       await audioContext.resume();
       return destination.stream;
     };
-  });
+  }, nativeVisibilityProof);
   // Expose only the existing read-only presentation ref in this test window.
   await context.route('**/src/audioPresentation.ts*', async (route) => {
     const response = await route.fetch();
@@ -301,67 +324,166 @@ try {
     ),
   );
   assert.ok(firstReplyIndex >= 0, 'The intended first reply has an actual playing element.');
+  let interrupted;
+  let secondMeasuredOutput;
+  let visibilityCheck;
   await expect.poll(() => page.evaluate(() => window.__voiceProof.gains.length)).toBe(2);
-  await page.waitForTimeout(500);
-  await page.evaluate(() => {
-    const gain = window.__voiceProof.gains[1];
-    gain.gain.setValueAtTime(0.25, gain.context.currentTime);
-    gain.gain.setValueAtTime(0, gain.context.currentTime + 0.8);
-  });
-  await expect
-    .poll(
-      () => page.evaluate((index) => window.__voiceProof.playbacks[index].paused, firstReplyIndex),
-      { timeout: 5000 },
-    )
-    .toBe(true);
-  const interrupted = await page.evaluate((index) => {
-    const audio = window.__voiceProof.playbacks[index];
-    return {
-      paused: audio.paused,
-      ended: audio.ended,
-      currentTime: audio.currentTime,
-      duration: audio.duration,
+  if (nativeVisibilityProof) {
+    const inspect = async () =>
+      page.evaluate(async (index) => {
+        const audio = window.__voiceProof.playbacks[index];
+        return {
+          at: performance.now(),
+          native: await window.insightos.desktopVisibility(),
+          documentHidden: document.hidden,
+          phase: document.querySelector('.insight-signal')?.getAttribute('data-phase'),
+          sample: { ...window.__voicePresentation.current },
+          playback: {
+            index,
+            paused: audio.paused,
+            ended: audio.ended,
+            currentTime: audio.currentTime,
+            duration: audio.duration,
+          },
+          liveTrackIds: window.__voiceProof.tracks
+            .filter((track) => track.readyState === 'live')
+            .map((track) => track.id),
+          recorderStates: window.__voiceProof.recorders.map((recorder) => recorder.state),
+          draft: document.querySelector('#buddy-request')?.value,
+        };
+      }, firstReplyIndex);
+    const before = await inspect();
+    assert.equal(before.native.visible, true);
+    assert.equal(before.phase, 'speaking');
+    assert.equal(before.playback.paused, false);
+    assert.ok(before.liveTrackIds.length > 0, 'Capture must be live before native hide.');
+    assert.ok(before.recorderStates.includes('recording'));
+    await desktop.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].hide());
+    await expect
+      .poll(() => page.evaluate(async () => (await window.insightos.desktopVisibility()).visible))
+      .toBe(false);
+    await checkpoint('native-hidden-with-active-voice');
+    await page.waitForTimeout(650);
+    const hidden = await inspect();
+    assert.equal(hidden.native.visible, false);
+    assert.ok(hidden.native.revision > before.native.revision);
+    assert.equal(hidden.playback.paused, false);
+    assert.equal(hidden.playback.ended, false);
+    assert.ok(
+      hidden.playback.currentTime - before.playback.currentTime > 0.35,
+      'Actual HTMLAudio time must advance while the native window is hidden.',
+    );
+    assert.deepEqual(hidden.liveTrackIds, before.liveTrackIds);
+    assert.deepEqual(hidden.recorderStates, before.recorderStates);
+    assert.equal(hidden.sample.playbackGeneration, before.sample.playbackGeneration);
+    assert.equal(hidden.sample.outputPlaying, true);
+    assert.ok(hidden.sample.outputLevel > 0.1);
+    assert.ok(
+      hidden.sample.outputSampledAt > before.sample.outputSampledAt,
+      'Voice-owned output metering must continue while visuals are hidden.',
+    );
+    assert.equal(hidden.draft, draft);
+    await desktop.evaluate(({ BrowserWindow }) => {
+      const window = BrowserWindow.getAllWindows()[0];
+      window.show();
+      window.focus();
+    });
+    await expect
+      .poll(() => page.evaluate(async () => (await window.insightos.desktopVisibility()).visible))
+      .toBe(true);
+    await expect(page.locator('.insight-signal').first()).toHaveAttribute('data-phase', 'speaking');
+    await expect(page.locator('.insight-signal').first()).toHaveAttribute('data-renderer', 'webgl');
+    await page.waitForTimeout(250);
+    const restored = await inspect();
+    assert.ok(restored.native.revision > hidden.native.revision);
+    assert.equal(restored.phase, 'speaking');
+    assert.equal(restored.playback.paused, false);
+    assert.ok(restored.playback.currentTime > hidden.playback.currentTime);
+    assert.equal(restored.sample.playbackGeneration, before.sample.playbackGeneration);
+    assert.equal(restored.sample.outputPlaying, true);
+    assert.deepEqual(restored.liveTrackIds, before.liveTrackIds);
+    assert.deepEqual(restored.recorderStates, before.recorderStates);
+    await expect(composer).toHaveValue(draft);
+    visibilityCheck = {
+      before,
+      hidden,
+      restored,
+      hiddenPlaybackAdvanceSeconds: hidden.playback.currentTime - before.playback.currentTime,
+      scope:
+        'Actual isolated BrowserWindow hide/show with production visibility IPC/helper and animated renderer. Local oscillator capture and PCM reply use real MediaRecorder/HTMLAudio/Web Audio; no physical microphone/provider or OS-presentation proof.',
     };
-  }, firstReplyIndex);
-  assert.equal(interrupted.ended, false, 'The intended reply was interrupted before natural end.');
-  await checkpoint('actual-playing-reply-interrupted');
-  await expect.poll(() => transcriptions, { timeout: 12000 }).toBe(2);
-  // A slow task may produce its normal acknowledgment in addition to both replies.
-  await expect
-    .poll(() => spokenTexts.filter((text) => text.includes('Local animated voice proof')).length, {
-      timeout: 12000,
-    })
-    .toBe(2);
-  await expect
-    .poll(() => page.evaluate(() => window.__voicePresentation.current.outputLevel), {
-      timeout: 12000,
-    })
-    .toBeGreaterThan(0.1);
-  assert.ok(
-    (await page.evaluate(() => window.__voicePresentation.current.playbackGeneration)) >
-      speaking.playbackGeneration,
-  );
-  await expect(composer).toHaveValue(draft);
-  const secondMeasuredOutput = await page.evaluate(() => ({
-    ...window.__voicePresentation.current,
-  }));
-  assert.equal(secondMeasuredOutput.outputPlaying, true);
-  await checkpoint('second-measured-output-draft-preserved');
-  await capture('second-reply');
-  await collapse.click();
-  await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'closed');
-  // The collapsed panel remains mounted but is deliberately excluded from the AX tree.
-  await expect(page.locator('#buddy-request')).toHaveValue(draft);
-  await checkpoint('collapse-with-original-unsent-draft');
-  await capture('collapsed-during-conversation');
-  await page.waitForTimeout(600);
-  await page.getByRole('button', { name: /^Expand buddy\./ }).click();
-  await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'open');
-  await expect(composer).toHaveValue(draft);
-  await expect(collapse).toBeFocused();
-  await checkpoint('reopen-with-original-unsent-draft');
-  await capture('reopened-draft');
-  await page.waitForTimeout(600);
+    await checkpoint('native-show-restored-current-speaking-phase');
+    await capture('visibility-restored-speaking');
+  } else {
+    await page.waitForTimeout(500);
+    await page.evaluate(() => {
+      const gain = window.__voiceProof.gains[1];
+      gain.gain.setValueAtTime(0.25, gain.context.currentTime);
+      gain.gain.setValueAtTime(0, gain.context.currentTime + 0.8);
+    });
+    await expect
+      .poll(
+        () =>
+          page.evaluate((index) => window.__voiceProof.playbacks[index].paused, firstReplyIndex),
+        { timeout: 5000 },
+      )
+      .toBe(true);
+    interrupted = await page.evaluate((index) => {
+      const audio = window.__voiceProof.playbacks[index];
+      return {
+        paused: audio.paused,
+        ended: audio.ended,
+        currentTime: audio.currentTime,
+        duration: audio.duration,
+      };
+    }, firstReplyIndex);
+    assert.equal(
+      interrupted.ended,
+      false,
+      'The intended reply was interrupted before natural end.',
+    );
+    await checkpoint('actual-playing-reply-interrupted');
+    await expect.poll(() => transcriptions, { timeout: 12000 }).toBe(2);
+    // A slow task may produce its normal acknowledgment in addition to both replies.
+    await expect
+      .poll(
+        () => spokenTexts.filter((text) => text.includes('Local animated voice proof')).length,
+        {
+          timeout: 12000,
+        },
+      )
+      .toBe(2);
+    await expect
+      .poll(() => page.evaluate(() => window.__voicePresentation.current.outputLevel), {
+        timeout: 12000,
+      })
+      .toBeGreaterThan(0.1);
+    assert.ok(
+      (await page.evaluate(() => window.__voicePresentation.current.playbackGeneration)) >
+        speaking.playbackGeneration,
+    );
+    await expect(composer).toHaveValue(draft);
+    secondMeasuredOutput = await page.evaluate(() => ({
+      ...window.__voicePresentation.current,
+    }));
+    assert.equal(secondMeasuredOutput.outputPlaying, true);
+    await checkpoint('second-measured-output-draft-preserved');
+    await capture('second-reply');
+    await collapse.click();
+    await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'closed');
+    // The collapsed panel remains mounted but is deliberately excluded from the AX tree.
+    await expect(page.locator('#buddy-request')).toHaveValue(draft);
+    await checkpoint('collapse-with-original-unsent-draft');
+    await capture('collapsed-during-conversation');
+    await page.waitForTimeout(600);
+    await page.getByRole('button', { name: /^Expand buddy\./ }).click();
+    await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'open');
+    await expect(composer).toHaveValue(draft);
+    await expect(collapse).toBeFocused();
+    await checkpoint('reopen-with-original-unsent-draft');
+    await capture('reopened-draft');
+    await page.waitForTimeout(600);
+  }
   assert.equal(
     await page.evaluate(() => window.__voicePresentation.current.outputPlaying),
     true,
@@ -390,10 +512,13 @@ try {
   assert.equal(stopped.sample.outputLevel, null);
   assert.equal(stopped.sample.inputLevel, null);
   await expect(composer).toHaveValue(draft);
-  assert.ok(
-    computerRequests.every((request) => !JSON.stringify(request).includes(draft)),
-    'The typed draft must never be submitted as a task.',
-  );
+  if (nativeVisibilityProof)
+    assert.ok(stopped.sample.playbackGeneration > speaking.playbackGeneration);
+  else
+    assert.ok(
+      computerRequests.every((request) => !JSON.stringify(request).includes(draft)),
+      'The typed draft must never be submitted as a task.',
+    );
   assert.ok(
     stopped.samples.some(
       (sample) => sample.playbackGeneration > speaking.playbackGeneration && !sample.outputPlaying,
@@ -410,12 +535,17 @@ try {
     servedAssets,
     sequence,
     draft,
-    draftPreservedAcrossVoiceAndPanel: true,
+    draftPreservedAcrossVoiceAndPanel: nativeVisibilityProof ? undefined : true,
+    draftPreservedAcrossHideShow: nativeVisibilityProof ? true : undefined,
+    visibilityCheck,
     firstMeasuredOutput: speaking,
     secondMeasuredOutput,
-    interruption:
-      'first actual HTMLAudio paused; second recorded utterance and measured output succeeded',
-    interruptedElement: { index: firstReplyIndex, ...interrupted },
+    interruption: nativeVisibilityProof
+      ? undefined
+      : 'first actual HTMLAudio paused; second recorded utterance and measured output succeeded',
+    interruptedElement: nativeVisibilityProof
+      ? undefined
+      : { index: firstReplyIndex, ...interrupted },
     cleanup: 'explicit Pause voice conversation control stopped all capture/playback',
     stopped: { ...stopped, samples: undefined },
     transcriptions,
@@ -433,7 +563,12 @@ try {
   clearTimeout(deadline);
   await unlink(entry).catch(() => {});
   if (video) {
-    const finalPath = path.join(artifacts, 'synthetic-voice-interrupt-panel.webm');
+    const finalPath = path.join(
+      artifacts,
+      nativeVisibilityProof
+        ? 'synthetic-voice-native-visibility.webm'
+        : 'synthetic-voice-interrupt-panel.webm',
+    );
     await rename(await video.path(), finalPath);
     report.video = finalPath;
   }

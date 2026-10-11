@@ -24,7 +24,7 @@ import EnergyPanel from './EnergyPanel';
 import FinancePanel from './FinancePanel';
 import AssistantSignal, { buddyVisualState } from './AssistantSignal';
 import type { AudioPresentationRef } from './audioPresentation';
-import { useBuddyPanel } from './useBuddyPanel';
+import { useBuddyPanel, type BuddyReadingMemory } from './useBuddyPanel';
 
 type Props = {
   expanded: boolean;
@@ -45,6 +45,7 @@ type Props = {
   messages: { id: string; role: 'user' | 'assistant' | 'error'; text: string }[];
   inputRef: RefObject<HTMLTextAreaElement | null>;
   transcriptRef: RefObject<HTMLDivElement | null>;
+  readingMemory: RefObject<BuddyReadingMemory>;
   expand: () => void;
   expansionFailed: () => void;
   hide: () => void;
@@ -74,6 +75,7 @@ export default function DesktopBuddy(p: Props) {
     close,
     input: p.inputRef,
     feed: p.transcriptRef,
+    readingMemory: p.readingMemory,
     expansionFailed: p.expansionFailed,
   });
   useLayoutEffect(() => {
@@ -83,6 +85,10 @@ export default function DesktopBuddy(p: Props) {
   const activatePet = () => {
     setReaction((value) => value + 1);
     p.expand();
+  };
+  const openWorkspace = () => {
+    panel.rememberReadingPosition();
+    p.workspace();
   };
   const status = p.conversationActive
     ? p.voicePhase === 'speaking'
@@ -291,7 +297,7 @@ export default function DesktopBuddy(p: Props) {
                       : 'Find saved bills or choose PDFs in the workspace.'}
                 </p>
                 <div className="energy-actions">
-                  <button disabled={p.busy || !p.enabled} onClick={p.workspace}>
+                  <button disabled={p.busy || !p.enabled} onClick={openWorkspace}>
                     Open bill workspace
                   </button>
                 </div>
@@ -311,7 +317,7 @@ export default function DesktopBuddy(p: Props) {
                 compact
                 disabled={p.busy || !p.enabled}
                 ask={p.suggest}
-                workspace={p.workspace}
+                workspace={openWorkspace}
               />
             )}
             {p.state.task && (
@@ -481,7 +487,7 @@ export default function DesktopBuddy(p: Props) {
               </button>
               <button
                 className="buddy-icon"
-                onClick={p.workspace}
+                onClick={openWorkspace}
                 aria-label="Open full workspace"
                 title="Open workspace"
               >

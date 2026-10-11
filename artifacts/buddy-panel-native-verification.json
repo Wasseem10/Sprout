@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-11T02:08:46.526Z",
+  "checkedAt": "2026-10-11T02:44:08.831Z",
   "platform": "win32",
   "launch": "actual Electron main and preload, --dev, isolated user-data profile",
   "apiScope": "All API responses intercepted locally after reload; only a fixture computer request was submitted. No provider or microphone checks.",
@@ -240,7 +240,15 @@
       "webSecurity": true
     }
   },
-  "workspaceRoundTrip": "existing workspace receives horizontally centered/resizable bounds; returning restores dock anchor, draft and focus on reopened conversation",
+  "workspaceRoundTrip": "existing workspace receives horizontally centered/resizable bounds; returning restores dock anchor, draft, selection5..17, manually scrolled feed and focus on reopened conversation",
+  "workspaceReadingPosition": {
+    "selection": [
+      5,
+      17,
+      "forward"
+    ],
+    "scrollTop": 160
+  },
   "modalFocus": "Escape closes Settings without collapsing the conversation and restores focus to Settings; draft retained",
   "controlledBackgroundCaptures": [
     {
@@ -382,7 +390,7 @@
   "focus": "close on open/reopen, pet before hide and after collapsed",
   "preservation": "single mounted composer, draft, selection 5..17 and manually scrolled feed retained",
   "rapidReversal": "reopened window retained expanded native bounds after the obsolete exit deadline",
-  "reversalStageIntervalMs": 27.200000047683716,
+  "reversalStageIntervalMs": 37.5,
   "reducedMotion": "shell has no running animation; draft and keyboard focus retained",
   "visibleSendTarget": {
     "x": 327,
@@ -392,7 +400,7 @@
   },
   "stageObservations": [
     {
-      "at": 1947.5,
+      "at": 1767.1999999284744,
       "stage": "preparing-open",
       "available": "false",
       "viewport": {
@@ -401,7 +409,7 @@
       }
     },
     {
-      "at": 1965.6999999284744,
+      "at": 1789.5999999046326,
       "stage": "open",
       "available": "true",
       "viewport": {
@@ -410,7 +418,7 @@
       }
     },
     {
-      "at": 1999.1999999284744,
+      "at": 1830.7999999523163,
       "stage": "closing",
       "available": "false",
       "viewport": {
@@ -419,7 +427,7 @@
       }
     },
     {
-      "at": 2078,
+      "at": 1972.3999999761581,
       "stage": "closed",
       "available": "false",
       "viewport": {
@@ -428,7 +436,7 @@
       }
     },
     {
-      "at": 2156.1999999284744,
+      "at": 2121.1999999284744,
       "stage": "preparing-open",
       "available": "false",
       "viewport": {
@@ -437,7 +445,7 @@
       }
     },
     {
-      "at": 2167,
+      "at": 2135.1999999284744,
       "stage": "open",
       "available": "true",
       "viewport": {
@@ -446,7 +454,7 @@
       }
     },
     {
-      "at": 2719.5999999046326,
+      "at": 2660.6999999284744,
       "stage": "closing",
       "available": "false",
       "viewport": {
@@ -455,7 +463,7 @@
       }
     },
     {
-      "at": 2738.6999999284744,
+      "at": 2679.1999999284744,
       "stage": "preparing-open",
       "available": "false",
       "viewport": {
@@ -464,7 +472,7 @@
       }
     },
     {
-      "at": 2746.7999999523163,
+      "at": 2698.1999999284744,
       "stage": "open",
       "available": "true",
       "viewport": {
@@ -473,7 +481,7 @@
       }
     },
     {
-      "at": 3133,
+      "at": 3092,
       "stage": "closing",
       "available": "false",
       "viewport": {
@@ -482,7 +490,7 @@
       }
     },
     {
-      "at": 3298.2999999523163,
+      "at": 3266,
       "stage": "closed",
       "available": "false",
       "viewport": {
@@ -491,25 +499,7 @@
       }
     },
     {
-      "at": 3382.899999976158,
-      "stage": "closing",
-      "available": "false",
-      "viewport": {
-        "width": 296,
-        "height": 128
-      }
-    },
-    {
-      "at": 3392.0999999046326,
-      "stage": "closed",
-      "available": "false",
-      "viewport": {
-        "width": 296,
-        "height": 128
-      }
-    },
-    {
-      "at": 3404.1999999284744,
+      "at": 3328.399999976158,
       "stage": "preparing-open",
       "available": "false",
       "viewport": {
@@ -518,7 +508,7 @@
       }
     },
     {
-      "at": 3415,
+      "at": 3342.5999999046326,
       "stage": "open",
       "available": "true",
       "viewport": {
@@ -529,7 +519,7 @@
   ],
   "nativeResizeEvents": [
     {
-      "at": 1791684520882,
+      "at": 1791686643130,
       "bounds": {
         "x": 32,
         "y": 28,
@@ -538,7 +528,7 @@
       }
     },
     {
-      "at": 1791684521009,
+      "at": 1791686643330,
       "bounds": {
         "x": 32,
         "y": 28,
@@ -547,7 +537,7 @@
       }
     },
     {
-      "at": 1791684521094,
+      "at": 1791686643484,
       "bounds": {
         "x": 1512,
         "y": 360,
@@ -556,7 +546,7 @@
       }
     },
     {
-      "at": 1791684522232,
+      "at": 1791686644626,
       "bounds": {
         "x": 1512,
         "y": 360,
@@ -565,7 +555,7 @@
       }
     },
     {
-      "at": 1791684522341,
+      "at": 1791686644693,
       "bounds": {
         "x": 1512,
         "y": 360,
@@ -574,7 +564,7 @@
       }
     },
     {
-      "at": 1791684522607,
+      "at": 1791686644963,
       "bounds": {
         "x": 285,
         "y": 20,
@@ -583,7 +573,7 @@
       }
     },
     {
-      "at": 1791684523107,
+      "at": 1791686645456,
       "bounds": {
         "x": 1512,
         "y": 360,
@@ -592,7 +582,7 @@
       }
     },
     {
-      "at": 1791684523400,
+      "at": 1791686645715,
       "bounds": {
         "x": 1512,
         "y": 360,
@@ -601,7 +591,7 @@
       }
     },
     {
-      "at": 1791684526257,
+      "at": 1791686648546,
       "bounds": {
         "x": 1104,
         "y": 0,
@@ -610,7 +600,7 @@
       }
     },
     {
-      "at": 1791684526389,
+      "at": 1791686648685,
       "bounds": {
         "x": 1104,
         "y": 0,
@@ -619,7 +609,7 @@
       }
     },
     {
-      "at": 1791684526416,
+      "at": 1791686648708,
       "bounds": {
         "x": 1104,
         "y": 0,
