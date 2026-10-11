@@ -53,7 +53,7 @@ export default function BuddyPanelPreview({
   const [pearlMaterial, setPearlMaterial] = useState(
     () => !embedded && new URLSearchParams(window.location.search).get('material') === 'pearl',
   );
-  const [textureStrength, setTextureStrength] = useState(26);
+  const [textureStrength, setTextureStrength] = useState(40);
   const [previewAsset, setPreviewAsset] = useState(() => sproutReviewAsset(window.location.search));
   const [large, setLarge] = useState(false);
   const [hidden, setHidden] = useState(false);

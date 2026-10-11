@@ -11,7 +11,7 @@ import { createCanvas, loadImage } from '@napi-rs/canvas';
 const workspace = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const tag =
   process.argv.find((value) => value.startsWith('--proof-tag='))?.slice(12) ||
-  'sprout-generated-glass-v001-verification';
+  'sprout-pearl-corners-v002-verification';
 assert.match(tag, /^[a-zA-Z0-9][a-zA-Z0-9-]{0,63}$/);
 const output = path.join(workspace, 'artifacts', tag);
 const base = process.env.INSIGHTOS_PROOF_URL || 'http://127.0.0.1:5173';
@@ -413,7 +413,7 @@ try {
   await ready();
   await expect(wrapper).toHaveClass(/has-pearl-material/);
   const slider = page.getByRole('slider', { name: 'Texture strength', exact: true });
-  await expect(slider).toHaveValue('26');
+  await expect(slider).toHaveValue('40');
   await expect(slider).toHaveAttribute('min', '12');
   await expect(slider).toHaveAttribute('max', '40');
   const setStrength = async (strength) => {
@@ -440,7 +440,7 @@ try {
     delete window.__pearlDraftInput;
   });
   await input.fill('');
-  await setStrength(26);
+  await setStrength(40);
   report.draftPreservation = { materialToggle: true, strengthChange: true, sameMountedInput: true };
   const textureResponse = await context.request.get(`${base}${texturePath}`);
   assert.ok(textureResponse.ok(), 'Generated material asset is served.');
@@ -462,7 +462,7 @@ try {
     await expect(page.locator('.panel-preview-scene')).toHaveClass(
       new RegExp(`background-${background}`),
     );
-    for (const strength of [0, 18, 26, 34]) {
+    for (const strength of [0, 18, 26, 34, 40]) {
       await material
         .getByRole('button', { name: strength ? 'Pearl study' : 'Current', exact: true })
         .click();
@@ -487,7 +487,7 @@ try {
           `${background}: current comparison excludes texture`,
         );
       const name = `${background}-${strength ? `pearl-${strength}` : 'current'}`;
-      const evidence = await captureContrast(page, name, strength === 0 || strength === 26);
+      const evidence = await captureContrast(page, name, strength === 0 || strength === 40);
       report.cases.push({ background, strength, style, ...evidence });
       console.log(
         `${name}: minimum reading contrast ${evidence.minimumReadingContrast.toFixed(2)}:1`,
@@ -495,7 +495,7 @@ try {
     }
   }
 
-  await setStrength(26);
+  await setStrength(40);
   await page.getByRole('button', { name: 'light', exact: true }).click();
   await input.focus();
   await page.keyboard.press('Tab');

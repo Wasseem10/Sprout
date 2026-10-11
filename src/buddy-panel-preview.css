@@ -82,7 +82,14 @@
   background-position: center;
   background-size: 108% 108%;
   background-repeat: no-repeat;
-  opacity: var(--pearl-material-opacity, 0.26);
+  opacity: var(--pearl-material-opacity, 0.4);
+  /* Fade only the baked lower-corner rim where it doubles the live glass edge.
+     Outside these 58px corners the accepted texture, including its center, is intact. */
+  mask-image:
+    radial-gradient(circle at left bottom, transparent 8px, #000 58px),
+    radial-gradient(circle at right bottom, transparent 8px, #000 58px);
+  mask-composite: intersect;
+  mask-repeat: no-repeat;
   box-shadow: none;
 }
 .panel-preview-scene {

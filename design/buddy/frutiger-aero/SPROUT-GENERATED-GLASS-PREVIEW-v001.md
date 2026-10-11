@@ -1,5 +1,7 @@
 # Sprout pearl material preview
 
+This records the initial 26% study. The [40% follow-up and lower-corner correction](SPROUT-PEARL-CORNERS-v002.md) supersede its starting strength; the original evidence below remains historical.
+
 An opt-in study applies the refined generated material behind the actual conversation panel. The production desktop companion keeps its current appearance. The study uses the existing `DesktopBuddy` with local sample messages, live avatar rendering and simulated controls; it owns no microphone, AI session or computer actions.
 
 ## Review
