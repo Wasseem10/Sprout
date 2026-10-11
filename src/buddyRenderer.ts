@@ -10,11 +10,15 @@ import {
   Material,
   Mesh,
   MeshBasicMaterial,
+  MeshPhysicalMaterial,
   MeshStandardMaterial,
+  NeutralToneMapping,
   OrthographicCamera,
   PMREMGenerator,
   PlaneGeometry,
   Scene,
+  Shape,
+  ShapeGeometry,
   Skeleton,
   SkinnedMesh,
   Texture,
@@ -25,10 +29,17 @@ import { GLTFLoader, type GLTF } from 'three/addons/loaders/GLTFLoader.js';
 import type { BuddyVisualState } from './AssistantSignal';
 import type { AudioPresentationRef } from './audioPresentation';
 import { BuddyAudioEnvelope } from './buddyAudioEnvelope';
-import { auditSproutModel, SproutMotionController } from './buddyMotionController';
+import {
+  auditSproutModel,
+  finiteSproutGaze,
+  SproutAttentionController,
+  SproutMotionController,
+} from './buddyMotionController';
 import { observeDesktopVisibility } from './desktopVisibility';
 
 export type BuddyAsset = 'sprout' | 'ribbon';
+export type BuddyReflectionProfile = 'rectangular' | 'tapered';
+export type BuddyToneMapping = 'agx' | 'neutral';
 export type BuddyRendererSettings = {
   phase: BuddyVisualState;
   motion: boolean;
@@ -36,9 +47,18 @@ export type BuddyRendererSettings = {
   reaction?: number;
   blink?: number;
   gaze?: { x: number; y: number } | null;
+  /** Creation-only owned local GLB; shared adapters recreate the renderer on change. */
+  assetUrl?: string;
+  /** Creation-only controlled reflection study; defaults to the delivered cards. */
+  reflectionProfile?: BuddyReflectionProfile;
+  /** Creation-only built-in output study; no shader or material overrides. */
+  toneMapping?: BuddyToneMapping;
 };
 export type BuddyRendererDiagnostics = {
   asset: BuddyAsset;
+  assetUrl: string;
+  reflectionProfile: BuddyReflectionProfile;
+  toneMapping: BuddyToneMapping;
   clips: string[];
   assetIssues: string[];
   vertices: number;
@@ -50,6 +70,24 @@ export type BuddyRendererDiagnostics = {
   renderP95: number;
   drawCalls: number;
   resolution: string;
+  attention: ReturnType<SproutAttentionController['snapshot']> | null;
+  materials: {
+    name: string;
+    type: string;
+    opacity: number;
+    roughness: number;
+    metalness: number;
+    transmission: number;
+    thickness: number;
+    ior: number;
+    attenuationDistance: number | null;
+    attenuationColor: string;
+    clearcoat: number;
+    emissiveColor: string;
+    emissiveIntensity: number;
+    baseColorMap: { colorSpace: string; width: number; height: number } | null;
+    emissiveMap: { colorSpace: string; width: number; height: number } | null;
+  }[];
   startup: {
     assetBytes: number;
     fetchMs: number;
@@ -72,7 +110,11 @@ export type BuddyRenderer = {
 };
 
 /** Broad reflection cards reproduce the authored studio structure without postprocessing. */
-function createEnvironment(renderer: WebGLRenderer, asset: BuddyAsset) {
+function createEnvironment(
+  renderer: WebGLRenderer,
+  asset: BuddyAsset,
+  profile: BuddyReflectionProfile,
+) {
   const studio = new Scene();
   studio.background =
     asset === 'sprout'
@@ -81,9 +123,36 @@ function createEnvironment(renderer: WebGLRenderer, asset: BuddyAsset) {
   const lights =
     asset === 'sprout'
       ? [
-          { position: [-3.5, 3.8, 3], size: [1.45, 3.4], color: [1, 0.95, 0.9], intensity: 6 },
-          { position: [3.2, 1.5, 2], size: [1.3, 2.2], color: [0.75, 0.92, 1], intensity: 0.8 },
-          { position: [1.2, 3, -2], size: [2.8, 0.9], color: [0.84, 1, 0.95], intensity: 6.4 },
+          {
+            position: [-3.5, 3.8, 3],
+            size: [profile === 'tapered' ? 1.55 : 1.45, 3.4],
+            color: [1, 0.95, 0.9],
+            intensity: profile === 'tapered' ? 18 : 6,
+          },
+          {
+            position: [3.2, 1.5, 2],
+            size: profile === 'tapered' ? [1.1, 3.2] : [1.3, 2.2],
+            color: profile === 'tapered' ? [0.95, 1, 1] : [0.75, 0.92, 1],
+            intensity: profile === 'tapered' ? 18 : 0.8,
+          },
+          {
+            position: [1.2, 3, -2],
+            size: [2.8, 0.9],
+            color: [0.84, 1, 0.95],
+            intensity: profile === 'tapered' ? 16 : 6.4,
+          },
+          ...(profile === 'tapered'
+            ? [
+                // Fixed broad curved strips: highlights flow with the body,
+                // rather than moving the environment toward the pointer.
+                {
+                  position: [-0.3, 2.4, 3.4],
+                  size: [4.3, 0.85],
+                  color: [0.95, 1, 1],
+                  intensity: 20,
+                },
+              ]
+            : []),
         ]
       : [
           { position: [-3.2, 3.2, 3.4], size: [2.4, 4], color: [1, 0.95, 0.9], intensity: 6 },
@@ -92,8 +161,23 @@ function createEnvironment(renderer: WebGLRenderer, asset: BuddyAsset) {
           { position: [0, -0.5, 4], size: [6, 6], color: [0.8, 0.9, 0.93], intensity: 1.3 },
         ];
   for (const light of lights) {
+    const tapered = asset === 'sprout' && profile === 'tapered' && light.position[2] > 0;
+    let geometry: PlaneGeometry | ShapeGeometry;
+    if (tapered) {
+      // Original rounded/tapered card profile. The fixed environment turns
+      // its curved edge into a flowing highlight as the character rotates.
+      const shape = new Shape();
+      shape.moveTo(-0.12, -0.5);
+      shape.bezierCurveTo(-0.4, -0.44, -0.5, -0.15, -0.32, 0.08);
+      shape.bezierCurveTo(-0.12, 0.3, -0.1, 0.43, 0, 0.5);
+      shape.bezierCurveTo(0.16, 0.56, 0.34, 0.43, 0.28, 0.29);
+      shape.bezierCurveTo(0.22, 0.15, 0.36, -0.1, 0.4, -0.32);
+      shape.bezierCurveTo(0.42, -0.46, 0.12, -0.55, -0.12, -0.5);
+      geometry = new ShapeGeometry(shape, 16);
+      geometry.scale(light.size[0], light.size[1], 1);
+    } else geometry = new PlaneGeometry(light.size[0], light.size[1]);
     const panel = new Mesh(
-      new PlaneGeometry(light.size[0], light.size[1]),
+      geometry,
       new MeshBasicMaterial({
         color: new Color()
           .setRGB(light.color[0], light.color[1], light.color[2])
@@ -140,19 +224,29 @@ function disposeModel(model: Group) {
   for (const material of materials) material.dispose();
 }
 
-async function loadModel(signal?: AbortSignal): Promise<{
+async function loadModel(
+  signal?: AbortSignal,
+  candidateUrl?: string,
+): Promise<{
   gltf: GLTF;
   asset: BuddyAsset;
+  assetUrl: string;
   issues: string[];
   assetBytes: number;
   fetchMs: number;
   parseMs: number;
 } | null> {
   const issues: string[] = [];
-  for (const [path, asset] of [
-    ['sprout-v002.glb', 'sprout'],
-    ['insight-core-v1.glb', 'ribbon'],
-  ] as const) {
+  const candidates: [string, BuddyAsset][] = [
+    ['/buddy/sprout-v003.glb', 'sprout'],
+    ['/buddy/sprout-v002.glb', 'sprout'],
+    ['/buddy/insight-core-v1.glb', 'ribbon'],
+  ];
+  // Studies may load owned local models, never an arbitrary remote source.
+  if (candidateUrl && /^\/buddy\/[a-z0-9][a-z0-9_.-]*\.glb$/i.test(candidateUrl)) {
+    if (candidateUrl !== candidates[0][0]) candidates.unshift([candidateUrl, 'sprout']);
+  }
+  for (const [path, asset] of candidates) {
     if (signal?.aborted) return null;
     let gltf: GLTF;
     let assetBytes = 0;
@@ -160,7 +254,7 @@ async function loadModel(signal?: AbortSignal): Promise<{
     let parseMs = 0;
     try {
       const fetchStarted = performance.now();
-      const response = await fetch(`/buddy/${path}`, { signal });
+      const response = await fetch(path, { signal });
       if (!response.ok) continue;
       const buffer = await response.arrayBuffer();
       assetBytes = buffer.byteLength;
@@ -184,13 +278,18 @@ async function loadModel(signal?: AbortSignal): Promise<{
         continue;
       }
     }
-    return { gltf, asset, issues, assetBytes, fetchMs, parseMs };
+    return { gltf, asset, assetUrl: path, issues, assetBytes, fetchMs, parseMs };
   }
   return null;
 }
 
 const percentile = (values: number[], fraction: number) =>
   values.length ? [...values].sort((a, b) => a - b)[Math.ceil(values.length * fraction) - 1] : 0;
+const describeTexture = (texture: Texture | null) => {
+  if (!texture) return null;
+  const image = texture.image as { width?: number; height?: number } | undefined;
+  return { colorSpace: texture.colorSpace, width: image?.width ?? 0, height: image?.height ?? 0 };
+};
 
 /** Owns one canvas, scene and animation clock. No voice resources or per-frame React state. */
 export async function createBuddyRenderer(
@@ -203,7 +302,7 @@ export async function createBuddyRenderer(
   const initializationStarted = performance.now();
   const owner = canvas.parentElement;
   // Parse before GPU allocation so detached/Strict Mode instances consume no GPU context.
-  const loaded = await loadModel(signal);
+  const loaded = await loadModel(signal, initial.assetUrl);
   if (!loaded) return null;
   const { gltf, asset, issues } = loaded;
   const model = gltf.scene;
@@ -225,12 +324,15 @@ export async function createBuddyRenderer(
     return null;
   }
   renderer.setClearColor(0x000000, 0);
-  renderer.toneMapping = AgXToneMapping;
+  const toneMapping = initial.toneMapping ?? (asset === 'sprout' ? 'neutral' : 'agx');
+  renderer.toneMapping = toneMapping === 'neutral' ? NeutralToneMapping : AgXToneMapping;
   renderer.toneMappingExposure = 1;
   const scene = new Scene();
+  const reflectionProfile =
+    initial.reflectionProfile ?? (asset === 'sprout' ? 'tapered' : 'rectangular');
   let environmentMap: ReturnType<typeof createEnvironment>;
   try {
-    environmentMap = createEnvironment(renderer, asset);
+    environmentMap = createEnvironment(renderer, asset, reflectionProfile);
   } catch {
     disposeModel(model);
     renderer.dispose();
@@ -259,14 +361,17 @@ export async function createBuddyRenderer(
   const size = bounds.getSize(new Vector3());
   if (asset === 'ribbon') model.position.sub(bounds.getCenter(new Vector3()));
   const mount = new Group();
+  mount.name = 'RUNTIME_ATTENTION_MOUNT';
   mount.add(model);
   if (asset === 'ribbon') mount.scale.setScalar(2 / Math.max(size.x, size.y, size.z, 0.001));
   scene.add(mount);
   const controller =
     asset === 'sprout' ? new SproutMotionController(model, gltf.animations, size.y * 0.02) : null;
+  const attention = controller ? new SproutAttentionController(mount) : null;
   const ribbonMixer = controller ? null : new AnimationMixer(model);
   if (ribbonMixer) for (const clip of gltf.animations) ribbonMixer.clipAction(clip).play();
   const lights: { material: MeshStandardMaterial; intensity: number; color: Color }[] = [];
+  const materials = new Set<MeshStandardMaterial>();
   let vertices = 0;
   let triangles = 0;
   const attributeArrays = new Set<{ byteLength: number }>();
@@ -287,6 +392,7 @@ export async function createBuddyRenderer(
     triangles +=
       (object.geometry.index?.count ?? object.geometry.attributes.position?.count ?? 0) / 3;
     for (const material of Array.isArray(object.material) ? object.material : [object.material]) {
+      if (material instanceof MeshStandardMaterial) materials.add(material);
       if (
         material instanceof MeshStandardMaterial &&
         material.emissiveIntensity > 0 &&
@@ -309,6 +415,8 @@ export async function createBuddyRenderer(
   let elapsed = 0;
   let nextBlink = 4.8;
   let pointer = { x: 0, y: 0 };
+  let attentionFocused = true;
+  const attentionRegion = owner.closest<HTMLElement>('.buddy, .studio-preview') ?? owner;
   let lastReaction = initial.reaction ?? 0;
   let lastBlink = initial.blink ?? 0;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -329,6 +437,9 @@ export async function createBuddyRenderer(
   controller?.setMotion(moving());
   const diagnostics = (): BuddyRendererDiagnostics => ({
     asset,
+    assetUrl: loaded.assetUrl,
+    reflectionProfile,
+    toneMapping,
     clips: gltf.animations.map((clip) => clip.name),
     assetIssues: issues,
     vertices,
@@ -340,6 +451,29 @@ export async function createBuddyRenderer(
     renderP95: percentile(renderCosts, 0.95),
     drawCalls: renderer.info.render.calls,
     resolution: `${canvas.width} × ${canvas.height}`,
+    attention: attention?.snapshot() ?? null,
+    materials: [...materials].map((material) => {
+      const physical = material instanceof MeshPhysicalMaterial ? material : null;
+      return {
+        name: material.name,
+        type: material.type,
+        opacity: material.opacity,
+        roughness: material.roughness,
+        metalness: material.metalness,
+        transmission: physical?.transmission ?? 0,
+        thickness: physical?.thickness ?? 0,
+        ior: physical?.ior ?? 1.5,
+        attenuationDistance: Number.isFinite(physical?.attenuationDistance)
+          ? physical!.attenuationDistance
+          : null,
+        attenuationColor: physical?.attenuationColor.getHexString() ?? 'ffffff',
+        clearcoat: physical?.clearcoat ?? 0,
+        emissiveColor: material.emissive.getHexString(),
+        emissiveIntensity: material.emissiveIntensity,
+        baseColorMap: describeTexture(material.map),
+        emissiveMap: describeTexture(material.emissiveMap),
+      };
+    }),
     startup: {
       assetBytes: loaded.assetBytes,
       fetchMs: loaded.fetchMs,
@@ -384,7 +518,10 @@ export async function createBuddyRenderer(
     );
     for (const light of lights) {
       light.material.emissiveIntensity = light.intensity * (1 + level * 0.35);
-      light.material.emissive.copy(light.color).lerp(glowColor, 0.2);
+      // The inset core's authored blue remains blue. Phase truth stays in
+      // HTML; fresh audio may gently modulate intensity without recoloring it.
+      light.material.emissive.copy(light.color);
+      if (asset === 'ribbon') light.material.emissive.lerp(glowColor, 0.2);
     }
     const started = performance.now();
     renderer.render(scene, camera);
@@ -417,7 +554,9 @@ export async function createBuddyRenderer(
       }
       elapsed += delta;
       if (controller) {
-        const gaze = settings.gaze ?? pointer;
+        const gaze = attentionFocused ? (settings.gaze ?? pointer) : { x: 0, y: 0 };
+        attention?.setTarget(gaze.x, gaze.y);
+        controller.setAttentionCompression(attention?.update(delta) ?? 0);
         controller.setGaze(gaze.x, gaze.y);
         if (elapsed >= nextBlink) {
           controller.react('Sprout_Blink');
@@ -443,6 +582,12 @@ export async function createBuddyRenderer(
     frame = 0;
     lastFrame = lastRenderedAt = 0;
     controller?.setMotion(moving());
+    if (!moving() || !canDraw()) {
+      pointer = { x: 0, y: 0 };
+      attention?.reset();
+      controller?.resetGaze();
+      controller?.setAttentionCompression(0);
+    }
     if (canDraw()) draw();
     if (shouldAnimate()) frame = requestAnimationFrame(tick);
   };
@@ -460,15 +605,28 @@ export async function createBuddyRenderer(
     refresh();
   };
   const move = (event: PointerEvent) => {
+    // Listen across the stable panel, but aim from the avatar's own centre.
+    // An expanded panel may place the avatar far from the panel centre;
+    // only its WebGL mesh rotates, so this DOM basis never follows the turn.
     const rect = owner.getBoundingClientRect();
-    if (!rect.width || !rect.height) return;
-    pointer = {
-      x: ((event.clientX - rect.left) / rect.width - 0.5) * 2,
-      y: (0.5 - (event.clientY - rect.top) / rect.height) * 2,
-    };
+    attentionFocused = true;
+    pointer =
+      rect.width > 0 && rect.height > 0
+        ? finiteSproutGaze(
+            ((event.clientX - rect.left) / rect.width - 0.5) * 2,
+            (0.5 - (event.clientY - rect.top) / rect.height) * 2,
+          )
+        : { x: 0, y: 0 };
   };
   const leave = () => {
     pointer = { x: 0, y: 0 };
+  };
+  const blur = () => {
+    attentionFocused = false;
+    leave();
+  };
+  const focus = () => {
+    attentionFocused = true;
   };
   const lost = (event: Event) => {
     event.preventDefault();
@@ -476,6 +634,9 @@ export async function createBuddyRenderer(
     cancelAnimationFrame(frame);
     frame = 0;
     envelope.reset();
+    attention?.reset();
+    controller?.resetGaze();
+    controller?.setAttentionCompression(0);
     onReady(false);
     reportedReady = false;
   };
@@ -483,7 +644,7 @@ export async function createBuddyRenderer(
     if (disposed) return;
     environmentMap.dispose();
     try {
-      environmentMap = createEnvironment(renderer, asset);
+      environmentMap = createEnvironment(renderer, asset, reflectionProfile);
     } catch {
       return;
     }
@@ -501,8 +662,10 @@ export async function createBuddyRenderer(
   desktopVisibility = observeDesktopVisibility(refresh);
   resizeObserver.observe(owner);
   visibilityObserver.observe(owner);
-  owner.addEventListener('pointermove', move, { passive: true });
-  owner.addEventListener('pointerleave', leave);
+  attentionRegion.addEventListener('pointermove', move, { passive: true });
+  attentionRegion.addEventListener('pointerleave', leave);
+  window.addEventListener('blur', blur);
+  window.addEventListener('focus', focus);
   document.addEventListener('visibilitychange', refresh);
   reducedMotion.addEventListener('change', refresh);
   canvas.addEventListener('webglcontextlost', lost);
@@ -532,8 +695,10 @@ export async function createBuddyRenderer(
       resizeObserver.disconnect();
       visibilityObserver.disconnect();
       desktopVisibility?.dispose();
-      owner.removeEventListener('pointermove', move);
-      owner.removeEventListener('pointerleave', leave);
+      attentionRegion.removeEventListener('pointermove', move);
+      attentionRegion.removeEventListener('pointerleave', leave);
+      window.removeEventListener('blur', blur);
+      window.removeEventListener('focus', focus);
       document.removeEventListener('visibilitychange', refresh);
       reducedMotion.removeEventListener('change', refresh);
       canvas.removeEventListener('webglcontextlost', lost);

@@ -1,5 +1,7 @@
 # Sprout / Prism v002 — delivery guide
 
+This is the preserved v002 guide. The new glossy refinement is documented in [DELIVERY-v003.md](DELIVERY-v003.md), with its own [implementation and verification ledger](GLOSSY-REFINEMENT-AUDIT.md).
+
 Sprout is the original InsightOS jelly buddy selected from the Prism creature study. Its editable Blender master produces the same geometry used in the React/Vite/Three/Electron application. The glossy blue face, cyan crown, rising violet/coral lower streak, unequal buds, glints and smile were refined against actual browser sizes. The material suggests jelly; it is not a physical fluid simulation.
 
 The [acceptance audit](ACCEPTANCE-AUDIT.md) maps the full brief to delivered evidence and identifies the remaining checks.

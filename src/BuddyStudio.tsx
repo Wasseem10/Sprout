@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import {
   ArrowRight,
-  ArrowUp,
   AudioLines,
   Check,
   Circle,
@@ -10,12 +9,12 @@ import {
   Pause,
   Play,
   Sparkles,
-  X,
 } from 'lucide-react';
 import AssistantSignal, { type BuddyVisualState } from './AssistantSignal';
 import type { AudioPresentationSample } from './audioPresentation';
 import type { BuddyRendererDiagnostics } from './buddyRenderer';
 import { SPROUT_REPLAY, SPROUT_REPLAY_DURATION } from './buddyReplay';
+import BuddyPanelPreview from './BuddyPanelPreview';
 import './buddy-studio.css';
 
 const states: {
@@ -59,8 +58,8 @@ const states: {
 export default function BuddyStudio() {
   const [phase, setPhase] = useState<BuddyVisualState>('idle');
   const [expanded, setExpanded] = useState(false);
+  const [panelVisited, setPanelVisited] = useState(false);
   const [motionPaused, setMotionPaused] = useState(false);
-  const [draft, setDraft] = useState('');
   const [size, setSize] = useState(96);
   const [reaction, setReaction] = useState(0);
   const [blink, setBlink] = useState(0);
@@ -79,7 +78,6 @@ export default function BuddyStudio() {
     source: 'simulated',
   });
   const launcher = useRef<HTMLButtonElement>(null);
-  const closeButton = useRef<HTMLButtonElement>(null);
   const hasOpened = useRef(false);
   const current = states.find((state) => state.phase === phase)!;
 
@@ -141,7 +139,6 @@ export default function BuddyStudio() {
   useEffect(() => {
     if (expanded) {
       hasOpened.current = true;
-      closeButton.current?.focus();
     } else if (hasOpened.current) {
       launcher.current?.focus();
     }
@@ -159,7 +156,9 @@ export default function BuddyStudio() {
             Insight<span>OS</span>
           </span>
         </a>
-        <span className="studio-nav-label">Interaction studio</span>
+        <a className="studio-nav-label" href="?studio=panel">
+          Panel & backgrounds
+        </a>
         <a className="studio-back" href="?demo=public">
           Public sample <ArrowRight size={17} aria-hidden="true" />
         </a>
@@ -202,12 +201,13 @@ export default function BuddyStudio() {
               className="studio-launcher"
               type="button"
               aria-expanded={expanded}
-              aria-controls={expanded ? 'studio-conversation' : undefined}
+              aria-controls={panelVisited ? 'buddy-conversation-panel' : undefined}
               aria-label={
                 expanded ? 'Collapse conversation preview' : 'Expand conversation preview'
               }
               style={{ '--studio-signal-size': `${size}px` } as CSSProperties}
               onClick={() => {
+                setPanelVisited(true);
                 setReaction((value) => value + 1);
                 setExpanded(!expanded);
               }}
@@ -227,73 +227,25 @@ export default function BuddyStudio() {
               </span>
             </button>
 
-            {expanded && (
-              <section
-                id="studio-conversation"
-                className="studio-conversation"
-                aria-labelledby="studio-conversation-title"
-                onKeyDown={(event) => {
-                  if (event.key === 'Escape') setExpanded(false);
-                }}
-              >
-                <header className="studio-conversation-header">
-                  <AssistantSignal small phase={phase} motion={!motionPaused} audio={audio} />
-                  <div>
-                    <h3 id="studio-conversation-title">Insight</h3>
-                    <p>Conversation preview</p>
-                  </div>
-                  <button
-                    ref={closeButton}
-                    className="studio-close"
-                    type="button"
-                    aria-label="Close conversation panel"
-                    onClick={() => setExpanded(false)}
-                  >
-                    <X size={19} aria-hidden="true" />
-                  </button>
-                </header>
-                <div className="studio-panel-state">
-                  <current.icon size={16} aria-hidden="true" />
-                  <span>{current.label} preview</span>
-                </div>
-                <div
-                  className="studio-conversation-body"
-                  tabIndex={0}
-                  role="region"
-                  aria-label="Sample conversation"
-                >
-                  <p className="studio-example-label">SAMPLE CONVERSATION</p>
-                  <div className="studio-user-message">
-                    <span>You</span>
-                    <p>Can we take this one step at a time?</p>
-                  </div>
-                  <div className="studio-assistant-message">
-                    <span>Insight</span>
-                    <p>
-                      Of course. You can pause, ask me to repeat a detail, or change direction
-                      whenever you need.
-                    </p>
-                  </div>
-                </div>
-                <form className="studio-composer" onSubmit={(event) => event.preventDefault()}>
-                  <label htmlFor="studio-draft">Preview the message field</label>
-                  <div>
-                    <textarea
-                      id="studio-draft"
-                      value={draft}
-                      onChange={(event) => setDraft(event.target.value)}
-                      placeholder="Type here to try the layout…"
-                      rows={2}
-                      maxLength={400}
-                      aria-describedby="studio-composer-note"
-                    />
-                    <button type="button" disabled aria-label="Send unavailable in visual preview">
-                      <ArrowUp size={19} aria-hidden="true" />
-                    </button>
-                  </div>
-                  <p id="studio-composer-note">Sample text only. Messages are not sent.</p>
-                </form>
-              </section>
+            {panelVisited && (
+              <div className="studio-real-panel" hidden={!expanded}>
+                <BuddyPanelPreview
+                  embedded
+                  expanded={expanded}
+                  onToggle={() => setExpanded(false)}
+                  phase={phase}
+                  onPhaseChange={setPhase}
+                  audio={audio}
+                  visual={{
+                    phase,
+                    motion: !motionPaused,
+                    reaction,
+                    blink,
+                    gaze,
+                    onDiagnostics: setDiagnostics,
+                  }}
+                />
+              </div>
             )}
 
             <div className="studio-preview-status" role="status" aria-live="polite">
@@ -349,7 +301,7 @@ export default function BuddyStudio() {
               <fieldset>
                 <legend>Actual-size comparison</legend>
                 <div className="studio-size-buttons">
-                  {[44, 96, 160].map((value) => (
+                  {[44, 96, 160, 320].map((value) => (
                     <button
                       key={value}
                       type="button"
@@ -360,7 +312,7 @@ export default function BuddyStudio() {
                     </button>
                   ))}
                 </div>
-                <p>44px current pill · 96px pet proposal · 160px expanded review</p>
+                <p>44px compact · 96px desktop · 160px detail · 320px material study</p>
               </fieldset>
               <div className="studio-reaction-buttons">
                 <button type="button" onClick={() => setReaction((value) => value + 1)}>
@@ -411,7 +363,7 @@ export default function BuddyStudio() {
                 <summary>Renderer measurement</summary>
                 {diagnostics ? (
                   <p>
-                    {diagnostics.asset === 'sprout' ? 'Sprout v002' : 'Ribbon v001 fallback'} ·{' '}
+                    {diagnostics.asset === 'sprout' ? 'Sprout' : 'Ribbon fallback'} ·{' '}
                     {diagnostics.vertices.toLocaleString()} vertices · {diagnostics.drawCalls} draw
                     calls · {diagnostics.resolution}
                     <br />

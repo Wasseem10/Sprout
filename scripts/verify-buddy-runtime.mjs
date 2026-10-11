@@ -4,11 +4,17 @@ import { mkdir, mkdtemp, readFile, readdir, unlink, writeFile } from 'node:fs/pr
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { installBuddyRuntimeProbe } from './buddy-runtime-instrumentation.mjs';
+import {
+  proofAssetFile,
+  proofAssetUrl,
+  proofOutputPath,
+  proofLocalDirectory,
+} from './buddy-proof-options.mjs';
 
 // One instrumented, compiled native panel run. No screenshots/video during the
 // timed interaction, no microphone/provider/backend task, no product diagnostics.
-const artifactDir = path.resolve('artifacts/buddy-runtime-native');
-const local = path.resolve('.local/buddy-runtime-native');
+const artifactDir = path.resolve(proofOutputPath('artifacts/buddy-runtime-native'));
+const local = path.resolve(proofLocalDirectory, 'buddy-runtime-native');
 const dist = path.resolve('dist');
 const lifecycleOnly = process.argv.includes('--lifecycle-only');
 await Promise.all([mkdir(artifactDir, { recursive: true }), mkdir(local, { recursive: true })]);
@@ -16,7 +22,57 @@ const rendererChunk = (await readdir(path.join(dist, 'assets'))).find((name) =>
   /^buddyRenderer-.*\.js$/.test(name),
 );
 if (!rendererChunk) throw new Error('Compiled buddyRenderer chunk missing; build before running.');
-const asset = await readFile(path.join(dist, 'buddy/sprout-v002.glb'));
+const asset = await readFile(path.join(dist, 'buddy', proofAssetFile));
+expect(asset.toString('ascii', 0, 4)).toBe('glTF');
+expect(asset.readUInt32LE(16)).toBe(0x4e4f534a);
+const assetDefinition = JSON.parse(
+  asset.subarray(20, 20 + asset.readUInt32LE(12)).toString('utf8'),
+);
+const hasTransmission = assetDefinition.materials.some(
+  (material) => (material.extensions?.KHR_materials_transmission?.transmissionFactor ?? 0) > 0,
+);
+// This is a narrow classification of the installed implementation, not an
+// allowance for arbitrary renderer leftovers or a physical-VRAM assertion.
+const threeSourceEvidence = [
+  {
+    path: 'src/renderers/WebGLRenderer.js',
+    sha256: '9e8740aad691246b31b3704014e8f3bbd38a8e7bf4b1b4d23868541b023cc63a',
+    mechanism:
+      'Lines459–461 create scratch/src/dst FBOs;1094 calls renderStates.dispose;2012–2044 create and size the per-camera multisampled transmission target.',
+  },
+  {
+    path: 'src/renderers/webgl/WebGLRenderStates.js',
+    sha256: '04bebc4f2eab3c34e2583e183aa5fa2a51d7afcfb5465b51eb98889d95dbcc7b',
+    mechanism:
+      'Lines110–113 replace the render-state WeakMap without disposing its cached transmission target.',
+  },
+  {
+    path: 'src/renderers/webgl/WebGLTextures.js',
+    sha256: 'a1947fd09ac98b3a57e40018dc8eccfce9c40f2cf4b6200b3180a00af5406451',
+    mechanism:
+      'Lines1974/2082/2106–2133 create the depth buffer, resolve/multisample FBOs and colour/depth RBOs;409–464 delete them only upon target disposal.',
+  },
+  {
+    path: 'src/renderers/webgl/WebGLState.js',
+    sha256: 'fd6adb6c01d75a148ef6ebc8ea948a38acc1a48d3cfdbbb1d12dbde668092431',
+    mechanism: 'emptyTextures contains four internal1×1 fallback texture handles.',
+  },
+  {
+    path: 'src/renderers/shaders/DFGLUTData.js',
+    sha256: '280b75b70d9d55c39d4121d5244c22ee445d27cc05ed6b134c3a5bde6b81b3da',
+    mechanism:
+      'getDFGLUT supplies the shared16×16 RG16F lookup texture; its exact upload prefix is asserted below.',
+  },
+];
+expect(JSON.parse(await readFile('node_modules/three/package.json', 'utf8')).version).toBe(
+  '0.186.1',
+);
+await Promise.all(
+  threeSourceEvidence.map(async (source) => {
+    const bytes = await readFile(path.join('node_modules/three', source.path));
+    expect(createHash('sha256').update(bytes).digest('hex')).toBe(source.sha256);
+  }),
+);
 const previousBytes = lifecycleOnly ? await readFile(path.join(artifactDir, 'report.json')) : null;
 const previous = previousBytes ? JSON.parse(previousBytes.toString('utf8')) : null;
 if (
@@ -54,6 +110,7 @@ let report = {
   checkedAt: new Date().toISOString(),
   pass: false,
   asset: {
+    url: proofAssetUrl,
     bytes: asset.length,
     sha256: createHash('sha256').update(asset).digest('hex'),
     binaryHeader: asset.toString('ascii', 0, 4),
@@ -90,7 +147,7 @@ if (previous) {
       checkedAt: new Date().toISOString(),
       sourceReportSha256: createHash('sha256').update(previousBytes).digest('hex'),
       previousAssertion:
-        'The initial followup incorrectly expected every texture counter to become zero; the Three shared DFG LUT and fallback textures require classified lost-context reporting.',
+        'The earlier v002 disposal assertion did not include the v003 transmission target. This followup classifies only exact pinned Three-owned signatures while keeping owned-resource and lost-context checks strict.',
     },
   };
 }
@@ -135,7 +192,7 @@ async function summarizeTrace(filename) {
   ].join('\n');
   await writeFile(path.join(artifactDir, 'presentation-feedback.csv'), `${feedbackCsv}\n`);
   return {
-    localTrace: '.local/buddy-runtime-native/chromium-trace.json',
+    localTrace: path.relative(process.cwd(), path.join(local, 'chromium-trace.json')),
     traceBytes: bytes.length,
     traceSha256: createHash('sha256').update(bytes).digest('hex'),
     events: events.length,
@@ -147,7 +204,7 @@ async function summarizeTrace(filename) {
       .map(([name, count]) => ({ name, count })),
     presentationFeedback: {
       event: 'AnimationFrame::Presentation',
-      samplesFile: 'artifacts/buddy-runtime-native/presentation-feedback.csv',
+      samplesFile: proofOutputPath('artifacts/buddy-runtime-native/presentation-feedback.csv'),
       rendererPid: start?.pid,
       fullTimedWindowRetained: Boolean(start && end),
       eventCount: feedback.length,
@@ -203,6 +260,7 @@ try {
   await page.goto('about:blank');
   const errors = [];
   const apiCalls = [];
+  const servedAvatarAssets = [];
   const empty = { folder: null, code: null, browser: null, screen: null };
   let requestCount = 0;
   page.on('pageerror', (error) => errors.push(error.message));
@@ -271,9 +329,15 @@ try {
       '.woff2': 'font/woff2',
     };
     try {
+      const bytes = await readFile(filename);
+      if (pathname.endsWith('.glb'))
+        servedAvatarAssets.push({
+          url: pathname,
+          sha256: createHash('sha256').update(bytes).digest('hex'),
+        });
       return route.fulfill({
         contentType: mime[path.extname(filename)] ?? 'application/octet-stream',
-        body: await readFile(filename),
+        body: bytes,
       });
     } catch {
       return route.fulfill({ status: 404, body: 'Artifact missing' });
@@ -293,6 +357,8 @@ try {
     'webgl',
   );
   const pet = page.locator('.buddy-face');
+  expect(servedAvatarAssets).toContainEqual({ url: proofAssetUrl, sha256: report.asset.sha256 });
+  report.asset.served = servedAvatarAssets;
   const composer = page.getByRole('textbox', { name: 'Tell your buddy what to do' });
   const close = page.getByRole('button', { name: 'Collapse conversation', exact: true });
   const buddy = page.locator('.buddy');
@@ -425,6 +491,25 @@ try {
   } else {
     measurement = report.interaction;
   }
+  // The retained timed run already exercised five native open/close cycles.
+  // Reassert its exact counters even when this followup reruns only lifecycle.
+  expect(report.interaction.repetitions).toBe(5);
+  const stableNativeBefore = report.interaction.before.contexts.find(
+    (context) => context.label === 'native-pet' && !context.contextLost,
+  );
+  const stableNativeAfter = report.interaction.after.contexts.find(
+    (context) => context.id === stableNativeBefore?.id,
+  );
+  expect(stableNativeBefore).toBeTruthy();
+  expect(stableNativeAfter.resources).toEqual(stableNativeBefore.resources);
+  report.resourceStability = {
+    scope:
+      'The original timed native five-cycle panel run, retained unchanged by lifecycle-only followup; no create/dispose-cycle or total-VRAM claim.',
+    repetitions: report.interaction.repetitions,
+    before: stableNativeBefore.resources,
+    after: stableNativeAfter.resources,
+    exactEquality: true,
+  };
 
   // A second owner isolates IntersectionObserver and disposal without unmounting
   // the native panel or adding any product-only diagnostics.
@@ -582,6 +667,7 @@ try {
   const disposedDiagnostics = await page.evaluate(() =>
     window.__runtimeLifecycle.renderer.diagnostics(),
   );
+  expect(disposedDiagnostics.assetUrl).toBe(proofAssetUrl);
   Object.assign(report.lifecycle, {
     disposedStart,
     disposedEnd,
@@ -597,31 +683,76 @@ try {
   // than include an old hidden/offscreen timestamp in the resumed delta.
   expect(disposedDiagnostics.intervalMax).toBeLessThan(450);
   expect(disposedDiagnostics.memory.geometries).toBe(0);
-  expect(disposedDiagnostics.memory.textures).toBe(1);
+  expect(disposedDiagnostics.memory.textures).toBe(hasTransmission ? 2 : 1);
   const textureSignatures = ownerRecord(disposedEnd).unmatchedTextureSignatures;
   const lut = textureSignatures.filter(
     (texture) =>
       texture.storage?.width === 16 &&
       texture.storage?.height === 16 &&
       texture.storage?.internalFormat === 33327 &&
+      texture.storage?.target === 3553 &&
       texture.upload?.elements === 512 &&
-      JSON.stringify(texture.upload.firstValues.slice(0, 4)) ===
-        JSON.stringify([0x30b5, 0x3ad1, 0x314c, 0x3a4d]),
+      texture.upload?.bytes === 1024 &&
+      JSON.stringify(texture.upload.firstValues) ===
+        JSON.stringify([12469, 15057, 12620, 14925, 13266, 14620, 13807, 14376]),
   );
   expect(lut).toHaveLength(1);
-  expect(textureSignatures).toHaveLength(5);
-  expect(ownerRecord(disposedEnd).unmatchedFramebufferCreationOrders).toEqual([0, 1, 2]);
-  expect(
-    textureSignatures.filter(
-      (texture) => texture.storage?.width === 1 && texture.storage?.height === 1,
-    ),
-  ).toHaveLength(4);
+  const transmission = textureSignatures.filter(
+    (texture) => texture.storage?.internalFormat === 34842,
+  );
+  expect(transmission).toHaveLength(hasTransmission ? 1 : 0);
+  if (hasTransmission)
+    expect(transmission[0].storage).toEqual({
+      target: 3553,
+      internalFormat: 34842,
+      width: 96,
+      height: 96,
+    });
+  expect(textureSignatures).toHaveLength(hasTransmission ? 6 : 5);
+  expect(ownerRecord(disposedEnd).unmatchedFramebufferCreationOrders).toEqual(
+    hasTransmission ? [0, 1, 2, 5, 6] : [0, 1, 2],
+  );
+  const fallbackTextures = textureSignatures
+    .filter((texture) => texture.storage?.width === 1 && texture.storage?.height === 1)
+    .map((texture) => texture.storage)
+    .sort((a, b) => a.target - b.target);
+  expect(fallbackTextures).toEqual([
+    { target: 3553, internalFormat: 6408, width: 1, height: 1 },
+    { target: 32879, internalFormat: 6408, width: 1, height: 1, depth: 1 },
+    { target: 34067, internalFormat: 6408, width: 1, height: 1 },
+    { target: 35866, internalFormat: 6408, width: 1, height: 1, depth: 1 },
+  ]);
+  const expectedUnmatchedResources = {
+    Texture: hasTransmission ? 6 : 5,
+    Framebuffer: hasTransmission ? 5 : 3,
+    Renderbuffer: hasTransmission ? 3 : 0,
+    Buffer: 0,
+    Program: 0,
+    Shader: 0,
+    VertexArray: 0,
+  };
+  expect(Object.keys(ownerRecord(disposedEnd).resources).sort()).toEqual(
+    Object.keys(expectedUnmatchedResources).sort(),
+  );
   for (const [kind, count] of Object.entries(ownerRecord(disposedEnd).resources)) {
-    // Three0.186.1 creates four internal fallback texture handles in WebGLState.
-    // Renderer.dispose does not explicitly delete them; forceContextLoss makes
-    // the context/handles unusable. This count is not a driver allocation leak.
-    expect(count.live).toBe(kind === 'Texture' ? 5 : kind === 'Framebuffer' ? 3 : 0);
+    expect(count.live).toBe(expectedUnmatchedResources[kind]);
+    expect(count.created - count.deleted).toBe(count.live);
   }
+  // Exact residual signatures above exclude every owned model map, bone/morph
+  // texture and PMREM target. Record their active signatures and explicit deletes.
+  const explicitlyDisposedTextures = ownerRecord(ownerActive).unmatchedTextureSignatures.filter(
+    (texture) =>
+      !textureSignatures.some((residual) => JSON.stringify(texture) === JSON.stringify(residual)),
+  );
+  expect(explicitlyDisposedTextures).toHaveLength(hasTransmission ? 5 : 3);
+  expect(
+    ownerRecord(disposedEnd).resources.Texture.deleted -
+      ownerRecord(ownerActive).resources.Texture.deleted,
+  ).toBe(explicitlyDisposedTextures.length);
+  if (hasTransmission)
+    expect(explicitlyDisposedTextures).toContainEqual({
+      storage: { target: 3553, levels: 8, internalFormat: 35907, width: 128, height: 64 },
+    });
   report.lifecycle = {
     ...report.lifecycle,
     ownerId,
@@ -644,17 +775,17 @@ try {
       minimizedVisibility,
       restoredVisibility,
     },
-    disposedHandleNote:
-      'One shared DFG_LUT16×16 RG16F texture (1024CPUbytes, exact upload signature matched), four internal1×1 fallback textures and the three constructor scratch/src/dst framebuffers remain unmatched by explicit delete calls in Three0.186.1. Actual forced context loss invalidates their context. Scene geometry/bone/morph/environment resources and other counted handles are explicitly disposed; Three info.memory.textures retains1 for its shared LUT. Physical VRAM reclamation is unmeasured.',
+    disposedHandleNote: `Pinned Three0.186.1 leaves one shared DFG_LUT16×16 RG16F texture, four internal1×1 fallback textures and three constructor scratch/src/dst FBOs unmatched by explicit delete calls.${hasTransmission ? ' Its per-camera96×96RGBA16F transmission target also remains unmatched, with two resolve/multisample FBOs and three colour/depth RBOs: WebGLRenderStates.dispose only replaces its WeakMap.' : ''} The actual forced context loss makes all these context handles unusable. Exact signatures/counts are asserted; geometry, model map/bone/morph/PMREM textures, buffers, programs, shaders and VAOs are explicitly disposed. Three info.memory.textures retains${hasTransmission ? 2 : 1} internal cached entries. The five original panel cycles show no handle growth. Driver VRAM reclamation and GC are unmeasured.`,
     disposedTextureClassification: {
       signatures: textureSignatures,
       dfgLutMatched: true,
-      expectedUnmatchedHandles: 5,
-      primaryInstalledSource: [
-        'node_modules/three/src/renderers/shaders/DFGLUTData.js:getDFGLUT',
-        'node_modules/three/src/renderers/WebGLRenderer.js:PBR dfgLUT uniform and dispose',
-        'node_modules/three/src/renderers/webgl/WebGLState.js:emptyTextures',
-      ],
+      expectedUnmatchedHandles: hasTransmission ? 6 : 5,
+      installedThreeVersion: '0.186.1',
+      pinnedInstalledSource: threeSourceEvidence,
+      transmission: { presentInActualGlb: hasTransmission, matched: transmission },
+      expectedUnmatchedResources,
+      explicitlyDisposedTextures,
+      ownedModelTexturesExplicitlyDeleted: true,
       unmatchedFramebufferCreationOrders:
         ownerRecord(disposedEnd).unmatchedFramebufferCreationOrders,
       framebufferSource:
@@ -719,8 +850,8 @@ try {
   report.lifecycle = {
     ownerId,
     nativeVisibilitySnapshots: report.lifecycle.nativeVisibilitySnapshots,
-    countsFile: 'artifacts/buddy-runtime-native/lifecycle-counts.csv',
-    localFullSnapshots: '.local/buddy-runtime-native/lifecycle-snapshots.json',
+    countsFile: proofOutputPath('artifacts/buddy-runtime-native/lifecycle-counts.csv'),
+    localFullSnapshots: path.relative(process.cwd(), path.join(local, 'lifecycle-snapshots.json')),
     offscreen: {
       suspension: counterDelta(offscreenStart, offscreenEnd),
       restore: counterDelta(offscreenEnd, restoredOwner),

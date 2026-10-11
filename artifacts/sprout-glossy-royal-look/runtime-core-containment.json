@@ -1,0 +1,1575 @@
+{
+  "checkedAt": "2026-10-11T04:03:05.278Z",
+  "scope": "CPU actual exported skinned/morphed core vertex containment against the posed shell surface using the actual motion controller, including paired additive weights and BODY/FACE compensation. Sampled states and vertices, not a continuous swept-volume proof or material/render/performance acceptance.",
+  "instrumentation": "GLTFLoader texture plugin returns empty Texture placeholders; image pixels are deliberately unverified here. Public controller setters and mixer update are exercised. Configured compression1 is a conservative manual stress input, not a claim that ordinary pointer motion reaches it. The outer attention mount is settled at right/up10/-6 degrees.",
+  "asset": {
+    "key": "C",
+    "name": "glass + blue core",
+    "filename": "sprout-core-royal-v003.glb",
+    "url": "/buddy/sprout-core-royal-v003.glb",
+    "sha256": "2074926a313bbb0ce680b3156402e35b5dfa79dc2ebacc3874c906704d51ffde",
+    "bytes": 1401164
+  },
+  "sourceHashes": {
+    "controller": "0c78b5fb0b8bcf40248df9fb41fda01cf35bc4c71757f738db6e6814c689eb1b"
+  },
+  "coreVertices": 639,
+  "shellVertices": 7644,
+  "shellTriangles": 15052,
+  "states": [
+    {
+      "phase": "idle",
+      "seconds": 0,
+      "compression": 0.2962962962962963,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12033308340507805,
+      "eyeScaleRelativeError": 6.477782132918719e-8,
+      "snapshot": {
+        "phase": "idle",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0,
+          "y": 0
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "idle",
+      "seconds": 0,
+      "compression": 1,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12167312573558198,
+      "eyeScaleRelativeError": 2.21762674890158e-9,
+      "snapshot": {
+        "phase": "idle",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0,
+          "y": 0
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "idle",
+      "seconds": 0.75,
+      "compression": 0.2962962962962963,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12001285095551585,
+      "eyeScaleRelativeError": 0.00009124884117950316,
+      "snapshot": {
+        "phase": "idle",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0.7499999999999998,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9998765901959132,
+          "y": 0.9998765901959132
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "idle",
+      "seconds": 0.75,
+      "compression": 1,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12139891414559177,
+      "eyeScaleRelativeError": 0.00029658559366563253,
+      "snapshot": {
+        "phase": "idle",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0.7499999999999998,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9998765901959132,
+          "y": 0.9998765901959132
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "idle",
+      "seconds": 1.5,
+      "compression": 0.2962962962962963,
+      "outsideVertices": 0,
+      "minimumClearance": 0.11969025664653643,
+      "eyeScaleRelativeError": 0.00012934014734544697,
+      "snapshot": {
+        "phase": "idle",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 1.4999999999999971,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999847700202,
+          "y": 0.9999999847700202
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "idle",
+      "seconds": 1.5,
+      "compression": 1,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12108926087589594,
+      "eyeScaleRelativeError": 0.00042042746765069694,
+      "snapshot": {
+        "phase": "idle",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 1.4999999999999971,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999847700202,
+          "y": 0.9999999847700202
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "idle",
+      "seconds": 3,
+      "compression": 0.2962962962962963,
+      "outsideVertices": 0,
+      "minimumClearance": 0.11978079821411697,
+      "eyeScaleRelativeError": 6.477782132918719e-8,
+      "snapshot": {
+        "phase": "idle",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 2.999999999999992,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999999999994,
+          "y": 0.9999999999999994
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "idle",
+      "seconds": 3,
+      "compression": 1,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12110303078897594,
+      "eyeScaleRelativeError": 2.21762674890158e-9,
+      "snapshot": {
+        "phase": "idle",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 2.999999999999992,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999999999994,
+          "y": 0.9999999999999994
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "idle",
+      "seconds": 5.99,
+      "compression": 0.2962962962962963,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12033615483439644,
+      "eyeScaleRelativeError": 0.0000013062061813284842,
+      "snapshot": {
+        "phase": "idle",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 5.99,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999999999994,
+          "y": 0.9999999999999994
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "idle",
+      "seconds": 5.99,
+      "compression": 1,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12167547072198677,
+      "eyeScaleRelativeError": 0.000004327965507533449,
+      "snapshot": {
+        "phase": "idle",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 5.99,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999999999994,
+          "y": 0.9999999999999994
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "listening",
+      "seconds": 0,
+      "compression": 0.2962962962962963,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12033308340507805,
+      "eyeScaleRelativeError": 6.477782132918719e-8,
+      "snapshot": {
+        "phase": "listening",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0,
+          "y": 0
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "listening",
+      "seconds": 0,
+      "compression": 1,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12167312573558198,
+      "eyeScaleRelativeError": 2.21762674890158e-9,
+      "snapshot": {
+        "phase": "listening",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0,
+          "y": 0
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "listening",
+      "seconds": 0.75,
+      "compression": 0.2962962962962963,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12101062413496722,
+      "eyeScaleRelativeError": 0.00009124884117950316,
+      "snapshot": {
+        "phase": "listening",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 1,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0.7499999999999998,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9998765901959132,
+          "y": 0.9998765901959132
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "listening",
+      "seconds": 0.75,
+      "compression": 1,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12244223958515914,
+      "eyeScaleRelativeError": 0.00029658559366563253,
+      "snapshot": {
+        "phase": "listening",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 1,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0.7499999999999998,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9998765901959132,
+          "y": 0.9998765901959132
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "listening",
+      "seconds": 1.5,
+      "compression": 0.2962962962962963,
+      "outsideVertices": 0,
+      "minimumClearance": 0.1206167862996053,
+      "eyeScaleRelativeError": 0.00012934014734544697,
+      "snapshot": {
+        "phase": "listening",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 1,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 1.4999999999999971,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999847700202,
+          "y": 0.9999999847700202
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "listening",
+      "seconds": 1.5,
+      "compression": 1,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12206137348720854,
+      "eyeScaleRelativeError": 0.00042042746765069694,
+      "snapshot": {
+        "phase": "listening",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 1,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 1.4999999999999971,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999847700202,
+          "y": 0.9999999847700202
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "listening",
+      "seconds": 3,
+      "compression": 0.2962962962962963,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12062253669980903,
+      "eyeScaleRelativeError": 6.47778215512318e-8,
+      "snapshot": {
+        "phase": "listening",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 1,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 2.999999999999992,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999999999994,
+          "y": 0.9999999999999994
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "listening",
+      "seconds": 3,
+      "compression": 1,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12198748685290119,
+      "eyeScaleRelativeError": 2.21762674890158e-9,
+      "snapshot": {
+        "phase": "listening",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 1,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 2.999999999999992,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999999999994,
+          "y": 0.9999999999999994
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "listening",
+      "seconds": 5.99,
+      "compression": 0.2962962962962963,
+      "outsideVertices": 0,
+      "minimumClearance": 0.1213761729066235,
+      "eyeScaleRelativeError": 0.0000013062061811064396,
+      "snapshot": {
+        "phase": "listening",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 1,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 5.99,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999999999994,
+          "y": 0.9999999999999994
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "listening",
+      "seconds": 5.99,
+      "compression": 1,
+      "outsideVertices": 0,
+      "minimumClearance": 0.1227596852185508,
+      "eyeScaleRelativeError": 0.000004327965506867315,
+      "snapshot": {
+        "phase": "listening",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 1,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 5.99,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999999999994,
+          "y": 0.9999999999999994
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "thinking",
+      "seconds": 0,
+      "compression": 0.2962962962962963,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12033308340507805,
+      "eyeScaleRelativeError": 6.477782132918719e-8,
+      "snapshot": {
+        "phase": "thinking",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0,
+          "y": 0
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "thinking",
+      "seconds": 0,
+      "compression": 1,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12167312573558198,
+      "eyeScaleRelativeError": 2.21762674890158e-9,
+      "snapshot": {
+        "phase": "thinking",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0,
+          "y": 0
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "thinking",
+      "seconds": 0.75,
+      "compression": 0.2962962962962963,
+      "outsideVertices": 0,
+      "minimumClearance": 0.1195074849841327,
+      "eyeScaleRelativeError": 0.00009124787451453287,
+      "snapshot": {
+        "phase": "thinking",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 1,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0.7499999999999998,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9998765901959132,
+          "y": 0.9998765901959132
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "thinking",
+      "seconds": 0.75,
+      "compression": 1,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12086803936002818,
+      "eyeScaleRelativeError": 0.0002965824508585069,
+      "snapshot": {
+        "phase": "thinking",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 1,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0.7499999999999998,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9998765901959132,
+          "y": 0.9998765901959132
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "thinking",
+      "seconds": 1.5,
+      "compression": 0.2962962962962963,
+      "outsideVertices": 0,
+      "minimumClearance": 0.11907968616253277,
+      "eyeScaleRelativeError": 0.00012934014734522492,
+      "snapshot": {
+        "phase": "thinking",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 1,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 1.4999999999999971,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999847700202,
+          "y": 0.9999999847700202
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "thinking",
+      "seconds": 1.5,
+      "compression": 1,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12041376235120034,
+      "eyeScaleRelativeError": 0.000420427467650919,
+      "snapshot": {
+        "phase": "thinking",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 1,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 1.4999999999999971,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999847700202,
+          "y": 0.9999999847700202
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "thinking",
+      "seconds": 3,
+      "compression": 0.2962962962962963,
+      "outsideVertices": 0,
+      "minimumClearance": 0.11925597525233371,
+      "eyeScaleRelativeError": 6.47778215512318e-8,
+      "snapshot": {
+        "phase": "thinking",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 1,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 2.999999999999992,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999999999994,
+          "y": 0.9999999999999994
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "thinking",
+      "seconds": 3,
+      "compression": 1,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12055280643824662,
+      "eyeScaleRelativeError": 2.217626970946185e-9,
+      "snapshot": {
+        "phase": "thinking",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 1,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 2.999999999999992,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999999999994,
+          "y": 0.9999999999999994
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "thinking",
+      "seconds": 5.99,
+      "compression": 0.2962962962962963,
+      "outsideVertices": 0,
+      "minimumClearance": 0.11982630157367093,
+      "eyeScaleRelativeError": 0.0000013062061813284842,
+      "snapshot": {
+        "phase": "thinking",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 1,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 5.99,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999999999994,
+          "y": 0.9999999999999994
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "thinking",
+      "seconds": 5.99,
+      "compression": 1,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12114067254397301,
+      "eyeScaleRelativeError": 0.00000432796550708936,
+      "snapshot": {
+        "phase": "thinking",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 1,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 5.99,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999999999994,
+          "y": 0.9999999999999994
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "speaking",
+      "seconds": 0,
+      "compression": 0.2962962962962963,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12033308340507805,
+      "eyeScaleRelativeError": 6.477782132918719e-8,
+      "snapshot": {
+        "phase": "speaking",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0,
+          "y": 0
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "speaking",
+      "seconds": 0,
+      "compression": 1,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12167312573558198,
+      "eyeScaleRelativeError": 2.21762674890158e-9,
+      "snapshot": {
+        "phase": "speaking",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0,
+          "y": 0
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "speaking",
+      "seconds": 0.75,
+      "compression": 0.2962962962962963,
+      "outsideVertices": 0,
+      "minimumClearance": 0.11971406301222484,
+      "eyeScaleRelativeError": 0.0002211078753602269,
+      "snapshot": {
+        "phase": "speaking",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 1
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0.7499999999999998
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9998765901959132,
+          "y": 0.9998765901959132
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "speaking",
+      "seconds": 0.75,
+      "compression": 1,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12118127152886543,
+      "eyeScaleRelativeError": 0.0007187813061673154,
+      "snapshot": {
+        "phase": "speaking",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 1
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0.7499999999999998
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9998765901959132,
+          "y": 0.9998765901959132
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "speaking",
+      "seconds": 1.5,
+      "compression": 0.2962962962962963,
+      "outsideVertices": 0,
+      "minimumClearance": 0.11978936367133912,
+      "eyeScaleRelativeError": 6.47778217732764e-8,
+      "snapshot": {
+        "phase": "speaking",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 1
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 1.4999999999999971
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999847700202,
+          "y": 0.9999999847700202
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "speaking",
+      "seconds": 1.5,
+      "compression": 1,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12110442384038524,
+      "eyeScaleRelativeError": 2.21762674890158e-9,
+      "snapshot": {
+        "phase": "speaking",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 1
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 1.4999999999999971
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999847700202,
+          "y": 0.9999999847700202
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "speaking",
+      "seconds": 3,
+      "compression": 0.2962962962962963,
+      "outsideVertices": 0,
+      "minimumClearance": 0.1205802719168257,
+      "eyeScaleRelativeError": 6.47778215512318e-8,
+      "snapshot": {
+        "phase": "speaking",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 1
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 2.999999999999992
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999999999994,
+          "y": 0.9999999999999994
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "speaking",
+      "seconds": 3,
+      "compression": 1,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12191345645126019,
+      "eyeScaleRelativeError": 2.217626970946185e-9,
+      "snapshot": {
+        "phase": "speaking",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 1
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 2.999999999999992
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999999999994,
+          "y": 0.9999999999999994
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "speaking",
+      "seconds": 5.99,
+      "compression": 0.2962962962962963,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12070684258377884,
+      "eyeScaleRelativeError": 0.000004383426555509828,
+      "snapshot": {
+        "phase": "speaking",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 1
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 5.99
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999999999994,
+          "y": 0.9999999999999994
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "speaking",
+      "seconds": 5.99,
+      "compression": 1,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12204907187883687,
+      "eyeScaleRelativeError": 0.000014332577482067954,
+      "snapshot": {
+        "phase": "speaking",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 1
+        },
+        "times": {
+          "Sprout_Idle": 0,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 5.99
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9999999999999994,
+          "y": 0.9999999999999994
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "idle",
+      "seconds": 0.08,
+      "compression": 0.2962962962962963,
+      "click": true,
+      "blink": true,
+      "outsideVertices": 0,
+      "minimumClearance": 0.11752442381304787,
+      "eyeScaleRelativeError": 0.000010702763631575962,
+      "snapshot": {
+        "phase": "idle",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0.08000000000000002,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": true,
+        "blinkActive": true,
+        "generation": 1,
+        "gaze": {
+          "x": 0.6171071140248883,
+          "y": 0.6171071140248883
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "idle",
+      "seconds": 0.08,
+      "compression": 1,
+      "click": true,
+      "blink": true,
+      "outsideVertices": 0,
+      "minimumClearance": 0.1188463874957655,
+      "eyeScaleRelativeError": 0.000034715414095831676,
+      "snapshot": {
+        "phase": "idle",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0.08000000000000002,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": true,
+        "blinkActive": true,
+        "generation": 1,
+        "gaze": {
+          "x": 0.6171071140248883,
+          "y": 0.6171071140248883
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "idle",
+      "seconds": 0.16,
+      "compression": 0.2962962962962963,
+      "click": true,
+      "blink": true,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12168542650952205,
+      "eyeScaleRelativeError": 0.000021398644165726566,
+      "snapshot": {
+        "phase": "idle",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0.16000000000000003,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": true,
+        "blinkActive": true,
+        "generation": 1,
+        "gaze": {
+          "x": 0.8533930378696502,
+          "y": 0.8533930378696502
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "idle",
+      "seconds": 0.16,
+      "compression": 1,
+      "click": true,
+      "blink": true,
+      "outsideVertices": 0,
+      "minimumClearance": 0.1232057716446489,
+      "eyeScaleRelativeError": 0.00006948969785236514,
+      "snapshot": {
+        "phase": "idle",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0.16000000000000003,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": true,
+        "blinkActive": true,
+        "generation": 1,
+        "gaze": {
+          "x": 0.8533930378696502,
+          "y": 0.8533930378696502
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "idle",
+      "seconds": 0.3,
+      "compression": 0.2962962962962963,
+      "click": true,
+      "blink": true,
+      "outsideVertices": 0,
+      "minimumClearance": 0.11974723032762002,
+      "eyeScaleRelativeError": 0.000039771150531109356,
+      "snapshot": {
+        "phase": "idle",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0.3,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": true,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9726762775527075,
+          "y": 0.9726762775527075
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "idle",
+      "seconds": 0.3,
+      "compression": 1,
+      "click": true,
+      "blink": true,
+      "outsideVertices": 0,
+      "minimumClearance": 0.121046087233774,
+      "eyeScaleRelativeError": 0.00012922211049759547,
+      "snapshot": {
+        "phase": "idle",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0.3,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": true,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9726762775527075,
+          "y": 0.9726762775527075
+        },
+        "attentionCompression": 1
+      }
+    },
+    {
+      "phase": "idle",
+      "seconds": 0.55,
+      "compression": 0.2962962962962963,
+      "click": true,
+      "blink": true,
+      "outsideVertices": 0,
+      "minimumClearance": 0.1201094635502646,
+      "eyeScaleRelativeError": 0.00007018221434407224,
+      "snapshot": {
+        "phase": "idle",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0.55,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9986396319624521,
+          "y": 0.9986396319624521
+        },
+        "attentionCompression": 0.2962962962962963
+      }
+    },
+    {
+      "phase": "idle",
+      "seconds": 0.55,
+      "compression": 1,
+      "click": true,
+      "blink": true,
+      "outsideVertices": 0,
+      "minimumClearance": 0.12148566888037095,
+      "eyeScaleRelativeError": 0.0002280940976135959,
+      "snapshot": {
+        "phase": "idle",
+        "moving": true,
+        "weights": {
+          "Sprout_Idle": 1,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "times": {
+          "Sprout_Idle": 0.55,
+          "Sprout_Listen": 0,
+          "Sprout_Think": 0,
+          "Sprout_Speak": 0
+        },
+        "clickActive": false,
+        "blinkActive": false,
+        "generation": 1,
+        "gaze": {
+          "x": 0.9986396319624521,
+          "y": 0.9986396319624521
+        },
+        "attentionCompression": 1
+      }
+    }
+  ],
+  "pass": true,
+  "minimumClearance": 0.11752442381304787
+}

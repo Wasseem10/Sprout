@@ -1,4 +1,12 @@
-import { useLayoutEffect, useRef, useState, type RefObject } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ComponentProps,
+  type RefObject,
+} from 'react';
 import {
   ArrowUp,
   ChevronUp,
@@ -7,10 +15,10 @@ import {
   FolderOpen,
   Globe,
   Maximize2,
+  Mic,
   Minus,
   Pause,
   PauseCircle,
-  Play,
   Presentation,
   Settings2,
   Square,
@@ -25,8 +33,15 @@ import FinancePanel from './FinancePanel';
 import AssistantSignal, { buddyVisualState } from './AssistantSignal';
 import type { AudioPresentationRef } from './audioPresentation';
 import { useBuddyPanel, type BuddyReadingMemory } from './useBuddyPanel';
+import BuddyDisclosure, { type BuddyDisclosureAction } from './BuddyDisclosure';
 
 type Props = {
+  embedded?: boolean;
+  /** Presentation-only overrides for the labelled local review studio. */
+  visual?: Pick<
+    ComponentProps<typeof AssistantSignal>,
+    'phase' | 'motion' | 'reaction' | 'blink' | 'gaze' | 'onDiagnostics' | 'assetUrl'
+  >;
   expanded: boolean;
   modalOpen: boolean;
   active: boolean;
@@ -65,9 +80,13 @@ type Props = {
   openSpreadsheet: () => void;
 };
 export default function DesktopBuddy(p: Props) {
+  const Root = p.embedded ? 'section' : 'main';
   const pet = useRef<HTMLButtonElement>(null);
   const close = useRef<HTMLButtonElement>(null);
+  const composer = useRef<HTMLFormElement>(null);
   const [reaction, setReaction] = useState(0);
+  const [disclosure, setDisclosure] = useState<'ideas' | 'tools' | null>(null);
+  const dismissDisclosure = useCallback(() => setDisclosure(null), []);
   const panel = useBuddyPanel({
     expanded: p.expanded,
     modalOpen: p.modalOpen,
@@ -82,6 +101,22 @@ export default function DesktopBuddy(p: Props) {
     // The welcome starts at the beginning; actual conversation updates may follow the bottom.
     if (p.messages.some((message) => message.id !== 'welcome')) panel.followNewContent();
   }, [p.messages, panel.available]);
+  useEffect(() => {
+    if (!p.expanded || p.modalOpen) dismissDisclosure();
+  }, [p.expanded, p.modalOpen, dismissDisclosure]);
+  useLayoutEffect(() => {
+    const feed = p.transcriptRef.current;
+    const form = composer.current;
+    if (!feed || !form) return;
+    // Disclosures share the reading well. They must never cover the native-window actions.
+    const boundDisclosure = () => {
+      form.style.setProperty('--buddy-disclosure-height', `${feed.clientHeight}px`);
+    };
+    boundDisclosure();
+    const observer = new ResizeObserver(boundDisclosure);
+    observer.observe(feed);
+    return () => observer.disconnect();
+  }, [p.transcriptRef]);
   const activatePet = () => {
     setReaction((value) => value + 1);
     p.expand();
@@ -104,8 +139,103 @@ export default function DesktopBuddy(p: Props) {
         ? 'Opening mic…'
         : 'Ready to talk';
   const conversation = p.messages.filter((m) => m.id !== 'welcome');
+  const voiceHelp = p.conversationActive
+    ? 'Speak anytime, even during my reply. Pause ends the voice conversation; Stop also cancels the task.'
+    : p.shortcut === false
+      ? 'Start a voice conversation with the microphone button.'
+      : 'Start a voice conversation with the microphone button or Control + Shift + Space.';
+  const voiceControl = (
+    <button
+      type="button"
+      className={`buddy-play ${p.conversationActive ? 'playing' : ''} ${p.voicePhase === 'listening' ? 'listening' : ''}`}
+      onClick={p.talk}
+      disabled={!p.conversationActive && (!p.enabled || !p.voiceReady || p.busy)}
+      aria-label={p.conversationActive ? 'Pause voice conversation' : 'Start voice conversation'}
+      aria-pressed={p.conversationActive}
+      aria-describedby="buddy-voice-help"
+      aria-keyshortcuts={p.shortcut === false ? undefined : 'Control+Shift+Space'}
+      title={
+        p.conversationActive
+          ? 'Pause conversation'
+          : p.shortcut === false
+            ? 'Start conversation'
+            : 'Start conversation · Ctrl+Shift+Space'
+      }
+    >
+      {p.conversationActive ? <Pause size={21} /> : <Mic size={23} />}
+    </button>
+  );
+  const ideas: BuddyDisclosureAction[] = [
+    {
+      label: 'Understand my finances',
+      icon: <Table2 size={18} />,
+      onSelect: () => p.suggest('Start the finance demo'),
+      disabled: !p.enabled || p.busy,
+    },
+    {
+      label: 'Find jobs near me',
+      icon: <Globe size={18} />,
+      onSelect: () => p.suggest('Find jobs near me'),
+      disabled: !p.enabled || p.busy,
+    },
+    {
+      label: 'Open Calculator',
+      icon: <Maximize2 size={18} />,
+      onSelect: () => p.suggest('Open Calculator'),
+      disabled: !p.enabled || p.busy,
+    },
+    {
+      label: 'Describe my screen',
+      icon: <Eye size={18} />,
+      onSelect: () => p.suggest('Describe my screen'),
+      disabled: !p.enabled || p.busy,
+    },
+  ];
+  const tools: BuddyDisclosureAction[] = [
+    {
+      label: 'Choose a window to see',
+      icon: <Eye size={18} />,
+      onSelect: p.screen,
+      disabled: p.busy,
+    },
+    {
+      label: 'Change save folder',
+      icon: <FolderOpen size={18} />,
+      onSelect: p.folder,
+      disabled: p.busy,
+    },
+    {
+      label: p.speech ? 'Mute spoken replies' : 'Enable spoken replies',
+      icon: p.speech ? <Volume2 size={18} /> : <VolumeX size={18} />,
+      onSelect: p.toggleSpeech,
+      disabled: !p.speechReady,
+      pressed: p.speech,
+    },
+    {
+      label: panel.motionPaused ? 'Resume avatar motion' : 'Pause avatar motion',
+      icon: <PauseCircle size={18} />,
+      onSelect: panel.toggleMotion,
+      pressed: panel.motionPaused,
+    },
+    {
+      label: 'Settings and connections',
+      icon: <Settings2 size={18} />,
+      onSelect: p.settings,
+    },
+    {
+      label: 'Open full workspace',
+      icon: <Maximize2 size={18} />,
+      onSelect: openWorkspace,
+      restoreFocus: false,
+    },
+  ];
+  const lastMessage = conversation.at(-1);
+  const taskMessageRepeated =
+    p.state.task &&
+    lastMessage?.role !== 'user' &&
+    lastMessage?.text.trim() === p.state.task.message.trim();
   return (
-    <main
+    <Root
       className={`buddy ${p.expanded ? 'expanded' : 'collapsed'} ${p.active ? 'active' : ''} ${panel.error ? 'has-layout-error' : ''}`}
       data-panel-stage={panel.stage}
       aria-label="InsightOS desktop buddy"
@@ -118,6 +248,9 @@ export default function DesktopBuddy(p: Props) {
       }}
     >
       <h1 className="sr-only">InsightOS desktop assistant</h1>
+      <p id="buddy-voice-help" className="sr-only">
+        {voiceHelp}
+      </p>
       <header className="buddy-bar">
         <button
           ref={pet}
@@ -128,10 +261,11 @@ export default function DesktopBuddy(p: Props) {
           aria-controls="buddy-conversation-panel"
         >
           <AssistantSignal
-            phase={buddyVisualState(p.voicePhase, p.busy)}
+            {...p.visual}
+            phase={p.visual?.phase ?? buddyVisualState(p.voicePhase, p.busy)}
             audio={p.audio}
-            reaction={reaction}
-            motion={!panel.motionPaused}
+            reaction={p.visual?.reaction ?? reaction}
+            motion={(p.visual?.motion ?? true) && !panel.motionPaused}
           />
         </button>
         <div className="buddy-dock-controls">
@@ -154,27 +288,7 @@ export default function DesktopBuddy(p: Props) {
             </p>
           )}
           <div className="buddy-window-actions">
-            <button
-              className={`buddy-play ${p.conversationActive ? 'playing' : ''} ${p.voicePhase === 'listening' ? 'listening' : ''}`}
-              onClick={p.talk}
-              disabled={!p.conversationActive && (!p.enabled || !p.voiceReady || p.busy)}
-              aria-label={
-                p.conversationActive ? 'Pause voice conversation' : 'Start voice conversation'
-              }
-              aria-pressed={p.conversationActive}
-              aria-keyshortcuts="Control+Shift+Space"
-              title={
-                p.conversationActive
-                  ? 'Pause conversation'
-                  : 'Start conversation · Ctrl+Shift+Space'
-              }
-            >
-              {p.conversationActive ? (
-                <Pause size={22} fill="currentColor" />
-              ) : (
-                <Play size={23} fill="currentColor" />
-              )}
-            </button>
+            {!panel.available && voiceControl}
             {p.active && (
               <button
                 className="buddy-icon stop"
@@ -193,6 +307,16 @@ export default function DesktopBuddy(p: Props) {
             >
               <Minus size={17} />
             </button>
+            {panel.available && (
+              <button
+                ref={close}
+                className="buddy-icon"
+                onClick={p.expand}
+                aria-label="Collapse conversation"
+              >
+                <ChevronUp size={21} />
+              </button>
+            )}
           </div>
         </div>
       </header>
@@ -205,20 +329,9 @@ export default function DesktopBuddy(p: Props) {
         inert={!panel.available}
         data-available={panel.available}
       >
-        <div className="buddy-panel-header">
-          <div>
-            <span className="buddy-eyebrow">HERE WITH YOU</span>
-            <h2 id="buddy-panel-title">Let’s figure it out.</h2>
-          </div>
-          <button
-            ref={close}
-            className="buddy-icon"
-            onClick={p.expand}
-            aria-label="Collapse conversation"
-          >
-            <ChevronUp size={21} />
-          </button>
-        </div>
+        <h2 id="buddy-panel-title" className="sr-only">
+          Conversation
+        </h2>
         <div className="buddy-body">
           <div
             className="buddy-feed"
@@ -236,48 +349,13 @@ export default function DesktopBuddy(p: Props) {
             >
               {!conversation.length && p.state.task && (
                 <div className="buddy-welcome">
-                  <span className="buddy-eyebrow">YOUR CURRENT TASK</span>
                   <p>{p.state.task.goal}</p>
-                </div>
-              )}
-              {!conversation.length && !p.state.task && (
-                <div className="buddy-welcome">
-                  <p>
-                    Ask a question, review a bill, or tell me what you need done. We’ll take it one
-                    step at a time.
-                  </p>
-                  <div className="buddy-suggestions" aria-label="Ideas to try">
-                    <button
-                      disabled={!p.enabled || p.busy}
-                      onClick={() => p.suggest('Start the finance demo')}
-                    >
-                      Understand my finances
-                    </button>
-                    <button
-                      disabled={!p.enabled || p.busy}
-                      onClick={() => p.suggest('Find jobs near me')}
-                    >
-                      <Globe size={15} /> Find jobs near me
-                    </button>
-                    <button
-                      disabled={!p.enabled || p.busy}
-                      onClick={() => p.suggest('Open Calculator')}
-                    >
-                      <Maximize2 size={15} /> Open Calculator
-                    </button>
-                    <button
-                      disabled={!p.enabled || p.busy}
-                      onClick={() => p.suggest('Describe my screen')}
-                    >
-                      <Eye size={15} /> Describe my screen
-                    </button>
-                  </div>
                 </div>
               )}
               {conversation.map((m) => (
                 <div key={m.id} className={`buddy-message ${m.role}`}>
                   <span>
-                    {m.role === 'user' ? 'YOU' : m.role === 'error' ? 'LET’S FIX THAT' : 'INSIGHT'}
+                    {m.role === 'user' ? 'You' : m.role === 'error' ? 'Error' : 'Insight'}
                   </span>
                   <p>{m.text}</p>
                 </div>
@@ -329,7 +407,7 @@ export default function DesktopBuddy(p: Props) {
                       ? 'Task finished'
                       : 'Your next step'}
                 </strong>
-                <p>{p.state.task.message}</p>
+                {!taskMessageRepeated && <p>{p.state.task.message}</p>}
                 <small>{p.state.task.steps.length} steps taken</small>
               </div>
             )}
@@ -393,6 +471,7 @@ export default function DesktopBuddy(p: Props) {
             )}
           </div>
           <form
+            ref={composer}
             className={`buddy-composer ${p.voicePhase === 'listening' ? 'listening' : ''}`}
             onSubmit={(e) => {
               e.preventDefault();
@@ -408,11 +487,7 @@ export default function DesktopBuddy(p: Props) {
               value={p.request}
               disabled={!p.enabled || p.busy}
               onChange={(e) => p.setRequest(e.target.value)}
-              placeholder={
-                p.voicePhase === 'listening'
-                  ? 'Listening. I’ll respond when you finish speaking…'
-                  : 'Ask me anything I can help with…'
-              }
+              placeholder="Ask me anything…"
               maxLength={2000}
               rows={2}
               onKeyDown={(e) => {
@@ -422,81 +497,36 @@ export default function DesktopBuddy(p: Props) {
                 }
               }}
             />
-            <div>
-              <span>
-                {p.conversationActive
-                  ? 'Conversation on · Speak anytime, even during my reply'
-                  : p.shortcut === false
-                    ? 'Press play to talk'
-                    : 'Press play or Ctrl + Shift + Space'}
-              </span>
-              <button
-                className="buddy-send"
-                type="submit"
-                disabled={!p.enabled || p.busy || !p.request.trim()}
-                aria-label="Send request"
-              >
-                <ArrowUp size={18} />
-              </button>
+            <div className="buddy-compose-actions">
+              <BuddyDisclosure
+                label="Ideas"
+                open={panel.available && disclosure === 'ideas'}
+                actions={ideas}
+                toggle={() => setDisclosure(disclosure === 'ideas' ? null : 'ideas')}
+                dismiss={dismissDisclosure}
+              />
+              <BuddyDisclosure
+                label="Tools"
+                open={panel.available && disclosure === 'tools'}
+                actions={tools}
+                toggle={() => setDisclosure(disclosure === 'tools' ? null : 'tools')}
+                dismiss={dismissDisclosure}
+              />
+              <div className="buddy-compose-primary">
+                {voiceControl}
+                <button
+                  className="buddy-send"
+                  type="submit"
+                  disabled={!p.enabled || p.busy || !p.request.trim()}
+                  aria-label="Send request"
+                >
+                  <ArrowUp size={18} />
+                </button>
+              </div>
             </div>
           </form>
-          <footer className="buddy-tools">
-            <div>
-              <button
-                className="buddy-icon"
-                disabled={p.busy}
-                onClick={p.screen}
-                aria-label="Choose a window to see"
-                title="See a window"
-              >
-                <Eye size={17} />
-              </button>
-              <button
-                className="buddy-icon"
-                disabled={p.busy}
-                onClick={p.folder}
-                aria-label="Change save folder"
-                title="Change save folder"
-              >
-                <FolderOpen size={17} />
-              </button>
-              <button
-                className="buddy-icon"
-                disabled={!p.speechReady}
-                onClick={p.toggleSpeech}
-                aria-label={p.speech ? 'Mute spoken replies' : 'Enable spoken replies'}
-              >
-                {p.speech ? <Volume2 size={17} /> : <VolumeX size={17} />}
-              </button>
-              <button
-                className="buddy-icon"
-                onClick={panel.toggleMotion}
-                aria-label={panel.motionPaused ? 'Resume avatar motion' : 'Pause avatar motion'}
-                aria-pressed={panel.motionPaused}
-              >
-                <PauseCircle size={18} />
-              </button>
-            </div>
-            <div>
-              <button
-                className="buddy-icon"
-                onClick={p.settings}
-                aria-label="Settings and connections"
-              >
-                <Settings2 size={17} />
-              </button>
-              <button
-                className="buddy-icon"
-                onClick={openWorkspace}
-                aria-label="Open full workspace"
-                title="Open workspace"
-              >
-                <Maximize2 size={16} />
-              </button>
-            </div>
-          </footer>
         </div>
       </section>
-    </main>
+    </Root>
   );
 }

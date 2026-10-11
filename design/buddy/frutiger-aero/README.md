@@ -1,14 +1,20 @@
 # Sprout / Prism — implementation and retained studies
 
-**Sprout v002 and the Prism palette are implemented.** The current application uses React 19, Vite 8, Electron 44 and direct Three.js. Its original Blender-authored character is loaded from the exported GLB with nine deformation bones, three body morphs and six authored clips. R3F/Next.js appear in the retained packaging plan; this delivery runs in the existing application.
+**Sprout v003: glossy blue depth, blended lavender/coral undertones, whole-body pointer attention, and one clean glass panel.** The [delivery guide](../sprout/DELIVERY-v003.md) and [refinement audit](../sprout/GLOSSY-REFINEMENT-AUDIT.md) record current assets and verification. The [revision-6 launch prompt](SPROUT-LAUNCH-PROMPT.txt), [readable master](MASTER-PROMPT.md) and [four focused worker prompts](GLOSSY-SPROUT-PROMPT-PACK.md) preserve the complete implementation brief.
 
-The selected appearance is glossy electric blue/aqua jelly with a restrained lower violet/coral streak, unequal buds, navy eyes, white glints and a small smile. The clay four-clip proof preceded the two additional voice-phase loops and material/light refinement. The transmission candidate remains a comparison asset; the canonical export uses the refined glossy material. Accessories remain outside the character's identity.
+The current application uses React 19, Vite 8, Electron 44 and direct Three.js. Its original Blender-authored character loads from GLB with nine deformation bones, three paired shell/core morphs and six authored clips. R3F/Next.js remain historical packaging ideas; this delivery runs in the existing application.
 
-The native compact/expanded panel, reversible resize/focus coordination, readable transcript and semantic controls are implemented. Voice phases stay authoritative. The avatar consumes fresh numeric input/output presentation samples without controlling provider sessions, VAD or playback. See the [delivery guide](../sprout/README.md) and [scene passport](../sprout/SCENE-PASSPORT.md) for current assets, run instructions and measured evidence.
+The selected v003 material combines a near-neutral transmitting shell, cyan boundary and appendages, and an inset blue/Prism core. Fixed curved reflections respond to body rotation. The preserved v002 asset is the first GLB fallback, followed by Ribbon; the new source-backed PNG provides the no-WebGL path. Accessories remain outside the character's identity.
+
+The panel has one identity/status row, one reading well, Ideas/Tools disclosures and voice beside the composer. Direct Stop, drafts, focus and native resizing retain their existing owners. Voice phases stay authoritative; the avatar consumes the existing numeric presentation samples. The [scene passport](../sprout/SCENE-PASSPORT.md) preserves the original construction history.
 
 ## Run and inspect
 
-Double-click **Start InsightOS UI.cmd** at the repository root. Open [the local studio](http://127.0.0.1:5173/?studio=buddy) for actual Sprout size comparisons and simulated phase/reaction replay. The studio starts no microphone or provider session.
+Double-click **Start InsightOS UI.cmd** at the repository root. Open [the local studio](http://127.0.0.1:5173/?studio=buddy) for actual Sprout sizes and simulated phase/reaction replay, or [the actual panel preview](http://127.0.0.1:5173/?studio=panel) for light/dark/busy backgrounds and Large text. Browser previews use local sample data and start no microphone/provider session.
+
+Current evidence: [v003 manifest](../sprout/sprout-prism-v003.manifest.json), [material/motion comparison](../../../artifacts/sprout-glossy-final/report.json), [native verification folder](../../../artifacts/glossy-v003/) and [refinement audit](../sprout/GLOSSY-REFINEMENT-AUDIT.md).
+
+## Preserved v002 evidence
 
 Current evidence includes the [canonical export manifest](../sprout/sprout-prism-v002.manifest.json), [actual six-clip interrupted replay](../../../artifacts/sprout-prism-final-motion-replay.json), [browser material and size comparisons](../../../artifacts/sprout-web-look/), [native panel verification](../../../artifacts/buddy-panel-native-verification.json) and [audio bridge verification](../../../artifacts/audio-presentation-verification.json). The [final native voice/panel recording](../../../artifacts/buddy-voice-native-final/synthetic-voice-interrupt-panel.webm) and [report](../../../artifacts/buddy-voice-native-final/report.json) show synthetic reply interruption and the original unsent draft surviving both voice turns and collapse/reopen. Synthetic PCM/oscillator fixtures exercise real audio mechanisms; the video is silent and live ElevenLabs remains unverified because local configuration reported false.
 
@@ -24,7 +30,9 @@ These documents preserve the decisions, proposed budgets and implementation brie
 | [ANIMATION-WORKFLOW.md](ANIMATION-WORKFLOW.md)                                     | Fixed-topology rig/morph strategy, clip channels, export and interrupted replay                |
 | [INTERACTION-MOTION-WORKFLOW.md](INTERACTION-MOTION-WORKFLOW.md)                   | Native bounds, focus, reversal and performance proof                                           |
 | [REFERENCE-RECIPES.md](REFERENCE-RECIPES.md)                                       | Primary examples, pinned sources, licenses and bounded experiments                             |
-| [MASTER-PROMPT.md](MASTER-PROMPT.md) and [launch prompt](SPROUT-LAUNCH-PROMPT.txt) | Revision 5 implementation/completion contract; resume from current evidence                     |
+| [MASTER-PROMPT.md](MASTER-PROMPT.md) and [launch prompt](SPROUT-LAUNCH-PROMPT.txt) | Revision 6 visual refinement contract; continue from delivered v002                             |
+| [GLOSSY-SPROUT-PROMPT-PACK.md](GLOSSY-SPROUT-PROMPT-PACK.md)                     | Material, runtime motion, panel and independent verification assignments                        |
+| [MASTER-PROMPT-v005.md](MASTER-PROMPT-v005.md)                                   | Preserved previous completion contract; outstanding external checks remain unverified            |
 | [HIGGSFIELD-UPSTREAM.md](HIGGSFIELD-UPSTREAM.md)                                   | Upstream generation/blocking/export audit and connector observations                           |
 | [STACK-AUDIO-AUDIT.md](STACK-AUDIO-AUDIT.md)                                       | Pre-implementation voice and renderer audit; the missing presentation meter is now implemented |
 | [RESEARCH-LOG.md](RESEARCH-LOG.md)                                                 | Selection, portfolio process and refinement chronology                                         |

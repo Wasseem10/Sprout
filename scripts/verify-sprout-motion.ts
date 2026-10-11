@@ -1,7 +1,16 @@
 import { createHash } from 'node:crypto';
-import { readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { Box3, Matrix4, Mesh, Object3D, OrthographicCamera, SkinnedMesh, Vector3 } from 'three';
+import {
+  Box3,
+  Matrix4,
+  Mesh,
+  Object3D,
+  OrthographicCamera,
+  SkinnedMesh,
+  Texture,
+  Vector3,
+} from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { auditSproutModel, SproutMotionController } from '../src/buddyMotionController';
 import { runSproutReplay } from '../src/buddyReplay';
@@ -10,8 +19,18 @@ import { runSproutReplay } from '../src/buddyReplay';
 // every acceptance check plus a digest of each timestamped pose trace.
 const trace = process.argv.includes('--trace');
 const reportArguments = process.argv.slice(2).filter((argument) => argument !== '--trace');
-const assetPath = path.resolve(reportArguments[0] ?? 'public/buddy/sprout-v002.glb');
-const reportPath = path.resolve(reportArguments[1] ?? 'artifacts/sprout-motion-replay.json');
+const assetPath = path.resolve(reportArguments[0] ?? 'public/buddy/sprout-v003.glb');
+const reportPath = path.resolve(
+  reportArguments[1] ?? 'artifacts/glossy-v003/sprout-motion-replay.json',
+);
+// This CPU audit evaluates exported geometry and animation. Browser proofs
+// separately validate embedded image bytes, decoding, colour space and rendering.
+function geometryLoader() {
+  return new GLTFLoader().register(() => ({
+    name: 'GeometryOnlyTexturePlaceholder',
+    loadTexture: async () => new Texture(),
+  }));
+}
 const bytes = await readFile(assetPath);
 const camera = new OrthographicCamera(-1.4, 1.4, 1.4, -1.4, 0.1, 30);
 camera.position.set(0.1, 0.24, 6);
@@ -70,7 +89,7 @@ let meshManifest: {
 }[] = [];
 for (const fps of [30, 60, 120]) {
   const buffer = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
-  const gltf = await new GLTFLoader().parseAsync(buffer, `${path.dirname(assetPath)}/`);
+  const gltf = await geometryLoader().parseAsync(buffer, `${path.dirname(assetPath)}/`);
   errors = auditSproutModel(gltf.scene, gltf.animations);
   if (fps === 30) {
     gltf.scene.traverse((node) => {
@@ -146,7 +165,7 @@ const extremeEnvelopes: {
 }[] = [];
 if (!errors.length) {
   const buffer = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
-  const gltf = await new GLTFLoader().parseAsync(buffer, `${path.dirname(assetPath)}/`);
+  const gltf = await geometryLoader().parseAsync(buffer, `${path.dirname(assetPath)}/`);
   const controller = new SproutMotionController(gltf.scene, gltf.animations);
   for (const name of ['Sprout_Idle', 'Sprout_Listen', 'Sprout_Think', 'Sprout_Speak']) {
     const clip = gltf.animations.find((candidate) => candidate.name === name);
@@ -240,7 +259,7 @@ if (!errors.length) {
   frozen.dispose();
   // Separate, unanimated scene: authored one-hot morphs must remain inside the
   // camera even when the sampled replay never reaches their absolute extremes.
-  const extremes = await new GLTFLoader().parseAsync(
+  const extremes = await geometryLoader().parseAsync(
     bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength),
     `${path.dirname(assetPath)}/`,
   );
@@ -311,6 +330,8 @@ const report = {
   sha256: createHash('sha256').update(bytes).digest('hex'),
   bytes: bytes.length,
   kind: 'Simulated deterministic controller replay; no GPU, microphone or backend proof',
+  textureScope:
+    'Texture placeholders in CPU geometry checks; embedded texture decoding and rendering are verified by the browser glossy proof.',
   meshManifest,
   seamChecks,
   reactionBodyMaxDifference,
@@ -334,6 +355,7 @@ const report = {
         poseDigest: `sha256:${createHash('sha256').update(JSON.stringify(run.samples)).digest('hex')}`,
       })),
 };
+await mkdir(path.dirname(reportPath), { recursive: true });
 await writeFile(reportPath, `${JSON.stringify(report, null, 2)}\n`);
 console.log(
   JSON.stringify({

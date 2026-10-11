@@ -101,6 +101,7 @@ async function preparePanel(page: Page, nativeVisibility = false) {
 
 const pet = (page: Page) => page.locator('.buddy-face');
 const composer = (page: Page) => page.getByRole('textbox', { name: 'Tell your buddy what to do' });
+const tools = (page: Page) => page.getByRole('button', { name: 'Tools', exact: true });
 
 test('native acknowledgement gates the readable panel, which preserves draft, selection and scroll', async ({
   page,
@@ -156,7 +157,9 @@ test('native acknowledgement gates the readable panel, which preserves draft, se
   expect(requests.filter((path) => path.includes('/voice/'))).toEqual([]);
   expect(requests).not.toContain('/api/computer/stop');
   // Accessibility scanning is independent of the renderer's active-motion proof.
+  await tools(page).click();
   await page.getByRole('button', { name: 'Pause avatar motion' }).click();
+  await tools(page).click();
   await expect(page.getByRole('button', { name: 'Resume avatar motion' })).toBeVisible();
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
 });
@@ -229,6 +232,7 @@ test('workspace return preserves the compact draft, selection and manual reading
   });
   const before = await readPosition();
   expect(before.scrollTop).toBe(160);
+  await tools(page).click();
   await page.getByRole('button', { name: 'Open full workspace', exact: true }).click();
   await page.getByRole('button', { name: 'Return to desktop buddy ↗' }).click();
   await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'closed');
@@ -363,14 +367,122 @@ test('reduced-motion narrow panel remains readable without WebGL or voice calls'
     'data-renderer',
     'fallback',
   );
+  await tools(page).click();
   await page.getByRole('button', { name: 'Pause avatar motion' }).click();
+  await tools(page).click();
   await expect(page.getByRole('button', { name: 'Resume avatar motion' })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   const send = await page.getByRole('button', { name: 'Send request', exact: true }).boundingBox();
   expect(send!.y + send!.height).toBeLessThanOrEqual(480);
   expect(send!.width).toBeGreaterThanOrEqual(44);
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  await page.getByRole('button', { name: 'Resume avatar motion' }).press('Escape');
   await composer(page).press('Escape');
   await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'closed');
+  expect(requests.filter((path) => path.includes('/voice/'))).toEqual([]);
+});
+
+test('Ideas and Tools preserve actions with ordinary keyboard navigation and modal return focus', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 408, height: 672 });
+  const requests = await preparePanel(page);
+  await pet(page).press('Enter');
+  await expect(page.getByRole('heading', { name: 'Conversation', exact: true })).toHaveCount(1);
+  await expect(page.getByText('HERE WITH YOU', { exact: true })).toHaveCount(0);
+  await expect(page.getByText('Let’s figure it out.', { exact: true })).toHaveCount(0);
+  await expect(
+    page.getByRole('button', { name: 'Start voice conversation', exact: true }),
+  ).toHaveCount(1);
+  await expect(
+    page
+      .locator('.buddy-composer')
+      .getByRole('button', { name: 'Start voice conversation', exact: true }),
+  ).toBeVisible();
+  await composer(page).fill('An unsent draft stays here.');
+  await tools(page).press('Enter');
+  const toolRegion = page.getByRole('region', { name: 'Tools', exact: true });
+  await expect(toolRegion.getByRole('button')).toHaveCount(6);
+  await tools(page).press('Tab');
+  await expect(toolRegion.getByRole('button', { name: 'Choose a window to see' })).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(tools(page)).toBeFocused();
+  await expect(tools(page)).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'open');
+  await tools(page).press('Enter');
+  await toolRegion.getByRole('button', { name: 'Settings and connections' }).click();
+  await expect(page.getByRole('dialog', { name: 'Settings & connections' })).toBeVisible();
+  await expect(tools(page)).toHaveAttribute('aria-expanded', 'false');
+  await page.getByRole('button', { name: 'Close dialog' }).press('Escape');
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(tools(page)).toBeFocused();
+  await expect(composer(page)).toHaveValue('An unsent draft stays here.');
+  const ideas = page.getByRole('button', { name: 'Ideas', exact: true });
+  await ideas.press('Enter');
+  const ideaRegion = page.getByRole('region', { name: 'Ideas', exact: true });
+  await expect(ideaRegion.getByRole('button')).toHaveCount(4);
+  await ideas.press('Tab');
+  await expect(ideaRegion.getByRole('button', { name: 'Understand my finances' })).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(ideas).toBeFocused();
+  await ideas.press('Escape');
+  await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'closed');
+  await expect(pet(page)).toBeFocused();
+  await pet(page).press('Enter');
+  await expect(composer(page)).toHaveValue('An unsent draft stays here.');
+  await expect(ideas).toHaveAttribute('aria-expanded', 'false');
+  expect(requests.filter((path) => path.includes('/voice/'))).toEqual([]);
+  expect(requests).not.toContain('/api/computer/stop');
+});
+
+test('an Ideas request keeps direct Stop available and preserves busy permissions', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 320, height: 480 });
+  const requests = await preparePanel(page);
+  let release: (() => void) | undefined;
+  let submitted: unknown;
+  await page.route('**/api/computer/request', async (route) => {
+    submitted = route.request().postDataJSON();
+    await new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    await route
+      .fulfill({
+        json: {
+          state: { folder: null, code: null, browser: null, screen: null },
+          summary: 'A bounded fixture result.',
+        },
+      })
+      .catch(() => {});
+  });
+  await pet(page).click();
+  const ideas = page.getByRole('button', { name: 'Ideas', exact: true });
+  await ideas.click();
+  await page.getByRole('button', { name: 'Open Calculator', exact: true }).click();
+  await expect(
+    page.getByRole('button', { name: 'Stop task and audio', exact: true }),
+  ).toBeVisible();
+  await expect(ideas).toHaveAttribute('aria-expanded', 'false');
+  expect(submitted).toMatchObject({ request: 'Open Calculator' });
+  await ideas.click();
+  for (const button of await page
+    .getByRole('region', { name: 'Ideas', exact: true })
+    .getByRole('button')
+    .all())
+    await expect(button).toBeDisabled();
+  await page.keyboard.press('Escape');
+  await tools(page).click();
+  await expect(page.getByRole('button', { name: 'Choose a window to see' })).toBeDisabled();
+  await expect(page.getByRole('button', { name: 'Change save folder' })).toBeDisabled();
+  await expect(
+    page.getByRole('button', { name: 'Stop task and audio', exact: true }),
+  ).toBeEnabled();
+  await page.getByRole('button', { name: 'Stop task and audio', exact: true }).click();
+  release?.();
+  await expect(page.getByRole('status')).toHaveText('Ready to talk');
+  expect(requests).toContain('/api/computer/stop');
   expect(requests.filter((path) => path.includes('/voice/'))).toEqual([]);
 });

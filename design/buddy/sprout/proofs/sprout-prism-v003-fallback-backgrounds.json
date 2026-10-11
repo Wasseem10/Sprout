@@ -1,0 +1,88 @@
+{
+  "source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-prism-v003.png",
+  "runtime": "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v003.png",
+  "sha256": "47a46dd7ea30020f3e8cc1850622f8b62277534e3ae522e961aea9e4affc0033",
+  "bytes": 371572,
+  "copiesEqual": true,
+  "screenshot": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-prism-v003-fallback-backgrounds.png",
+  "decoded": [
+    {
+      "width": 44,
+      "height": 44,
+      "naturalWidth": 640,
+      "naturalHeight": 640,
+      "complete": true
+    },
+    {
+      "width": 96,
+      "height": 96,
+      "naturalWidth": 640,
+      "naturalHeight": 640,
+      "complete": true
+    },
+    {
+      "width": 160,
+      "height": 160,
+      "naturalWidth": 640,
+      "naturalHeight": 640,
+      "complete": true
+    },
+    {
+      "width": 44,
+      "height": 44,
+      "naturalWidth": 640,
+      "naturalHeight": 640,
+      "complete": true
+    },
+    {
+      "width": 96,
+      "height": 96,
+      "naturalWidth": 640,
+      "naturalHeight": 640,
+      "complete": true
+    },
+    {
+      "width": 160,
+      "height": 160,
+      "naturalWidth": 640,
+      "naturalHeight": 640,
+      "complete": true
+    },
+    {
+      "width": 44,
+      "height": 44,
+      "naturalWidth": 640,
+      "naturalHeight": 640,
+      "complete": true
+    },
+    {
+      "width": 96,
+      "height": 96,
+      "naturalWidth": 640,
+      "naturalHeight": 640,
+      "complete": true
+    },
+    {
+      "width": 160,
+      "height": 160,
+      "naturalWidth": 640,
+      "naturalHeight": 640,
+      "complete": true
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "bright",
+      "background": "#f5faff"
+    },
+    {
+      "name": "dark",
+      "background": "#091827"
+    },
+    {
+      "name": "busy",
+      "background": "repeating-linear-gradient(130deg,#366ba1 0 26px,#efcf8e 26px 48px,#b881a7 48px 72px,#9fdbc5 72px 94px)"
+    }
+  ],
+  "scope": "HTML-only exact static PNG at44/96/160CSSpx on owned backgrounds; GPU disabled. Appearance review, not native compositor/GLB/performance/provider evidence."
+}

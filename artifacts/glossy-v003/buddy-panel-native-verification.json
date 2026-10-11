@@ -1,0 +1,659 @@
+{
+  "checkedAt": "2026-10-11T04:20:17.101Z",
+  "platform": "win32",
+  "launch": "actual Electron main and preload, --dev, isolated user-data profile",
+  "apiScope": "All API responses intercepted locally after reload; only a fixture computer request was submitted. No provider or microphone checks.",
+  "nativeIpc": "actual handler; acknowledgement matches BrowserWindow/content bounds and caller request id; invalid request id rejected",
+  "rendererAssetAtCapture": "sprout",
+  "assetUrl": "/buddy/sprout-v003.glb",
+  "assetSha256": "63bc8f0289634e03716732c6beefe2f3492d53d1f54ec04dd8e23d28fddf0a32",
+  "initial": {
+    "bounds": {
+      "x": 812,
+      "y": 20,
+      "width": 296,
+      "height": 128
+    },
+    "contentBounds": {
+      "x": 812,
+      "y": 20,
+      "width": 296,
+      "height": 128
+    },
+    "workArea": {
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1032
+    },
+    "displayScale": 1,
+    "zoomFactor": 1,
+    "alwaysOnTop": true,
+    "resizable": false,
+    "preferences": {
+      "sandbox": true,
+      "contextIsolation": true,
+      "nodeIntegration": false,
+      "webSecurity": true
+    }
+  },
+  "acknowledgement": {
+    "mode": "pill",
+    "requestId": 711,
+    "bounds": {
+      "x": 812,
+      "y": 20,
+      "width": 296,
+      "height": 128
+    },
+    "viewport": {
+      "width": 296,
+      "height": 128
+    }
+  },
+  "freeAnchor": {
+    "x": 32,
+    "y": 28
+  },
+  "freeOpen": {
+    "bounds": {
+      "x": 32,
+      "y": 28,
+      "width": 408,
+      "height": 672
+    },
+    "contentBounds": {
+      "x": 32,
+      "y": 28,
+      "width": 408,
+      "height": 672
+    },
+    "workArea": {
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1032
+    },
+    "displayScale": 1,
+    "zoomFactor": 1,
+    "alwaysOnTop": true,
+    "resizable": false,
+    "preferences": {
+      "sandbox": true,
+      "contextIsolation": true,
+      "nodeIntegration": false,
+      "webSecurity": true
+    }
+  },
+  "edgePill": {
+    "x": 1624,
+    "y": 904,
+    "width": 296,
+    "height": 128
+  },
+  "edgeOpen": {
+    "bounds": {
+      "x": 1512,
+      "y": 360,
+      "width": 408,
+      "height": 672
+    },
+    "contentBounds": {
+      "x": 1512,
+      "y": 360,
+      "width": 408,
+      "height": 672
+    },
+    "workArea": {
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1032
+    },
+    "displayScale": 1,
+    "zoomFactor": 1,
+    "alwaysOnTop": true,
+    "resizable": false,
+    "preferences": {
+      "sandbox": true,
+      "contextIsolation": true,
+      "nodeIntegration": false,
+      "webSecurity": true
+    }
+  },
+  "reversedOpen": {
+    "bounds": {
+      "x": 1512,
+      "y": 360,
+      "width": 408,
+      "height": 672
+    },
+    "contentBounds": {
+      "x": 1512,
+      "y": 360,
+      "width": 408,
+      "height": 672
+    },
+    "workArea": {
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1032
+    },
+    "displayScale": 1,
+    "zoomFactor": 1,
+    "alwaysOnTop": true,
+    "resizable": false,
+    "preferences": {
+      "sandbox": true,
+      "contextIsolation": true,
+      "nodeIntegration": false,
+      "webSecurity": true
+    }
+  },
+  "finalPill": {
+    "bounds": {
+      "x": 1512,
+      "y": 360,
+      "width": 296,
+      "height": 128
+    },
+    "contentBounds": {
+      "x": 1512,
+      "y": 360,
+      "width": 296,
+      "height": 128
+    },
+    "workArea": {
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1032
+    },
+    "displayScale": 1,
+    "zoomFactor": 1,
+    "alwaysOnTop": true,
+    "resizable": false,
+    "preferences": {
+      "sandbox": true,
+      "contextIsolation": true,
+      "nodeIntegration": false,
+      "webSecurity": true
+    }
+  },
+  "workspace": {
+    "bounds": {
+      "x": 285,
+      "y": 20,
+      "width": 1350,
+      "height": 900
+    },
+    "contentBounds": {
+      "x": 285,
+      "y": 20,
+      "width": 1350,
+      "height": 900
+    },
+    "workArea": {
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1032
+    },
+    "displayScale": 1,
+    "zoomFactor": 1,
+    "alwaysOnTop": false,
+    "resizable": true,
+    "preferences": {
+      "sandbox": true,
+      "contextIsolation": true,
+      "nodeIntegration": false,
+      "webSecurity": true
+    }
+  },
+  "returnedPill": {
+    "bounds": {
+      "x": 1512,
+      "y": 360,
+      "width": 296,
+      "height": 128
+    },
+    "contentBounds": {
+      "x": 1512,
+      "y": 360,
+      "width": 296,
+      "height": 128
+    },
+    "workArea": {
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1032
+    },
+    "displayScale": 1,
+    "zoomFactor": 1,
+    "alwaysOnTop": true,
+    "resizable": false,
+    "preferences": {
+      "sandbox": true,
+      "contextIsolation": true,
+      "nodeIntegration": false,
+      "webSecurity": true
+    }
+  },
+  "workspaceRoundTrip": "existing workspace receives horizontally centered/resizable bounds; returning restores dock anchor, draft, selection5..17, manually scrolled feed and focus on reopened conversation",
+  "workspaceReadingPosition": {
+    "selection": [
+      5,
+      17,
+      "forward"
+    ],
+    "scrollTop": 160
+  },
+  "workspaceRestoredReadingPosition": {
+    "selection": [
+      5,
+      17,
+      "forward"
+    ],
+    "scrollTop": 160
+  },
+  "modalFocus": "Escape closes Settings without collapsing the conversation and restores focus to Tools; draft retained",
+  "controlledBackgroundCaptures": [
+    {
+      "background": "bright",
+      "source": "actual OS compositor; owned opaque fixture behind isolated buddy only",
+      "bounds": {
+        "x": 1512,
+        "y": 360,
+        "width": 408,
+        "height": 672
+      },
+      "fixtureBounds": {
+        "x": 1488,
+        "y": 336,
+        "width": 456,
+        "height": 720
+      },
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "rectangle": {
+        "x": 1512,
+        "y": 360,
+        "width": 408,
+        "height": 672
+      }
+    },
+    {
+      "background": "dark",
+      "source": "actual OS compositor; owned opaque fixture behind isolated buddy only",
+      "bounds": {
+        "x": 1512,
+        "y": 360,
+        "width": 408,
+        "height": 672
+      },
+      "fixtureBounds": {
+        "x": 1488,
+        "y": 336,
+        "width": 456,
+        "height": 720
+      },
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "rectangle": {
+        "x": 1512,
+        "y": 360,
+        "width": 408,
+        "height": 672
+      }
+    },
+    {
+      "background": "busy",
+      "source": "actual OS compositor; owned opaque fixture behind isolated buddy only",
+      "bounds": {
+        "x": 1512,
+        "y": 360,
+        "width": 408,
+        "height": 672
+      },
+      "fixtureBounds": {
+        "x": 1488,
+        "y": 336,
+        "width": 456,
+        "height": 720
+      },
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "rectangle": {
+        "x": 1512,
+        "y": 360,
+        "width": 408,
+        "height": 672
+      }
+    }
+  ],
+  "zoomReview": {
+    "zoomFactor": 2,
+    "native": {
+      "bounds": {
+        "x": 1104,
+        "y": 0,
+        "width": 816,
+        "height": 1032
+      },
+      "contentBounds": {
+        "x": 1104,
+        "y": 0,
+        "width": 816,
+        "height": 1032
+      },
+      "workArea": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1032
+      },
+      "displayScale": 1,
+      "zoomFactor": 2,
+      "alwaysOnTop": true,
+      "resizable": false,
+      "preferences": {
+        "sandbox": true,
+        "contextIsolation": true,
+        "nodeIntegration": false,
+        "webSecurity": true
+      }
+    },
+    "acknowledgement": {
+      "mode": "panel",
+      "requestId": 712,
+      "bounds": {
+        "x": 1104,
+        "y": 0,
+        "width": 816,
+        "height": 1032
+      },
+      "viewport": {
+        "width": 408,
+        "height": 516
+      }
+    },
+    "viewport": {
+      "width": 408,
+      "height": 516
+    },
+    "visibleSendTarget": {
+      "x": 323,
+      "y": 431,
+      "width": 44,
+      "height": 44
+    }
+  },
+  "focus": "close on open/reopen, pet before hide and after collapsed",
+  "preservation": "single mounted composer, draft, selection 5..17 and manually scrolled feed retained",
+  "rapidReversal": "reopened window retained expanded native bounds after the obsolete exit deadline",
+  "reversalStageIntervalMs": 38.39999997615814,
+  "reducedMotion": "shell has no running animation; draft and keyboard focus retained",
+  "visibleSendTarget": {
+    "x": 323,
+    "y": 587,
+    "width": 44,
+    "height": 44
+  },
+  "stageObservations": [
+    {
+      "at": 2966.1999999284744,
+      "stage": "preparing-open",
+      "available": "false",
+      "viewport": {
+        "width": 296,
+        "height": 128
+      }
+    },
+    {
+      "at": 2998.7999999523163,
+      "stage": "open",
+      "available": "true",
+      "viewport": {
+        "width": 408,
+        "height": 672
+      }
+    },
+    {
+      "at": 3034,
+      "stage": "closing",
+      "available": "false",
+      "viewport": {
+        "width": 408,
+        "height": 672
+      }
+    },
+    {
+      "at": 3260,
+      "stage": "closed",
+      "available": "false",
+      "viewport": {
+        "width": 296,
+        "height": 128
+      }
+    },
+    {
+      "at": 3453.399999976158,
+      "stage": "preparing-open",
+      "available": "false",
+      "viewport": {
+        "width": 296,
+        "height": 128
+      }
+    },
+    {
+      "at": 3462.2999999523163,
+      "stage": "open",
+      "available": "true",
+      "viewport": {
+        "width": 408,
+        "height": 672
+      }
+    },
+    {
+      "at": 3968.399999976158,
+      "stage": "closing",
+      "available": "false",
+      "viewport": {
+        "width": 408,
+        "height": 672
+      }
+    },
+    {
+      "at": 3990.6999999284744,
+      "stage": "preparing-open",
+      "available": "false",
+      "viewport": {
+        "width": 408,
+        "height": 672
+      }
+    },
+    {
+      "at": 4006.7999999523163,
+      "stage": "open",
+      "available": "true",
+      "viewport": {
+        "width": 408,
+        "height": 672
+      }
+    },
+    {
+      "at": 4425.600000023842,
+      "stage": "closing",
+      "available": "false",
+      "viewport": {
+        "width": 408,
+        "height": 672
+      }
+    },
+    {
+      "at": 4592.799999952316,
+      "stage": "closed",
+      "available": "false",
+      "viewport": {
+        "width": 296,
+        "height": 128
+      }
+    },
+    {
+      "at": 4646.199999928474,
+      "stage": "closing",
+      "available": "false",
+      "viewport": {
+        "width": 296,
+        "height": 128
+      }
+    },
+    {
+      "at": 4654.100000023842,
+      "stage": "closed",
+      "available": "false",
+      "viewport": {
+        "width": 296,
+        "height": 128
+      }
+    },
+    {
+      "at": 4668.600000023842,
+      "stage": "preparing-open",
+      "available": "false",
+      "viewport": {
+        "width": 296,
+        "height": 128
+      }
+    },
+    {
+      "at": 4677.199999928474,
+      "stage": "open",
+      "available": "true",
+      "viewport": {
+        "width": 408,
+        "height": 672
+      }
+    }
+  ],
+  "nativeResizeEvents": [
+    {
+      "at": 1791692410075,
+      "bounds": {
+        "x": 32,
+        "y": 28,
+        "width": 408,
+        "height": 672
+      }
+    },
+    {
+      "at": 1791692410360,
+      "bounds": {
+        "x": 32,
+        "y": 28,
+        "width": 296,
+        "height": 128
+      }
+    },
+    {
+      "at": 1791692410558,
+      "bounds": {
+        "x": 1512,
+        "y": 360,
+        "width": 408,
+        "height": 672
+      }
+    },
+    {
+      "at": 1791692411692,
+      "bounds": {
+        "x": 1512,
+        "y": 360,
+        "width": 296,
+        "height": 128
+      }
+    },
+    {
+      "at": 1791692411772,
+      "bounds": {
+        "x": 1512,
+        "y": 360,
+        "width": 408,
+        "height": 672
+      }
+    },
+    {
+      "at": 1791692412154,
+      "bounds": {
+        "x": 285,
+        "y": 20,
+        "width": 1350,
+        "height": 900
+      }
+    },
+    {
+      "at": 1791692412838,
+      "bounds": {
+        "x": 1512,
+        "y": 360,
+        "width": 296,
+        "height": 128
+      }
+    },
+    {
+      "at": 1791692413379,
+      "bounds": {
+        "x": 1512,
+        "y": 360,
+        "width": 408,
+        "height": 672
+      }
+    },
+    {
+      "at": 1791692416779,
+      "bounds": {
+        "x": 1104,
+        "y": 0,
+        "width": 816,
+        "height": 1032
+      }
+    },
+    {
+      "at": 1791692416912,
+      "bounds": {
+        "x": 1104,
+        "y": 0,
+        "width": 592,
+        "height": 256
+      }
+    },
+    {
+      "at": 1791692416949,
+      "bounds": {
+        "x": 1104,
+        "y": 0,
+        "width": 816,
+        "height": 1032
+      }
+    }
+  ],
+  "interceptedMutationRequests": [
+    "/api/session",
+    "/api/computer/request"
+  ],
+  "untested": [
+    "other physical displays and DPI scales",
+    "actual 320x480 native work area",
+    "live microphone/TTS",
+    "production packaged launch",
+    "measured active-motion frame budget"
+  ]
+}

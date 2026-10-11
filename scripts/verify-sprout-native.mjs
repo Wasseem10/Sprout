@@ -3,6 +3,12 @@ import { createHash } from 'node:crypto';
 import { mkdtemp, mkdir, readFile, rename, unlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import {
+  proofAssetFile,
+  proofAssetUrl,
+  proofOutputPath,
+  proofLocalDirectory,
+} from './buddy-proof-options.mjs';
 
 // Actual Electron shell and animated asset; this studio replay is explicitly
 // simulated and makes no microphone, TTS-provider or backend task request.
@@ -14,19 +20,21 @@ const productionBundle =
 const recordVideo = edgePanelRecord || process.argv.includes('--record');
 if (coldLoad && recordVideo) throw new Error('Cold-load measurements must run without recording.');
 const artifactDir = path.resolve(
-  coldLoad
-    ? 'artifacts/sprout-native-prism-cold-load'
-    : edgePanelRecord
-      ? 'artifacts/sprout-native-prism-edge-panel'
-      : productionBundle
-        ? `artifacts/sprout-native-prism-${recordVideo ? 'video' : 'production'}`
-        : `artifacts/sprout-native-clay${recordVideo ? '-video' : ''}`,
+  proofOutputPath(
+    coldLoad
+      ? 'artifacts/sprout-native-prism-cold-load'
+      : edgePanelRecord
+        ? 'artifacts/sprout-native-prism-edge-panel'
+        : productionBundle
+          ? `artifacts/sprout-native-prism-${recordVideo ? 'video' : 'production'}`
+          : `artifacts/sprout-native-clay${recordVideo ? '-video' : ''}`,
+  ),
 );
 const distDir = path.resolve('dist');
-const assetBytes = await readFile('public/buddy/sprout-v002.glb');
+const assetBytes = await readFile(path.join('public/buddy', proofAssetFile));
 const assetSha256 = createHash('sha256').update(assetBytes).digest('hex');
 await mkdir(artifactDir, { recursive: true });
-const local = path.resolve('.local');
+const local = path.resolve(proofLocalDirectory);
 await mkdir(local, { recursive: true });
 const entry = path.join(local, `motion-smoke-main-${process.pid}.cjs`);
 await writeFile(
@@ -70,13 +78,13 @@ try {
     timeout: 20000,
   });
   if (coldLoad) {
-    // Both assets fail before parse, which is before any avatar GPU allocation.
+    // All model fallbacks fail before parse, before any avatar GPU allocation.
     // Keep the real native main/preload and all of its security preferences.
     await expect
       .poll(() => desktop.evaluate(() => global.__coldAvatarBlocks), { timeout: 20000 })
       .toEqual(
         expect.arrayContaining([
-          'http://127.0.0.1:5173/buddy/sprout-v002.glb',
+          `http://127.0.0.1:5173${proofAssetUrl}`,
           'http://127.0.0.1:5173/buddy/insight-core-v1.glb',
         ]),
       );
@@ -91,7 +99,7 @@ try {
       return {
         isolatedProfile: true,
         blockedInitialAvatarAssets: global.__coldAvatarBlocks,
-        initialAvatarMode: 'PNG fallback; both GLB fetches cancelled before parse/GPU allocation',
+        initialAvatarMode: 'PNG fallback; all GLB fetches cancelled before parse/GPU allocation',
         preferences: {
           sandbox: preferences.sandbox,
           contextIsolation: preferences.contextIsolation,
@@ -138,7 +146,7 @@ try {
   page.on('request', (request) => {
     if (
       trackStudio &&
-      new URL(request.url()).pathname === '/buddy/sprout-v002.glb' &&
+      new URL(request.url()).pathname === proofAssetUrl &&
       new URL(request.frame().url()).searchParams.get('studio') === 'buddy'
     )
       trackedAssets.add(request);
@@ -332,21 +340,25 @@ try {
   });
   const { rendererReport, diagnostics, animationFrameClock } = measurement;
   expect(diagnostics.asset).toBe('sprout');
+  expect(diagnostics.assetUrl).toBe(proofAssetUrl);
   expect(diagnostics.startup.firstRenderMs).toBeGreaterThan(0);
   await capture(coldLoad ? 'native-first-model.png' : 'native-replay-end.png');
-  const startup = await page.evaluate(() => ({
-    webglReadyAttributeMsFromNavigation: window.__sproutWebglReadyMs ?? null,
-    nextAnimationFrameMsFromNavigation: window.__sproutNextAnimationFrameMs ?? null,
-    resources: performance
-      .getEntriesByType('resource')
-      .filter((resource) => new URL(resource.name).pathname === '/buddy/sprout-v002.glb')
-      .map((resource) => ({
-        durationMs: resource.duration,
-        transferSize: resource.transferSize,
-        encodedBodySize: resource.encodedBodySize,
-        decodedBodySize: resource.decodedBodySize,
-      })),
-  }));
+  const startup = await page.evaluate(
+    (assetUrl) => ({
+      webglReadyAttributeMsFromNavigation: window.__sproutWebglReadyMs ?? null,
+      nextAnimationFrameMsFromNavigation: window.__sproutNextAnimationFrameMs ?? null,
+      resources: performance
+        .getEntriesByType('resource')
+        .filter((resource) => new URL(resource.name).pathname === assetUrl)
+        .map((resource) => ({
+          durationMs: resource.duration,
+          transferSize: resource.transferSize,
+          encodedBodySize: resource.encodedBodySize,
+          decodedBodySize: resource.decodedBodySize,
+        })),
+    }),
+    proofAssetUrl,
+  );
   if (!coldLoad && !edgePanelRecord)
     expect(
       Number(rendererReport.match(/([\d,]+) rendered frames/)?.[1].replaceAll(',', '')),

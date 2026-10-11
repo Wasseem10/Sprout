@@ -1,0 +1,862 @@
+{
+  "variant": "core-prism",
+  "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-core-prism-v003.glb",
+  "sha256": "b6cd58b14cfbe6dcb37033c9eaa35b5f84cee85001607d094f78492c86dc2045",
+  "bytes": 1402276,
+  "editable_source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-core-prism-v003.blend",
+  "editable_source_sha256": "2018a41cc8faf00ee0d859935d7e22f55914d4cf314f90277493210110d32526",
+  "immutable_source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-core-refined-v003.blend",
+  "immutable_source_sha256": "70e6f1f95a82f0f9040f0c5537cb922c78969656a3d438d2ad172392b3ec529d",
+  "blender": "5.2.2 LTS",
+  "generator": "Khronos glTF Blender I/O v5.2.40",
+  "settings": {
+    "filepath": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-core-prism-v003.glb",
+    "export_format": "GLB",
+    "use_selection": true,
+    "use_active_scene": true,
+    "export_animations": true,
+    "export_animation_mode": "NLA_TRACKS",
+    "export_force_sampling": true,
+    "export_frame_step": 1,
+    "export_anim_slide_to_zero": true,
+    "export_apply": false,
+    "export_def_bones": false,
+    "export_morph": true,
+    "export_morph_normal": true,
+    "export_morph_animation": true,
+    "export_normals": true,
+    "export_texcoords": true,
+    "export_vertex_color": "ACTIVE",
+    "export_all_vertex_colors": true,
+    "export_optimize_animation_size": true,
+    "export_optimize_animation_keep_anim_armature": true
+  },
+  "materials": [
+    {
+      "doubleSided": false,
+      "extensions": {
+        "KHR_materials_clearcoat": {
+          "clearcoatFactor": 0.8500000238418579,
+          "clearcoatRoughnessFactor": 0.04500000178813934
+        },
+        "KHR_materials_transmission": {
+          "transmissionFactor": 0.8799999952316284
+        },
+        "KHR_materials_volume": {
+          "attenuationColor": [
+            0.5225215554237366,
+            0.868899405002594,
+            1
+          ],
+          "attenuationDistance": 4.499999966472387,
+          "thicknessFactor": 0.3400000035762787
+        },
+        "KHR_materials_ior": {
+          "ior": 1.399999976158142
+        }
+      },
+      "name": "MAT_Sprout_GlassLuminous_v003",
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0,
+        "roughnessFactor": 0.05999999865889549
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "MAT_Sprout_Eyes",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.003000000026077032,
+          0.008999999612569809,
+          0.02800000086426735,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.23000000417232513
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "MAT_Sprout_Glints",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.9599999785423279,
+          0.9900000095367432,
+          1,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.15000000596046448
+      }
+    },
+    {
+      "doubleSided": true,
+      "extensions": {
+        "KHR_materials_clearcoat": {
+          "clearcoatFactor": 0.6499999761581421,
+          "clearcoatRoughnessFactor": 0.06499999761581421
+        }
+      },
+      "name": "MAT_Sprout_Lids_v003",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.001934984466060996,
+          0.1873166710138321,
+          0.9551045894622803,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.1599999964237213
+      }
+    },
+    {
+      "doubleSided": true,
+      "emissiveFactor": [
+        1,
+        1,
+        1
+      ],
+      "emissiveTexture": {
+        "index": 0
+      },
+      "extensions": {
+        "KHR_materials_clearcoat": {
+          "clearcoatFactor": 0.03999999910593033,
+          "clearcoatRoughnessFactor": 0.10000000149011612
+        },
+        "KHR_materials_emissive_strength": {
+          "emissiveStrength": 1.100000023841858
+        }
+      },
+      "name": "MAT_Sprout_CoreLuminous_v003",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 1
+        },
+        "metallicFactor": 0,
+        "roughnessFactor": 0.15000000596046448
+      }
+    }
+  ],
+  "extensions": [
+    "KHR_materials_clearcoat",
+    "KHR_materials_transmission",
+    "KHR_materials_emissive_strength",
+    "KHR_materials_volume",
+    "KHR_materials_ior"
+  ],
+  "images": [
+    {
+      "bufferView": 48,
+      "mimeType": "image/png",
+      "name": "sprout-core-prism-v003"
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 0
+    }
+  ],
+  "texture": {
+    "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\textures\\sprout-core-prism-v003.png",
+    "sha256": "4dbae7a23b6e0755c5eb5b131aca8dcc93d0705b44331a937c696c0a18a8ec33",
+    "bytes": 10247,
+    "size": [
+      128,
+      64
+    ],
+    "colour_space": "sRGB, original analytically generated RGB8 PNG",
+    "UV": "Core_Light_UV, spherical parameterization before X narrowing, seam-unwrapped, repeat",
+    "source": "Equations in21_luminous_core.py. No reference pixels/texture scroll/runtime shader.",
+    "packed_in_blend": true,
+    "embedded_in_glb": true,
+    "linear_emissive_strength": 1.1,
+    "centre_palette_srgb": [
+      0.01,
+      0.34,
+      1
+    ],
+    "lower_lobe": {
+      "centre_nz": -0.4,
+      "width": 0.55,
+      "lateral_strength": 0.84,
+      "centre_mask_floor": 0.05
+    }
+  },
+  "core": {
+    "vertices": 610,
+    "bone": "BODY",
+    "narrowed_X_factor": 0.89,
+    "paired_morph_names": [
+      "Jelly_Squash",
+      "Jelly_Sway_L",
+      "Jelly_Sway_R"
+    ],
+    "clearance_samples": [
+      {
+        "clip": "Sprout_Idle",
+        "frame": 1,
+        "min_distance": 0.1195782870054245,
+        "outside_vertices": 0,
+        "max_signed_distance": -0.11957827425868572
+      },
+      {
+        "clip": "Sprout_Idle",
+        "frame": 37,
+        "min_distance": 0.11885108798742294,
+        "outside_vertices": 0,
+        "max_signed_distance": -0.11885081682066811
+      },
+      {
+        "clip": "Sprout_Idle",
+        "frame": 73,
+        "min_distance": 0.11900445073843002,
+        "outside_vertices": 0,
+        "max_signed_distance": -0.11900442913389497
+      },
+      {
+        "clip": "Sprout_Idle",
+        "frame": 109,
+        "min_distance": 0.11966215074062347,
+        "outside_vertices": 0,
+        "max_signed_distance": -0.11966186766079545
+      },
+      {
+        "clip": "Sprout_Idle",
+        "frame": 145,
+        "min_distance": 0.1195782870054245,
+        "outside_vertices": 0,
+        "max_signed_distance": -0.11957827425868572
+      },
+      {
+        "clip": "Sprout_Listen",
+        "frame": 1,
+        "min_distance": 0.12059689313173294,
+        "outside_vertices": 0,
+        "max_signed_distance": -0.12059687065567459
+      },
+      {
+        "clip": "Sprout_Listen",
+        "frame": 37,
+        "min_distance": 0.11976209282875061,
+        "outside_vertices": 0,
+        "max_signed_distance": -0.11976189196320774
+      },
+      {
+        "clip": "Sprout_Listen",
+        "frame": 73,
+        "min_distance": 0.11982934176921844,
+        "outside_vertices": 0,
+        "max_signed_distance": -0.11982934366003817
+      },
+      {
+        "clip": "Sprout_Listen",
+        "frame": 109,
+        "min_distance": 0.12059860676527023,
+        "outside_vertices": 0,
+        "max_signed_distance": -0.12059837626668468
+      },
+      {
+        "clip": "Sprout_Listen",
+        "frame": 145,
+        "min_distance": 0.12059689313173294,
+        "outside_vertices": 0,
+        "max_signed_distance": -0.12059687065567459
+      },
+      {
+        "clip": "Sprout_Think",
+        "frame": 1,
+        "min_distance": 0.11907986551523209,
+        "outside_vertices": 0,
+        "max_signed_distance": -0.11907983859418891
+      },
+      {
+        "clip": "Sprout_Think",
+        "frame": 37,
+        "min_distance": 0.1182323694229126,
+        "outside_vertices": 0,
+        "max_signed_distance": -0.11823067895602435
+      },
+      {
+        "clip": "Sprout_Think",
+        "frame": 73,
+        "min_distance": 0.1184898242354393,
+        "outside_vertices": 0,
+        "max_signed_distance": -0.11848979519345448
+      },
+      {
+        "clip": "Sprout_Think",
+        "frame": 109,
+        "min_distance": 0.11906388401985168,
+        "outside_vertices": 0,
+        "max_signed_distance": -0.11906188185093924
+      },
+      {
+        "clip": "Sprout_Think",
+        "frame": 145,
+        "min_distance": 0.11907986551523209,
+        "outside_vertices": 0,
+        "max_signed_distance": -0.11907983859418891
+      },
+      {
+        "clip": "Sprout_Speak",
+        "frame": 1,
+        "min_distance": 0.11993849277496338,
+        "outside_vertices": 0,
+        "max_signed_distance": -0.119938469616784
+      },
+      {
+        "clip": "Sprout_Speak",
+        "frame": 37,
+        "min_distance": 0.11898351460695267,
+        "outside_vertices": 0,
+        "max_signed_distance": -0.11898323807963607
+      },
+      {
+        "clip": "Sprout_Speak",
+        "frame": 73,
+        "min_distance": 0.11979806423187256,
+        "outside_vertices": 0,
+        "max_signed_distance": -0.11979804050406528
+      },
+      {
+        "clip": "Sprout_Speak",
+        "frame": 109,
+        "min_distance": 0.11910819262266159,
+        "outside_vertices": 0,
+        "max_signed_distance": -0.11910790752762068
+      },
+      {
+        "clip": "Sprout_Speak",
+        "frame": 145,
+        "min_distance": 0.11993849277496338,
+        "outside_vertices": 0,
+        "max_signed_distance": -0.119938469616784
+      }
+    ]
+  },
+  "animations": [
+    {
+      "name": "Sprout_Click",
+      "channels": [
+        {
+          "node": "REACTION_ROOT",
+          "path": "rotation"
+        },
+        {
+          "node": "REACTION_ROOT",
+          "path": "scale"
+        }
+      ]
+    },
+    {
+      "name": "Sprout_Idle",
+      "channels": [
+        {
+          "node": "ROOT",
+          "path": "translation"
+        },
+        {
+          "node": "ROOT",
+          "path": "rotation"
+        },
+        {
+          "node": "ROOT",
+          "path": "scale"
+        },
+        {
+          "node": "BODY",
+          "path": "translation"
+        },
+        {
+          "node": "BODY",
+          "path": "rotation"
+        },
+        {
+          "node": "BODY",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "translation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "rotation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "scale"
+        },
+        {
+          "node": "SPROUT_BODY",
+          "path": "weights"
+        },
+        {
+          "node": "SPROUT_CORE",
+          "path": "weights"
+        }
+      ]
+    },
+    {
+      "name": "Sprout_Listen",
+      "channels": [
+        {
+          "node": "ROOT",
+          "path": "translation"
+        },
+        {
+          "node": "ROOT",
+          "path": "rotation"
+        },
+        {
+          "node": "ROOT",
+          "path": "scale"
+        },
+        {
+          "node": "BODY",
+          "path": "translation"
+        },
+        {
+          "node": "BODY",
+          "path": "rotation"
+        },
+        {
+          "node": "BODY",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "translation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "rotation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "scale"
+        },
+        {
+          "node": "SPROUT_BODY",
+          "path": "weights"
+        },
+        {
+          "node": "SPROUT_CORE",
+          "path": "weights"
+        }
+      ]
+    },
+    {
+      "name": "Sprout_Think",
+      "channels": [
+        {
+          "node": "ROOT",
+          "path": "translation"
+        },
+        {
+          "node": "ROOT",
+          "path": "rotation"
+        },
+        {
+          "node": "ROOT",
+          "path": "scale"
+        },
+        {
+          "node": "BODY",
+          "path": "translation"
+        },
+        {
+          "node": "BODY",
+          "path": "rotation"
+        },
+        {
+          "node": "BODY",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "translation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "rotation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "scale"
+        },
+        {
+          "node": "SPROUT_BODY",
+          "path": "weights"
+        },
+        {
+          "node": "SPROUT_CORE",
+          "path": "weights"
+        }
+      ]
+    },
+    {
+      "name": "Sprout_Speak",
+      "channels": [
+        {
+          "node": "ROOT",
+          "path": "translation"
+        },
+        {
+          "node": "ROOT",
+          "path": "rotation"
+        },
+        {
+          "node": "ROOT",
+          "path": "scale"
+        },
+        {
+          "node": "BODY",
+          "path": "translation"
+        },
+        {
+          "node": "BODY",
+          "path": "rotation"
+        },
+        {
+          "node": "BODY",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "translation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "rotation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "scale"
+        },
+        {
+          "node": "SPROUT_BODY",
+          "path": "weights"
+        },
+        {
+          "node": "SPROUT_CORE",
+          "path": "weights"
+        }
+      ]
+    },
+    {
+      "name": "Sprout_Blink",
+      "channels": [
+        {
+          "node": "LID_L",
+          "path": "scale"
+        },
+        {
+          "node": "LID_R",
+          "path": "scale"
+        }
+      ]
+    }
+  ],
+  "body_basis_unchanged": true,
+  "scope": "New unaccepted material checkpoint; no render/runtime promotion/live source mutation.",
+  "source_colour": {
+    "view_transform": "Khronos PBR Neutral",
+    "look": "None",
+    "exposure": 0.0
+  }
+}

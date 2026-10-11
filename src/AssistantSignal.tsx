@@ -26,6 +26,8 @@ export default function AssistantSignal({
   reaction = 0,
   blink = 0,
   gaze,
+  assetUrl,
+  reflectionProfile,
   onDiagnostics,
 }: {
   active?: boolean;
@@ -36,11 +38,23 @@ export default function AssistantSignal({
   reaction?: number;
   blink?: number;
   gaze?: { x: number; y: number } | null;
+  /** Owned local asset variant used by the material review studio. */
+  assetUrl?: string;
+  reflectionProfile?: 'rectangular' | 'tapered';
   onDiagnostics?: (diagnostics: BuddyRendererDiagnostics) => void;
 }) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const renderer = useRef<BuddyRenderer | null>(null);
-  const settings = useRef<BuddyRendererSettings>({ phase, motion, audio, reaction, blink, gaze });
+  const settings = useRef<BuddyRendererSettings>({
+    phase,
+    motion,
+    audio,
+    reaction,
+    blink,
+    gaze,
+    assetUrl,
+    reflectionProfile,
+  });
   const diagnosticsHandler = useRef(onDiagnostics);
   const [ready, setReady] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
@@ -51,13 +65,15 @@ export default function AssistantSignal({
   }, [onDiagnostics]);
 
   useEffect(() => {
-    settings.current = { phase, motion, audio, reaction, blink, gaze };
+    settings.current = { phase, motion, audio, reaction, blink, gaze, assetUrl, reflectionProfile };
     renderer.current?.update(settings.current);
-  }, [phase, motion, audio, reaction, blink, gaze]);
+  }, [phase, motion, audio, reaction, blink, gaze, assetUrl, reflectionProfile]);
 
   useEffect(() => {
     let cancelled = false;
     const controller = new AbortController();
+    setReady(false);
+    setAsset('loading');
     // Load the engine independently from the text, controls, and voice connection.
     void import('./buddyRenderer')
       .then(async ({ createBuddyRenderer }) => {
@@ -90,7 +106,7 @@ export default function AssistantSignal({
       renderer.current?.dispose();
       renderer.current = null;
     };
-  }, []);
+  }, [assetUrl, reflectionProfile]);
 
   return (
     <span
@@ -108,13 +124,17 @@ export default function AssistantSignal({
       {imageIndex < 2 && (
         <img
           className="signal-authored-image"
-          src={imageIndex === 0 ? '/buddy/sprout-v002.png' : '/buddy/insight-core-v1.png'}
+          src={imageIndex === 0 ? '/buddy/sprout-v003.png' : '/buddy/insight-core-v1.png'}
           alt=""
           draggable={false}
           onError={() => setImageIndex((index) => Math.min(2, index + 1))}
         />
       )}
-      <canvas ref={canvas} className="signal-canvas" />
+      <canvas
+        key={`${assetUrl ?? 'default'}:${reflectionProfile ?? 'default'}`}
+        ref={canvas}
+        className="signal-canvas"
+      />
     </span>
   );
 }

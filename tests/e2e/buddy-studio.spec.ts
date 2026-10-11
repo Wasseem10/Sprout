@@ -8,18 +8,29 @@ const previewStates = [
   ['Speaking', 'speaking'],
   ['Done', 'success'],
 ] as const;
+const selectedAsset = '/buddy/sprout-v003.glb';
+const selectedFallback = '/buddy/sprout-v003.png';
 
 function signal(page: Page) {
-  return page.locator('.studio-launcher .insight-signal');
+  return page.locator('.insight-signal:visible');
 }
 
 async function openStudio(page: Page) {
   await page.goto('/?studio=buddy');
   await expect(page.getByRole('button', { name: 'Expand conversation preview' })).toBeVisible();
+  await expect(page.locator('.insight-signal')).toHaveCount(1);
 }
 
 async function expectWebGL(page: Page) {
   await expect(signal(page)).toHaveAttribute('data-renderer', 'webgl', { timeout: 30000 });
+  await expect(signal(page)).toHaveAttribute('data-model', 'sprout');
+  // A previous Sprout or Ribbon fallback must not accidentally certify the selected material.
+  await expect
+    .poll(async () => {
+      const raw = await page.locator('.studio-render-report').getAttribute('data-diagnostics');
+      return raw ? (JSON.parse(raw) as { assetUrl: string }).assetUrl : null;
+    })
+    .toBe(selectedAsset);
 }
 
 async function expectStaticFrames(visual: Locator, explanation: string) {
@@ -45,19 +56,29 @@ test('studio previews five states and preserves a keyboard-controlled conversati
   await expect(page.getByRole('region', { name: 'Insight', exact: true })).toHaveCount(0);
 
   await page.getByRole('button', { name: 'Expand conversation preview' }).click();
-  const close = page.getByRole('button', { name: 'Close conversation panel' });
+  const close = page.getByRole('button', { name: 'Collapse conversation' });
   await expect(close).toBeFocused();
-  await page.getByLabel('Preview the message field').fill('Keep this local preview draft.');
-  await expect(
-    page.getByRole('button', { name: 'Send unavailable in visual preview' }),
-  ).toBeDisabled();
-  await page.getByLabel('Preview the message field').press('Escape');
+  await page.getByLabel('Tell your buddy what to do').fill('Keep this local preview draft.');
+  await expect(page.getByRole('button', { name: 'Send request' })).toBeEnabled();
+  await page.getByLabel('Tell your buddy what to do').press('Escape');
   const launcher = page.getByRole('button', { name: 'Expand conversation preview' });
   await expect(launcher).toBeFocused();
   await launcher.press('Enter');
-  await expect(page.getByLabel('Preview the message field')).toHaveValue(
+  await expect(page.getByLabel('Tell your buddy what to do')).toHaveValue(
     'Keep this local preview draft.',
   );
+
+  // An external studio motion=true must not override the panel's own Pause action.
+  await page.getByRole('button', { name: 'Resume motion', exact: true }).click();
+  await page.getByRole('button', { name: 'Tools', exact: true }).click();
+  await page.getByRole('button', { name: 'Pause avatar motion', exact: true }).click();
+  await expectStaticFrames(signal(page), 'The panel pause wins over external studio motion.');
+  await page.getByRole('button', { name: 'Tools', exact: true }).click();
+  await page.getByRole('button', { name: 'Resume avatar motion', exact: true }).click();
+  const resumedPanel = await signal(page).screenshot();
+  await page.waitForTimeout(450);
+  expect(resumedPanel.equals(await signal(page).screenshot())).toBe(false);
+  await page.getByRole('button', { name: 'Pause motion', exact: true }).click();
 
   for (const [label, phase] of previewStates) {
     const button = page.getByRole('button', { name: label, exact: true });
@@ -68,8 +89,8 @@ test('studio previews five states and preserves a keyboard-controlled conversati
       await expect(visual).toHaveAttribute('data-phase', phase);
       await expect(visual).toHaveAttribute('data-renderer', 'webgl');
     }
-    await expect(page.getByRole('status')).toContainText(label);
-    await expect(page.getByText(`${label} preview`, { exact: true })).toBeVisible();
+    await expect(page.locator('.studio-preview-status')).toContainText(label);
+    await expect(page.locator('.studio-real-panel .buddy')).toBeVisible();
   }
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   await page.setViewportSize({ width: 390, height: 844 });
@@ -126,6 +147,7 @@ test('a GPU failure uses the authored PNG and leaves preview controls usable', a
   });
   await openStudio(page);
   const authoredImage = signal(page).locator('.signal-authored-image');
+  await expect(authoredImage).toHaveAttribute('src', selectedFallback);
   await expect(authoredImage).toBeVisible();
   await expect
     .poll(() => authoredImage.evaluate((image) => (image as HTMLImageElement).naturalWidth))
@@ -134,13 +156,13 @@ test('a GPU failure uses the authored PNG and leaves preview controls usable', a
   await page.getByRole('button', { name: 'Listening', exact: true }).click();
   await expect(signal(page)).toHaveAttribute('data-phase', 'listening');
   await page.getByRole('button', { name: 'Expand conversation preview' }).click();
-  await expect(page.getByRole('button', { name: 'Close conversation panel' })).toBeFocused();
-  await page.getByLabel('Preview the message field').fill('Usable without a GPU.');
+  await expect(page.getByRole('button', { name: 'Collapse conversation' })).toBeFocused();
+  await page.getByLabel('Tell your buddy what to do').fill('Usable without a GPU.');
   await page.getByRole('button', { name: 'Done', exact: true }).click();
-  await expect(page.getByRole('status')).toContainText('Done');
+  await expect(page.locator('.studio-preview-status')).toContainText('Done');
   await page.getByRole('button', { name: 'Pause motion' }).click();
   await expect(page.getByRole('button', { name: 'Resume motion' })).toBeVisible();
-  await page.getByRole('button', { name: 'Close conversation panel' }).click();
+  await page.getByRole('button', { name: 'Collapse conversation' }).click();
   await expect(page.getByRole('button', { name: 'Expand conversation preview' })).toBeFocused();
   await expect(authoredImage).toBeVisible();
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
@@ -152,6 +174,9 @@ test('a lost WebGL context falls back to the PNG and recovers its animated model
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await openStudio(page);
+  await expectWebGL(page);
+  await page.getByRole('button', { name: 'Expand conversation preview' }).click();
+  await expect(page.getByRole('button', { name: 'Collapse conversation' })).toBeFocused();
   await expectWebGL(page);
   const visual = signal(page);
   const contextLoss = await visual
@@ -166,20 +191,22 @@ test('a lost WebGL context falls back to the PNG and recovers its animated model
   await contextLoss.evaluate((extension) => extension!.loseContext());
   await expect(visual).toHaveAttribute('data-renderer', 'fallback');
   const authoredImage = visual.locator('.signal-authored-image');
+  await expect(authoredImage).toHaveAttribute('src', selectedFallback);
   await expect(authoredImage).toBeVisible();
   await expect
     .poll(() => authoredImage.evaluate((image) => (image as HTMLImageElement).naturalWidth))
     .toBeGreaterThan(0);
 
-  await page.getByRole('button', { name: 'Expand conversation preview' }).click();
-  await expect(page.getByRole('button', { name: 'Close conversation panel' })).toBeFocused();
-  await page.getByLabel('Preview the message field').fill('Still here during graphics recovery.');
+  await page.getByLabel('Tell your buddy what to do').fill('Still here during graphics recovery.');
   await page.getByRole('button', { name: 'Thinking', exact: true }).click();
   await expect(visual).toHaveAttribute('data-phase', 'thinking');
   await expect(visual).toHaveAttribute('data-renderer', 'fallback');
-  await expect(page.getByRole('status')).toContainText('Thinking');
+  await expect(page.locator('.studio-preview-status')).toContainText('Thinking');
 
   await contextLoss.evaluate((extension) => extension!.restoreContext());
+  // Selecting a state scrolls to the controls below the real portrait panel.
+  // The renderer intentionally suspends offscreen; bring it back before requiring a draw.
+  await visual.scrollIntoViewIfNeeded();
   await expectWebGL(page);
   await expect(authoredImage).toBeHidden();
   const recoveredFrame = await visual.screenshot();
@@ -188,10 +215,11 @@ test('a lost WebGL context falls back to the PNG and recovers its animated model
     recoveredFrame.equals(await visual.screenshot()),
     'Restoring the GPU context must resume the rendered model animation.',
   ).toBe(false);
-  await page.getByRole('button', { name: 'Close conversation panel' }).click();
+  await page.getByRole('button', { name: 'Idle', exact: true }).click();
+  await page.getByRole('button', { name: 'Collapse conversation' }).click();
   await expect(page.getByRole('button', { name: 'Expand conversation preview' })).toBeFocused();
   await page.getByRole('button', { name: 'Expand conversation preview' }).click();
-  await expect(page.getByLabel('Preview the message field')).toHaveValue(
+  await expect(page.getByLabel('Tell your buddy what to do')).toHaveValue(
     'Still here during graphics recovery.',
   );
   expect(errors).toEqual([]);

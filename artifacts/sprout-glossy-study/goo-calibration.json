@@ -1,0 +1,31 @@
+{
+  "scope": "CPU projected-vertex calibration of the actual C export at its bind pose, 96CSSpx, actual renderer camera/span. No raster, specular or complete animated silhouette measurement; morph deltas are linear at this fixed skin pose.",
+  "assetSha256": "093e731f14b7b1bc4290b3b0124e6cfab48f8cbbde9b68141b93550d3ad4d4d5",
+  "fullSquash": {
+    "maxVertexPixels": 1.5328711879066093,
+    "rmsVertexPixels": 0.8855310295764415
+  },
+  "maximumOppositeCornerStep": {
+    "peakSeconds": 0.1351550360360548,
+    "response": 0.2962962962962963,
+    "baselineWeight": 0.019259259259259257,
+    "baselineMaxVertexPixels": 0.029521963618942104
+  },
+  "proposedTrials": [
+    {
+      "maximumCompression": 0.45,
+      "peakWeight": 0.13333333333333333,
+      "maxVertexPixels": 0.20438282505421457
+    },
+    {
+      "maximumCompression": 0.65,
+      "peakWeight": 0.1925925925925926,
+      "maxVertexPixels": 0.29521963618942104
+    },
+    {
+      "maximumCompression": 1,
+      "peakWeight": 0.2962962962962963,
+      "maxVertexPixels": 0.45418405567603237
+    }
+  ]
+}

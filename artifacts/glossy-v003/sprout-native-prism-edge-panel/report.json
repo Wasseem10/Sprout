@@ -1,0 +1,348 @@
+{
+  "checkedAt": "2026-10-11T04:21:29.116Z",
+  "assetSha256": "63bc8f0289634e03716732c6beefe2f3492d53d1f54ec04dd8e23d28fddf0a32",
+  "pass": true,
+  "kind": "Compiled UI in actual native Electron: bounded edge-clamping, reduced-motion and draft-preserving panel recording. No replay or performance acceptance; separate from embedded backend and live voice.",
+  "recordingActive": true,
+  "startupScope": "Warm avatar bootstrap: the initial development buddy rendered before this compiled-UI load. Fresh isolated process/profile, but avatar shaders may already be cached. Timings start at createBuddyRenderer, after its lazy engine import; navigation timing is separate.",
+  "timingScope": "Recording and functional assertions only; renderer diagnostics are incidental and do not establish frame cadence or cold startup.",
+  "servedAssets": [
+    {
+      "url": "http://127.0.0.1:5173/buddy/sprout-v003.glb",
+      "status": 200,
+      "contentType": "model/gltf-binary",
+      "contentEncoding": "none",
+      "bodyBytes": 1402276,
+      "binaryHeader": "glTF",
+      "version": 2,
+      "declaredBytes": 1402276,
+      "sha256": "63bc8f0289634e03716732c6beefe2f3492d53d1f54ec04dd8e23d28fddf0a32",
+      "timing": {
+        "startTime": 1791692487522.846,
+        "domainLookupStart": -1,
+        "domainLookupEnd": -1,
+        "connectStart": -1,
+        "secureConnectionStart": -1,
+        "connectEnd": -1,
+        "requestStart": -1,
+        "responseStart": 101.743,
+        "responseEnd": 102.198
+      }
+    }
+  ],
+  "startup": {
+    "webglReadyAttributeMsFromNavigation": 929.6000000238419,
+    "nextAnimationFrameMsFromNavigation": 898.7,
+    "resources": [
+      {
+        "durationMs": 102.09999990463257,
+        "transferSize": 1402576,
+        "encodedBodySize": 1402276,
+        "decodedBodySize": 1402276
+      }
+    ]
+  },
+  "diagnostics": {
+    "asset": "sprout",
+    "assetUrl": "/buddy/sprout-v003.glb",
+    "reflectionProfile": "tapered",
+    "toneMapping": "neutral",
+    "clips": [
+      "Sprout_Click",
+      "Sprout_Idle",
+      "Sprout_Listen",
+      "Sprout_Think",
+      "Sprout_Speak",
+      "Sprout_Blink"
+    ],
+    "assetIssues": [],
+    "vertices": 10967,
+    "triangles": 21600,
+    "frames": 40,
+    "intervalP95": 17,
+    "intervalMax": 33.200000000000045,
+    "missedBudgets": 1,
+    "renderP95": 3.1999999284744263,
+    "drawCalls": 21,
+    "resolution": "96 × 96",
+    "attention": {
+      "x": 0,
+      "y": 0,
+      "target": {
+        "x": 0,
+        "y": 0
+      },
+      "yaw": 0,
+      "pitch": 0,
+      "compression": 0
+    },
+    "materials": [
+      {
+        "name": "MAT_Sprout_ClearPrismRim_v003",
+        "type": "MeshPhysicalMaterial",
+        "opacity": 1,
+        "roughness": 0.05999999865889549,
+        "metalness": 0,
+        "transmission": 0.8799999952316284,
+        "thickness": 0.3400000035762787,
+        "ior": 1.399999976158142,
+        "attenuationDistance": 4.499999966472387,
+        "attenuationColor": "bff0ff",
+        "clearcoat": 0.8500000238418579,
+        "emissiveColor": "000000",
+        "emissiveIntensity": 1,
+        "baseColorMap": null,
+        "emissiveMap": null
+      },
+      {
+        "name": "MAT_Sprout_CoreLuminous_v003",
+        "type": "MeshPhysicalMaterial",
+        "opacity": 1,
+        "roughness": 0.15000000596046448,
+        "metalness": 0,
+        "transmission": 0,
+        "thickness": 0,
+        "ior": 1.5,
+        "attenuationDistance": null,
+        "attenuationColor": "ffffff",
+        "clearcoat": 0.03999999910593033,
+        "emissiveColor": "ffffff",
+        "emissiveIntensity": 1.100000023841858,
+        "baseColorMap": {
+          "colorSpace": "srgb",
+          "width": 128,
+          "height": 64
+        },
+        "emissiveMap": {
+          "colorSpace": "srgb",
+          "width": 128,
+          "height": 64
+        }
+      },
+      {
+        "name": "MAT_Sprout_Eyes",
+        "type": "MeshStandardMaterial",
+        "opacity": 1,
+        "roughness": 0.23000000417232513,
+        "metalness": 0,
+        "transmission": 0,
+        "thickness": 0,
+        "ior": 1.5,
+        "attenuationDistance": null,
+        "attenuationColor": "ffffff",
+        "clearcoat": 0,
+        "emissiveColor": "000000",
+        "emissiveIntensity": 1,
+        "baseColorMap": null,
+        "emissiveMap": null
+      },
+      {
+        "name": "MAT_Sprout_Glints",
+        "type": "MeshStandardMaterial",
+        "opacity": 1,
+        "roughness": 0.15000000596046448,
+        "metalness": 0,
+        "transmission": 0,
+        "thickness": 0,
+        "ior": 1.5,
+        "attenuationDistance": null,
+        "attenuationColor": "ffffff",
+        "clearcoat": 0,
+        "emissiveColor": "000000",
+        "emissiveIntensity": 1,
+        "baseColorMap": null,
+        "emissiveMap": null
+      },
+      {
+        "name": "MAT_Sprout_Lids_v003",
+        "type": "MeshPhysicalMaterial",
+        "opacity": 1,
+        "roughness": 0.1599999964237213,
+        "metalness": 0,
+        "transmission": 0,
+        "thickness": 0,
+        "ior": 1.5,
+        "attenuationDistance": null,
+        "attenuationColor": "ffffff",
+        "clearcoat": 0.6499999761581421,
+        "emissiveColor": "000000",
+        "emissiveIntensity": 1,
+        "baseColorMap": null,
+        "emissiveMap": null
+      }
+    ],
+    "startup": {
+      "assetBytes": 1402276,
+      "fetchMs": 109.29999995231628,
+      "parseMs": 25.700000047683716,
+      "gpuSetupMs": 504.6999999284744,
+      "firstRenderMs": 642.2999999523163
+    },
+    "memory": {
+      "geometries": 11,
+      "textures": 7,
+      "geometryAttributeBytes": 1289060,
+      "environmentColorBytesEstimate": 1572864,
+      "note": "Geometry bytes describe CPU attribute storage. Environment estimate is one RGBA16F target; neither measures total GPU allocation or driver overhead."
+    }
+  },
+  "rendererReport": "Renderer measurementSprout · 10,967 vertices · 21 draw calls · 96 × 9640 rendered frames · p95 interval 17.0ms · max 33.2ms · 1 intervals above 18ms · p95 render call 3.20ms1369 KiB asset · fetch 109.3ms · parse 25.7ms · first model render 642.3ms11 geometries · 7 textures. Total GPU memory is unavailable from WebGL.Local render-clock samples, not a verified presented-frame or real voice report.",
+  "animationFrameClock": {
+    "samples": 0,
+    "p95": 0,
+    "max": 0,
+    "over18ms": 0,
+    "intervalSamples": [],
+    "outliers": []
+  },
+  "gpu": {
+    "vendor": "Google Inc. (NVIDIA)",
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5050 Laptop GPU (0x00002DD8) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "width": 96,
+    "height": 96
+  },
+  "gpuInfo": {
+    "features": {
+      "2d_canvas": "enabled",
+      "direct_rendering_display_compositor": "disabled_off_ok",
+      "gpu_compositing": "enabled",
+      "multiple_raster_threads": "enabled_on",
+      "opengl": "enabled_on",
+      "rasterization": "enabled",
+      "raw_draw": "disabled_off_ok",
+      "skia_graphite": "disabled_off",
+      "trees_in_viz": "disabled_off",
+      "video_decode": "enabled",
+      "video_encode": "enabled",
+      "webgl": "enabled",
+      "webgpu": "enabled",
+      "webnn": "disabled_off"
+    },
+    "info": {
+      "auxAttributes": {
+        "amdSwitchable": false,
+        "canSupportThreadedTextureMailbox": false,
+        "directMLFeatureLevel": "Not supported",
+        "displayType": "ANGLE_D3D11",
+        "dx12FeatureLevel": "Not supported",
+        "glExtensions": "GL_AMD_performance_monitor GL_ANGLE_base_vertex_base_instance_shader_builtin GL_ANGLE_blob_cache GL_ANGLE_client_arrays GL_ANGLE_clip_cull_distance GL_ANGLE_copy_texture_3d GL_ANGLE_depth_texture GL_ANGLE_framebuffer_blit GL_ANGLE_framebuffer_multisample GL_ANGLE_get_serialized_context_string GL_ANGLE_get_tex_level_parameter GL_ANGLE_instanced_arrays GL_ANGLE_memory_size GL_ANGLE_multiview_multisample GL_ANGLE_pack_reverse_row_order GL_ANGLE_polygon_mode GL_ANGLE_program_binary_readiness_query GL_ANGLE_program_cache_control GL_ANGLE_provoking_vertex GL_ANGLE_renderability_validation GL_ANGLE_request_extension GL_ANGLE_robust_client_memory GL_ANGLE_shader_pixel_local_storage GL_ANGLE_shader_pixel_local_storage_coherent GL_ANGLE_stencil_texturing GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_ANGLE_texture_multisample GL_ANGLE_texture_usage GL_ANGLE_translated_shader_source GL_APPLE_clip_distance GL_ARM_rgba8 GL_CHROMIUM_bind_generates_resource GL_CHROMIUM_bind_uniform_location GL_CHROMIUM_copy_compressed_texture GL_CHROMIUM_copy_texture GL_CHROMIUM_lose_context GL_EXT_EGL_image_external_wrap_modes GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_conservative_depth GL_EXT_debug_label GL_EXT_debug_marker GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB GL_EXT_shader_texture_lod GL_EXT_texture_border_clamp GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_filter_anisotropic GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_rg GL_EXT_texture_storage GL_EXT_texture_type_2_10_10_10_REV GL_EXT_unpack_subimage GL_KHR_debug GL_KHR_parallel_shader_compile GL_KHR_robustness GL_NV_EGL_stream_consumer_external GL_NV_fence GL_NV_framebuffer_blit GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_shader_noperspective_interpolation GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_depth24 GL_OES_depth32 GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_get_program_binary GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_variables GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_surfaceless_context GL_OES_texture_border_clamp GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_vertex_array_object GL_OVR_multiview GL_OVR_multiview2 ",
+        "glImplementationParts": "(gl=egl-angle,angle=d3d11)",
+        "glRenderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5050 Laptop GPU (0x00002DD8) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.9597)",
+        "glResetNotificationStrategy": 33362,
+        "glVendor": "Google Inc. (NVIDIA)",
+        "glVersion": "OpenGL ES 3.0 (ANGLE 2.1.28499 git hash: 30dd6b5278dd)",
+        "glWsExtensions": "EGL_EXT_create_context_robustness EGL_ANGLE_d3d_share_handle_client_buffer EGL_ANGLE_d3d_texture_client_buffer EGL_ANGLE_surface_d3d_texture_2d_share_handle EGL_ANGLE_query_surface_pointer EGL_ANGLE_window_fixed_size EGL_ANGLE_keyed_mutex EGL_ANGLE_surface_orientation EGL_ANGLE_direct_composition EGL_NV_post_sub_buffer EGL_KHR_create_context EGL_KHR_image EGL_KHR_image_base EGL_KHR_gl_texture_2D_image EGL_KHR_gl_texture_cubemap_image EGL_KHR_gl_renderbuffer_image EGL_KHR_get_all_proc_addresses EGL_KHR_stream EGL_KHR_stream_consumer_gltexture EGL_NV_stream_consumer_gltexture_yuv EGL_ANGLE_stream_producer_d3d_texture EGL_ANGLE_create_context_webgl_compatibility EGL_CHROMIUM_create_context_bind_generates_resource EGL_CHROMIUM_sync_control EGL_EXT_pixel_format_float EGL_KHR_surfaceless_context EGL_ANGLE_display_texture_share_group EGL_ANGLE_display_semaphore_share_group EGL_ANGLE_create_context_client_arrays EGL_ANGLE_program_cache_control EGL_ANGLE_robust_resource_initialization EGL_ANGLE_create_context_extensions_enabled EGL_ANDROID_blob_cache EGL_ANDROID_recordable EGL_ANGLE_image_d3d11_texture EGL_ANGLE_create_context_backwards_compatible EGL_KHR_no_config_context EGL_KHR_create_context_no_error EGL_KHR_reusable_sync EGL_ANGLE_memory_usage_report ",
+        "glWsVendor": "Google Inc. (NVIDIA)",
+        "glWsVersion": "1.5 (ANGLE 2.1.28499 git hash: 30dd6b5278dd)",
+        "inProcessGpu": false,
+        "initializationTime": 314.792,
+        "isAsan": false,
+        "isClangCoverage": false,
+        "jpegDecodeAcceleratorSupported": false,
+        "maxMsaaSamples": "8",
+        "optimus": false,
+        "overlayInfo": {
+          "bgra8OverlaySupport": "SOFTWARE",
+          "directComposition": true,
+          "nv12OverlaySupport": "SOFTWARE",
+          "p010OverlaySupport": "SOFTWARE",
+          "rgb10a2OverlaySupport": "SOFTWARE",
+          "supportsOverlays": true,
+          "yuy2OverlaySupport": "SOFTWARE"
+        },
+        "passthroughCmdDecoder": true,
+        "pixelShaderVersion": "5.0",
+        "sandboxed": true,
+        "skiaBackendType": "GaneshGL",
+        "subpixelFontRendering": true,
+        "supportsD3dSharedImages": true,
+        "supportsDirectML": false,
+        "supportsDx12": false,
+        "supportsVulkan": false,
+        "targetCpuBits": 64,
+        "vertexShaderVersion": "5.0",
+        "videoDecodeAcceleratorSupportedProfile": {
+          "encrypted_only": false,
+          "maxResolutionHeight": 8192,
+          "maxResolutionWidth": 8192,
+          "minResolutionHeight": 144,
+          "minResolutionWidth": 144,
+          "profile": 29
+        },
+        "visibilityCallbackCallCount": 0,
+        "vulkanVersion": "Not supported"
+      },
+      "gpuDevice": [
+        {
+          "active": true,
+          "deviceId": 11736,
+          "deviceString": "NVIDIA GeForce RTX 5050 Laptop GPU",
+          "driverVendor": "NVIDIA",
+          "driverVersion": "32.0.15.9597",
+          "gpuPreference": 3,
+          "revision": 161,
+          "subSysId": 1037834154,
+          "vendorId": 4318
+        },
+        {
+          "active": false,
+          "deviceId": 6401,
+          "deviceString": "AMD Radeon 740M Graphics",
+          "driverVersion": "32.0.21030.11004",
+          "gpuPreference": 2,
+          "revision": 200,
+          "subSysId": 1037834154,
+          "vendorId": 4098
+        },
+        {
+          "active": false,
+          "deviceId": 140,
+          "deviceString": "Microsoft Basic Render Driver",
+          "driverVersion": "10.0.26100.9278",
+          "gpuPreference": 0,
+          "revision": 0,
+          "subSysId": 0,
+          "vendorId": 5140
+        }
+      ]
+    }
+  },
+  "errors": [],
+  "apiCalls": [],
+  "edgeClosed": {
+    "bounds": {
+      "x": 1624,
+      "y": 904,
+      "width": 296,
+      "height": 128
+    },
+    "workArea": {
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1032
+    }
+  },
+  "edgeOpen": {
+    "bounds": {
+      "x": 1512,
+      "y": 360,
+      "width": 408,
+      "height": 672
+    },
+    "workArea": {
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1032
+    }
+  },
+  "edgeReducedReopen": {
+    "draftPreserved": true,
+    "closeFocused": true,
+    "reducedMotionPixelsEqualAcross450ms": true,
+    "physicalMonitorChangesTested": false
+  },
+  "panelVideo": "Actual native edge placement/clamping, open/unsent draft/collapse/keyboard reopen, focus and draft preservation, system-reduced-motion static pixels. No conversation or microphone request.",
+  "video": "D:\\hackathon2026\\insightos-ui\\artifacts\\glossy-v003\\sprout-native-prism-edge-panel\\native-edge-panel.webm"
+}

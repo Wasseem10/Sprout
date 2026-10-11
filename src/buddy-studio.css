@@ -269,8 +269,21 @@
     background 160ms ease;
 }
 .studio-preview.is-expanded .studio-launcher {
-  left: 23%;
-  transform: translate(-50%, -50%);
+  display: none;
+}
+.studio-preview.is-expanded {
+  min-height: 824px;
+}
+.studio-real-panel {
+  position: relative;
+  width: min(408px, 100%);
+  margin: 74px auto 60px;
+}
+.studio-real-panel[hidden] {
+  display: none;
+}
+.studio-preview .studio-launcher {
+  min-width: min(100%, calc(var(--studio-signal-size, 96px) + 32px));
 }
 .studio-preview-status {
   position: absolute;

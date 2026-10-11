@@ -6,24 +6,33 @@ import { createHash } from 'node:crypto';
 import { mkdtemp, mkdir, readFile, rename, unlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import {
+  proofAssetFile,
+  proofCanonicalFile,
+  proofAssetUrl,
+  proofOutputPath,
+  proofLocalDirectory,
+} from './buddy-proof-options.mjs';
 
 const recordVideo = process.argv.includes('--record');
 const nativeVisibilityProof = process.argv.includes('--native-visibility');
 const artifacts = path.resolve(
-  nativeVisibilityProof
-    ? 'artifacts/buddy-voice-native-visibility'
-    : 'artifacts/buddy-voice-native-final',
+  proofOutputPath(
+    nativeVisibilityProof
+      ? 'artifacts/buddy-voice-native-visibility'
+      : 'artifacts/buddy-voice-native-final',
+  ),
 );
-const assetBytes = await readFile('public/buddy/sprout-v002.glb');
+const assetBytes = await readFile(path.join('public/buddy', proofAssetFile));
 const assetSha256 = createHash('sha256').update(assetBytes).digest('hex');
 assert.equal(
   assetSha256,
   createHash('sha256')
-    .update(await readFile('design/buddy/sprout/sprout-prism-v002.glb'))
+    .update(await readFile(path.join('design/buddy/sprout', proofCanonicalFile)))
     .digest('hex'),
   'Runtime and canonical Sprout exports must match.',
 );
-const local = path.resolve('.local');
+const local = path.resolve(proofLocalDirectory);
 await mkdir(local, { recursive: true });
 await mkdir(artifacts, { recursive: true });
 const isolatedData = await mkdtemp(path.join(tmpdir(), 'insightos-voice-smoke-'));
@@ -228,7 +237,7 @@ try {
   const assetInspections = [];
   page.on('pageerror', (error) => errors.push(error.message));
   page.on('response', (response) => {
-    if (new URL(response.url()).pathname !== '/buddy/sprout-v002.glb') return;
+    if (new URL(response.url()).pathname !== proofAssetUrl) return;
     const inspection = (async () => {
       const bytes = await response.body();
       const served = {

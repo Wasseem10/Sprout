@@ -6,11 +6,17 @@ import { createHash } from 'node:crypto';
 import { mkdtemp, mkdir, readFile, unlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import {
+  proofAssetFile,
+  proofAssetUrl,
+  proofOutputPath,
+  proofLocalDirectory,
+} from './buddy-proof-options.mjs';
 
-const local = path.resolve('.local');
-const artifacts = path.resolve('artifacts');
+const local = path.resolve(proofLocalDirectory);
+const artifacts = path.resolve(proofOutputPath('artifacts'));
 const assetSha256 = createHash('sha256')
-  .update(await readFile('public/buddy/sprout-v002.glb'))
+  .update(await readFile(path.join('public/buddy', proofAssetFile)))
   .digest('hex');
 await mkdir(local, { recursive: true });
 await mkdir(artifacts, { recursive: true });
@@ -99,7 +105,18 @@ try {
       });
     return route.fulfill({ json: {} });
   });
+  const avatarResponse = page.waitForResponse(
+    (response) => new URL(response.url()).pathname === proofAssetUrl,
+  );
   await page.reload();
+  const servedAvatar = await avatarResponse;
+  assert.equal(servedAvatar.status(), 200);
+  assert.equal(
+    createHash('sha256')
+      .update(await servedAvatar.body())
+      .digest('hex'),
+    assetSha256,
+  );
   await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'closed');
   await expect(page.locator('.buddy-face .insight-signal')).toHaveAttribute(
     'data-renderer',
@@ -309,14 +326,13 @@ try {
   );
   await capture('buddy-panel-native-reduced-motion.png');
 
+  await page.getByRole('button', { name: 'Tools', exact: true }).click();
   await page.getByRole('button', { name: 'Settings and connections', exact: true }).click();
   await expect(page.getByRole('dialog', { name: 'Settings & connections' })).toBeVisible();
   assert.deepEqual((await nativeSnapshot()).bounds, edgeOpen.bounds);
   await page.getByRole('dialog', { name: 'Settings & connections' }).press('Escape');
   await expect(page.getByRole('dialog')).not.toBeVisible();
-  await expect(
-    page.getByRole('button', { name: 'Settings and connections', exact: true }),
-  ).toBeFocused();
+  await expect(page.getByRole('button', { name: 'Tools', exact: true })).toBeFocused();
   await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'open');
   await expect(composer).toHaveValue(draft);
 
@@ -330,6 +346,7 @@ try {
     scrollTop: await page.locator('.buddy-feed').evaluate((element) => element.scrollTop),
   };
   assert.ok(workspaceReadingPosition.scrollTop >= 159);
+  await page.getByRole('button', { name: 'Tools', exact: true }).click();
   await page.getByRole('button', { name: 'Open full workspace', exact: true }).click();
   const returnButton = page.getByRole('button', { name: 'Return to desktop buddy ↗' });
   await expect(returnButton).toBeVisible();
@@ -554,6 +571,7 @@ try {
     nativeIpc:
       'actual handler; acknowledgement matches BrowserWindow/content bounds and caller request id; invalid request id rejected',
     rendererAssetAtCapture: model,
+    assetUrl: proofAssetUrl,
     assetSha256,
     initial,
     acknowledgement,
@@ -570,7 +588,7 @@ try {
     workspaceReadingPosition,
     workspaceRestoredReadingPosition,
     modalFocus:
-      'Escape closes Settings without collapsing the conversation and restores focus to Settings; draft retained',
+      'Escape closes Settings without collapsing the conversation and restores focus to Tools; draft retained',
     controlledBackgroundCaptures,
     zoomReview,
     focus: 'close on open/reopen, pet before hide and after collapsed',

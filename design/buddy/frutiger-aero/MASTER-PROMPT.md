@@ -1,129 +1,180 @@
-# Consolidated implementation prompt — Sprout / Prism
+# Sprout / Prism — glossy refinement launch prompt
 
-Revision **5**, **2026-10-10**. Prepared for implementation or continuation with Astra Ultra and an optional persistent Goal. Reuse the implemented voice/rendering paths and continue from verified character/presentation work. This supersedes the earlier Ripple/required-steel brief. The portrait layout below defines the chosen direction; the current delivery guide records what is already built and reviewed.
+Revision **6**, **2026-10-10**. This implementation brief was prepared after reviewing the user's two-page reference PDF and delivered Sprout v002. Its implementation is recorded in the [v003 delivery guide](../sprout/DELIVERY-v003.md) and [refinement audit](../sprout/GLOSSY-REFINEMENT-AUDIT.md). The previous completion contract remains available in [revision 5](MASTER-PROMPT-v005.md); its outstanding external acceptance is not erased.
 
-The text under **Copyable prompt** is the full implementation brief. Its references provide detailed contracts and review recipes. Sprout and the panel are now implemented in this checkout; read [the delivery guide](../sprout/README.md) and [scene passport](../sprout/SCENE-PASSPORT.md) before choosing remaining work. This prompt is a reusable contract, not a claim that every acceptance check has passed.
+Copy the complete section below, or use [SPROUT-LAUNCH-PROMPT.txt](SPROUT-LAUNCH-PROMPT.txt). The [worker prompts](GLOSSY-SPROUT-PROMPT-PACK.md) divide the same work without competing file ownership.
 
 ## Copyable prompt
 
-Build the next visual version of **InsightOS** around **Sprout**, an original interactive jelly creature in the **Prism** palette. Create a beautiful, expressive floating companion and a compact expandable conversation panel. Scope this work to presentation, original assets and their UI integration. Preserve the cousin's backend, financial logic, OCR/database verification, provider sessions and existing voice/task interruption behavior.
+Implement the next visual refinement of InsightOS: a luminous, glossy, gently gooey **Sprout** in the **Prism** palette, paired with one beautifully restrained glass conversation panel. Continue from delivered Sprout v002. The user wants the blue to feel like glass with depth, lavender/coral to blend as undertones, the whole creature to gently follow the pointer, and the expanded panel to lose redundant copy and controls.
 
-### Execution and completion
+Complete the authorized local implementation, inspect the real application, correct visible defects and deliver reviewable evidence. A concept image or Blender beauty render alone is not the finished result. Make routine reversible decisions without reconfirmation. The first review checkpoint is **the existing control plus two real material candidates, a whole-body attention proof, and one stripped-down glass panel**. Continue from that checkpoint toward the best measured result; it is not an automatic approval stop.
 
-Implement this brief now. Make reasonable visual and reversible implementation decisions from the selected references. Continue through asset creation, integration, running the app, inspecting the actual result and correcting observed defects. Planning, generated concept images and a first unreviewed implementation are intermediate outputs. The packet's planning/status labels describe the baseline; this prompt authorizes implementation within the stated scope, without reconfirming routine local work.
+### 1. Working context, scope and ownership
 
-First read `design/buddy/sprout/README.md` and `SCENE-PASSPORT.md`, inspect the current diff and compare the delivered evidence to this contract. Continue from the existing implementation. Do not rebuild a completed milestone, regenerate the approved character, replace existing voice, or add a framework merely because it appears in a reference. Reopen a passed check only when a relevant change, observed failure or evidence gap warrants it. Keep measured local fixtures, actual provider/device checks and unverified requirements distinct.
+Work in **D:\hackathon2026\insightos-ui**, branch **ui/presentation-polish**, with the existing draft UI PR https://github.com/Wasseem10/insightos/pull/1. Confirm checkout, current branch, applicable AGENTS instructions and local diff before edits. Fetch and inspect upstream changes without resetting, overwriting or automatically merging the cousin's work. Preserve unrelated edits. Keep UI work reviewable on this branch; existing authorization covers scoped commits/pushes and updating that draft. Do not merge, deploy production or send messages to the cousin as part of this brief.
 
-Work in **D:\hackathon2026\insightos-ui**, branch **ui/presentation-polish**, updating [the existing draft UI PR](https://github.com/Wasseem10/insightos/pull/1). The design packet is **D:\hackathon2026\insightos-ui\design\buddy\frutiger-aero**. Confirm checkout, branch and current changes before editing; fetch/compare upstream without resetting, switching or merging the cousin's work. Preserve unrelated changes. Continue local authoring, UI fixes, asset exports, appropriate checks and commits/pushes to this UI branch within the existing authorization. Production deployment and merging remain separate user decisions.
+Read these current delivery records first:
+- design/buddy/sprout/README.md
+- design/buddy/sprout/SCENE-PASSPORT.md
+- design/buddy/sprout/ACCEPTANCE-AUDIT.md
+- The current renderer/controller/panel code and package.json.
 
-Delegate independent reference review, panel implementation and verification when useful, with explicit file ownership. Name one live-Blender editor before scene work; other agents may inspect saved outputs but must not mutate that session. If Higgsfield generation/bridge modules are unavailable, use supported native Blender tools for the original asset and continue independent UI work. If the Blender host itself is unavailable, preserve partial outputs and report that concrete blocker rather than claiming an asset is finished. Optional generation with no verified price or spending allowance must not block Blender authoring.
+Then consult the design packet's ANIMATION-WORKFLOW.md, INTERACTION-MOTION-WORKFLOW.md, REFERENCE-RECIPES.md and HIGGSFIELD-UPSTREAM.md for compatible contracts. Their older inventory statements, Ripple/steel concepts, missing-audio descriptions and initial clay milestones are historical. Revision 6 supersedes their visual/material/layout directions where they conflict. Current source and the delivery records establish what already exists.
 
-The first milestone is a real clay Sprout with four exported clips working at actual sizes in the existing renderer. The overall finish line is the authored Prism Sprout and compact panel working in the current desktop app and web studio, with the evidence below. Complete current-host acceptance before a separately scoped R3F/Next packaging pass.
+The actual application uses **React 19, TypeScript, Vite 8, Electron 44 and direct Three.js 0.186**. Retain that stack. Next.js/R3F/Drei packaging is a separate future task; the unrelated Next application at D:\hackathon2026 is outside this work. Do not install Next.js, R3F, VRM, Mixamo, GSAP, Rapier or a state/animation library merely because earlier brainstorming mentioned it.
 
-Completion requires: editable Blender source plus a versioned validated GLB and PNG fallback; readable eyes/silhouette near 40–44px and 96px; clean Idle/Listen/Click/Blink playback and interrupted transitions; a usable open/type/stop/collapse/reopen flow preserving the draft and focus; tested reduced/paused-motion and no-WebGL paths; verified existing voice/task behavior plus supported output-level response; and recorded production performance on the reference desktop. Measure progress toward 60fps during active motion and correct visible stalls; report achieved intervals and any remaining shortfall honestly. Distinguish simulated studio signals from real local voice checks. Deliver stills, recordings, checks, asset provenance and the reviewable UI diff. An unavailable required proof is a reported blocker, not an assumed pass.
+Keep this task within avatar assets, rendering, UI presentation and necessary narrow integration. Preserve finance content/logic, server/shared APIs, OCR, database verification, task execution, permissions, provider sessions and ElevenLabs. Existing voice capture, playback, interruption and numeric presentation signals already work with local fixtures. Consume them; do not implement a second audio engine, microphone, provider or conversation architecture.
 
-### Inspect and preserve
+Delegate independent material, motion, panel and verification work with explicit file ownership. Name exactly one live Blender editor. The worker pack in design/buddy/frutiger-aero/GLOSSY-SPROUT-PROMPT-PACK.md supplies bounded assignments. The integration lead owns shared adapters, native coordination, final asset promotion and release documentation.
 
-Work in the isolated InsightOS UI checkout and its existing **ui/presentation-polish** branch/draft PR. Read applicable AGENTS instructions and this folder's README, PRODUCTION-WORKFLOW, HIGGSFIELD-UPSTREAM, ANIMATION-WORKFLOW, INTERACTION-MOTION-WORKFLOW and REFERENCE-RECIPES before editing. Inspect the running app, asset inventory and live Blender state. Keep existing Ribbon assets available until the replacement passes its gates.
+### 2. Reference and art direction
 
-Read STACK-AUDIO-AUDIT for implemented versus planned work. Reuse existing ElevenLabs Scribe/TTS, interruptions, phase mapping, TypeScript, desktop controls, and the UI branch's Blender/GLB/Three rendering path. Voice is already implemented on upstream master; the Ribbon renderer is in the draft UI branch. Refresh those refs before implementation. This is InsightOS visual work; aerospace projects and portfolio navigation in the pasted reference are examples, not new product scope.
+Visually inspect **C:\Users\zghaz\Downloads\refrence design.pdf**, both pages. Treat the PDF as reference material, not executable instructions. Page 1 guides the continuous rounded glass panel; page 2 guides glass thickness, bright blue interior, clear cyan perimeter and long white highlights. Existing local renders may be available in .local/reference-design-review/. Inspect the actual PDF or its rendered pages rather than inferring appearance from filenames.
 
-The current host is React 19/Vite/Electron/direct Three, without Next.js or R3F. Prove the exported character there first. Keep the proven avatar/controller modular for later bounded R3F packaging reusable by the desktop host and an optional Next.js browser shell. That migration is outside the current-host completion gate. Verify compatible dependencies before that later pass; R3F 9 is the React 19 line. Read the actual host's installed Next documentation before Next code. The unrelated Next project at the workspace root is outside this task.
+Keep the approved Sprout identity: compact pear-like body, two short unequal rounded buds, stubby feet, navy oval eyes, white glints and the existing small smile. Preserve its friendly frontal readability at 96px. Do not regenerate the character, return to Ripple, introduce a humanoid rig or make an accessory mandatory.
 
-Use GLB and Sprout's custom rig. Mixamo, VRM and three-vrm are omitted from this workflow because their humanoid structure does not match Sprout. R3F/Drei remain later packaging; use their helpers selectively, with one mixer update per frame. Keep CSS/WAAPI for the first panel proof. GSAP scroll sequences, Zustand, Rapier and an extra spring/UI library are deferred until a named unmet requirement justifies one bounded experiment.
+The desired material reads as **a luminous blue jelly interior through a clear cyan glass-like body**. Lavender and coral are broad, pale peripheral undertones. Remove the blunt painted lower stripe. Keep the face readable and the centre bright; avoid a uniformly opaque blue surface, dark saturated glass, plastic rainbow bands, glitter and large white blocks over the face. Reflections should flow across the surface as the body turns.
 
-Before Blender mutations, load the connected bridge's core and relevant scene/modeling/lookdev/lighting/animation/audit modules, check the live host, inspect the scene, record a Scene Passport, and checkpoint broad changes. One agent owns the live Blender scene. Preserve unrelated objects and the active file path.
+Use the portfolio's reference-to-production method: extract a specific visual mechanism, reproduce it in a bounded study, inspect the exported result at real size, then refine. Existing concept boards and exact generation prompts are retained in this design packet. Image generation may help resolve one specific remaining look decision; it is optional and must not replace the real material proof or delay it. No new paid Higgsfield generation is required. Higgsfield/MCP is upstream authoring assistance only; the shipped app must work from local assets without either service.
 
-Save owned versioned Sprout **.blend copies/checkpoints** and reconstruction scripts in this checkout while preserving the live active filepath and unrelated source files. This extends the historical Ribbon workflow's recovery-copy policy to deliver an editable Sprout source; its earlier exclusion of a final save does not prohibit these owned copies. Inspect that saved source and report its exact path.
+### 3. Preserve the baseline and author versioned candidates
 
-### Character and visual identity
+Preserve:
+- design/buddy/sprout/source/sprout-prism-v002.blend
+- design/buddy/sprout/sprout-prism-v002.glb
+- public/buddy/sprout-v002.glb and its PNG fallback
+- Existing Ribbon fallback and all previous evidence.
 
-Use the saved avatar board's **Sprout** column and the palette board's **Prism** column as visual references. Inspect them before authoring or using them in generation. Model a compact softly pear-shaped jelly body, two short unequal rounded buds, two stubby rounded feet/base lobes, large deep navy oval eyes and small white glints. Shorten the concept's long buds in the clay study, starting around 12–18% of body height. Keep a clear frontal face and stable deformation region. Defer the mouth until the eyes work at tiny size.
+The reviewed baseline commit is 02658748134e86b7de3c27356dc03242130fec50; inspect any newer changes rather than reverting to it. The v002 canonical GLB hash is 34cd83c23c60afedbf6edd9e9e337af4715a6f60070fe59ca90b9a8b7a73d756. Verify the actual inventory before relying on it. It currently contains nine bones, three body morphs and six clips: Sprout_Idle, Sprout_Listen, Sprout_Think, Sprout_Speak, Sprout_Click and Sprout_Blink.
 
-Keep blue/aqua dominant, with one graceful violet-to-coral side/lower sweep and broad controlled white reflections. Encode color with portable vertex color or a baked texture. Keep eyes opaque and independently editable. Supports are optional and deferred; the first proof floats with its feet visible.
+Use a new version such as v003 after checking for filename collisions. Save editable owned .blend copies and reconstruction/refinement scripts. Preserve unrelated Blender scenes/objects and the live active filepath. Inspect the live scene and checkpoint before mutation; do not rerun old construction scripts blindly over the saved master. A separate background Blender process is suitable for read-only renders.
 
-Use image generation for annotated original concepts and matched look studies. Follow the portfolio method: reference extraction → clay and poses → matched lighting → actual exported asset → final-size critique. Record exact prompts, provenance and observed corrections. Generated miniatures are not application measurements.
+Compare three candidates with the same silhouette, pose, camera, exposure and light arrangement:
+A. Existing v002 control.
+B. One closed body using physical transmission plus meaningful thickness, volume and attenuation.
+C. A clear outer body with one inset blue core, if that layering better reproduces the reference.
 
-### Higgsfield upstream, Blender quality control
+Keep B and C separate for review. The previous transmission study lacked volume/thickness; do not treat it as proof that volumetric glass cannot work. Split lids from the body's transmissive material: body and lids currently share MAT_Sprout_Prism. Eyes, lids, glints and smile must remain reliably readable and opaque where appropriate.
 
-Use a hybrid authoring route when it helps. A supported Higgsfield text/image-to-3D job or editable 3D Jutsu scene may supply an initial mesh or scene blockout. Preserve the untouched output and its provenance. Inspect scale, axes, origins, disconnected geometry, normals, topology, UVs, materials and any actual skins/morphs/clips. Clean, redesign or retopologize in Blender until the approved silhouette and deformation structure work.
+For candidate C, an initial experiment may use transmission 0.80–0.92, roughness 0.08–0.14, metalness 0, IOR 1.33–1.40, clearcoat 0.7–1, coat roughness 0.04–0.08, thickness 0.25–0.60 current model units, and pale-blue attenuation distance 3–6. These are tunable starting ranges, not fixed acceptance values. Avoid double-darkening with both saturated surface colour and strong blue absorption. Start the core around 78–86% of the central lobe width so the buds, feet and perimeter retain visible clarity.
 
-Establish local proxies and camera framing before resolving generated assets. For a generated candidate, discover current tool schemas and a non-spending estimate, report the selected model/parameters/cost, then submit within the user's authorized scope. Do not use a paid submission to discover price. If the connected tool set cannot express or estimate that job, record the gap and continue with an original Blender-authored mesh. Local blocking uses no generation credits.
+If a core is selected, it must follow the same authored skin/morph motion and remain inside the shell during combined extremes. Prove this in motion; a rigid core acceptable in one still is insufficient. Preserve correct normals, morph-normal deltas and face attachment. Update semantic manifests and channel ownership checks deliberately when geometry changes; never silence assertions to pass a new asset.
 
-Treat generated motion as an optional editable starting study. Verify rig compatibility, retarget/bake useful channels to Sprout's controls, and refine normal Blender keyframes. Human motion or video is not evidence of a working Sprout rig or GLB animation. Standalone 3D Jutsu export is an intake path, not proof that all desired controls/materials survived.
+Export portable GLB materials and supported extensions. Verify actual KHR_materials_transmission, KHR_materials_volume, IOR and nonzero thickness in the export. Keep physical transmission separate from alpha opacity; start with opacity 1 and document thickness units/attenuation. Blender node graphs and Cycles effects do not transfer automatically. Preserve topology for existing deformation data; any topology change requires rebuilding and checking affected weights/morphs. Keep a canonical uncompressed GLB, manifest, validator report and authored transparent PNG fallback.
 
-Higgsfield remains upstream authoring only. Ship owned/versioned local GLBs, textures and fallbacks. Viewing or interacting with Sprout must work without a Higgsfield API, MCP server, temporary result URL or live authoring session.
+The selected result must look convincing in the actual browser and Electron renderer at **44, 96, 160 and 320 CSS pixels**, including bright, dark and busy backgrounds. Prioritize the normal 96px companion and 44px face readability over a large marketing render.
 
-### Geometry, rig and clean animation
+### 4. Whole-body attention, goo and responsive highlights
 
-Keep an editable source and a separate runtime basis. Finalize runtime topology, normals and UVs before skinning and relative shape keys. Initially use one verified runtime mesh; add LODs only for measured need, with corresponding weights/morphs independently proved. Preserve broad highlights and silhouette during reductions.
+Inspect src/buddyRenderer.ts and src/buddyMotionController.ts before changing motion. Sprout currently follows with gaze nodes while the existing outer mount does not receive the Ribbon branch's attention rotation.
 
-Follow ANIMATION-WORKFLOW's minimal nine-bone FK rig, three broad body-jelly keys, stable face patch, separate lids and unkeyed gaze. Author the four initial clips **Sprout_Idle, Sprout_Listen, Sprout_Click, Sprout_Blink** before Think/Speak. Start at 24fps authoring/sampling; increase short-reaction sampling only if exported playback visibly needs it. Match loop endpoint pose and seam velocity. Inspect combined extreme poses, animated bounds and face intersections.
+Give the unkeyed outer mount above SPROUT_ROOT sole ownership of whole-character attention yaw/pitch. Start around **±10 degrees yaw and ±6 degrees pitch**, with no pointer-driven roll. Verify signs against the current camera: rightward pointer should turn the creature toward it; upward pointer should tilt attention upward. Use elapsed-time damping, starting around lambda 8–10, so the existing faster eyes lead and the body follows gently.
 
-Give every animated property one owner. One base mixer/compositor owns body bones and the whole body morph vector. Click owns its reaction root, blink its lids, gaze its unkeyed nodes. Retarget current action weights from the visible mixture; never reset an action while it still contributes. Guard completion callbacks with action identity/current operation tokens.
+Use finite, clamped local avatar/panel pointer coordinates and a stable interaction region. Return smoothly to neutral on pointer leave, blur or invalid tracking; reset appropriately when hidden/restored. No global OS pointer capture. Visual rotation must not move the DOM hit target, trigger window dragging or jitter native bounds. Size the render framing for rotated animated geometry.
 
-The local controller combines authored GLB clips with live phase, pointer and optional audio inputs. Individual pose updates require no AI/server request. Authored clips are reusable motion components of this interactive system.
+Strengthen restrained softness: a small delayed settle, subtle body compression/recovery and soft bud lag where the rig allows. Keep the face stable, feet coherent and motion calm. Do not make Sprout constantly wobble, spin or behave like a liquid simulation. Route body deformation through the existing authoritative morph compositor. Every animated property has one owner: base bones/morph vector, click reaction root, lids/blink, gaze and outer attention mount must not compete.
 
-Advance the mixer once per rendered frame using elapsed seconds. Use elapsed-time damping for gaze and reset the clock after hidden/restored periods. Target 60fps during active reactions/panel transitions, verified on the reference desktop; existing 15/30fps caps are a baseline to improve. Distinguish looping idle from a parked pose: author a gentle settle/wake path if idle rests on demand, and restart before the first response frame.
+Retain all six clips, interruption handling, crossfades from the visible mixture, one mixer advance per frame, time-independent damping and stale-callback protection. Add no per-frame React state updates. Pause/reduced motion must provide a stable readable pose; hidden/offscreen/minimized states must suspend visual work without stopping voice.
 
-Status, Stop and interruption remain immediate. Begin with real phase-driven expression. Optional numeric audio levels come read-only from the existing voice owner; they never detect phase or create a microphone session. Studio events are explicitly simulated. Reduced/paused motion uses a stable readable pose while the controls still work.
+First let the **body rotate through fixed broad reflection cards and a stable environment**. Shape long soft highlights and a clear rim. Do not rebuild PMREM or an environment render target per frame. Only if this does not provide enough response, test a very small coherent environment/light adjustment (for example ±2–3 degrees) and keep the face exposure stable. Avoid a bright cursor spotlight.
 
-### Add measured sound reactivity through the existing voice owner
+Reuse fresh optional input/output levels from the existing presentation bridge. Authoritative voice phase controls state; amplitude only modulates a restrained secondary envelope. Old playback generations must stop influencing motion immediately on interruption. Missing levels remain unavailable, with phase-only fallback. No new mic, speech recognition, music capture or phoneme/viseme subsystem is needed.
 
-The existing fallback microphone RMS analyser is internal and does not expose avatar levels; realtime Scribe input has no verified visual-level source. Current TTS uses HTMLAudio playback without an output analyser. After the clay proof, minimal instrumentation inside the existing voice owner for a read-only presentation signal is in scope. Implement and verify measured TTS output reactivity while preserving playback. Reuse supported input metering where practical; realtime input metering may remain unavailable. Expose authoritative phase, optional normalized input/output level, availability, freshness and playback generation. Keep unavailable sources null rather than opening a second microphone or switching to Conversation SDK for volume getters. Report an unsupported output-analysis path as a concrete blocker and retain phase-only fallback; never fabricate a real-audio pass.
+### 5. Clean up the actual expanded panel
 
-Observe existing playback with a supported Web Audio analyser branch while preserving audible output, user activation, interruption, pause/error/end and cleanup. Measured output is zero or unavailable during fetch, before playback, pause, completion and cancellation. A speaking phase alone is not evidence of audible samples. On interruption discard the old output generation immediately; smoothing must not keep obsolete speech motion alive.
+Refine src/DesktopBuddy.tsx and src/buddy.css around **one continuous glass frame, one identity/status row, one conversation reading well and one fixed composer**. Update the actual native component, not just a studio imitation.
 
-Voice owns its capture/playback resources and analysis lifecycle. Avatar hide/unmount stops visual sampling/rendering, without stopping voice, closing its AudioContext or changing capture thresholds. Preserve ownership when attaching or detaching consumers.
+Concrete cleanup:
+- Remove the visible “HERE WITH YOU” and “Let’s figure it out.” title block. Keep an accessible conversation heading and existing live-log semantics.
+- Remove the long welcome paragraph. Put the existing four suggestions in a compact labelled **Ideas** disclosure, retaining their real handlers.
+- Replace the permanent six-icon footer toolbar with one labelled **Tools** disclosure/menu containing the same utilities, permissions, disabled states and actions.
+- Place the existing voice start/pause control beside the composer when expanded. Preserve collapsed voice access.
+- Keep **Stop task and audio** directly available while active. Pause voice and Stop retain their existing different meanings.
+- Retain collapse, hide-to-tray, access to settings/window selection/workspace and a clear return from the workspace.
+- Remove duplicate permanent shortcut/help text and duplicate task/status copy where the information is already conveyed. Retain necessary accessible help, truthful microphone status, errors, approvals, provenance and result actions.
+- Reduce visual uppercase speaker-label noise without losing user/assistant/error identification.
 
-Sample numeric values in the render controller without per-frame React state. Start with a bounded light/expression envelope; route later body deformation through its one authoritative morph compositor. Do not write shader/mixer/morph values competitively. Use elapsed-time attack/release and keep phase/status immediate. Silence settles intensity, not conversation phase. Observe user-selected audio only when such a source exists; beat detection, music playback and system-audio capture are not required.
+Use labelled semantic HTML controls. For Tools, implement a real accessible menu pattern or a disclosure with normal tab order; do not apply menu roles without the matching keyboard behavior. Escape closes Tools and restores its trigger first; a later Escape can collapse the buddy. Close the disclosure before opening existing modal dialogs. Keep popovers inside safe native bounds.
 
-Prove current-state transitions first, then test real input/output envelopes as an independent slice before material polish. Studio synthetic levels are explicitly labelled and make no microphone/backend calls. Preserve the current public preview's microphone policy. Volume-driven mouth opening is optional expression, not phoneme/viseme lip-sync; defer a timed viseme subsystem until the character's mouth and an actual timing source warrant it. No new AI provider, WebRTC architecture or conversation backend belongs in this visual task.
+Retain the current portrait footprint as the starting point: 96px pet, roughly 392×560 reading panel inside the existing expanded window. Adapt to actual work area and enlarged text. Preserve the reversible coordinator's acknowledged native bounds before reveal, exit before bounds shrink, latest-intent reversal, focus, draft, selection, manual scroll position, dragging and keyboard shortcuts. Opening the panel never starts voice or cancels a task. Avoid changing that coordinator unless the new geometry requires a narrow coordinated change.
 
-### Export and browser look development
+### 6. Glass construction and source study
 
-Export versioned **.glb** files, with semantic hierarchy, skins/morphs and separately named logical clips. Bake authoring-only constraints/drivers into supported TRS/weights. Keep export Apply Modifiers false for the morph mesh after topology operations are already complete. Preserve morph positions/normals and audit actual sampled channels for unwanted overlap.
+Use these pinned MIT-licensed implementations to understand and adapt specific mechanisms. Inspect their source and licenses; retain MIT attribution if substantial code is adapted. Record exactly what was learned or reused.
 
-Produce a canonical uncompressed export, semantic manifest, validator report and transparent PNG fallback rendered from the approved authored character. Run the deterministic interrupted clay replay in current Three and Electron before final lookdev. File validity alone is not acceptance.
+- rdev/liquid-glass-react, commit ac48eab18d1f7f444ae30002d240cae29c863a21:
+  https://github.com/rdev/liquid-glass-react/tree/ac48eab18d1f7f444ae30002d240cae29c863a21
+  Inspect src/index.tsx and LICENSE. Its official demo is https://liquid-glass.maxrovensky.com/.
+  Study edge-masked displacement, subtle RGB edge separation and keeping the central content sharp.
+- aberhamm/liquid-glass-react, commit 0e8da46da1da35055d60a027faea8e4cfae91088:
+  https://github.com/aberhamm/liquid-glass-react/tree/0e8da46da1da35055d60a027faea8e4cfae91088
+  Inspect src/liquid-glass.tsx, src/liquid-glass.stories.tsx and LICENSE.
+  Study separate surface/shadow/highlight/rim/content layers, frosted defaults and reduced-transparency handling.
 
-Use a fixed near-front camera, broad key reflection, soft fill and cool rim. Compare neutral/Prism and glossy-jelly/transmission candidates with identical camera, pose, exposure and render size. Recreate the lighting/reflection structure in Three; GLB does not reproduce an entire Cycles shader/compositor/area-light setup. Match actual silhouette, face, color and highlights rather than claiming identical offline/browser pixels.
+Begin with a simple layered CSS implementation: a substantial rounded clear-looking rim, cool cyan along the upper/left edge, soft lavender near the lower/left, a restrained coral edge opposite it, thin white highlight, inner bevel and soft shadow. Keep one continuous material rather than separate coloured header/footer bands. A 6–10px decorative rim is a starting study, not a required layout measurement.
 
-Authored morphs provide the initial jelly motion. A custom GLSL deformation is optional after a matched comparison shows a specific missing effect; preserve face/sole masks, correct shading normals and animated bounds. An elastic spring or soft-body simulation must earn its added cost and cannot take ownership of already keyed properties.
+Use a nearly opaque cloud-white/blue reading surface with dark navy text. Starting colours may be #F8FBFF, #13243D and #34445E; validate the actual composited result. Keep text, input and live controls outside every blur/displacement layer. Do not duplicate the interactive conversation to imitate refraction.
 
-### Compact interface and coordinated motion
+Try bounded edge-only SVG lensing only if it visibly improves the CSS result on the tested host and stays within the performance budget. Do not import an entire wrapper library by default. Use one existing avatar canvas, not a second WebGL scene for the panel. Do not add desktop capture or live DOM screenshot textures for runtime refraction. Isolated captures of the app and owned controlled backdrops are allowed for visual QA; exclude unrelated/private desktop content.
 
-Prototype a roughly **96px freestanding pet** opening a portrait conversation surface around **392px wide / 560px tall**, adapting to work area and enlarged text. These are starting dimensions. Derive native bounds from pet, panel, shadow and focus geometry; current 360×86 collapsed/440×580 expanded bounds are only the baseline.
+Respect the real compositing boundary:
+- Three transmission samples owned scene content; it does not optically refract the Windows desktop behind the canvas.
+- CSS backdrop blur sees content within the web page/window, not other applications behind transparent Electron.
+- Native Acrylic/Mica is an optional separately verified platform study; do not force a rectangular opaque native surface around the freestanding pet.
 
-Place Sprout beside the upper dock corner, clear of text and controls. Use one identity/status header, one continuous reading well and a fixed composer. Requested detail uses a secondary/replacement view with a clear Back action. Make the reading surface nearly opaque cloud-white with navy text, blue primary controls and restrained Prism highlights on the glass frame.
+The default must look good through geometry, tint, highlights and a readable inner surface even when true background refraction is unavailable. Describe approximations honestly.
 
-Use accessible HTML for conversation, status, input and actions. Start with 18px body text, generous line spacing, 44–48px controls and measured contrast; sustained reading should aim at 7:1. Reflow at 320 CSS px and enlarged text. Keep opaque/solid surfaces, keyboard focus and readable status available without the canvas.
+Preserve main conversation text at 18px and existing 22px Large mode, 44–48px controls, clear focus, 320px reflow and 200% zoom. Aim for 7:1 sustained-reading contrast on the actual surface; audit labels separately. Preserve forced-colour, reduced-transparency, paused/reduced-motion and solid/no-WebGL paths. Do not treat the PDF's small grey text or low-contrast reference demos as accessibility targets.
 
-One reversible panel coordinator owns latest intent. Acknowledge press immediately; apply and confirm safe native bounds/layout before exposing panel content. Restore focus before hiding content; finish exit decoration before shrinking bounds. Stale callbacks cannot shrink a reopened window. Preserve draft, selection where possible, scroll, dragging, shortcuts and Electron security.
+### 7. Build order and review
 
-Use restrained CSS/WAAPI transforms for decoration. Keep text, input scale, blur radius and reading surfaces stable. Panel expansion does not start voice or cancel a task. Clicking/keyboard activation performs the real open action even while the avatar reaction continues.
+1. Inspect baseline/reference and capture current 96px Sprout plus the real collapsed/expanded UI.
+2. In parallel, produce B/C material candidates in Blender, prototype mount-based attention on v002, and simplify the real panel with the base CSS glass recipe.
+3. Integrate candidate exports in the existing renderer under matched conditions. Capture a labelled A/B/C board, pointer-motion clip and simplified panel. Choose the strongest candidate using actual small-size depth, face readability and measured cost. Explain the choice.
+4. Finish the selected material and goo response, coordinate reflection lighting and glass rim colours, and correct combined-motion defects.
+5. Promote only the reviewed versioned asset, regenerate its PNG fallback, align the studio with the real implementation and run relevant verification.
+6. Deliver source, assets, evidence, a clear UI diff and launch instructions. Fix observed regressions before concluding.
 
-### Optimization, integration and delivery
+The studio at http://127.0.0.1:5173/?studio=buddy must expose the real renderer and honest labelled simulations. The native companion is the final layout/compositing check. Reuse an already-running healthy development instance; otherwise inspect “Start InsightOS UI.cmd” and the current delivery guide. Do not kill the user's active app or launch duplicate services blindly. Make the finished preview visible to the user and report the actual URL/native launch method.
 
-Preserve the canonical GLB. Build compressed derivatives only after measured need: use Meshopt or Draco with explicit matching GLTFLoader decoders, and KTX2 only for textures that benefit, with supported renderer detection. Compression does not by itself reduce vertices or draw calls.
+### 8. Validation and honest completion
 
-Use selective transforms, preserving gaze anchors, semantic names, normals, attributes, skins, morphs and animation channels. Do not blindly prune/join/deduplicate or decimate an already morphed mesh. Compare manifests, replay and screenshots after each transform; rebuild deformation data if topology changes. Measure transfer size, decode/first render, active frame intervals, stalls, draw calls and memory, including cold load.
+This is a **new visual-refinement acceptance scope**. It can be completed using deterministic motion and synthetic local voice fixtures. The previous revision-5 end-to-end goal remains incomplete where live ElevenLabs, physical audio, human assistive-technology, other displays or physical presentation evidence was unverified. Do not close that old goal or rewrite its historical evidence as passed. Missing provider credentials do not block material, motion or panel work.
 
-Preserve lazy loading, abort/cleanup, bounded render resolution, hidden/offscreen suspension, static fallback and context recovery. R3F instances clone skinned hierarchies and own mixers; cleanup does not dispose resources shared by a cached template. Mount/unmount and rapid phase changes must not create extra loops or per-frame React state churn.
+New glass geometry/materials invalidate relevant old visual/performance results. Recheck affected behavior; retain unrelated valid evidence instead of rerunning every backend workflow.
 
-Optional original background images/video belong to demo or presentation contexts where interaction is unnecessary. Store local optimized assets with provenance and a static fallback; keep the desktop companion and reading well calm. They are not a replacement for the interactive avatar.
+Required refinement evidence:
+- Editable new Blender source, versioned canonical/runtime GLBs, matching hashes, manifest, validator result, PNG fallback and source/license notes.
+- Actual-size A/B/C comparisons and a selected-result board on bright/dark/busy backgrounds. Native transparent-window checks must not be replaced solely by a CSS mock backdrop.
+- Whole-body attention and return-to-neutral; idle/listen/think/speak/click/blink; clean interrupted transitions; combined deformation/core/face bounds. Check elapsed-time behavior at 30/60/120Hz through the established deterministic replay.
+- Open/type/voice-fixture interrupt/collapse/reopen/workspace-return behavior preserving draft, selection, reading position and focus. Tools/Ideas keyboard flow, direct Stop and truthful state.
+- Readability, enlarged text, 320px reflow, 200% zoom, forced colours, reduced/paused motion, no-WebGL and context recovery.
+- A fresh compiled native performance/lifecycle pass with panel typing and repeated open/close/reversal. Target sustained 60fps on the reference desktop; report measured p95/max intervals and stalls. Measure new glass draw calls/render targets/resource growth. Verify hidden/minimized/offscreen suspension, restoration and disposal while voice continues independently.
+- Fresh relevant builds and focused tests. Name failures, skipped checks and their actual scope.
 
-Deliver actual-size stills, the animation replay, open/type/interrupt/collapse/reopen recording, reduced-motion/no-WebGL proofs, native edge-docking proof and a production performance trace. Check bright/dark/busy backgrounds, long content, keyboard/screen-reader flow, draft preservation, context recovery and rapid toggles. Verify deployed GLB URLs return binary assets rather than HTML fallback.
+Useful existing commands after inspecting current scripts:
+- npm run build
+- npm run build:public (use an isolated output when necessary to avoid overwriting the default native bundle)
+- npm run typecheck and focused Vitest/Playwright checks for changed behavior
+- node scripts/verify-sprout-native.mjs --production-bundle
+- node scripts/verify-sprout-native.mjs --cold-load
+- node scripts/verify-sprout-native.mjs --edge-panel-record
+- node scripts/verify-buddy-runtime.mjs
+- node scripts/smoke-buddy-panel.mjs
+- node scripts/smoke-buddy-voice.mjs --record
+- node scripts/audit-buddy-accessibility.mjs
 
-Keep the user's work reviewable in the existing draft PR; publish/merge only within the authorized task scope. Report editable source/checkpoints, asset provenance, hashes/manifests, passed checks, remaining defects and deliberate approximations. Follow the source-save policy and never overwrite an unrelated Blender file. Complete each reversible pass, inspect its output and correct the largest visible defect before moving on.
+Adapt affected replay/capture scripts to the new version rather than silently testing v002. Run GPU/native proofs serially and inspect resulting screenshots/videos. Distinguish synthetic audio from live provider/device use, rAF/render intervals from Chromium presentation feedback, and both from physical display scanout. Automated AX/keyboard checks are not a human screen-reader certification. Do not claim zero physical VRAM from context disposal.
 
-**For a fresh implementation, begin with the actual-size clay Sprout and four-clip exported motion proof. In this existing checkout, continue from the first unmet requirement in the current delivery record.**
+Finish with the chosen material rationale, before/after visuals, working local preview, exact source/assets, relevant verification and remaining deliberate approximations. Keep the old evidence ledger intact and add a separate refinement record. Deliver a cohesive, brighter glass character and calmer panel that are visibly better in the real app.
 
 ## Supporting packet
 
-- [Upstream audit](HIGGSFIELD-UPSTREAM.md)
-- [Implemented stack and audio audit](STACK-AUDIO-AUDIT.md)
-- [Production runbook](PRODUCTION-WORKFLOW.md)
-- [Canonical animation/export contract](ANIMATION-WORKFLOW.md)
-- [Panel/native motion contract](INTERACTION-MOTION-WORKFLOW.md)
-- [Primary example experiments](REFERENCE-RECIPES.md)
-- [Selected character study](AVATAR-STUDY.md) and [palette study](PALETTE-STUDY.md)
+- [Focused worker prompts](GLOSSY-SPROUT-PROMPT-PACK.md)
+- [Delivered v002 inventory](../sprout/README.md) and [scene passport](../sprout/SCENE-PASSPORT.md)
+- [Historical acceptance ledger](../sprout/ACCEPTANCE-AUDIT.md)
+- [Revision 5 snapshot](MASTER-PROMPT-v005.md)
+- [Animation/export contracts](ANIMATION-WORKFLOW.md)
+- [Native interaction contracts](INTERACTION-MOTION-WORKFLOW.md)
+- [Original reference recipes](REFERENCE-RECIPES.md)
