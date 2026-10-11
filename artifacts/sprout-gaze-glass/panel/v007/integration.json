@@ -1,0 +1,165 @@
+{
+  "asset": "v007",
+  "live": true,
+  "apiCalls": [],
+  "errors": [],
+  "requestedModels": [
+    "/buddy/sprout-v007.glb"
+  ],
+  "captures": [
+    {
+      "layout": "expanded",
+      "direction": "center",
+      "x": 460,
+      "y": 568.390625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/expanded-center.png"
+    },
+    {
+      "layout": "expanded",
+      "direction": "left",
+      "x": 426.88,
+      "y": 568.390625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/expanded-left.png"
+    },
+    {
+      "layout": "expanded",
+      "direction": "up-left",
+      "x": 426.88,
+      "y": 535.270625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/expanded-up-left.png"
+    },
+    {
+      "layout": "expanded",
+      "direction": "up",
+      "x": 460,
+      "y": 535.270625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/expanded-up.png"
+    },
+    {
+      "layout": "expanded",
+      "direction": "up-right",
+      "x": 493.12,
+      "y": 535.270625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/expanded-up-right.png"
+    },
+    {
+      "layout": "expanded",
+      "direction": "right",
+      "x": 493.12,
+      "y": 568.390625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/expanded-right.png"
+    },
+    {
+      "layout": "expanded",
+      "direction": "down-right",
+      "x": 493.12,
+      "y": 601.510625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/expanded-down-right.png"
+    },
+    {
+      "layout": "expanded",
+      "direction": "down",
+      "x": 460,
+      "y": 601.510625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/expanded-down.png"
+    },
+    {
+      "layout": "expanded",
+      "direction": "down-left",
+      "x": 426.88,
+      "y": 601.510625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/expanded-down-left.png"
+    },
+    {
+      "layout": "expanded",
+      "direction": "panel-top-left",
+      "x": 407.92,
+      "y": 526.950625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/expanded-panel-top-left.png"
+    },
+    {
+      "layout": "expanded",
+      "direction": "panel-bottom-right",
+      "x": 792.0799999999999,
+      "y": 1169.830625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/expanded-panel-bottom-right.png"
+    },
+    {
+      "layout": "compact",
+      "direction": "center",
+      "x": 452,
+      "y": 568.390625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/compact-center.png"
+    },
+    {
+      "layout": "compact",
+      "direction": "left",
+      "x": 407.84,
+      "y": 568.390625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/compact-left.png"
+    },
+    {
+      "layout": "compact",
+      "direction": "up-left",
+      "x": 407.84,
+      "y": 524.230625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/compact-up-left.png"
+    },
+    {
+      "layout": "compact",
+      "direction": "up",
+      "x": 452,
+      "y": 524.230625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/compact-up.png"
+    },
+    {
+      "layout": "compact",
+      "direction": "up-right",
+      "x": 496.15999999999997,
+      "y": 524.230625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/compact-up-right.png"
+    },
+    {
+      "layout": "compact",
+      "direction": "right",
+      "x": 496.15999999999997,
+      "y": 568.390625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/compact-right.png"
+    },
+    {
+      "layout": "compact",
+      "direction": "down-right",
+      "x": 496.15999999999997,
+      "y": 612.550625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/compact-down-right.png"
+    },
+    {
+      "layout": "compact",
+      "direction": "down",
+      "x": 452,
+      "y": 612.550625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/compact-down.png"
+    },
+    {
+      "layout": "compact",
+      "direction": "down-left",
+      "x": 407.84,
+      "y": 612.550625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/compact-down-left.png"
+    },
+    {
+      "layout": "compact",
+      "direction": "panel-top-left",
+      "x": 407.92,
+      "y": 526.950625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/compact-panel-top-left.png"
+    },
+    {
+      "layout": "compact",
+      "direction": "panel-bottom-right",
+      "x": 792.0799999999999,
+      "y": 1169.830625,
+      "file": "artifacts/sprout-gaze-glass/panel/v007/compact-panel-bottom-right.png"
+    }
+  ]
+}

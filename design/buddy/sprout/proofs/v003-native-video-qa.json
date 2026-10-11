@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-11",
+  "asset_sha256": "63bc8f0289634e03716732c6beefe2f3492d53d1f54ec04dd8e23d28fddf0a32",
+  "method": "Single-thread FFmpeg video decode, six exact frame indices scaled426x300 and tiled3x2; contact sheets visually inspected. No browser/GPU launch or new recording.",
+  "videos": [
+    {
+      "kind": "edge",
+      "video": "artifacts/glossy-v003/sprout-native-prism-edge-panel/native-edge-panel.webm",
+      "sha256": "4878515a39c310ae72547210a4e1c4a657643a2bbecc4aed396368cd821144ab",
+      "bytes": 688468,
+      "codec": "VP9",
+      "size": [
+        1280,
+        900
+      ],
+      "fps": 25,
+      "duration_s": 10.96,
+      "frame_indices": [
+        0,
+        54,
+        109,
+        164,
+        219,
+        273
+      ],
+      "sample_times_s": [
+        0.0,
+        2.16,
+        4.36,
+        6.56,
+        8.76,
+        10.92
+      ],
+      "contact_sheet": "design/buddy/sprout/proofs/v003-native-edge-video-contact.png",
+      "contact_sheet_sha256": "07ca926eb0c0049c2f77a33e44b88d08cf9e46057ccab08aa191a83f7a30ce82"
+    },
+    {
+      "kind": "voice",
+      "video": "artifacts/glossy-v003/buddy-voice-native-final/synthetic-voice-interrupt-panel.webm",
+      "sha256": "baef45e4454ac4a913c6adb631470ed51c377e6e8d027270f7995c17729caa22",
+      "bytes": 1046234,
+      "codec": "VP9",
+      "size": [
+        1280,
+        900
+      ],
+      "fps": 25,
+      "duration_s": 17.76,
+      "frame_indices": [
+        0,
+        88,
+        177,
+        266,
+        355,
+        443
+      ],
+      "sample_times_s": [
+        0.0,
+        3.52,
+        7.08,
+        10.64,
+        14.2,
+        17.72
+      ],
+      "contact_sheet": "design/buddy/sprout/proofs/v003-native-voice-video-contact.png",
+      "contact_sheet_sha256": "b7148fa3ce16a5ee9172528c97a9433df80ddfbf029c193d3a5a1183c736f25b"
+    }
+  ],
+  "review": "Current v003 character, compact/open panel, retained draft, two transcript states and cleanup visible; no composer/control clipping in reviewed frames. Edge startup frame initially black; later compact/open states visible. Black transparency/gray padding are video-only app capture, not private desktop screenshots.",
+  "limits": "Six-frame visual sample only. Native bounds/audio interruption/lifecycle/timing rely on reports; oscillator/local PCM are simulated, with no live provider/physical microphone/audible-playback or hardware-presentation claim."
+}

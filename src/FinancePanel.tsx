@@ -139,7 +139,7 @@ export default function FinancePanel({
           </div>
           <h3>Understand the spreadsheet without seeing it.</h3>
           <p>
-            Import a transaction file or start with a clearly labeled sample. Insight compares
+            Import a transaction file or start with a clearly labeled sample. Sprout compares
             spending, explains changes, and helps you check payment assumptions.
           </p>
           <blockquote>“Why did my spending increase—and can I afford a new payment?”</blockquote>
@@ -239,7 +239,12 @@ export default function FinancePanel({
               </div>
               <details>
                 <summary>Read the chart as a table</summary>
-                <div className="finance-table-wrap">
+                <div
+                  className="finance-table-wrap"
+                  role="region"
+                  aria-label="Scrollable cash flow table"
+                  tabIndex={0}
+                >
                   <table>
                     <caption>Recorded monthly cash flow in USD</caption>
                     <thead>

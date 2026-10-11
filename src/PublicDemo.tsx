@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { billFields, billLabels, checkBillValues, type BillValues } from '../shared/bills';
 import { energyProgramUrl, type EnergyState } from '../shared/energy';
+import AssistantSignal from './AssistantSignal';
 import {
   billNarration,
   compareBills,
@@ -229,7 +230,7 @@ export default function PublicDemo() {
     const url = URL.createObjectURL(file);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'insightos-sample-plan.json';
+    link.download = 'sprout-sample-plan.json';
     link.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
@@ -240,11 +241,11 @@ export default function PublicDemo() {
         Skip to bill analysis
       </a>
       <header className="public-nav">
-        <a className="public-logo" href="/" aria-label="InsightOS home">
+        <a className="public-logo" href="/" aria-label="Sprout home">
           <span className="public-mark">
             <Sparkles size={22} aria-hidden="true" />
           </span>
-          Insight<span>OS</span>
+          Sprout
         </a>
         <nav aria-label="Main navigation">
           <a href="#how-it-works">How it works</a>
@@ -262,19 +263,20 @@ export default function PublicDemo() {
       </header>
       <main id="public-main">
         <section className="public-hero">
-          <div>
-            <p className="public-eyebrow">
-              <span /> FINANCIAL INDEPENDENCE, WITHIN REACH
-            </p>
+          <div className="public-hero-copy">
+            <p className="public-eyebrow">A LITTLE CLARITY. A LOT MORE INDEPENDENCE.</p>
             <h1>
-              Your finances are personal.
+              Understand your bill.
               <br />
-              <span>Understanding them should be, too.</span>
+              <span>Own your next step.</span>
             </h1>
             <p className="public-intro">
               A desktop companion built to help blind and low-vision people understand bills,
               explore affordable choices, and take the next step through conversation.
             </p>
+            <a className="public-hero-link" href="#bill-title">
+              Explore a sample bill <ArrowRight size={19} aria-hidden="true" />
+            </a>
           </div>
           <div className="public-mode">
             <ShieldCheck size={18} aria-hidden="true" />
@@ -287,6 +289,37 @@ export default function PublicDemo() {
             </div>
           </div>
         </section>
+        <ol className="public-journey" aria-label="Bill-to-decision workflow">
+          <li>
+            <span className="public-step-number" aria-hidden="true">
+              01
+            </span>
+            <div>
+              <strong>Understand</strong>
+              <span>Check the numbers behind your bill.</span>
+            </div>
+            <ArrowRight size={18} aria-hidden="true" />
+          </li>
+          <li>
+            <span className="public-step-number" aria-hidden="true">
+              02
+            </span>
+            <div>
+              <strong>Choose</strong>
+              <span>Find an option within your limit.</span>
+            </div>
+            <ArrowRight size={18} aria-hidden="true" />
+          </li>
+          <li>
+            <span className="public-step-number" aria-hidden="true">
+              03
+            </span>
+            <div>
+              <strong>Review</strong>
+              <span>Your answers stay. You have the final say.</span>
+            </div>
+          </li>
+        </ol>
         <div className="public-grid">
           <div className="public-workspace">
             <section className="public-card public-analysis" aria-labelledby="bill-title">
@@ -298,9 +331,16 @@ export default function PublicDemo() {
                 <span className="public-chip">Sample household · Orlando</span>
               </div>
               <div className="public-big-number">
-                <strong>{money(c.currentBill)}</strong>
-                <span>
-                  {money(c.billChange)} change from {month(state.bills[0].month)}
+                <div>
+                  <span className="public-number-label">Latest electricity bill</span>
+                  <strong>{money(c.currentBill)}</strong>
+                </div>
+                <span className="public-bill-change">
+                  <strong>
+                    {c.billChange > 0 ? '+' : ''}
+                    {money(c.billChange)}
+                  </strong>
+                  <span>change from {month(state.bills[0].month)}</span>
                 </span>
               </div>
               <div
@@ -323,6 +363,7 @@ export default function PublicDemo() {
                   </div>
                 ))}
               </div>
+              <p className="public-breakdown-label">Where the difference comes from</p>
               <div className="public-breakdown">
                 {[
                   ['Usage', c.usageEffect],
@@ -429,7 +470,7 @@ export default function PublicDemo() {
                 </section>
               )}
             </section>
-            <section className="public-card" aria-labelledby="choices-title">
+            <section className="public-card public-choices" aria-labelledby="choices-title">
               <div className="public-card-top">
                 <div>
                   <p className="public-eyebrow">02 / MAKE YOUR OWN CHOICE</p>
@@ -604,13 +645,13 @@ export default function PublicDemo() {
                 <Sparkles size={19} aria-hidden="true" />
               </span>
               <div>
-                <strong>Insight</strong>
-                <span>Here with you</span>
+                <strong>Sprout</strong>
+                <span>Your sample companion</span>
               </div>
               <span className="public-online" />
             </div>
-            <div className={`public-orb ${speaking ? 'speaking' : ''}`} aria-hidden="true">
-              <AudioLines size={45} />
+            <div className="public-orb" aria-hidden="true">
+              <AssistantSignal active={speaking} />
             </div>
             <p className="public-companion-label">ONE QUESTION AT A TIME</p>
             <h2>
@@ -619,7 +660,7 @@ export default function PublicDemo() {
               Make the decision.
             </h2>
             <div className="public-response" aria-live="polite">
-              <span>INSIGHT</span>
+              <span>SPROUT</span>
               <p>{message}</p>
             </div>
             {error && (
@@ -678,7 +719,7 @@ export default function PublicDemo() {
           <p className="public-eyebrow">THE FULL DESKTOP COMPANION</p>
           <h2>Independence is the feature.</h2>
           <p>
-            Read a bill. Challenge a number. Change your mind. InsightOS carries your corrections
+            Read a bill. Challenge a number. Change your mind. Sprout carries your corrections
             through the workflow, so the decision stays yours.
           </p>
           <div>
@@ -713,7 +754,7 @@ export default function PublicDemo() {
         </section>
       </main>
       <footer className="public-footer">
-        <span>InsightOS · Built at Knight Hacks IX</span>
+        <span>Sprout · Built at Knight Hacks IX</span>
         <a href={`${repository}/blob/master/DEVPOST-DRAFT.md`}>
           <CircleHelp size={15} aria-hidden="true" />
           Project details and limitations

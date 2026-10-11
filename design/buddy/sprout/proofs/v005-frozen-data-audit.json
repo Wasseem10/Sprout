@@ -1,0 +1,86 @@
+{
+  "pass": true,
+  "asset": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-prism-v005.glb",
+  "sha256": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2",
+  "bytes": 1445476,
+  "baseline_sha256": "77d4b92bc5d06e440706243f6ac9e6745073ba6f98d173b972114fabb02bde7c",
+  "source_sha256": "e97a0df2bafbffda9da972c538dbde60c54bc2d71efe264c163c8913c746a113",
+  "checks": {
+    "obsolete_cover_nodes_absent": true,
+    "retained_node_transforms_and_hierarchy_exact": true,
+    "retained_basis_indices_materials_and_paired_body_morphs_exact": true,
+    "retained_geometry_streams": 41,
+    "embedded_texture_pixels_bytes_and_skin_exact": true,
+    "all_11_clip_durations_and_non_eye_streams_exact": true,
+    "all_authored_eye_sample_vectors_and_glint_scales_valid": true
+  },
+  "clips": [
+    {
+      "name": "Sprout_Click",
+      "duration": 0.4166666567325592,
+      "channels": 2,
+      "eye_channels_changed": false
+    },
+    {
+      "name": "Sprout_Idle",
+      "duration": 6,
+      "channels": 29,
+      "eye_channels_changed": false
+    },
+    {
+      "name": "Sprout_Listen",
+      "duration": 6,
+      "channels": 29,
+      "eye_channels_changed": false
+    },
+    {
+      "name": "Sprout_Think",
+      "duration": 6,
+      "channels": 29,
+      "eye_channels_changed": false
+    },
+    {
+      "name": "Sprout_Speak",
+      "duration": 6,
+      "channels": 29,
+      "eye_channels_changed": false
+    },
+    {
+      "name": "Sprout_Blink",
+      "duration": 0.1666666716337204,
+      "channels": 4,
+      "eye_channels_changed": true
+    },
+    {
+      "name": "Sprout_Done",
+      "duration": 0.8333333134651184,
+      "channels": 2,
+      "eye_channels_changed": false
+    },
+    {
+      "name": "Sprout_JoyJump",
+      "duration": 1.6666666269302368,
+      "channels": 29,
+      "eye_channels_changed": false
+    },
+    {
+      "name": "Sprout_SleepEnter",
+      "duration": 1.6666666269302368,
+      "channels": 33,
+      "eye_channels_changed": true
+    },
+    {
+      "name": "Sprout_SleepLoop",
+      "duration": 5,
+      "channels": 33,
+      "eye_channels_changed": true
+    },
+    {
+      "name": "Sprout_Wake",
+      "duration": 1.25,
+      "channels": 33,
+      "eye_channels_changed": true
+    }
+  ],
+  "scope": "Direct actual GLB accessor bytes and topology; image bytes preserved but not decoded here. No browser/material appearance, native timing or source-render claims."
+}

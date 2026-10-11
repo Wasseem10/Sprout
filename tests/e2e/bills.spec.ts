@@ -83,6 +83,9 @@ test('the floating buddy asks before reading and opens the same bill workspace',
   await expect(page.getByRole('button', { name: 'Start voice conversation' })).toBeVisible();
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   await page.screenshot({ path: 'artifacts/bill-buddy.png' });
+  await expect(page.getByRole('button', { name: 'Send request', exact: true })).toBeInViewport({
+    ratio: 1,
+  });
   await review.getByRole('button', { name: 'Open bill workspace' }).click();
   await expect(page.getByRole('heading', { name: 'Your bills, understood.' })).toBeVisible();
 });

@@ -1,0 +1,5716 @@
+{
+  "checkedAt": "2026-10-11T07:58:33.393Z",
+  "pass": false,
+  "asset": {
+    "url": "/buddy/sprout-v005.glb",
+    "bytes": 1445476,
+    "sha256": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2",
+    "binaryHeader": "glTF",
+    "rendererChunk": "buddyRenderer-Ztm8NTJW.js",
+    "served": [
+      {
+        "url": "/buddy/sprout-v005.glb",
+        "sha256": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2"
+      },
+      {
+        "url": "/buddy/sprout-v005.glb",
+        "sha256": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2"
+      }
+    ]
+  },
+  "scope": {
+    "ui": "Actual compiled dist served at the native shell trusted local origin; actual main/preload/security/IPC, fresh isolated profile. Initial dev avatar warms bootstrap; this is not a cold-load test.",
+    "interaction": "Real panel typing, one delayed local task response driving authoritative thinking/idle, repeated open/close and rapid reversals. No mic, TTS, provider or production backend task.",
+    "timing": "Test-only WebGL/rAF API wrappers add overhead. Document rAF and actual avatar draw callback clocks are proxies, not OS presentation. No screenshot, video, GPU info or memory dump inside the timed interaction.",
+    "resources": "Created/deleted WebGL handle counts, not allocated bytes, physical VRAM or driver reclamation. The live field means created minus explicit delete, not validity after context loss. Test-held references intentionally prevent a GC claim.",
+    "lifecycle": "Actual compiled renderer API in a separate 96px test owner after panel timing; actual IntersectionObserver offscreen and native window hide/show; actual dispose. Native pet counts remain separate."
+  },
+  "tiltWarmup": {
+    "explicit": true,
+    "start": 2034.6000000238419,
+    "end": 3132.2000000476837,
+    "scope": "Real pointer tilt in both directions before the measured interval; excludes first-use shader work. Compare the separately retained first-use report."
+  },
+  "native": {
+    "bounds": {
+      "x": 812,
+      "y": 20,
+      "width": 296,
+      "height": 128
+    },
+    "workArea": {
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1032
+    },
+    "preferences": {
+      "sandbox": true,
+      "contextIsolation": true,
+      "nodeIntegration": false,
+      "webSecurity": true,
+      "backgroundThrottling": false
+    },
+    "versions": {
+      "node": "24.21.0",
+      "acorn": "8.18.0",
+      "ada": "4.0.0",
+      "amaro": "1.1.11",
+      "ares": "1.34.8",
+      "brotli": "1.2.0",
+      "cldr": "48.0",
+      "icu": "78.2",
+      "llhttp": "9.4.3",
+      "merve": "1.2.2",
+      "modules": "149",
+      "napi": "10",
+      "nbytes": "0.1.4",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.70.0",
+      "nghttp3": "",
+      "ngtcp2": "",
+      "openssl": "0.0.0",
+      "simdjson": "4.6.7",
+      "simdutf": "7.7.0",
+      "sqlite": "3.53.4",
+      "tz": "2026d",
+      "undici": "7.29.1",
+      "unicode": "17.0",
+      "uv": "1.52.1",
+      "uvwasi": "0.0.23",
+      "v8": "15.2.124.28-electron.0",
+      "zlib": "1.3.2.1-motley",
+      "zstd": "1.6.0",
+      "electron": "44.7.0",
+      "chrome": "152.0.7977.130"
+    },
+    "initialVisibilitySnapshot": {
+      "visible": true,
+      "revision": 2
+    }
+  },
+  "interaction": {
+    "startedAt": 3770.600000023842,
+    "durationMs": 7937.799999952316,
+    "endedAt": 11708.399999976158,
+    "documentRafClock": {
+      "samples": 476,
+      "p95Ms": 16.800000000000182,
+      "maxMs": 17,
+      "above20Ms": 0,
+      "above50Ms": 0
+    },
+    "avatar": [
+      {
+        "id": 1,
+        "label": "native-pet",
+        "drawCallbackClock": {
+          "samples": 476,
+          "p95Ms": 16.800000000000182,
+          "maxMs": 17,
+          "above20Ms": 0,
+          "above50Ms": 0
+        },
+        "callbackCPUP95Ms": 1.399999976158142,
+        "callbackCPUMaxMs": 2.299999952316284
+      }
+    ],
+    "mutations": [
+      {
+        "at": 3816.2999999523163,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 3829.600000023842,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 7569.5,
+        "panelStage": "open",
+        "phase": "thinking"
+      },
+      {
+        "at": 8230.100000023842,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 10150.899999976158,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 10331.299999952316,
+        "panelStage": "closed",
+        "phase": "idle"
+      },
+      {
+        "at": 10398.299999952316,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 10412.700000047684,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 10483.5,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 10562.5,
+        "panelStage": "closed",
+        "phase": "idle"
+      },
+      {
+        "at": 10631.799999952316,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 10647.200000047684,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 10688.100000023842,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 10746.100000023842,
+        "panelStage": "closed",
+        "phase": "idle"
+      },
+      {
+        "at": 10847.899999976158,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 10861.799999952316,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 10901.799999952316,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 10962.100000023842,
+        "panelStage": "closed",
+        "phase": "idle"
+      },
+      {
+        "at": 11047.100000023842,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 11061.100000023842,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 11100.5,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 11162.100000023842,
+        "panelStage": "closed",
+        "phase": "idle"
+      },
+      {
+        "at": 11247.600000023842,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 11262.399999976158,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 11272.299999952316,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 11297.100000023842,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 11299.600000023842,
+        "panelStage": "open",
+        "phase": "idle"
+      }
+    ],
+    "pointerSweep": [
+      {
+        "state": "active",
+        "transform": "matrix3d(0.999912, 3.49705e-05, -0.0132547, 7.36372e-06, 0, 0.999997, 0.00263834, -1.46574e-06, 0.0132547, -0.00263811, 0.999909, -0.000555505, 0, 0, 0, 1)"
+      },
+      {
+        "state": "active",
+        "transform": "matrix3d(0.999909, -3.3954e-05, 0.0135043, -7.50241e-06, 0, 0.999997, 0.0025143, -1.39683e-06, -0.0135044, -0.00251407, 0.999906, -0.000555503, 0, 0, 0, 1)"
+      },
+      {
+        "state": "active",
+        "transform": "matrix3d(0.999934, 2.88915e-05, -0.0114955, 6.38637e-06, 0, 0.999997, 0.00251328, -1.39627e-06, 0.0114955, -0.00251312, 0.999931, -0.000555517, 0, 0, 0, 1)"
+      },
+      {
+        "state": "active",
+        "transform": "matrix3d(0.999933, -2.90946e-05, 0.0115764, -6.43131e-06, 0, 0.999997, 0.00251327, -1.39626e-06, -0.0115764, -0.0025131, 0.99993, -0.000555517, 0, 0, 0, 1)"
+      },
+      {
+        "state": "active",
+        "transform": "matrix3d(1, -1.22691e-06, 0.000488172, -2.71207e-07, 0, 0.999997, 0.00251327, -1.39626e-06, -0.000488173, -0.00251327, 0.999997, -0.000555554, 0, 0, 0, 1)"
+      }
+    ],
+    "settledDecoration": {
+      "intervalMs": 200,
+      "before": [
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 147,
+          "pending": 0
+        }
+      ],
+      "after": [
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 147,
+          "pending": 0
+        }
+      ]
+    },
+    "repetitions": 5,
+    "rapidExitReversal": {
+      "atStage": "closing",
+      "delayMs": 25
+    },
+    "retainedDraft": "Keep this unsent draft through every opening and reversal.",
+    "before": {
+      "at": 3700.899999976158,
+      "hidden": false,
+      "globalPendingAvatarCallbacks": 1,
+      "unassignedPendingAvatarCallbacks": 0,
+      "contexts": [
+        {
+          "id": 1,
+          "label": "native-pet",
+          "draws": 2091,
+          "clears": 476,
+          "avatarCallbacks": 146,
+          "pendingAvatarCallbacks": 1,
+          "resources": {
+            "Texture": {
+              "created": 16,
+              "deleted": 3,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 11,
+              "deleted": 5,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 10,
+              "deleted": 6,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 96,
+                "height": 96
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            9,
+            10
+          ],
+          "contextLost": false
+        }
+      ],
+      "callbacks": [
+        {
+          "id": 1,
+          "kind": "avatar",
+          "executions": 146,
+          "pending": 1
+        },
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 60,
+          "pending": 0
+        }
+      ]
+    },
+    "after": {
+      "at": 11711.799999952316,
+      "hidden": false,
+      "globalPendingAvatarCallbacks": 1,
+      "unassignedPendingAvatarCallbacks": 0,
+      "contexts": [
+        {
+          "id": 1,
+          "label": "native-pet",
+          "draws": 10229,
+          "clears": 2354,
+          "avatarCallbacks": 627,
+          "pendingAvatarCallbacks": 1,
+          "resources": {
+            "Texture": {
+              "created": 27,
+              "deleted": 14,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 33,
+              "deleted": 27,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 43,
+              "deleted": 39,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 72,
+                "height": 72
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            31,
+            32
+          ],
+          "contextLost": false
+        }
+      ],
+      "callbacks": [
+        {
+          "id": 1,
+          "kind": "avatar",
+          "executions": 627,
+          "pending": 1
+        },
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 164,
+          "pending": 0
+        },
+        {
+          "id": 3,
+          "kind": "harness-panel-clock",
+          "executions": 477,
+          "pending": 0
+        }
+      ]
+    },
+    "fixtureTaskRequests": 2
+  },
+  "trace": {
+    "localTrace": ".local\\glass-sprout-v005-warm\\buddy-runtime-native\\chromium-trace.json",
+    "traceBytes": 45379820,
+    "traceSha256": "a432556d662a822943edebcbd5a01a16ffd99e2b1985b5675c7646f070dce1ea",
+    "events": 242327,
+    "clock": "Trace ts/dur are Chromium monotonic microseconds across native processes; browser performance.now/rAF times are document-relative milliseconds. START/END TimeStamp events identify the timed window; different clock origins are not subtracted.",
+    "markers": [
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_RUNTIME_START",
+            "name": "INSIGHTOS_RUNTIME_START",
+            "sampleTraceId": 3589241631813063
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650698699518,
+        "tts": 1295524
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 3589241631813164
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650698747330,
+        "tts": 1306197
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 3589241631813212
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650698760579,
+        "tts": 1315096
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:open/thinking",
+            "name": "INSIGHTOS_STATE:open/thinking",
+            "sampleTraceId": 3589241631806936
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650702500469,
+        "tts": 2119952
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 3589241631807462
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650703161078,
+        "tts": 2202734
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 3589241631802743
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650705081887,
+        "tts": 2623703
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:closed/idle",
+            "name": "INSIGHTOS_STATE:closed/idle",
+            "sampleTraceId": 3589241631803015
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650705262351,
+        "tts": 2655703
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 3589241631803146
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650705329259,
+        "tts": 2668462
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 3589241631803199
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650705343699,
+        "tts": 2679303
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 3589241631803384
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650705414574,
+        "tts": 2699355
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:closed/idle",
+            "name": "INSIGHTOS_STATE:closed/idle",
+            "sampleTraceId": 3589241631801469
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650705493539,
+        "tts": 2718346
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 3589241631801601
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650705562784,
+        "tts": 2734588
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 3589241631801648
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650705578251,
+        "tts": 2745543
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 3589241631801793
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650705619175,
+        "tts": 2764452
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:closed/idle",
+            "name": "INSIGHTOS_STATE:closed/idle",
+            "sampleTraceId": 3589241631801917
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650705677105,
+        "tts": 2780915
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 3589241631802073
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650705778913,
+        "tts": 2797248
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 3589241631802123
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650705792766,
+        "tts": 2807436
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 3589241631802264
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650705832745,
+        "tts": 2825328
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:closed/idle",
+            "name": "INSIGHTOS_STATE:closed/idle",
+            "sampleTraceId": 3589241631833108
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650705893051,
+        "tts": 2843005
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 3589241631833253
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650705978125,
+        "tts": 2857407
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 3589241631833300
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650705992078,
+        "tts": 2866175
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 3589241631833447
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650706031531,
+        "tts": 2884869
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:closed/idle",
+            "name": "INSIGHTOS_STATE:closed/idle",
+            "sampleTraceId": 3589241631833570
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650706093130,
+        "tts": 2902217
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 3589241631833717
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650706178632,
+        "tts": 2917588
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 3589241631833764
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650706193445,
+        "tts": 2928300
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 3589241631833782
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650706203258,
+        "tts": 2933075
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 3589241631833841
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650706228073,
+        "tts": 2941126
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 3589241631833853
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650706230603,
+        "tts": 2943300
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "A51D38EBC4DE9C12FC00320D3BB4CC25",
+            "message": "INSIGHTOS_RUNTIME_END",
+            "name": "INSIGHTOS_RUNTIME_END",
+            "sampleTraceId": 3589241631832127
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 137192,
+        "s": "t",
+        "tid": 51464,
+        "ts": 650706639425,
+        "tts": 2989353
+      }
+    ],
+    "relevantNames": [
+      {
+        "name": "DCompPresenter::CheckPendingFrames",
+        "count": 476
+      },
+      {
+        "name": "Graphics.Pipeline",
+        "count": 15247
+      },
+      {
+        "name": "DisplayScheduler::DrawAndSwap",
+        "count": 477
+      },
+      {
+        "name": "Display::DrawAndSwap",
+        "count": 477
+      },
+      {
+        "name": "SkiaRenderer::SwapBuffers",
+        "count": 477
+      },
+      {
+        "name": "SkiaOutputSurfaceImplOnGpu::SwapBuffers",
+        "count": 477
+      },
+      {
+        "name": "DXGISwapChainImageBacking::Present",
+        "count": 477
+      },
+      {
+        "name": "DCompPresenter::Present",
+        "count": 477
+      },
+      {
+        "name": "FramePresented",
+        "count": 11
+      },
+      {
+        "name": "Swap throttled",
+        "count": 2
+      },
+      {
+        "name": "SubmitCompositorFrameToPresentationCompositorFrame",
+        "count": 1272
+      },
+      {
+        "name": "StartDrawToSwapStart",
+        "count": 1272
+      },
+      {
+        "name": "Swap",
+        "count": 1749
+      },
+      {
+        "name": "SwapEndToPresentationCompositorFrame",
+        "count": 1272
+      },
+      {
+        "name": "Graphics.Pipeline.DrawAndSwap",
+        "count": 953
+      },
+      {
+        "name": "Graphics.Pipeline.Draw",
+        "count": 954
+      },
+      {
+        "name": "Graphics.Pipeline.WaitForSwap",
+        "count": 477
+      },
+      {
+        "name": "DisplayScheduler:pending_swaps",
+        "count": 954
+      },
+      {
+        "name": "WaitForPresentation",
+        "count": 477
+      },
+      {
+        "name": "AnimationFrame::Presentation",
+        "count": 474
+      }
+    ],
+    "presentationFeedback": {
+      "event": "AnimationFrame::Presentation",
+      "samplesFile": "artifacts\\glass-sprout-v005-warm\\buddy-runtime-native\\presentation-feedback.csv",
+      "rendererPid": 137192,
+      "fullTimedWindowRetained": true,
+      "eventCount": 474,
+      "uniqueTimestamps": 472,
+      "intervalSamples": 471,
+      "p95Ms": 16.772,
+      "maxMs": 33.306,
+      "above20Ms": 2,
+      "above50Ms": 0,
+      "worstIntervals": [
+        {
+          "fromTs": 650706553803,
+          "toTs": 650706570663,
+          "intervalMs": 16.86
+        },
+        {
+          "fromTs": 650703470675,
+          "toTs": 650703487541,
+          "intervalMs": 16.866
+        },
+        {
+          "fromTs": 650699570827,
+          "toTs": 650699587905,
+          "intervalMs": 17.078
+        },
+        {
+          "fromTs": 650700670831,
+          "toTs": 650700704099,
+          "intervalMs": 33.268
+        },
+        {
+          "fromTs": 650698787599,
+          "toTs": 650698820905,
+          "intervalMs": 33.306
+        }
+      ],
+      "firstSamples": [
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 431,
+              "source_id": 4294967296
+            },
+            "id": "7b0cc065707a2dd2"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x6"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 137192,
+          "tid": 51464,
+          "ts": 650698737609
+        },
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 432,
+              "source_id": 4294967296
+            },
+            "id": "7b0cc065707a2de1"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x6"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 137192,
+          "tid": 51464,
+          "ts": 650698754196
+        },
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 433,
+              "source_id": 4294967296
+            },
+            "id": "7b0cc065707a2ded"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x6"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 137192,
+          "tid": 51464,
+          "ts": 650698770999
+        }
+      ],
+      "lastSamples": [
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 902,
+              "source_id": 4294967296
+            },
+            "id": "7b0cc065707a7fff"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x6"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 137192,
+          "tid": 51464,
+          "ts": 650706587189
+        },
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 903,
+              "source_id": 4294967296
+            },
+            "id": "7b0cc065707a7808"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x6"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 137192,
+          "tid": 51464,
+          "ts": 650706603860
+        },
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 904,
+              "source_id": 4294967296
+            },
+            "id": "7b0cc065707a7815"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x6"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 137192,
+          "tid": 51464,
+          "ts": 650706620638
+        }
+      ],
+      "interpretation": "Chromium emits these events with presentation_feedback.timestamp, which strengthens the rAF-only evidence. Captured events include begin-frame IDs but no hardware-clock/completion flags. These are Chromium presentation-feedback timestamps; verified OS/hardware scanout is unclaimed.",
+      "sources": [
+        {
+          "url": "https://chromium.googlesource.com/chromium/src/third_party/+/refs/heads/main/blink/renderer/core/frame/animation_frame_timing_monitor.cc",
+          "function": "ReportPresentationTimeToTrace",
+          "observedSourceBlob": "889d81e50335cb65fbd6a7a507fdadb09012cf92",
+          "checkedAt": "2026-10-10",
+          "limit": "Current primary source; exact packaged Chromium152 source tag was unavailable to the web reader."
+        },
+        {
+          "url": "https://chromium.googlesource.com/chromium/src/+/e3a53f1c01e45bde54be17921f6960f22721efd5/ui/gfx/presentation_feedback.h",
+          "mechanism": "kHWClock and kHWCompletion distinguish hardware-origin/completion feedback from estimates; captured AnimationFrame events do not include these flags."
+        }
+      ]
+    },
+    "strictGates": {
+      "p95PresentedIntervals": "Chromium presentation-feedback intervals measured below; hardware-backed OS presentation remains unverified because feedback flags are absent.",
+      "noAppCausedOver50Ms": "A bounded trace with zero feedback intervals over50ms supports this run only; physical presentation and arbitrary workload attribution are unverified.",
+      "firstResponseWithinTwoPresentedFrames": "Unverified: state markers and frame IDs do not by themselves attribute the first visible pixel change to a causal input frame."
+    }
+  },
+  "measuredPerformanceTargetsMet": true,
+  "strictHardwarePresentationAcceptance": "Unverified; feedback hardware flags and causal first-response pixel/frame attribution are unavailable.",
+  "resourceStability": {
+    "scope": "The original timed native five-cycle panel run, retained unchanged by lifecycle-only followup. A96px closed→72px expanded avatar resizes its Three transmission target; only balanced texture:FBO:RBO1:2:3 reallocation is allowed. Historical same-size exact-equality evidence remains separate and unchanged; no create/dispose-cycle or total-VRAM claim.",
+    "repetitions": 5,
+    "before": {
+      "Texture": {
+        "created": 16,
+        "deleted": 3,
+        "live": 13
+      },
+      "Framebuffer": {
+        "created": 11,
+        "deleted": 5,
+        "live": 6
+      },
+      "Renderbuffer": {
+        "created": 10,
+        "deleted": 6,
+        "live": 4
+      },
+      "Buffer": {
+        "created": 68,
+        "deleted": 40,
+        "live": 28
+      },
+      "Program": {
+        "created": 11,
+        "deleted": 4,
+        "live": 7
+      },
+      "Shader": {
+        "created": 22,
+        "deleted": 22,
+        "live": 0
+      },
+      "VertexArray": {
+        "created": 28,
+        "deleted": 15,
+        "live": 13
+      }
+    },
+    "after": {
+      "Texture": {
+        "created": 27,
+        "deleted": 14,
+        "live": 13
+      },
+      "Framebuffer": {
+        "created": 33,
+        "deleted": 27,
+        "live": 6
+      },
+      "Renderbuffer": {
+        "created": 43,
+        "deleted": 39,
+        "live": 4
+      },
+      "Buffer": {
+        "created": 68,
+        "deleted": 40,
+        "live": 28
+      },
+      "Program": {
+        "created": 11,
+        "deleted": 4,
+        "live": 7
+      },
+      "Shader": {
+        "created": 22,
+        "deleted": 22,
+        "live": 0
+      },
+      "VertexArray": {
+        "created": 28,
+        "deleted": 15,
+        "live": 13
+      }
+    },
+    "stableLiveCounts": true,
+    "exactEquality": false,
+    "resizeCount": 11,
+    "maxExpectedResizes": 13,
+    "balancedCreatesDeletes": {
+      "Texture": {
+        "created": 11,
+        "deleted": 11,
+        "live": 0
+      },
+      "Framebuffer": {
+        "created": 22,
+        "deleted": 22,
+        "live": 0
+      },
+      "Renderbuffer": {
+        "created": 33,
+        "deleted": 33,
+        "live": 0
+      },
+      "Buffer": {
+        "created": 0,
+        "deleted": 0,
+        "live": 0
+      },
+      "Program": {
+        "created": 0,
+        "deleted": 0,
+        "live": 0
+      },
+      "Shader": {
+        "created": 0,
+        "deleted": 0,
+        "live": 0
+      },
+      "VertexArray": {
+        "created": 0,
+        "deleted": 0,
+        "live": 0
+      }
+    },
+    "transmissionDimensions": {
+      "before": {
+        "target": 3553,
+        "internalFormat": 34842,
+        "width": 96,
+        "height": 96
+      },
+      "after": {
+        "target": 3553,
+        "internalFormat": 34842,
+        "width": 72,
+        "height": 72
+      }
+    },
+    "classificationScope": "Endpoint texture dimensions and FBO creation-order accounting prove the bounded resize signature; intermediate dimensions and RBO storage formats are not recorded. All other cumulative counters and texture signatures remain equal. No total-VRAM claim."
+  },
+  "lifecycle": {
+    "ownerId": 2,
+    "ownerActive": {
+      "at": 15475.600000023842,
+      "hidden": false,
+      "globalPendingAvatarCallbacks": 2,
+      "unassignedPendingAvatarCallbacks": 0,
+      "contexts": [
+        {
+          "id": 1,
+          "label": "native-pet",
+          "draws": 12868,
+          "clears": 2963,
+          "avatarCallbacks": 830,
+          "pendingAvatarCallbacks": 1,
+          "resources": {
+            "Texture": {
+              "created": 27,
+              "deleted": 14,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 33,
+              "deleted": 27,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 43,
+              "deleted": 39,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 72,
+                "height": 72
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            31,
+            32
+          ],
+          "contextLost": false
+        },
+        {
+          "id": 2,
+          "label": "isolated-lifecycle-owner",
+          "draws": 388,
+          "clears": 83,
+          "avatarCallbacks": 24,
+          "pendingAvatarCallbacks": 1,
+          "resources": {
+            "Texture": {
+              "created": 14,
+              "deleted": 1,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 7,
+              "deleted": 1,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 4,
+              "deleted": 0,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 96,
+                "height": 96
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            5,
+            6
+          ],
+          "contextLost": false
+        }
+      ],
+      "callbacks": [
+        {
+          "id": 1,
+          "kind": "avatar",
+          "executions": 830,
+          "pending": 1
+        },
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 164,
+          "pending": 0
+        },
+        {
+          "id": 3,
+          "kind": "harness-panel-clock",
+          "executions": 477,
+          "pending": 0
+        },
+        {
+          "id": 4,
+          "kind": "avatar",
+          "executions": 24,
+          "pending": 1
+        }
+      ]
+    },
+    "offscreenStart": {
+      "at": 15678.799999952316,
+      "hidden": false,
+      "globalPendingAvatarCallbacks": 1,
+      "unassignedPendingAvatarCallbacks": 0,
+      "contexts": [
+        {
+          "id": 1,
+          "label": "native-pet",
+          "draws": 13024,
+          "clears": 2999,
+          "avatarCallbacks": 842,
+          "pendingAvatarCallbacks": 1,
+          "resources": {
+            "Texture": {
+              "created": 27,
+              "deleted": 14,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 33,
+              "deleted": 27,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 43,
+              "deleted": 39,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 72,
+                "height": 72
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            31,
+            32
+          ],
+          "contextLost": false
+        },
+        {
+          "id": 2,
+          "label": "isolated-lifecycle-owner",
+          "draws": 401,
+          "clears": 86,
+          "avatarCallbacks": 25,
+          "pendingAvatarCallbacks": 0,
+          "resources": {
+            "Texture": {
+              "created": 14,
+              "deleted": 1,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 7,
+              "deleted": 1,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 4,
+              "deleted": 0,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 96,
+                "height": 96
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            5,
+            6
+          ],
+          "contextLost": false
+        }
+      ],
+      "callbacks": [
+        {
+          "id": 1,
+          "kind": "avatar",
+          "executions": 842,
+          "pending": 1
+        },
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 164,
+          "pending": 0
+        },
+        {
+          "id": 3,
+          "kind": "harness-panel-clock",
+          "executions": 477,
+          "pending": 0
+        },
+        {
+          "id": 4,
+          "kind": "avatar",
+          "executions": 25,
+          "pending": 0
+        }
+      ]
+    },
+    "offscreenEnd": {
+      "at": 16141.299999952316,
+      "hidden": false,
+      "globalPendingAvatarCallbacks": 1,
+      "unassignedPendingAvatarCallbacks": 0,
+      "contexts": [
+        {
+          "id": 1,
+          "label": "native-pet",
+          "draws": 13388,
+          "clears": 3083,
+          "avatarCallbacks": 870,
+          "pendingAvatarCallbacks": 1,
+          "resources": {
+            "Texture": {
+              "created": 27,
+              "deleted": 14,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 33,
+              "deleted": 27,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 43,
+              "deleted": 39,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 72,
+                "height": 72
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            31,
+            32
+          ],
+          "contextLost": false
+        },
+        {
+          "id": 2,
+          "label": "isolated-lifecycle-owner",
+          "draws": 401,
+          "clears": 86,
+          "avatarCallbacks": 25,
+          "pendingAvatarCallbacks": 0,
+          "resources": {
+            "Texture": {
+              "created": 14,
+              "deleted": 1,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 7,
+              "deleted": 1,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 4,
+              "deleted": 0,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 96,
+                "height": 96
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            5,
+            6
+          ],
+          "contextLost": false
+        }
+      ],
+      "callbacks": [
+        {
+          "id": 1,
+          "kind": "avatar",
+          "executions": 870,
+          "pending": 1
+        },
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 164,
+          "pending": 0
+        },
+        {
+          "id": 3,
+          "kind": "harness-panel-clock",
+          "executions": 477,
+          "pending": 0
+        },
+        {
+          "id": 4,
+          "kind": "avatar",
+          "executions": 25,
+          "pending": 0
+        }
+      ]
+    },
+    "restoredOwner": {
+      "at": 16404.899999976158,
+      "hidden": false,
+      "globalPendingAvatarCallbacks": 2,
+      "unassignedPendingAvatarCallbacks": 0,
+      "contexts": [
+        {
+          "id": 1,
+          "label": "native-pet",
+          "draws": 13583,
+          "clears": 3128,
+          "avatarCallbacks": 885,
+          "pendingAvatarCallbacks": 1,
+          "resources": {
+            "Texture": {
+              "created": 27,
+              "deleted": 14,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 33,
+              "deleted": 27,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 43,
+              "deleted": 39,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 72,
+                "height": 72
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            31,
+            32
+          ],
+          "contextLost": false
+        },
+        {
+          "id": 2,
+          "label": "isolated-lifecycle-owner",
+          "draws": 596,
+          "clears": 131,
+          "avatarCallbacks": 39,
+          "pendingAvatarCallbacks": 1,
+          "resources": {
+            "Texture": {
+              "created": 14,
+              "deleted": 1,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 7,
+              "deleted": 1,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 4,
+              "deleted": 0,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 96,
+                "height": 96
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            5,
+            6
+          ],
+          "contextLost": false
+        }
+      ],
+      "callbacks": [
+        {
+          "id": 1,
+          "kind": "avatar",
+          "executions": 885,
+          "pending": 1
+        },
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 164,
+          "pending": 0
+        },
+        {
+          "id": 3,
+          "kind": "harness-panel-clock",
+          "executions": 477,
+          "pending": 0
+        },
+        {
+          "id": 4,
+          "kind": "avatar",
+          "executions": 39,
+          "pending": 1
+        }
+      ]
+    },
+    "nativeWindowHidden": true,
+    "hiddenStart": {
+      "at": 16572.600000023842,
+      "hidden": false,
+      "globalPendingAvatarCallbacks": 0,
+      "unassignedPendingAvatarCallbacks": 0,
+      "contexts": [
+        {
+          "id": 1,
+          "label": "native-pet",
+          "draws": 13596,
+          "clears": 3131,
+          "avatarCallbacks": 886,
+          "pendingAvatarCallbacks": 0,
+          "resources": {
+            "Texture": {
+              "created": 27,
+              "deleted": 14,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 33,
+              "deleted": 27,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 43,
+              "deleted": 39,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 72,
+                "height": 72
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            31,
+            32
+          ],
+          "contextLost": false
+        },
+        {
+          "id": 2,
+          "label": "isolated-lifecycle-owner",
+          "draws": 609,
+          "clears": 134,
+          "avatarCallbacks": 40,
+          "pendingAvatarCallbacks": 0,
+          "resources": {
+            "Texture": {
+              "created": 14,
+              "deleted": 1,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 7,
+              "deleted": 1,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 4,
+              "deleted": 0,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 96,
+                "height": 96
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            5,
+            6
+          ],
+          "contextLost": false
+        }
+      ],
+      "callbacks": [
+        {
+          "id": 1,
+          "kind": "avatar",
+          "executions": 886,
+          "pending": 0
+        },
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 164,
+          "pending": 0
+        },
+        {
+          "id": 3,
+          "kind": "harness-panel-clock",
+          "executions": 477,
+          "pending": 0
+        },
+        {
+          "id": 4,
+          "kind": "avatar",
+          "executions": 40,
+          "pending": 0
+        }
+      ]
+    },
+    "hiddenEnd": {
+      "at": 17032.899999976158,
+      "hidden": false,
+      "globalPendingAvatarCallbacks": 0,
+      "unassignedPendingAvatarCallbacks": 0,
+      "contexts": [
+        {
+          "id": 1,
+          "label": "native-pet",
+          "draws": 13596,
+          "clears": 3131,
+          "avatarCallbacks": 886,
+          "pendingAvatarCallbacks": 0,
+          "resources": {
+            "Texture": {
+              "created": 27,
+              "deleted": 14,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 33,
+              "deleted": 27,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 43,
+              "deleted": 39,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 72,
+                "height": 72
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            31,
+            32
+          ],
+          "contextLost": false
+        },
+        {
+          "id": 2,
+          "label": "isolated-lifecycle-owner",
+          "draws": 609,
+          "clears": 134,
+          "avatarCallbacks": 40,
+          "pendingAvatarCallbacks": 0,
+          "resources": {
+            "Texture": {
+              "created": 14,
+              "deleted": 1,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 7,
+              "deleted": 1,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 4,
+              "deleted": 0,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 96,
+                "height": 96
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            5,
+            6
+          ],
+          "contextLost": false
+        }
+      ],
+      "callbacks": [
+        {
+          "id": 1,
+          "kind": "avatar",
+          "executions": 886,
+          "pending": 0
+        },
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 164,
+          "pending": 0
+        },
+        {
+          "id": 3,
+          "kind": "harness-panel-clock",
+          "executions": 477,
+          "pending": 0
+        },
+        {
+          "id": 4,
+          "kind": "avatar",
+          "executions": 40,
+          "pending": 0
+        }
+      ]
+    },
+    "hiddenSettingsUpdate": {
+      "phase": "thinking",
+      "motion": true,
+      "reaction": 1,
+      "source": "simulated direct compiled-owner settings"
+    },
+    "minimizedStart": {
+      "at": 17486,
+      "hidden": false,
+      "globalPendingAvatarCallbacks": 0,
+      "unassignedPendingAvatarCallbacks": 0,
+      "contexts": [
+        {
+          "id": 1,
+          "label": "native-pet",
+          "draws": 13830,
+          "clears": 3185,
+          "avatarCallbacks": 902,
+          "pendingAvatarCallbacks": 0,
+          "resources": {
+            "Texture": {
+              "created": 27,
+              "deleted": 14,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 33,
+              "deleted": 27,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 43,
+              "deleted": 39,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 72,
+                "height": 72
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            31,
+            32
+          ],
+          "contextLost": false
+        },
+        {
+          "id": 2,
+          "label": "isolated-lifecycle-owner",
+          "draws": 830,
+          "clears": 185,
+          "avatarCallbacks": 56,
+          "pendingAvatarCallbacks": 0,
+          "resources": {
+            "Texture": {
+              "created": 14,
+              "deleted": 1,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 7,
+              "deleted": 1,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 4,
+              "deleted": 0,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 96,
+                "height": 96
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            5,
+            6
+          ],
+          "contextLost": false
+        }
+      ],
+      "callbacks": [
+        {
+          "id": 1,
+          "kind": "avatar",
+          "executions": 902,
+          "pending": 0
+        },
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 164,
+          "pending": 0
+        },
+        {
+          "id": 3,
+          "kind": "harness-panel-clock",
+          "executions": 477,
+          "pending": 0
+        },
+        {
+          "id": 4,
+          "kind": "avatar",
+          "executions": 56,
+          "pending": 0
+        }
+      ]
+    },
+    "minimizedEnd": {
+      "at": 17945,
+      "hidden": false,
+      "globalPendingAvatarCallbacks": 0,
+      "unassignedPendingAvatarCallbacks": 0,
+      "contexts": [
+        {
+          "id": 1,
+          "label": "native-pet",
+          "draws": 13830,
+          "clears": 3185,
+          "avatarCallbacks": 902,
+          "pendingAvatarCallbacks": 0,
+          "resources": {
+            "Texture": {
+              "created": 27,
+              "deleted": 14,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 33,
+              "deleted": 27,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 43,
+              "deleted": 39,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 72,
+                "height": 72
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            31,
+            32
+          ],
+          "contextLost": false
+        },
+        {
+          "id": 2,
+          "label": "isolated-lifecycle-owner",
+          "draws": 830,
+          "clears": 185,
+          "avatarCallbacks": 56,
+          "pendingAvatarCallbacks": 0,
+          "resources": {
+            "Texture": {
+              "created": 14,
+              "deleted": 1,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 7,
+              "deleted": 1,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 4,
+              "deleted": 0,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 96,
+                "height": 96
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            5,
+            6
+          ],
+          "contextLost": false
+        }
+      ],
+      "callbacks": [
+        {
+          "id": 1,
+          "kind": "avatar",
+          "executions": 902,
+          "pending": 0
+        },
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 164,
+          "pending": 0
+        },
+        {
+          "id": 3,
+          "kind": "harness-panel-clock",
+          "executions": 477,
+          "pending": 0
+        },
+        {
+          "id": 4,
+          "kind": "avatar",
+          "executions": 56,
+          "pending": 0
+        }
+      ]
+    },
+    "disposedStart": {
+      "at": 18375.5,
+      "hidden": false,
+      "globalPendingAvatarCallbacks": 1,
+      "unassignedPendingAvatarCallbacks": 0,
+      "contexts": [
+        {
+          "id": 1,
+          "label": "native-pet",
+          "draws": 14194,
+          "clears": 3269,
+          "avatarCallbacks": 928,
+          "pendingAvatarCallbacks": 1,
+          "resources": {
+            "Texture": {
+              "created": 27,
+              "deleted": 14,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 33,
+              "deleted": 27,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 43,
+              "deleted": 39,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 72,
+                "height": 72
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            31,
+            32
+          ],
+          "contextLost": false
+        },
+        {
+          "id": 2,
+          "label": "isolated-lifecycle-owner",
+          "draws": 1077,
+          "clears": 242,
+          "avatarCallbacks": 74,
+          "pendingAvatarCallbacks": 0,
+          "resources": {
+            "Texture": {
+              "created": 14,
+              "deleted": 8,
+              "live": 6
+            },
+            "Framebuffer": {
+              "created": 7,
+              "deleted": 2,
+              "live": 5
+            },
+            "Renderbuffer": {
+              "created": 4,
+              "deleted": 1,
+              "live": 3
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 68,
+              "live": 0
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 11,
+              "live": 0
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 28,
+              "live": 0
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 96,
+                "height": 96
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            5,
+            6
+          ],
+          "contextLost": true
+        }
+      ],
+      "callbacks": [
+        {
+          "id": 1,
+          "kind": "avatar",
+          "executions": 928,
+          "pending": 1
+        },
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 164,
+          "pending": 0
+        },
+        {
+          "id": 3,
+          "kind": "harness-panel-clock",
+          "executions": 477,
+          "pending": 0
+        },
+        {
+          "id": 4,
+          "kind": "avatar",
+          "executions": 74,
+          "pending": 0
+        }
+      ]
+    },
+    "disposedEnd": {
+      "at": 18835.899999976158,
+      "hidden": false,
+      "globalPendingAvatarCallbacks": 1,
+      "unassignedPendingAvatarCallbacks": 0,
+      "contexts": [
+        {
+          "id": 1,
+          "label": "native-pet",
+          "draws": 14558,
+          "clears": 3353,
+          "avatarCallbacks": 955,
+          "pendingAvatarCallbacks": 1,
+          "resources": {
+            "Texture": {
+              "created": 27,
+              "deleted": 14,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 33,
+              "deleted": 27,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 43,
+              "deleted": 39,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 72,
+                "height": 72
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            31,
+            32
+          ],
+          "contextLost": false
+        },
+        {
+          "id": 2,
+          "label": "isolated-lifecycle-owner",
+          "draws": 1077,
+          "clears": 242,
+          "avatarCallbacks": 74,
+          "pendingAvatarCallbacks": 0,
+          "resources": {
+            "Texture": {
+              "created": 14,
+              "deleted": 8,
+              "live": 6
+            },
+            "Framebuffer": {
+              "created": 7,
+              "deleted": 2,
+              "live": 5
+            },
+            "Renderbuffer": {
+              "created": 4,
+              "deleted": 1,
+              "live": 3
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 68,
+              "live": 0
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 11,
+              "live": 0
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 28,
+              "live": 0
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 96,
+                "height": 96
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            5,
+            6
+          ],
+          "contextLost": true
+        }
+      ],
+      "callbacks": [
+        {
+          "id": 1,
+          "kind": "avatar",
+          "executions": 955,
+          "pending": 1
+        },
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 164,
+          "pending": 0
+        },
+        {
+          "id": 3,
+          "kind": "harness-panel-clock",
+          "executions": 477,
+          "pending": 0
+        },
+        {
+          "id": 4,
+          "kind": "avatar",
+          "executions": 74,
+          "pending": 0
+        }
+      ]
+    },
+    "disposedDiagnostics": {
+      "asset": "sprout",
+      "assetUrl": "/buddy/sprout-v005.glb",
+      "reflectionProfile": "tapered",
+      "toneMapping": "neutral",
+      "clips": [
+        "Sprout_Click",
+        "Sprout_Idle",
+        "Sprout_Listen",
+        "Sprout_Think",
+        "Sprout_Speak",
+        "Sprout_Blink",
+        "Sprout_Done",
+        "Sprout_JoyJump",
+        "Sprout_SleepEnter",
+        "Sprout_SleepLoop",
+        "Sprout_Wake"
+      ],
+      "eyeProfile": "happy-eyes-v005",
+      "assetIssues": [],
+      "vertices": 9907,
+      "triangles": 19496,
+      "frames": 80,
+      "intervalP95": 16.80000000000109,
+      "intervalMax": 33.29999999999927,
+      "missedBudgets": 1,
+      "renderP95": 1.3000000715255737,
+      "drawCalls": 13,
+      "resolution": "96 × 96",
+      "attention": {
+        "x": 0,
+        "y": 0,
+        "target": {
+          "x": 0,
+          "y": 0
+        },
+        "yaw": 0,
+        "pitch": 0,
+        "compression": 0
+      },
+      "behavior": {
+        "mode": "normal",
+        "sleeping": false,
+        "moving": true,
+        "visible": false,
+        "capabilities": {
+          "joy": true,
+          "sleep": true,
+          "done": true
+        },
+        "doneActive": false,
+        "headAnchor": null,
+        "revision": 7
+      },
+      "stage": {
+        "framing": 1.72,
+        "targetY": 0.24
+      },
+      "materials": [
+        {
+          "name": "MAT_Sprout_ClearPrismRim_v003",
+          "type": "MeshPhysicalMaterial",
+          "opacity": 1,
+          "roughness": 0.05999999865889549,
+          "metalness": 0,
+          "transmission": 0.8799999952316284,
+          "thickness": 0.3400000035762787,
+          "ior": 1.399999976158142,
+          "attenuationDistance": 4.499999966472387,
+          "attenuationColor": "bff0ff",
+          "clearcoat": 0.8500000238418579,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        },
+        {
+          "name": "MAT_Sprout_CoreLuminous_v003",
+          "type": "MeshPhysicalMaterial",
+          "opacity": 1,
+          "roughness": 0.15000000596046448,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0.03999999910593033,
+          "emissiveColor": "ffffff",
+          "emissiveIntensity": 1.100000023841858,
+          "baseColorMap": {
+            "colorSpace": "srgb",
+            "width": 0,
+            "height": 0
+          },
+          "emissiveMap": {
+            "colorSpace": "srgb",
+            "width": 0,
+            "height": 0
+          }
+        },
+        {
+          "name": "MAT_Sprout_Eyes",
+          "type": "MeshStandardMaterial",
+          "opacity": 1,
+          "roughness": 0.23000000417232513,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        },
+        {
+          "name": "MAT_Sprout_Glints",
+          "type": "MeshStandardMaterial",
+          "opacity": 1,
+          "roughness": 0.15000000596046448,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        }
+      ],
+      "startup": {
+        "assetBytes": 1445476,
+        "fetchMs": 99.10000002384186,
+        "parseMs": 6.699999928474426,
+        "gpuSetupMs": 407.39999997615814,
+        "firstRenderMs": 515.5
+      },
+      "memory": {
+        "geometries": 0,
+        "textures": 2,
+        "geometryAttributeBytes": 1272828,
+        "environmentColorBytesEstimate": 1572864,
+        "note": "Geometry bytes describe CPU attribute storage. Environment estimate is one RGBA16F target; neither measures total GPU allocation or driver overhead."
+      }
+    },
+    "nativeVisibilitySnapshots": {
+      "hiddenVisibility": {
+        "visible": false,
+        "revision": 3
+      },
+      "shownVisibility": {
+        "visible": true,
+        "revision": 4
+      },
+      "minimizedVisibility": {
+        "visible": false,
+        "revision": 5
+      },
+      "restoredVisibility": {
+        "visible": true,
+        "revision": 7
+      }
+    }
+  },
+  "error": "Error: expect(received).toHaveLength(expected)\n\nExpected length: 5\nReceived length: 7\nReceived array:  [{\"storage\": {\"height\": 512, \"internalFormat\": 34842, \"target\": 3553, \"width\": 384}, \"upload\": undefined}, {\"storage\": {\"depth\": 1, \"height\": 1, \"internalFormat\": 34836, \"target\": 35866, \"width\": 1068}, \"upload\": undefined}, {\"storage\": {\"depth\": 1, \"height\": 1, \"internalFormat\": 34836, \"target\": 35866, \"width\": 1068}, \"upload\": undefined}, {\"storage\": {\"height\": 8, \"internalFormat\": 34836, \"levels\": 1, \"target\": 3553, \"width\": 8}, \"upload\": undefined}, {\"storage\": {\"depth\": 3, \"height\": 1, \"internalFormat\": 34836, \"target\": 35866, \"width\": 1278}, \"upload\": undefined}, {\"storage\": {\"height\": 64, \"internalFormat\": 35907, \"levels\": 8, \"target\": 3553, \"width\": 128}, \"upload\": undefined}, {\"storage\": {\"depth\": 3, \"height\": 1, \"internalFormat\": 34836, \"target\": 35866, \"width\": 15288}, \"upload\": undefined}]\n    at captureRawStack (D:\\hackathon2026\\insightos-ui\\node_modules\\playwright-core\\lib\\coreBundle.js:9282:17)\n    at callMatcherAsStep (D:\\hackathon2026\\insightos-ui\\node_modules\\playwright\\lib\\matchers\\expect.js:13316:57)\n    at Object.toHaveLength (D:\\hackathon2026\\insightos-ui\\node_modules\\playwright\\lib\\matchers\\expect.js:13308:23)\n    at D:\\hackathon2026\\insightos-ui\\scripts\\verify-buddy-runtime.mjs:914:38"
+}

@@ -1,0 +1,370 @@
+{
+  "pass": true,
+  "source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-happy-eyes-v005.blend",
+  "source_sha256": "e97a0df2bafbffda9da972c538dbde60c54bc2d71efe264c163c8913c746a113",
+  "asset_sha256": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2",
+  "blender": "5.2.2 LTS",
+  "source_reopened": true,
+  "source_action_samples": [
+    {
+      "clip": "Sprout_Blink",
+      "frame_count": 5,
+      "first": [
+        0.0,
+        0.0
+      ],
+      "last": [
+        0.0,
+        0.0
+      ],
+      "peak": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "frame_count": 41,
+      "first": [
+        0.0,
+        0.0
+      ],
+      "last": [
+        1.0,
+        1.0
+      ],
+      "peak": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "frame_count": 121,
+      "first": [
+        1.0,
+        1.0
+      ],
+      "last": [
+        1.0,
+        1.0
+      ],
+      "peak": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "clip": "Sprout_Wake",
+      "frame_count": 31,
+      "first": [
+        1.0,
+        1.0
+      ],
+      "last": [
+        0.0,
+        0.0
+      ],
+      "peak": [
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "images": [
+    {
+      "clip": "Sprout_Idle",
+      "frame": 1,
+      "closure_study": 0,
+      "view": "front",
+      "png": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v005-front-000.png",
+      "sha256": "ba1e53541efa60aa34296973aade7883739f3f5d039adeba90947955974d4f5d",
+      "bytes": 90374,
+      "eye_values": [
+        0.0,
+        0.0
+      ],
+      "glint_scales": [
+        [
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0
+        ]
+      ],
+      "alpha_bounds_bottom_origin": {
+        "min": [
+          66,
+          37
+        ],
+        "max": [
+          253,
+          252
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Idle",
+      "frame": 1,
+      "closure_study": 0.25,
+      "view": "front",
+      "png": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v005-front-025.png",
+      "sha256": "06bd06270b1a597fb487e06c9822dd067e266393bd5f8ecebf24fc0b0edbc39f",
+      "bytes": 90023,
+      "eye_values": [
+        0.25,
+        0.25
+      ],
+      "glint_scales": [
+        [
+          0.7409999966621399,
+          0.7409999966621399,
+          0.7409999966621399
+        ],
+        [
+          0.7409999966621399,
+          0.7409999966621399,
+          0.7409999966621399
+        ]
+      ],
+      "alpha_bounds_bottom_origin": {
+        "min": [
+          66,
+          37
+        ],
+        "max": [
+          253,
+          252
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Idle",
+      "frame": 1,
+      "closure_study": 0.5,
+      "view": "front",
+      "png": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v005-front-050.png",
+      "sha256": "14789777f5478af286a8b11b68ab34266045d559cd746a139f286802bfbdfe31",
+      "bytes": 89233,
+      "eye_values": [
+        0.5,
+        0.5
+      ],
+      "glint_scales": [
+        [
+          0.25999999046325684,
+          0.25999999046325684,
+          0.25999999046325684
+        ],
+        [
+          0.25999999046325684,
+          0.25999999046325684,
+          0.25999999046325684
+        ]
+      ],
+      "alpha_bounds_bottom_origin": {
+        "min": [
+          66,
+          37
+        ],
+        "max": [
+          253,
+          252
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Idle",
+      "frame": 1,
+      "closure_study": 0.75,
+      "view": "front",
+      "png": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v005-front-075.png",
+      "sha256": "33dec49435b98b15635fd2b1aae5f01b241cf1257c4587ea02ced34f07198b36",
+      "bytes": 88834,
+      "eye_values": [
+        0.75,
+        0.75
+      ],
+      "glint_scales": [
+        [
+          0.0010000000474974513,
+          0.0010000000474974513,
+          0.0010000000474974513
+        ],
+        [
+          0.0010000000474974513,
+          0.0010000000474974513,
+          0.0010000000474974513
+        ]
+      ],
+      "alpha_bounds_bottom_origin": {
+        "min": [
+          66,
+          37
+        ],
+        "max": [
+          253,
+          252
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Idle",
+      "frame": 1,
+      "closure_study": 1,
+      "view": "front",
+      "png": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v005-front-100.png",
+      "sha256": "ecab326068d1a36e07bfadc462082482a60db1b71facdaccb929588e7b1dfaca",
+      "bytes": 88096,
+      "eye_values": [
+        1.0,
+        1.0
+      ],
+      "glint_scales": [
+        [
+          0.0010000000474974513,
+          0.0010000000474974513,
+          0.0010000000474974513
+        ],
+        [
+          0.0010000000474974513,
+          0.0010000000474974513,
+          0.0010000000474974513
+        ]
+      ],
+      "alpha_bounds_bottom_origin": {
+        "min": [
+          66,
+          37
+        ],
+        "max": [
+          253,
+          252
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Idle",
+      "frame": 1,
+      "closure_study": 0.5,
+      "view": "quarter",
+      "png": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v005-quarter-050.png",
+      "sha256": "b8fc061ac2ad33107afe3dc308811b837a957644ce62e6121de265e99dcfffc7",
+      "bytes": 88839,
+      "eye_values": [
+        0.5,
+        0.5
+      ],
+      "glint_scales": [
+        [
+          0.25999999046325684,
+          0.25999999046325684,
+          0.25999999046325684
+        ],
+        [
+          0.25999999046325684,
+          0.25999999046325684,
+          0.25999999046325684
+        ]
+      ],
+      "alpha_bounds_bottom_origin": {
+        "min": [
+          69,
+          37
+        ],
+        "max": [
+          250,
+          252
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Idle",
+      "frame": 1,
+      "closure_study": 1,
+      "view": "quarter",
+      "png": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v005-quarter-100.png",
+      "sha256": "57b69b6f78c25030aa6fa0e53ee4405ef9bd0dc1c4ae2fb0d1081112cde35d3a",
+      "bytes": 87454,
+      "eye_values": [
+        1.0,
+        1.0
+      ],
+      "glint_scales": [
+        [
+          0.0010000000474974513,
+          0.0010000000474974513,
+          0.0010000000474974513
+        ],
+        [
+          0.0010000000474974513,
+          0.0010000000474974513,
+          0.0010000000474974513
+        ]
+      ],
+      "alpha_bounds_bottom_origin": {
+        "min": [
+          69,
+          37
+        ],
+        "max": [
+          250,
+          252
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "frame": 1,
+      "closure_study": null,
+      "view": "front",
+      "png": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v005-reclined-sleep.png",
+      "sha256": "c2c4abfeddf98cddfdf61674d2a7059c52b6a4f9018d08450229397b161a9730",
+      "bytes": 71345,
+      "eye_values": [
+        1.0,
+        1.0
+      ],
+      "glint_scales": [
+        [
+          0.0010000000474974513,
+          0.0010000000474974513,
+          0.0010000000474974513
+        ],
+        [
+          0.0010000000474974513,
+          0.0010000000474974513,
+          0.0010000000474974513
+        ]
+      ],
+      "alpha_bounds_bottom_origin": {
+        "min": [
+          57,
+          33
+        ],
+        "max": [
+          263,
+          164
+        ]
+      }
+    }
+  ],
+  "render": {
+    "mode": "study",
+    "device": "gpu",
+    "size": 320,
+    "samples": 16,
+    "colour_view": "Khronos PBR Neutral",
+    "camera_span": 3.440000057220459,
+    "target_blender": [
+      0.0,
+      0.0,
+      0.23999999463558197
+    ]
+  },
+  "scope": "Actual reopened source actions and eye morph geometry. Source-backed Cycles study/fallback; not exact Three pixels, native clipping or live voice. Unsaved isolated process, no public promotion."
+}

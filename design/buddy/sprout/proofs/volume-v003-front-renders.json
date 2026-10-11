@@ -1,0 +1,63 @@
+{
+  "variant": "volume",
+  "mode": "front",
+  "source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-volume-v003.blend",
+  "source_sha256": "797ed8ec733a662b4be42e4a4a8d72c9c9d1c55bc8ade320c404eecca4ede76d",
+  "blender": "5.2.2 LTS",
+  "device": "gpu",
+  "size": 320,
+  "samples": 24,
+  "camera": {
+    "position": [
+      0.10000000149011612,
+      -6.0,
+      0.23999999463558197
+    ],
+    "orthographic_span": 2.799999952316284
+  },
+  "view_transform": "AgX",
+  "exposure": 0.0,
+  "world_strength": 0.18000000715255737,
+  "lights": {
+    "key": {
+      "position": [
+        -3.5,
+        -3.0,
+        3.799999952316284
+      ],
+      "energy": 550.0,
+      "size": 1.4500000476837158,
+      "size_y": 3.4000000953674316
+    },
+    "fill": {
+      "position": [
+        3.200000047683716,
+        -2.0,
+        1.5
+      ],
+      "energy": 45.0,
+      "size": 1.2999999523162842,
+      "size_y": 2.200000047683716
+    },
+    "rim": {
+      "position": [
+        1.2000000476837158,
+        2.0,
+        3.0
+      ],
+      "energy": 300.0,
+      "size": 2.799999952316284,
+      "size_y": 0.8999999761581421
+    }
+  },
+  "images": [
+    {
+      "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\volume-v003-front.png",
+      "clip": "Sprout_Idle",
+      "frame": 1,
+      "yaw": 0,
+      "pitch": 0
+    }
+  ],
+  "scope": "Supporting offline material/pose study; no browser/native acceptance or source save."
+}

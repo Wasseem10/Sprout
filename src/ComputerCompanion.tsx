@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import {
   ArrowUp,
-  AudioLines,
   Check,
   Code2,
   Eye,
@@ -25,9 +24,16 @@ import { spokenComputerReply, spokenRequestAcknowledgment } from './speechText';
 import './computer.css';
 import ConnectionsPanel from './ConnectionsPanel';
 import DesktopBuddy from './DesktopBuddy';
+import AssistantSignal, { buddyVisualState } from './AssistantSignal';
 import FinancePanel from './FinancePanel';
 import BillWorkspace from './BillWorkspace';
 import type { BillValues } from '../shared/bills';
+import type { BuddyReadingMemory } from './useBuddyPanel';
+import type { BuddyBehaviorInput, BuddyBehaviorSnapshot } from './buddyBehavior';
+import { BuddyCompletionGate } from './buddyCompletion';
+import { useSproutPresence } from './useSproutPresence';
+import type { PresenceContext } from './sproutPresence';
+import { SPROUT_CURRENT_ASSET } from './buddyAppearance';
 
 const empty: ComputerState = { folder: null, code: null, browser: null, screen: null };
 type Message = { id: string; role: 'user' | 'assistant' | 'error'; text: string };
@@ -86,6 +92,7 @@ export default function ComputerCompanion() {
   const [request, setRequest] = useState(''),
     [busy, setBusy] = useState(false),
     [phase, setPhase] = useState('Ready when you are');
+  const buddyReadingMemory = useRef<BuddyReadingMemory>({ scrollTop: 0, followLatest: true });
   const [tab, setTab] = useState<
       'home' | 'code' | 'office' | 'browser' | 'screen' | 'energy' | 'finance'
     >(
@@ -105,6 +112,8 @@ export default function ComputerCompanion() {
   const [largeText, setLargeText] = useState(
     () => localStorage.getItem('insightos.largeText') === 'true',
   );
+  const speechEnabled = useRef(speech);
+  speechEnabled.current = speech;
   const [locked, setLocked] = useState(false),
     [passphrase, setPassphrase] = useState('');
   const [fieldValue, setFieldValue] = useState(''),
@@ -120,6 +129,25 @@ export default function ComputerCompanion() {
     upload = useRef<HTMLInputElement>(null),
     lastFocus = useRef<HTMLElement | null>(null);
   const runRef = useRef<(text: string) => Promise<void>>(async () => {});
+  const [completionGate] = useState(() => new BuddyCompletionGate());
+  const characterGeneration = useRef(0);
+  const [characterEpoch, setCharacterEpoch] = useState(0);
+  const [characterSnapshot, setCharacterSnapshot] = useState<BuddyBehaviorSnapshot | null>(null);
+  const interruptCharacter = (wake = true) => {
+    const next = ++characterGeneration.current;
+    setCharacterEpoch(next);
+    if (wake) presence.activity(true, true);
+    else presence.dismiss();
+    return next;
+  };
+  const switchDockMode = (next: boolean) => {
+    if (next !== dockMode) {
+      // A new canvas must not consume the old controller's one-shot requests.
+      interruptCharacter(false);
+      setCharacterSnapshot(null);
+    }
+    setDockMode(next);
+  };
   const add = (role: Message['role'], text: string) => {
     setMessages((old) => [...old, { id: crypto.randomUUID(), role, text }]);
     setAnnouncement(text);
@@ -128,8 +156,41 @@ export default function ComputerCompanion() {
     (text) => void runRef.current(text),
     (text) => add('error', text),
   );
+  const presenceContext = (): PresenceContext => {
+    const activity = voice.getActivity();
+    return {
+      working: inFlight.current,
+      connecting: voice.phase === 'starting',
+      transcribing: voice.phase === 'transcribing' || voice.phase === 'processing',
+      utteranceActive: activity.utteranceActive,
+      speechRevision: activity.speechRevision,
+      output: activity.output,
+      visible: document.visibilityState === 'visible',
+      canCelebrate:
+        !!characterSnapshot?.visible &&
+        !!characterSnapshot?.moving &&
+        !!characterSnapshot?.capabilities.joy,
+    };
+  };
+  const presence = useSproutPresence({
+    context: presenceContext(),
+    getContext: presenceContext,
+    pauseVoice: voice.pauseConversation,
+  });
+  const acceptResult = (result: ComputerResult, current: number, reply: string | null) => {
+    const completion = completionGate.accept(result.state.task, current, generation.current);
+    const replyId = reply ? `task-reply-${current}` : null;
+    if (completion && !voice.hasPendingInterruption() && document.visibilityState === 'visible')
+      presence.acceptCompletion(completion, replyId);
+    // Allocate the completion/reply identity before speak registers pending output.
+    if (reply) void voice.speak(reply, replyId!);
+  };
   const enabled = !!status && !locked && !!status.computer?.local;
-  const sync = async () => setState(await api<ComputerState>('/computer/state'));
+  const sync = async () => {
+    const next = await api<ComputerState>('/computer/state');
+    completionGate.seed(next.task);
+    setState(next);
+  };
   const applyState = (next: ComputerState, tool?: string) => {
     setState(next);
     if (tool === 'financeHelp') setTab('finance');
@@ -143,13 +204,16 @@ export default function ComputerCompanion() {
   };
   const perform = async (text: string, action?: ComputerAction, fromVoice = false) => {
     if (!enabled || inFlight.current || !text.trim()) return;
+    completionGate.seed(state.task);
+    interruptCharacter();
     if (acknowledgmentTimer.current) clearTimeout(acknowledgmentTimer.current);
     acknowledgmentTimer.current = null;
     if (!fromVoice) voice.stop();
     if (dockMode) setDockExpanded(true);
     inFlight.current = true;
     setBusy(true);
-    setRequest('');
+    // A spoken turn must not consume the separate, unsent text draft.
+    if (!fromVoice) setRequest('');
     const current = ++generation.current,
       abort = new AbortController();
     controller.current = abort;
@@ -162,6 +226,7 @@ export default function ComputerCompanion() {
         if (
           current === generation.current &&
           inFlight.current &&
+          speechEnabled.current &&
           voice.isConversationActive() &&
           !voice.hasPendingInterruption()
         )
@@ -324,13 +389,24 @@ export default function ComputerCompanion() {
       if (tool === 'fill' || tool === 'confirmFill') setFieldValue('');
       add('assistant', result.summary);
       setPhase(result.clarification ? 'Choose your next step' : 'Result received');
-      if (fromVoice && !voice.isConversationActive()) return;
       // The result remains in the transcript. Only its spoken reply is skipped:
       // the microphone is capturing an interruption and must not be reset.
-      if (fromVoice && voice.hasPendingInterruption()) return;
-      if (speech && status?.integrations.elevenLabs.ttsConfigured)
-        void voice.speak(spokenComputerReply(result, tool));
-      else if (fromVoice) voice.resumeConversation();
+      const replyAllowed =
+        !presence.getSnapshot().pendingRest &&
+        (!fromVoice || (voice.isConversationActive() && !voice.hasPendingInterruption()));
+      acceptResult(
+        result,
+        current,
+        replyAllowed && speechEnabled.current && status?.integrations.elevenLabs.ttsConfigured
+          ? spokenComputerReply(result, tool)
+          : null,
+      );
+      if (
+        fromVoice &&
+        replyAllowed &&
+        (!speechEnabled.current || !status?.integrations.elevenLabs.ttsConfigured)
+      )
+        voice.resumeConversation();
     } catch (error) {
       if (current !== generation.current || abort.signal.aborted) return;
       if (acknowledgmentTimer.current) clearTimeout(acknowledgmentTimer.current);
@@ -340,7 +416,7 @@ export default function ComputerCompanion() {
       setPhase('Needs attention');
       await sync().catch(() => {});
       if (fromVoice && voice.isConversationActive() && !voice.hasPendingInterruption()) {
-        if (speech && status?.integrations.elevenLabs.ttsConfigured)
+        if (speechEnabled.current && status?.integrations.elevenLabs.ttsConfigured)
           void voice.speak(failure.slice(0, 300));
         else voice.resumeConversation();
       }
@@ -357,6 +433,7 @@ export default function ComputerCompanion() {
   };
   runRef.current = async (text) => {
     if (inFlight.current) {
+      interruptCharacter();
       // A new utterance during an acknowledgment supersedes the older request.
       if (acknowledgmentTimer.current) clearTimeout(acknowledgmentTimer.current);
       acknowledgmentTimer.current = null;
@@ -376,6 +453,7 @@ export default function ComputerCompanion() {
     await perform(text, undefined, true);
   };
   const stop = async () => {
+    interruptCharacter();
     if (acknowledgmentTimer.current) clearTimeout(acknowledgmentTimer.current);
     acknowledgmentTimer.current = null;
     ++generation.current;
@@ -403,6 +481,7 @@ export default function ComputerCompanion() {
   };
   const setup = async (kind: 'folder' | 'demo' | 'screen') => {
     if (!enabled || inFlight.current) return;
+    interruptCharacter();
     inFlight.current = true;
     setBusy(true);
     try {
@@ -430,6 +509,7 @@ export default function ComputerCompanion() {
   };
   const capture = async (source: Source) => {
     if (inFlight.current) return;
+    interruptCharacter();
     inFlight.current = true;
     setBusy(true);
     try {
@@ -472,7 +552,10 @@ export default function ComputerCompanion() {
         }
         await backend.session();
         const next = await api<ComputerState>('/computer/state');
-        if (active) setState(next);
+        if (active) {
+          completionGate.seed(next.task);
+          setState(next);
+        }
       } catch (error) {
         if (active)
           add('error', error instanceof Error ? error.message : 'Start the backend first.');
@@ -483,8 +566,9 @@ export default function ComputerCompanion() {
     };
   }, []);
   useEffect(() => {
+    if (dockMode) return; // The compact panel owns its reading/follow position.
     transcript.current?.scrollTo({ top: transcript.current.scrollHeight, behavior: 'instant' });
-  }, [messages]);
+  }, [messages, dockMode]);
   useEffect(() => {
     if (!busy) return;
     const abort = new AbortController();
@@ -532,8 +616,16 @@ export default function ComputerCompanion() {
     }
   }, [modal]);
   const active = busy || voice.conversationActive || voice.phase !== 'idle';
+  const characterBehavior: BuddyBehaviorInput = {
+    generation: characterEpoch,
+    manualEligible: !active,
+    isInterrupted: voice.hasPendingInterruption,
+    automatic: presence.automatic,
+  };
   const billOperation = async (operation: (signal: AbortSignal) => Promise<ComputerResult>) => {
     if (!enabled || inFlight.current) return;
+    completionGate.seed(state.task);
+    interruptCharacter();
     inFlight.current = true;
     setBusy(true);
     setPhase('Reading bill documents');
@@ -547,7 +639,15 @@ export default function ComputerCompanion() {
       setTab('energy');
       add('assistant', result.summary);
       setPhase('Ready to review your bills');
-      if (speech) void voice.speak(spokenComputerReply(result, 'energyHelp'));
+      acceptResult(
+        result,
+        current,
+        speechEnabled.current &&
+          !presence.getSnapshot().pendingRest &&
+          status?.integrations.elevenLabs.ttsConfigured
+          ? spokenComputerReply(result, 'energyHelp')
+          : null,
+      );
     } catch (error) {
       if (generation.current === current && !abort.signal.aborted)
         add('error', error instanceof Error ? error.message : 'Bill reading failed.');
@@ -580,7 +680,7 @@ export default function ComputerCompanion() {
         try {
           body = JSON.parse(raw);
         } catch {
-          throw new Error('Insight’s local service is reconnecting. Try reading the bill again.');
+          throw new Error('Sprout’s local service is reconnecting. Try reading the bill again.');
         }
         if (!response.ok) throw new Error(body.error ?? 'The bill could not be read.');
         result = body;
@@ -599,6 +699,8 @@ export default function ComputerCompanion() {
       add('error', 'Choose a finance CSV or XLSX under 3 MB.');
       return;
     }
+    completionGate.seed(state.task);
+    interruptCharacter();
     inFlight.current = true;
     setBusy(true);
     setPhase('Reading the finance file');
@@ -619,7 +721,7 @@ export default function ComputerCompanion() {
       try {
         body = JSON.parse(raw);
       } catch {
-        throw new Error('Insight’s local service is reconnecting. Try importing the file again.');
+        throw new Error('Sprout’s local service is reconnecting. Try importing the file again.');
       }
       if (!response.ok) throw new Error(body.error ?? 'The finance file could not be imported.');
       if (!body.state || typeof body.summary !== 'string')
@@ -629,7 +731,15 @@ export default function ComputerCompanion() {
       setTab('finance');
       add('assistant', body.summary);
       setPhase('Finance records analyzed');
-      if (speech) void voice.speak(spokenComputerReply(body, 'financeHelp'));
+      acceptResult(
+        body,
+        current,
+        speechEnabled.current &&
+          !presence.getSnapshot().pendingRest &&
+          status?.integrations.elevenLabs.ttsConfigured
+          ? spokenComputerReply(body, 'financeHelp')
+          : null,
+      );
     } catch (error) {
       if (generation.current === current && !abort.signal.aborted)
         add('error', error instanceof Error ? error.message : 'Finance import failed.');
@@ -644,15 +754,15 @@ export default function ComputerCompanion() {
   const voicePending = voice.phase === 'starting' || voice.phase === 'transcribing';
   const toggleRecording = () => {
     if (voice.isConversationActive()) {
-      voice.pauseConversation();
+      presence.pause();
       return;
     }
-    if (!enabled || inFlight.current || voicePending || !status?.integrations.elevenLabs.configured)
-      return;
+    if (!enabled || voicePending || !status?.integrations.elevenLabs.configured) return;
+    presence.activity(true, true);
     if (dockMode) setDockExpanded(true);
     const greeting =
       desktopBuddy && !greeted.current && speech
-        ? "Hi, I'm Insight. What would you like to do?"
+        ? "Hi, I'm Sprout. What would you like to do?"
         : undefined;
     greeted.current = true;
     void voice.startConversation(greeting);
@@ -680,6 +790,7 @@ export default function ComputerCompanion() {
     status?.integrations.elevenLabs.configured,
   ]);
   const hideBuddy = async () => {
+    interruptCharacter(false);
     if (active) await stop();
     setDockExpanded(false);
     await window.insightos?.hideBuddy?.();
@@ -694,10 +805,10 @@ export default function ComputerCompanion() {
       return;
     }
     if (command === 'workspace') {
-      setDockMode(false);
+      switchDockMode(false);
       return;
     }
-    setDockMode(true);
+    switchDockMode(true);
     setDockExpanded(true);
     if (command === 'settings') setModal('settings');
     if (command === 'voice' && !modal) toggleRecording();
@@ -718,24 +829,53 @@ export default function ComputerCompanion() {
     };
   }, [desktopBuddy]);
   useEffect(() => {
-    if (!desktopBuddy) return;
-    void window.insightos
-      ?.setBuddyMode?.(!dockMode ? 'workspace' : dockExpanded || modal ? 'panel' : 'pill')
-      .catch(() => {});
-  }, [desktopBuddy, dockMode, dockExpanded, modal]);
+    if (!desktopBuddy || dockMode) return;
+    // DesktopBuddy coordinates its own reveal/exit; only the full workspace resizes here.
+    void window.insightos?.setBuddyMode?.('workspace').catch(() => {});
+  }, [desktopBuddy, dockMode]);
   const toggleSpeech = () => {
     if (speech && voice.phase === 'speaking') voice.skipSpeech();
     setSpeech(!speech);
   };
   return (
-    <div className={`${dockMode ? 'buddy-shell' : 'companion'} ${largeText ? 'large-text' : ''}`}>
+    <div
+      className={`${dockMode ? 'buddy-shell' : 'companion'} ${largeText ? 'large-text' : ''}`}
+      data-sprout-presence={presence.snapshot.presence}
+      data-sprout-cue={presence.snapshot.joy ? 'joy' : presence.snapshot.wake ? 'wake' : ''}
+      data-sprout-pending-rest={presence.snapshot.pendingRest}
+      onClickCapture={() => presence.activity()}
+      onKeyDownCapture={() => presence.activity()}
+      onChange={(event) => {
+        if (
+          event.target instanceof HTMLTextAreaElement ||
+          (event.target instanceof HTMLInputElement &&
+            ['text', 'search'].includes(event.target.type))
+        )
+          // Let controlled input handlers capture the new DOM value before the
+          // external presence store can synchronously render this component.
+          presence.activity(true, true);
+      }}
+      onScrollCapture={(event) => {
+        if (event.target === transcript.current) presence.activity();
+      }}
+    >
+      {!dockMode && (
+        <p className="sr-only" role="status">
+          {presence.snapshot.presence === 'asleep' ? 'Sprout is sleeping. Microphone paused.' : ''}
+        </p>
+      )}
       {dockMode ? (
         <DesktopBuddy
           expanded={dockExpanded}
+          modalOpen={!!modal}
           active={active}
           busy={busy}
           enabled={enabled}
           voicePhase={voice.phase}
+          voiceOutputState={voice.activity.output?.state}
+          audio={voice.presentationAudio}
+          behavior={characterBehavior}
+          onBehaviorChange={setCharacterSnapshot}
           conversationActive={voice.conversationActive}
           voiceReady={!!status?.integrations.elevenLabs.configured}
           speech={speech}
@@ -747,7 +887,12 @@ export default function ComputerCompanion() {
           messages={messages}
           inputRef={input}
           transcriptRef={transcript}
-          expand={() => setDockExpanded(!dockExpanded)}
+          readingMemory={buddyReadingMemory}
+          expand={() => {
+            presence.activity();
+            setDockExpanded((expanded) => !expanded);
+          }}
+          expansionFailed={() => setDockExpanded(false)}
           hide={() => void hideBuddy()}
           talk={toggleRecording}
           stop={() => void stop()}
@@ -758,7 +903,7 @@ export default function ComputerCompanion() {
           }}
           workspace={() => {
             setTab(tab === 'energy' ? 'energy' : 'finance');
-            setDockMode(false);
+            switchDockMode(false);
           }}
           folder={() => void setup(window.insightos ? 'folder' : 'demo')}
           screen={() => void setup('screen')}
@@ -776,10 +921,10 @@ export default function ComputerCompanion() {
         <>
           {desktopBuddy && (
             <div className="desktop-workspace-bar">
-              <span>InsightOS workspace</span>
+              <span>Sprout workspace</span>
               <button
                 onClick={() => {
-                  setDockMode(true);
+                  switchDockMode(true);
                   setDockExpanded(false);
                 }}
               >
@@ -791,15 +936,13 @@ export default function ComputerCompanion() {
             Skip to request input
           </a>
           <header className="companion-header">
-            <a className="brand" href="/" aria-label="InsightOS home">
+            <a className="brand" href="/" aria-label="Sprout home">
               <span className="brand-symbol">
                 <Sparkles size={23} aria-hidden="true" />
               </span>
-              <span>
-                insight<span className="brand-os">OS</span>
-              </span>
+              <span>Sprout</span>
             </a>
-            <span className="companion-tag">YOUR COMPUTER, WITHIN REACH</span>
+            <span className="companion-tag">Your personal desktop companion</span>
             <div className="companion-header-actions">
               <a href="/?workspace=data">Data workspace</a>
               <button
@@ -835,15 +978,17 @@ export default function ComputerCompanion() {
             <main id="computer-main" className="computer-work">
               <div className="computer-heading">
                 <div>
-                  <div className="eyebrow">
-                    <span /> LESS FRICTION. MORE FREEDOM.
-                  </div>
+                  <div className="companion-intro">A little help. A clearer next step.</div>
                   <h1>Tell me what you need done.</h1>
-                  <p>Search, open apps, use your screen, or make something together.</p>
+                  <p>Understand your bills. Explore your options. Make something together.</p>
                 </div>
-                <div className={`companion-orb ${active ? 'is-active' : ''}`} aria-hidden="true">
-                  <AudioLines size={37} />
-                </div>
+                <AssistantSignal
+                  assetUrl={SPROUT_CURRENT_ASSET}
+                  phase={buddyVisualState(voice.phase, busy)}
+                  audio={voice.presentationAudio}
+                  behavior={characterBehavior}
+                  onBehaviorChange={setCharacterSnapshot}
+                />
               </div>
               <nav className="computer-tabs" aria-label="Computer tools">
                 {[
@@ -888,22 +1033,32 @@ export default function ComputerCompanion() {
                 />
               )}
               {tab === 'home' && (
-                <section
-                  className="computer-artifact computer-home"
-                  aria-label="Start with InsightOS"
-                >
+                <section className="computer-artifact computer-home" aria-label="Start with Sprout">
                   <div className="computer-artifact-heading">
                     <div>
-                      <span className="small-label">YOUR COMPUTER, WITHIN REACH</span>
                       <h2>What can I help with?</h2>
                       <p>
-                        Press Play on the buddy or type a request. I can take a step, tell you what
-                        happened, and keep the conversation going.
+                        Choose a starting point, or tell me in your own words. We’ll take it one
+                        step at a time.
                       </p>
                     </div>
                     <Sparkles size={25} aria-hidden="true" />
                   </div>
                   <div className="computer-starters">
+                    <button onClick={() => setTab('energy')}>
+                      <ShieldCheck size={22} aria-hidden="true" />
+                      <span>
+                        <strong>Understand my bills</strong>
+                        <small>Review the numbers and see what changed.</small>
+                      </span>
+                    </button>
+                    <button onClick={() => setTab('finance')}>
+                      <FolderOpen size={22} aria-hidden="true" />
+                      <span>
+                        <strong>Make sense of my spending</strong>
+                        <small>Explore a budget that works for your life.</small>
+                      </span>
+                    </button>
                     <button
                       disabled={!enabled || busy}
                       onClick={() => void perform('Find jobs near me')}
@@ -1426,7 +1581,7 @@ export default function ComputerCompanion() {
             <aside className="computer-conversation" aria-label="Computer companion conversation">
               <div className="conversation-heading">
                 <div>
-                  <span className="small-label">HERE WITH YOU</span>
+                  <span className="small-label">Here with you</span>
                   <h2>Your companion</h2>
                 </div>
                 <button
@@ -1460,7 +1615,7 @@ export default function ComputerCompanion() {
                         ? 'YOU'
                         : m.role === 'error'
                           ? 'NEEDS ATTENTION'
-                          : 'INSIGHTOS'}
+                          : 'SPROUT'}
                     </span>
                     <p>{m.text}</p>
                   </div>
@@ -1532,7 +1687,7 @@ export default function ComputerCompanion() {
                     aria-keyshortcuts="Control+Shift+Space"
                     disabled={
                       !enabled ||
-                      (!voice.conversationActive && (busy || voicePending)) ||
+                      (!voice.conversationActive && voicePending) ||
                       !status?.integrations.elevenLabs.configured
                     }
                     onClick={toggleRecording}
@@ -1599,7 +1754,7 @@ export default function ComputerCompanion() {
       >
         <div className="computer-dialog-heading">
           <h2 id="computer-dialog-title">
-            {modal === 'screens' ? 'Choose what InsightOS can see' : 'Settings & connections'}
+            {modal === 'screens' ? 'Choose what Sprout can see' : 'Settings & connections'}
           </h2>
           <button aria-label="Close dialog" className="icon-button" onClick={() => setModal(null)}>
             <X size={20} aria-hidden="true" />

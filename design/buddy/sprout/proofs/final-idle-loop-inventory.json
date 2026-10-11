@@ -1,0 +1,35 @@
+{
+  "source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-prism-v002.blend",
+  "source_sha256": "d636554af1d2ae493a8414de322a0028779f1fd6d47baff2133be0546a12a2ae",
+  "clip": "Sprout_Idle",
+  "size": 320,
+  "samples": 24,
+  "fps": 24,
+  "camera": "CAM_sprout_hero",
+  "camera_location": [
+    0.10000000149011612,
+    -6.0,
+    0.23999999463558197
+  ],
+  "orthographic_span": 2.799999952316284,
+  "view_transform": "AgX",
+  "exposure": 0.0,
+  "images": [
+    {
+      "file": "final-idle-start.png",
+      "frame": 1,
+      "clipSeconds": 0.0
+    },
+    {
+      "file": "final-idle-mid.png",
+      "frame": 73,
+      "clipSeconds": 3.0
+    },
+    {
+      "file": "final-idle-seam.png",
+      "frame": 145,
+      "clipSeconds": 6.0
+    }
+  ],
+  "scope": "Separate background Blender; exact authored Idle keyframes. No source save or live-host mutation."
+}

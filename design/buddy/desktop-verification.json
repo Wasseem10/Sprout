@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-10-11T00:09:43.352Z",
+  "launch": "isolated development Electron against existing 5173/4311",
+  "renderer": "webgl in pill and expanded panel",
+  "pill": {
+    "width": 360,
+    "height": 86,
+    "scrollWidth": 360,
+    "scrollHeight": 86
+  },
+  "panel": {
+    "width": 440,
+    "height": 580,
+    "scrollWidth": 440,
+    "scrollHeight": 580
+  },
+  "securityPreferences": {
+    "sandbox": true,
+    "contextIsolation": true,
+    "nodeIntegration": false,
+    "webSecurity": true
+  },
+  "pageErrors": [],
+  "clipping": "none: avatar and Send request fully visible, no document overflow",
+  "captures": "C:\\Users\\zghaz\\AppData\\Local\\Temp\\insightos-desktop-E1oSLW\\captures"
+}

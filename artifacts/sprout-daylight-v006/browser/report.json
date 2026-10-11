@@ -1,0 +1,1252 @@
+{
+  "checkedAt": "2026-10-11T09:07:28.372Z",
+  "scope": "Actual DesktopBuddy panels and controlled Three renderer board; simulated states, paused motion, no CSS/material post-capture edits. PNG fallbacks are checked separately.",
+  "hashes": {
+    "v005": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2",
+    "v006": "b8de0b88395e4b876f0eb668a0a7f39317c24d3530c9d15e58a01c7aa561824f"
+  },
+  "results": [
+    {
+      "version": "v005",
+      "background": "light",
+      "width": 72
+    },
+    {
+      "version": "v005",
+      "background": "dark",
+      "width": 72
+    },
+    {
+      "version": "v005",
+      "background": "busy",
+      "width": 72
+    },
+    {
+      "version": "v006",
+      "background": "light",
+      "width": 72
+    },
+    {
+      "version": "v006",
+      "background": "dark",
+      "width": 72
+    },
+    {
+      "version": "v006",
+      "background": "busy",
+      "width": 72
+    }
+  ],
+  "diagnostics": [
+    {
+      "asset": "sprout",
+      "assetUrl": "/buddy/sprout-v005.glb",
+      "reflectionProfile": "tapered",
+      "toneMapping": "neutral",
+      "clips": [
+        "Sprout_Click",
+        "Sprout_Idle",
+        "Sprout_Listen",
+        "Sprout_Think",
+        "Sprout_Speak",
+        "Sprout_Blink",
+        "Sprout_Done",
+        "Sprout_JoyJump",
+        "Sprout_SleepEnter",
+        "Sprout_SleepLoop",
+        "Sprout_Wake"
+      ],
+      "eyeProfile": "happy-eyes-v005",
+      "assetIssues": [],
+      "vertices": 9907,
+      "triangles": 19496,
+      "frames": 3,
+      "intervalP95": 0,
+      "intervalMax": 0,
+      "missedBudgets": 0,
+      "renderP95": 418.5,
+      "drawCalls": 13,
+      "resolution": "300 × 300",
+      "attention": {
+        "x": 0,
+        "y": 0,
+        "target": {
+          "x": 0,
+          "y": 0
+        },
+        "yaw": 0,
+        "pitch": 0,
+        "compression": 0
+      },
+      "behavior": {
+        "mode": "normal",
+        "sleeping": false,
+        "moving": false,
+        "visible": true,
+        "capabilities": {
+          "joy": true,
+          "sleep": true,
+          "done": true
+        },
+        "doneActive": false,
+        "headAnchor": null,
+        "revision": 1
+      },
+      "stage": {
+        "framing": 1.72,
+        "targetY": 0.24
+      },
+      "materials": [
+        {
+          "name": "MAT_Sprout_ClearPrismRim_v003",
+          "type": "MeshPhysicalMaterial",
+          "opacity": 1,
+          "roughness": 0.05999999865889549,
+          "metalness": 0,
+          "transmission": 0.8799999952316284,
+          "thickness": 0.3400000035762787,
+          "ior": 1.399999976158142,
+          "attenuationDistance": 4.499999966472387,
+          "attenuationColor": "bff0ff",
+          "clearcoat": 0.8500000238418579,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        },
+        {
+          "name": "MAT_Sprout_CoreLuminous_v003",
+          "type": "MeshPhysicalMaterial",
+          "opacity": 1,
+          "roughness": 0.15000000596046448,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0.03999999910593033,
+          "emissiveColor": "ffffff",
+          "emissiveIntensity": 1.100000023841858,
+          "baseColorMap": {
+            "colorSpace": "srgb",
+            "width": 128,
+            "height": 64
+          },
+          "emissiveMap": {
+            "colorSpace": "srgb",
+            "width": 128,
+            "height": 64
+          }
+        },
+        {
+          "name": "MAT_Sprout_Eyes",
+          "type": "MeshStandardMaterial",
+          "opacity": 1,
+          "roughness": 0.23000000417232513,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        },
+        {
+          "name": "MAT_Sprout_Glints",
+          "type": "MeshStandardMaterial",
+          "opacity": 1,
+          "roughness": 0.15000000596046448,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        }
+      ],
+      "startup": {
+        "assetBytes": 1445476,
+        "fetchMs": 16.699999928474426,
+        "parseMs": 15.800000071525574,
+        "gpuSetupMs": 479.1999999284744,
+        "firstRenderMs": 514.1999999284744
+      },
+      "memory": {
+        "geometries": 7,
+        "textures": 9,
+        "geometryAttributeBytes": 1272828,
+        "environmentColorBytesEstimate": 1572864,
+        "note": "Geometry bytes describe CPU attribute storage. Environment estimate is one RGBA16F target; neither measures total GPU allocation or driver overhead."
+      }
+    },
+    {
+      "asset": "sprout",
+      "assetUrl": "/buddy/sprout-v005.glb",
+      "reflectionProfile": "tapered",
+      "toneMapping": "neutral",
+      "clips": [
+        "Sprout_Click",
+        "Sprout_Idle",
+        "Sprout_Listen",
+        "Sprout_Think",
+        "Sprout_Speak",
+        "Sprout_Blink",
+        "Sprout_Done",
+        "Sprout_JoyJump",
+        "Sprout_SleepEnter",
+        "Sprout_SleepLoop",
+        "Sprout_Wake"
+      ],
+      "eyeProfile": "happy-eyes-v005",
+      "assetIssues": [],
+      "vertices": 9907,
+      "triangles": 19496,
+      "frames": 3,
+      "intervalP95": 0,
+      "intervalMax": 0,
+      "missedBudgets": 0,
+      "renderP95": 524.7000000476837,
+      "drawCalls": 13,
+      "resolution": "44 × 44",
+      "attention": {
+        "x": 0,
+        "y": 0,
+        "target": {
+          "x": 0,
+          "y": 0
+        },
+        "yaw": 0,
+        "pitch": 0,
+        "compression": 0
+      },
+      "behavior": {
+        "mode": "normal",
+        "sleeping": false,
+        "moving": false,
+        "visible": true,
+        "capabilities": {
+          "joy": true,
+          "sleep": true,
+          "done": true
+        },
+        "doneActive": false,
+        "headAnchor": null,
+        "revision": 1
+      },
+      "stage": {
+        "framing": 1.72,
+        "targetY": 0.24
+      },
+      "materials": [
+        {
+          "name": "MAT_Sprout_ClearPrismRim_v003",
+          "type": "MeshPhysicalMaterial",
+          "opacity": 1,
+          "roughness": 0.05999999865889549,
+          "metalness": 0,
+          "transmission": 0.8799999952316284,
+          "thickness": 0.3400000035762787,
+          "ior": 1.399999976158142,
+          "attenuationDistance": 4.499999966472387,
+          "attenuationColor": "bff0ff",
+          "clearcoat": 0.8500000238418579,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        },
+        {
+          "name": "MAT_Sprout_CoreLuminous_v003",
+          "type": "MeshPhysicalMaterial",
+          "opacity": 1,
+          "roughness": 0.15000000596046448,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0.03999999910593033,
+          "emissiveColor": "ffffff",
+          "emissiveIntensity": 1.100000023841858,
+          "baseColorMap": {
+            "colorSpace": "srgb",
+            "width": 128,
+            "height": 64
+          },
+          "emissiveMap": {
+            "colorSpace": "srgb",
+            "width": 128,
+            "height": 64
+          }
+        },
+        {
+          "name": "MAT_Sprout_Eyes",
+          "type": "MeshStandardMaterial",
+          "opacity": 1,
+          "roughness": 0.23000000417232513,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        },
+        {
+          "name": "MAT_Sprout_Glints",
+          "type": "MeshStandardMaterial",
+          "opacity": 1,
+          "roughness": 0.15000000596046448,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        }
+      ],
+      "startup": {
+        "assetBytes": 1445476,
+        "fetchMs": 911.3999999761581,
+        "parseMs": 8.199999928474426,
+        "gpuSetupMs": 579.7000000476837,
+        "firstRenderMs": 1500.8999999761581
+      },
+      "memory": {
+        "geometries": 7,
+        "textures": 9,
+        "geometryAttributeBytes": 1272828,
+        "environmentColorBytesEstimate": 1572864,
+        "note": "Geometry bytes describe CPU attribute storage. Environment estimate is one RGBA16F target; neither measures total GPU allocation or driver overhead."
+      }
+    },
+    {
+      "asset": "sprout",
+      "assetUrl": "/buddy/sprout-v005.glb",
+      "reflectionProfile": "tapered",
+      "toneMapping": "neutral",
+      "clips": [
+        "Sprout_Click",
+        "Sprout_Idle",
+        "Sprout_Listen",
+        "Sprout_Think",
+        "Sprout_Speak",
+        "Sprout_Blink",
+        "Sprout_Done",
+        "Sprout_JoyJump",
+        "Sprout_SleepEnter",
+        "Sprout_SleepLoop",
+        "Sprout_Wake"
+      ],
+      "eyeProfile": "happy-eyes-v005",
+      "assetIssues": [],
+      "vertices": 9907,
+      "triangles": 19496,
+      "frames": 3,
+      "intervalP95": 0,
+      "intervalMax": 0,
+      "missedBudgets": 0,
+      "renderP95": 516.7999999523163,
+      "drawCalls": 13,
+      "resolution": "72 × 72",
+      "attention": {
+        "x": 0,
+        "y": 0,
+        "target": {
+          "x": 0,
+          "y": 0
+        },
+        "yaw": 0,
+        "pitch": 0,
+        "compression": 0
+      },
+      "behavior": {
+        "mode": "normal",
+        "sleeping": false,
+        "moving": false,
+        "visible": true,
+        "capabilities": {
+          "joy": true,
+          "sleep": true,
+          "done": true
+        },
+        "doneActive": false,
+        "headAnchor": null,
+        "revision": 1
+      },
+      "stage": {
+        "framing": 1.72,
+        "targetY": 0.24
+      },
+      "materials": [
+        {
+          "name": "MAT_Sprout_ClearPrismRim_v003",
+          "type": "MeshPhysicalMaterial",
+          "opacity": 1,
+          "roughness": 0.05999999865889549,
+          "metalness": 0,
+          "transmission": 0.8799999952316284,
+          "thickness": 0.3400000035762787,
+          "ior": 1.399999976158142,
+          "attenuationDistance": 4.499999966472387,
+          "attenuationColor": "bff0ff",
+          "clearcoat": 0.8500000238418579,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        },
+        {
+          "name": "MAT_Sprout_CoreLuminous_v003",
+          "type": "MeshPhysicalMaterial",
+          "opacity": 1,
+          "roughness": 0.15000000596046448,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0.03999999910593033,
+          "emissiveColor": "ffffff",
+          "emissiveIntensity": 1.100000023841858,
+          "baseColorMap": {
+            "colorSpace": "srgb",
+            "width": 128,
+            "height": 64
+          },
+          "emissiveMap": {
+            "colorSpace": "srgb",
+            "width": 128,
+            "height": 64
+          }
+        },
+        {
+          "name": "MAT_Sprout_Eyes",
+          "type": "MeshStandardMaterial",
+          "opacity": 1,
+          "roughness": 0.23000000417232513,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        },
+        {
+          "name": "MAT_Sprout_Glints",
+          "type": "MeshStandardMaterial",
+          "opacity": 1,
+          "roughness": 0.15000000596046448,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        }
+      ],
+      "startup": {
+        "assetBytes": 1445476,
+        "fetchMs": 688.7000000476837,
+        "parseMs": 7.799999952316284,
+        "gpuSetupMs": 571,
+        "firstRenderMs": 1270.2000000476837
+      },
+      "memory": {
+        "geometries": 7,
+        "textures": 9,
+        "geometryAttributeBytes": 1272828,
+        "environmentColorBytesEstimate": 1572864,
+        "note": "Geometry bytes describe CPU attribute storage. Environment estimate is one RGBA16F target; neither measures total GPU allocation or driver overhead."
+      }
+    },
+    {
+      "asset": "sprout",
+      "assetUrl": "/buddy/sprout-v005.glb",
+      "reflectionProfile": "tapered",
+      "toneMapping": "neutral",
+      "clips": [
+        "Sprout_Click",
+        "Sprout_Idle",
+        "Sprout_Listen",
+        "Sprout_Think",
+        "Sprout_Speak",
+        "Sprout_Blink",
+        "Sprout_Done",
+        "Sprout_JoyJump",
+        "Sprout_SleepEnter",
+        "Sprout_SleepLoop",
+        "Sprout_Wake"
+      ],
+      "eyeProfile": "happy-eyes-v005",
+      "assetIssues": [],
+      "vertices": 9907,
+      "triangles": 19496,
+      "frames": 3,
+      "intervalP95": 0,
+      "intervalMax": 0,
+      "missedBudgets": 0,
+      "renderP95": 462.2000000476837,
+      "drawCalls": 13,
+      "resolution": "96 × 96",
+      "attention": {
+        "x": 0,
+        "y": 0,
+        "target": {
+          "x": 0,
+          "y": 0
+        },
+        "yaw": 0,
+        "pitch": 0,
+        "compression": 0
+      },
+      "behavior": {
+        "mode": "normal",
+        "sleeping": false,
+        "moving": false,
+        "visible": true,
+        "capabilities": {
+          "joy": true,
+          "sleep": true,
+          "done": true
+        },
+        "doneActive": false,
+        "headAnchor": null,
+        "revision": 1
+      },
+      "stage": {
+        "framing": 1.72,
+        "targetY": 0.24
+      },
+      "materials": [
+        {
+          "name": "MAT_Sprout_ClearPrismRim_v003",
+          "type": "MeshPhysicalMaterial",
+          "opacity": 1,
+          "roughness": 0.05999999865889549,
+          "metalness": 0,
+          "transmission": 0.8799999952316284,
+          "thickness": 0.3400000035762787,
+          "ior": 1.399999976158142,
+          "attenuationDistance": 4.499999966472387,
+          "attenuationColor": "bff0ff",
+          "clearcoat": 0.8500000238418579,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        },
+        {
+          "name": "MAT_Sprout_CoreLuminous_v003",
+          "type": "MeshPhysicalMaterial",
+          "opacity": 1,
+          "roughness": 0.15000000596046448,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0.03999999910593033,
+          "emissiveColor": "ffffff",
+          "emissiveIntensity": 1.100000023841858,
+          "baseColorMap": {
+            "colorSpace": "srgb",
+            "width": 128,
+            "height": 64
+          },
+          "emissiveMap": {
+            "colorSpace": "srgb",
+            "width": 128,
+            "height": 64
+          }
+        },
+        {
+          "name": "MAT_Sprout_Eyes",
+          "type": "MeshStandardMaterial",
+          "opacity": 1,
+          "roughness": 0.23000000417232513,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        },
+        {
+          "name": "MAT_Sprout_Glints",
+          "type": "MeshStandardMaterial",
+          "opacity": 1,
+          "roughness": 0.15000000596046448,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        }
+      ],
+      "startup": {
+        "assetBytes": 1445476,
+        "fetchMs": 690.4000000953674,
+        "parseMs": 5.699999928474426,
+        "gpuSetupMs": 517.3000000715256,
+        "firstRenderMs": 1214.8000000715256
+      },
+      "memory": {
+        "geometries": 7,
+        "textures": 9,
+        "geometryAttributeBytes": 1272828,
+        "environmentColorBytesEstimate": 1572864,
+        "note": "Geometry bytes describe CPU attribute storage. Environment estimate is one RGBA16F target; neither measures total GPU allocation or driver overhead."
+      }
+    },
+    {
+      "asset": "sprout",
+      "assetUrl": "/buddy/sprout-v006.glb",
+      "reflectionProfile": "daylight",
+      "toneMapping": "neutral",
+      "clips": [
+        "Sprout_Click",
+        "Sprout_Idle",
+        "Sprout_Listen",
+        "Sprout_Think",
+        "Sprout_Speak",
+        "Sprout_Blink",
+        "Sprout_Done",
+        "Sprout_JoyJump",
+        "Sprout_SleepEnter",
+        "Sprout_SleepLoop",
+        "Sprout_Wake"
+      ],
+      "eyeProfile": "happy-eyes-v005",
+      "assetIssues": [],
+      "vertices": 9907,
+      "triangles": 19496,
+      "frames": 3,
+      "intervalP95": 0,
+      "intervalMax": 0,
+      "missedBudgets": 0,
+      "renderP95": 478.5,
+      "drawCalls": 13,
+      "resolution": "300 × 300",
+      "attention": {
+        "x": 0,
+        "y": 0,
+        "target": {
+          "x": 0,
+          "y": 0
+        },
+        "yaw": 0,
+        "pitch": 0,
+        "compression": 0
+      },
+      "behavior": {
+        "mode": "normal",
+        "sleeping": false,
+        "moving": false,
+        "visible": true,
+        "capabilities": {
+          "joy": true,
+          "sleep": true,
+          "done": true
+        },
+        "doneActive": false,
+        "headAnchor": null,
+        "revision": 1
+      },
+      "stage": {
+        "framing": 1.72,
+        "targetY": 0.24
+      },
+      "materials": [
+        {
+          "name": "MAT_Sprout_DaylightShell_v006",
+          "type": "MeshPhysicalMaterial",
+          "opacity": 1,
+          "roughness": 0.10999999940395355,
+          "metalness": 0,
+          "transmission": 0.800000011920929,
+          "thickness": 0.3400000035762787,
+          "ior": 1.399999976158142,
+          "attenuationDistance": 4.499999966472387,
+          "attenuationColor": "bff0ff",
+          "clearcoat": 0.5199999809265137,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        },
+        {
+          "name": "MAT_Sprout_DaylightCore_v006",
+          "type": "MeshPhysicalMaterial",
+          "opacity": 1,
+          "roughness": 0.15000000596046448,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0.03999999910593033,
+          "emissiveColor": "e5e5e5",
+          "emissiveIntensity": 1,
+          "baseColorMap": {
+            "colorSpace": "srgb",
+            "width": 128,
+            "height": 64
+          },
+          "emissiveMap": {
+            "colorSpace": "srgb",
+            "width": 128,
+            "height": 64
+          }
+        },
+        {
+          "name": "MAT_Sprout_Eyes",
+          "type": "MeshStandardMaterial",
+          "opacity": 1,
+          "roughness": 0.23000000417232513,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        },
+        {
+          "name": "MAT_Sprout_Glints",
+          "type": "MeshStandardMaterial",
+          "opacity": 1,
+          "roughness": 0.15000000596046448,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        }
+      ],
+      "startup": {
+        "assetBytes": 1445452,
+        "fetchMs": 744,
+        "parseMs": 38.5,
+        "gpuSetupMs": 523.7999999523163,
+        "firstRenderMs": 1308.1000000238419
+      },
+      "memory": {
+        "geometries": 7,
+        "textures": 9,
+        "geometryAttributeBytes": 1272828,
+        "environmentColorBytesEstimate": 1572864,
+        "note": "Geometry bytes describe CPU attribute storage. Environment estimate is one RGBA16F target; neither measures total GPU allocation or driver overhead."
+      }
+    },
+    {
+      "asset": "sprout",
+      "assetUrl": "/buddy/sprout-v006.glb",
+      "reflectionProfile": "daylight",
+      "toneMapping": "neutral",
+      "clips": [
+        "Sprout_Click",
+        "Sprout_Idle",
+        "Sprout_Listen",
+        "Sprout_Think",
+        "Sprout_Speak",
+        "Sprout_Blink",
+        "Sprout_Done",
+        "Sprout_JoyJump",
+        "Sprout_SleepEnter",
+        "Sprout_SleepLoop",
+        "Sprout_Wake"
+      ],
+      "eyeProfile": "happy-eyes-v005",
+      "assetIssues": [],
+      "vertices": 9907,
+      "triangles": 19496,
+      "frames": 3,
+      "intervalP95": 0,
+      "intervalMax": 0,
+      "missedBudgets": 0,
+      "renderP95": 505.10000002384186,
+      "drawCalls": 13,
+      "resolution": "44 × 44",
+      "attention": {
+        "x": 0,
+        "y": 0,
+        "target": {
+          "x": 0,
+          "y": 0
+        },
+        "yaw": 0,
+        "pitch": 0,
+        "compression": 0
+      },
+      "behavior": {
+        "mode": "normal",
+        "sleeping": false,
+        "moving": false,
+        "visible": true,
+        "capabilities": {
+          "joy": true,
+          "sleep": true,
+          "done": true
+        },
+        "doneActive": false,
+        "headAnchor": null,
+        "revision": 1
+      },
+      "stage": {
+        "framing": 1.72,
+        "targetY": 0.24
+      },
+      "materials": [
+        {
+          "name": "MAT_Sprout_DaylightShell_v006",
+          "type": "MeshPhysicalMaterial",
+          "opacity": 1,
+          "roughness": 0.10999999940395355,
+          "metalness": 0,
+          "transmission": 0.800000011920929,
+          "thickness": 0.3400000035762787,
+          "ior": 1.399999976158142,
+          "attenuationDistance": 4.499999966472387,
+          "attenuationColor": "bff0ff",
+          "clearcoat": 0.5199999809265137,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        },
+        {
+          "name": "MAT_Sprout_DaylightCore_v006",
+          "type": "MeshPhysicalMaterial",
+          "opacity": 1,
+          "roughness": 0.15000000596046448,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0.03999999910593033,
+          "emissiveColor": "e5e5e5",
+          "emissiveIntensity": 1,
+          "baseColorMap": {
+            "colorSpace": "srgb",
+            "width": 128,
+            "height": 64
+          },
+          "emissiveMap": {
+            "colorSpace": "srgb",
+            "width": 128,
+            "height": 64
+          }
+        },
+        {
+          "name": "MAT_Sprout_Eyes",
+          "type": "MeshStandardMaterial",
+          "opacity": 1,
+          "roughness": 0.23000000417232513,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        },
+        {
+          "name": "MAT_Sprout_Glints",
+          "type": "MeshStandardMaterial",
+          "opacity": 1,
+          "roughness": 0.15000000596046448,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        }
+      ],
+      "startup": {
+        "assetBytes": 1445452,
+        "fetchMs": 833.3999999761581,
+        "parseMs": 88.20000004768372,
+        "gpuSetupMs": 562,
+        "firstRenderMs": 1485.3999999761581
+      },
+      "memory": {
+        "geometries": 7,
+        "textures": 9,
+        "geometryAttributeBytes": 1272828,
+        "environmentColorBytesEstimate": 1572864,
+        "note": "Geometry bytes describe CPU attribute storage. Environment estimate is one RGBA16F target; neither measures total GPU allocation or driver overhead."
+      }
+    },
+    {
+      "asset": "sprout",
+      "assetUrl": "/buddy/sprout-v006.glb",
+      "reflectionProfile": "daylight",
+      "toneMapping": "neutral",
+      "clips": [
+        "Sprout_Click",
+        "Sprout_Idle",
+        "Sprout_Listen",
+        "Sprout_Think",
+        "Sprout_Speak",
+        "Sprout_Blink",
+        "Sprout_Done",
+        "Sprout_JoyJump",
+        "Sprout_SleepEnter",
+        "Sprout_SleepLoop",
+        "Sprout_Wake"
+      ],
+      "eyeProfile": "happy-eyes-v005",
+      "assetIssues": [],
+      "vertices": 9907,
+      "triangles": 19496,
+      "frames": 3,
+      "intervalP95": 0,
+      "intervalMax": 0,
+      "missedBudgets": 0,
+      "renderP95": 454.10000002384186,
+      "drawCalls": 13,
+      "resolution": "72 × 72",
+      "attention": {
+        "x": 0,
+        "y": 0,
+        "target": {
+          "x": 0,
+          "y": 0
+        },
+        "yaw": 0,
+        "pitch": 0,
+        "compression": 0
+      },
+      "behavior": {
+        "mode": "normal",
+        "sleeping": false,
+        "moving": false,
+        "visible": true,
+        "capabilities": {
+          "joy": true,
+          "sleep": true,
+          "done": true
+        },
+        "doneActive": false,
+        "headAnchor": null,
+        "revision": 1
+      },
+      "stage": {
+        "framing": 1.72,
+        "targetY": 0.24
+      },
+      "materials": [
+        {
+          "name": "MAT_Sprout_DaylightShell_v006",
+          "type": "MeshPhysicalMaterial",
+          "opacity": 1,
+          "roughness": 0.10999999940395355,
+          "metalness": 0,
+          "transmission": 0.800000011920929,
+          "thickness": 0.3400000035762787,
+          "ior": 1.399999976158142,
+          "attenuationDistance": 4.499999966472387,
+          "attenuationColor": "bff0ff",
+          "clearcoat": 0.5199999809265137,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        },
+        {
+          "name": "MAT_Sprout_DaylightCore_v006",
+          "type": "MeshPhysicalMaterial",
+          "opacity": 1,
+          "roughness": 0.15000000596046448,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0.03999999910593033,
+          "emissiveColor": "e5e5e5",
+          "emissiveIntensity": 1,
+          "baseColorMap": {
+            "colorSpace": "srgb",
+            "width": 128,
+            "height": 64
+          },
+          "emissiveMap": {
+            "colorSpace": "srgb",
+            "width": 128,
+            "height": 64
+          }
+        },
+        {
+          "name": "MAT_Sprout_Eyes",
+          "type": "MeshStandardMaterial",
+          "opacity": 1,
+          "roughness": 0.23000000417232513,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        },
+        {
+          "name": "MAT_Sprout_Glints",
+          "type": "MeshStandardMaterial",
+          "opacity": 1,
+          "roughness": 0.15000000596046448,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        }
+      ],
+      "startup": {
+        "assetBytes": 1445452,
+        "fetchMs": 821.0999999046326,
+        "parseMs": 38.800000071525574,
+        "gpuSetupMs": 508.39999997615814,
+        "firstRenderMs": 1374.7999999523163
+      },
+      "memory": {
+        "geometries": 7,
+        "textures": 9,
+        "geometryAttributeBytes": 1272828,
+        "environmentColorBytesEstimate": 1572864,
+        "note": "Geometry bytes describe CPU attribute storage. Environment estimate is one RGBA16F target; neither measures total GPU allocation or driver overhead."
+      }
+    },
+    {
+      "asset": "sprout",
+      "assetUrl": "/buddy/sprout-v006.glb",
+      "reflectionProfile": "daylight",
+      "toneMapping": "neutral",
+      "clips": [
+        "Sprout_Click",
+        "Sprout_Idle",
+        "Sprout_Listen",
+        "Sprout_Think",
+        "Sprout_Speak",
+        "Sprout_Blink",
+        "Sprout_Done",
+        "Sprout_JoyJump",
+        "Sprout_SleepEnter",
+        "Sprout_SleepLoop",
+        "Sprout_Wake"
+      ],
+      "eyeProfile": "happy-eyes-v005",
+      "assetIssues": [],
+      "vertices": 9907,
+      "triangles": 19496,
+      "frames": 3,
+      "intervalP95": 0,
+      "intervalMax": 0,
+      "missedBudgets": 0,
+      "renderP95": 476.39999997615814,
+      "drawCalls": 13,
+      "resolution": "96 × 96",
+      "attention": {
+        "x": 0,
+        "y": 0,
+        "target": {
+          "x": 0,
+          "y": 0
+        },
+        "yaw": 0,
+        "pitch": 0,
+        "compression": 0
+      },
+      "behavior": {
+        "mode": "normal",
+        "sleeping": false,
+        "moving": false,
+        "visible": true,
+        "capabilities": {
+          "joy": true,
+          "sleep": true,
+          "done": true
+        },
+        "doneActive": false,
+        "headAnchor": null,
+        "revision": 1
+      },
+      "stage": {
+        "framing": 1.72,
+        "targetY": 0.24
+      },
+      "materials": [
+        {
+          "name": "MAT_Sprout_DaylightShell_v006",
+          "type": "MeshPhysicalMaterial",
+          "opacity": 1,
+          "roughness": 0.10999999940395355,
+          "metalness": 0,
+          "transmission": 0.800000011920929,
+          "thickness": 0.3400000035762787,
+          "ior": 1.399999976158142,
+          "attenuationDistance": 4.499999966472387,
+          "attenuationColor": "bff0ff",
+          "clearcoat": 0.5199999809265137,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        },
+        {
+          "name": "MAT_Sprout_DaylightCore_v006",
+          "type": "MeshPhysicalMaterial",
+          "opacity": 1,
+          "roughness": 0.15000000596046448,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0.03999999910593033,
+          "emissiveColor": "e5e5e5",
+          "emissiveIntensity": 1,
+          "baseColorMap": {
+            "colorSpace": "srgb",
+            "width": 128,
+            "height": 64
+          },
+          "emissiveMap": {
+            "colorSpace": "srgb",
+            "width": 128,
+            "height": 64
+          }
+        },
+        {
+          "name": "MAT_Sprout_Eyes",
+          "type": "MeshStandardMaterial",
+          "opacity": 1,
+          "roughness": 0.23000000417232513,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        },
+        {
+          "name": "MAT_Sprout_Glints",
+          "type": "MeshStandardMaterial",
+          "opacity": 1,
+          "roughness": 0.15000000596046448,
+          "metalness": 0,
+          "transmission": 0,
+          "thickness": 0,
+          "ior": 1.5,
+          "attenuationDistance": null,
+          "attenuationColor": "ffffff",
+          "clearcoat": 0,
+          "emissiveColor": "000000",
+          "emissiveIntensity": 1,
+          "baseColorMap": null,
+          "emissiveMap": null
+        }
+      ],
+      "startup": {
+        "assetBytes": 1445452,
+        "fetchMs": 762.1000000238419,
+        "parseMs": 8.600000023841858,
+        "gpuSetupMs": 518.8999999761581,
+        "firstRenderMs": 1291.3000000715256
+      },
+      "memory": {
+        "geometries": 7,
+        "textures": 9,
+        "geometryAttributeBytes": 1272828,
+        "environmentColorBytesEstimate": 1572864,
+        "note": "Geometry bytes describe CPU attribute storage. Environment estimate is one RGBA16F target; neither measures total GPU allocation or driver overhead."
+      }
+    }
+  ],
+  "requests": [],
+  "errors": []
+}

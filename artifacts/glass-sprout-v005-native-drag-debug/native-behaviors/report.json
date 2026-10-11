@@ -1,0 +1,157 @@
+{
+  "startedAt": "2026-10-11T07:48:05.313Z",
+  "pass": false,
+  "implementation": "compiled dist in actual isolated Electron main/preload at trusted 5173 origin",
+  "assetSha256": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2",
+  "assetBytes": 1445476,
+  "requiredClips": [
+    "Sprout_JoyJump",
+    "Sprout_SleepEnter",
+    "Sprout_SleepLoop",
+    "Sprout_Wake",
+    "Sprout_Done"
+  ],
+  "compiledIndexSha256": "3c6413b4e08468a79cf0a44f458ebf8d173bd8d40f87f7e66397c492df3211e0",
+  "recording": false,
+  "apiFixtures": [
+    {
+      "pathname": "/api/status",
+      "method": "GET"
+    },
+    {
+      "pathname": "/api/session",
+      "method": "POST"
+    },
+    {
+      "pathname": "/api/computer/state",
+      "method": "GET"
+    }
+  ],
+  "servedAssets": [
+    {
+      "url": "http://127.0.0.1:5173/buddy/sprout-v005.glb",
+      "status": 200,
+      "bytes": 1445476,
+      "sha256": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2"
+    }
+  ],
+  "sequence": [
+    {
+      "step": "96-collapsed-bottom-right",
+      "native": {
+        "bounds": {
+          "x": 1624,
+          "y": 904,
+          "width": 296,
+          "height": 128
+        },
+        "contentBounds": {
+          "x": 1624,
+          "y": 904,
+          "width": 296,
+          "height": 128
+        },
+        "workArea": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 1032
+        },
+        "scaleFactor": 1,
+        "visible": true,
+        "minimized": false,
+        "zoomFactor": 1
+      },
+      "html": {
+        "at": 1153.3999999761581,
+        "width": 96,
+        "height": 96,
+        "left": 8,
+        "top": 8,
+        "right": 104,
+        "bottom": 104,
+        "viewport": {
+          "width": 296,
+          "height": 128
+        },
+        "mode": "normal",
+        "done": null,
+        "phase": "idle",
+        "stage": "closed",
+        "z": [],
+        "draft": ""
+      }
+    }
+  ],
+  "errors": [],
+  "limits": [
+    "Real Character settings and task/voice adapters; task completion is an explicitly local API fixture, not a successful provider task.",
+    "Continuous voice uses a controlled oscillator stream, local transcription fixture and short local PCM WAV; no physical microphone, live provider, device audibility or spoken interruption claim.",
+    "CapturePage/Playwright video record actual Electron content and alpha, not underlying desktop pixels or operating-system compositor presentation.",
+    "Bounds/readback prove the current monitor work area; not physical multi-monitor/DPI coverage.",
+    "HTML avatar/Z bounds are checked at named checkpoints. Exhaustive animated-mesh camera containment belongs to the separate exported-vertex proof; framebuffer sampling is excluded because non-preserved WebGL buffers are cleared by Chromium.",
+    "Collapse/hide intentionally interrupt cosmetic actions; 96px collapsed stills therefore show the real normal pose, while the Character actions run at the actual 72px expanded size."
+  ],
+  "bootstrap": {
+    "existingApiRequestsCancelled": [
+      "http://127.0.0.1:5173/api/status",
+      "http://127.0.0.1:5173/api/status"
+    ]
+  },
+  "security": {
+    "sandbox": true,
+    "contextIsolation": true,
+    "nodeIntegration": false,
+    "webSecurity": true
+  },
+  "identity": {
+    "title": "Sprout — Your desktop companion",
+    "tray": {
+      "tooltip": "Sprout — your desktop buddy",
+      "labels": [
+        "Show buddy",
+        "Talk to Sprout",
+        "Stop task and audio",
+        "",
+        "Settings",
+        "Open workspace",
+        "",
+        "Quit Sprout"
+      ]
+    }
+  },
+  "pointerSequence": [
+    {
+      "transform": "perspective(1800px) rotateX(0.180447deg) rotateY(-1.15134deg)",
+      "tilt": "active"
+    },
+    {
+      "transform": "perspective(1800px) rotateX(0.18deg) rotateY(-0.00348085deg)",
+      "tilt": "active"
+    },
+    {
+      "transform": "perspective(1800px) rotateX(0.18deg) rotateY(1.14852deg)",
+      "tilt": "active"
+    },
+    {
+      "transform": "perspective(1800px) rotateX(0.18deg) rotateY(0.00348054deg)",
+      "tilt": "active"
+    }
+  ],
+  "nativeDrag": {
+    "scope": "Actual registered Windows move-loop callbacks invoked by local fixture; real read-only IPC and production tilt consumer. Not a physical pointer drag.",
+    "registered": [
+      true,
+      true
+    ],
+    "frozenPose": "perspective(1800px) rotateX(0.18deg) rotateY(1.008deg)",
+    "settledNeutral": true,
+    "nativeBoundsUnchanged": true,
+    "hooksRetainedAfterCloseHideShow": [
+      true,
+      true
+    ]
+  },
+  "failure": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n\nCall Log:\n- Timeout 60000ms exceeded while waiting on the predicate\n    at captureRawStack (D:\\hackathon2026\\insightos-ui\\node_modules\\playwright-core\\lib\\coreBundle.js:9282:17)\n    at callMatcherAsStep (D:\\hackathon2026\\insightos-ui\\node_modules\\playwright\\lib\\matchers\\expect.js:13316:57)\n    at Object.toBe (D:\\hackathon2026\\insightos-ui\\node_modules\\playwright\\lib\\matchers\\expect.js:13308:23)\n    at D:\\hackathon2026\\insightos-ui\\scripts\\verify-sprout-behaviors-native.mjs:552:10",
+  "finishedAt": "2026-10-11T07:49:14.991Z"
+}

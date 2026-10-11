@@ -1,0 +1,160 @@
+{
+  "pass": true,
+  "source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-daylight-v006.blend",
+  "source_sha256": "5c0d0155d9f414886fd72ffd25276102f8800c77802bf72d8fecdc6fd7d5b775",
+  "asset_sha256": "b8de0b88395e4b876f0eb668a0a7f39317c24d3530c9d15e58a01c7aa561824f",
+  "blender": "5.2.2 LTS",
+  "source_reopened": true,
+  "source_action_samples": [
+    {
+      "clip": "Sprout_Blink",
+      "frame_count": 5,
+      "first": [
+        0.0,
+        0.0
+      ],
+      "last": [
+        0.0,
+        0.0
+      ],
+      "peak": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "frame_count": 41,
+      "first": [
+        0.0,
+        0.0
+      ],
+      "last": [
+        1.0,
+        1.0
+      ],
+      "peak": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "frame_count": 121,
+      "first": [
+        1.0,
+        1.0
+      ],
+      "last": [
+        1.0,
+        1.0
+      ],
+      "peak": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "clip": "Sprout_Wake",
+      "frame_count": 31,
+      "first": [
+        1.0,
+        1.0
+      ],
+      "last": [
+        0.0,
+        0.0
+      ],
+      "peak": [
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "images": [
+    {
+      "clip": "Sprout_Idle",
+      "frame": 1,
+      "closure_study": null,
+      "view": "front",
+      "png": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v006-idle-fallback.png",
+      "sha256": "9032ab7125f370c6f4a1f229406ab69408633cca442604f714b14d2c6db6ce53",
+      "bytes": 293943,
+      "eye_values": [
+        0.0,
+        0.0
+      ],
+      "glint_scales": [
+        [
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0
+        ]
+      ],
+      "alpha_bounds_bottom_origin": {
+        "min": [
+          132,
+          75
+        ],
+        "max": [
+          507,
+          504
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "frame": 1,
+      "closure_study": null,
+      "view": "front",
+      "png": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v006-sleep-fallback.png",
+      "sha256": "c476ff185fd92212b70dc865096efab68e43534078de13a6447bdbf0e70c9a4f",
+      "bytes": 237254,
+      "eye_values": [
+        1.0,
+        1.0
+      ],
+      "glint_scales": [
+        [
+          0.0010000000474974513,
+          0.0010000000474974513,
+          0.0010000000474974513
+        ],
+        [
+          0.0010000000474974513,
+          0.0010000000474974513,
+          0.0010000000474974513
+        ]
+      ],
+      "alpha_bounds_bottom_origin": {
+        "min": [
+          114,
+          67
+        ],
+        "max": [
+          526,
+          328
+        ]
+      }
+    }
+  ],
+  "render": {
+    "mode": "fallback",
+    "device": "gpu",
+    "size": 640,
+    "samples": 64,
+    "colour_view": "Khronos PBR Neutral",
+    "camera_span": 3.440000057220459,
+    "target_blender": [
+      0.0,
+      0.0,
+      0.23999999463558197
+    ]
+  },
+  "scope": "Actual reopened source actions and eye morph geometry. Source-backed Cycles study/fallback; not exact Three pixels, native clipping or live voice. Unsaved isolated process, no public promotion."
+}

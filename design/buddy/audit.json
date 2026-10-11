@@ -1,0 +1,255 @@
+{
+  "scene": "INSIGHTOS_Buddy_v001",
+  "active_filepath": "",
+  "protected_scene_objects": [
+    "Camera",
+    "Cube",
+    "Light"
+  ],
+  "structure": [
+    {
+      "object": "HERO_pearl_core",
+      "vertices": 1106,
+      "faces": 1152,
+      "non_manifold_edges": 0,
+      "signed_volume": 0.8983388807447069,
+      "parent": "RIG_buddy_root",
+      "material": "MAT_buddy_pearl_glass",
+      "modifiers": [
+        [
+          "Polished_surface",
+          "SUBSURF"
+        ]
+      ]
+    },
+    {
+      "object": "HERO_titanium_ribbon",
+      "vertices": 2576,
+      "faces": 2562,
+      "non_manifold_edges": 0,
+      "signed_volume": 0.0382195151903704,
+      "parent": "RIG_ribbon_spin",
+      "material": "MAT_buddy_titanium",
+      "modifiers": []
+    },
+    {
+      "object": "HERO_flow_sage",
+      "vertices": 392,
+      "faces": 386,
+      "non_manifold_edges": 0,
+      "signed_volume": 0.0020060513342020354,
+      "parent": "RIG_inner_flow",
+      "material": "MAT_buddy_flow_sage",
+      "modifiers": []
+    },
+    {
+      "object": "HERO_flow_cyan",
+      "vertices": 392,
+      "faces": 386,
+      "non_manifold_edges": 0,
+      "signed_volume": 0.002006051262677026,
+      "parent": "RIG_inner_flow",
+      "material": "MAT_buddy_flow_cyan",
+      "modifiers": []
+    },
+    {
+      "object": "HERO_flow_ivory",
+      "vertices": 392,
+      "faces": 386,
+      "non_manifold_edges": 0,
+      "signed_volume": 0.002006051225455895,
+      "parent": "RIG_inner_flow",
+      "material": "MAT_buddy_flow_ivory",
+      "modifiers": []
+    }
+  ],
+  "motion_samples": [
+    {
+      "frame": 1,
+      "camera_bounds": {
+        "x": [
+          0.12879888713359833,
+          0.8379634618759155
+        ],
+        "y": [
+          0.14898060262203217,
+          0.8557417988777161
+        ],
+        "min_depth": 4.916318893432617
+      }
+    },
+    {
+      "frame": 13,
+      "camera_bounds": {
+        "x": [
+          0.13698461651802063,
+          0.8485906720161438
+        ],
+        "y": [
+          0.15983182191848755,
+          0.8692202568054199
+        ],
+        "min_depth": 4.88655424118042
+      }
+    },
+    {
+      "frame": 37,
+      "camera_bounds": {
+        "x": [
+          0.15410403907299042,
+          0.8674076795578003
+        ],
+        "y": [
+          0.15493223071098328,
+          0.8982239365577698
+        ],
+        "min_depth": 4.870081424713135
+      }
+    },
+    {
+      "frame": 73,
+      "camera_bounds": {
+        "x": [
+          0.16203652322292328,
+          0.8712010979652405
+        ],
+        "y": [
+          0.101063571870327,
+          0.8943591713905334
+        ],
+        "min_depth": 4.8926801681518555
+      }
+    },
+    {
+      "frame": 109,
+      "camera_bounds": {
+        "x": [
+          0.1325923204421997,
+          0.8458959460258484
+        ],
+        "y": [
+          0.09427806735038757,
+          0.8522937893867493
+        ],
+        "min_depth": 4.862372875213623
+      }
+    },
+    {
+      "frame": 144,
+      "camera_bounds": {
+        "x": [
+          0.12831631302833557,
+          0.8370227813720703
+        ],
+        "y": [
+          0.1477019339799881,
+          0.8548003435134888
+        ],
+        "min_depth": 4.919389724731445
+      }
+    },
+    {
+      "frame": 145,
+      "camera_bounds": {
+        "x": [
+          0.12879888713359833,
+          0.8379635214805603
+        ],
+        "y": [
+          0.14898060262203217,
+          0.8557417988777161
+        ],
+        "min_depth": 4.916318893432617
+      }
+    }
+  ],
+  "seam_matrix_max_error": 1.7484555314695172e-07,
+  "departure_matrix_max_delta": 0.5166499465703964,
+  "ring_min_vertex_radius_m": 0.6504752366127181,
+  "ring_min_surface_radius_m": 0.6503527760505676,
+  "maximum_core_radius_m": 0.6048,
+  "surface_clearance_m": 0.04555277605056762,
+  "camera": {
+    "blender_position": [
+      0.3499999940395355,
+      -5.800000190734863,
+      0.75
+    ],
+    "gltf_position": [
+      0.3499999940395355,
+      0.75,
+      5.800000190734863
+    ],
+    "gltf_up": [
+      0,
+      1,
+      0
+    ],
+    "target": [
+      0,
+      0,
+      0
+    ],
+    "orthographic_span": 2.7200000286102295
+  },
+  "lights": [
+    {
+      "name": "LGT_buddy_key",
+      "gltf_position": [
+        -3.200000047683716,
+        3.200000047683716,
+        3.4000000953674316
+      ],
+      "watts": 650.0,
+      "linear_rgb": [
+        1.0,
+        0.9300000071525574,
+        0.8100000023841858
+      ],
+      "rectangle_size": [
+        2.4000000953674316,
+        4.0
+      ]
+    },
+    {
+      "name": "LGT_buddy_fill",
+      "gltf_position": [
+        3.0,
+        0.4000000059604645,
+        2.5
+      ],
+      "watts": 190.0,
+      "linear_rgb": [
+        0.75,
+        0.9200000166893005,
+        1.0
+      ],
+      "rectangle_size": [
+        2.4000000953674316,
+        2.0
+      ]
+    },
+    {
+      "name": "LGT_buddy_rim",
+      "gltf_position": [
+        1.7000000476837158,
+        2.5,
+        -2.799999952316284
+      ],
+      "watts": 700.0,
+      "linear_rgb": [
+        0.8399999737739563,
+        1.0,
+        0.949999988079071
+      ],
+      "rectangle_size": [
+        1.0,
+        3.200000047683716
+      ]
+    }
+  ],
+  "color_management": {
+    "view_transform": "AgX",
+    "exposure": 0.0
+  }
+}

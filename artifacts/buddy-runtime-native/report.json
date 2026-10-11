@@ -1,0 +1,1579 @@
+{
+  "checkedAt": "2026-10-11T02:51:47.914Z",
+  "pass": true,
+  "asset": {
+    "bytes": 1295856,
+    "sha256": "34cd83c23c60afedbf6edd9e9e337af4715a6f60070fe59ca90b9a8b7a73d756",
+    "binaryHeader": "glTF",
+    "rendererChunk": "buddyRenderer-DMqgYi6q.js"
+  },
+  "scope": {
+    "ui": "Actual compiled dist served at the native shell trusted local origin; actual main/preload/security/IPC, fresh isolated profile. Initial dev avatar warms bootstrap; this is not a cold-load test.",
+    "interaction": "Real panel typing, one delayed local task response driving authoritative thinking/idle, repeated open/close and rapid reversals. No mic, TTS, provider or production backend task.",
+    "timing": "Test-only WebGL/rAF API wrappers add overhead. Document rAF and actual avatar draw callback clocks are proxies, not OS presentation. No screenshot, video, GPU info or memory dump inside the timed interaction.",
+    "resources": "Created/deleted WebGL handle counts, not allocated bytes, physical VRAM or driver reclamation. The live field means created minus explicit delete, not validity after context loss. Test-held references intentionally prevent a GC claim.",
+    "lifecycle": "Actual compiled renderer API in a separate 96px test owner after panel timing; actual IntersectionObserver offscreen and native window hide/show; actual dispose. Native pet counts remain separate.",
+    "runStructure": "Timed panel trace retained unchanged from the original native process. The accepted lifecycle followup used a second fresh isolated native profile with the same compiled renderer and GLB; it did not rerun timing or tracing."
+  },
+  "native": {
+    "bounds": {
+      "x": 812,
+      "y": 20,
+      "width": 296,
+      "height": 128
+    },
+    "workArea": {
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1032
+    },
+    "preferences": {
+      "sandbox": true,
+      "contextIsolation": true,
+      "nodeIntegration": false,
+      "webSecurity": true,
+      "backgroundThrottling": false
+    },
+    "versions": {
+      "node": "24.21.0",
+      "acorn": "8.18.0",
+      "ada": "4.0.0",
+      "amaro": "1.1.11",
+      "ares": "1.34.8",
+      "brotli": "1.2.0",
+      "cldr": "48.0",
+      "icu": "78.2",
+      "llhttp": "9.4.3",
+      "merve": "1.2.2",
+      "modules": "149",
+      "napi": "10",
+      "nbytes": "0.1.4",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.70.0",
+      "nghttp3": "",
+      "ngtcp2": "",
+      "openssl": "0.0.0",
+      "simdjson": "4.6.7",
+      "simdutf": "7.7.0",
+      "sqlite": "3.53.4",
+      "tz": "2026d",
+      "undici": "7.29.1",
+      "unicode": "17.0",
+      "uv": "1.52.1",
+      "uvwasi": "0.0.23",
+      "v8": "15.2.124.28-electron.0",
+      "zlib": "1.3.2.1-motley",
+      "zstd": "1.6.0",
+      "electron": "44.7.0",
+      "chrome": "152.0.7977.130"
+    },
+    "initialVisibilitySnapshot": {
+      "visible": true,
+      "revision": 2
+    }
+  },
+  "interaction": {
+    "startedAt": 2277.2999999523163,
+    "durationMs": 5919.100000023842,
+    "endedAt": 8196.399999976158,
+    "documentRafClock": {
+      "samples": 355,
+      "p95Ms": 16.800000000000182,
+      "maxMs": 17.300000000000182,
+      "above20Ms": 0,
+      "above50Ms": 0
+    },
+    "avatar": [
+      {
+        "id": 1,
+        "label": "native-pet",
+        "drawCallbackClock": {
+          "samples": 355,
+          "p95Ms": 16.800000000000182,
+          "maxMs": 17.300000000000182,
+          "above20Ms": 0,
+          "above50Ms": 0
+        },
+        "callbackCPUP95Ms": 1.0999999046325684,
+        "callbackCPUMaxMs": 2
+      }
+    ],
+    "mutations": [
+      {
+        "at": 2320.899999976158,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 2334.2999999523163,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 4171.899999976158,
+        "panelStage": "open",
+        "phase": "thinking"
+      },
+      {
+        "at": 4831.299999952316,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 6719.600000023842,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 6900.799999952316,
+        "panelStage": "closed",
+        "phase": "idle"
+      },
+      {
+        "at": 6972.699999928474,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 6984.199999928474,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 7036.299999952316,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 7102.899999976158,
+        "panelStage": "closed",
+        "phase": "idle"
+      },
+      {
+        "at": 7168.699999928474,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 7180.799999952316,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 7218.799999952316,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 7284.199999928474,
+        "panelStage": "closed",
+        "phase": "idle"
+      },
+      {
+        "at": 7351.299999952316,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 7363.699999928474,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 7402.399999976158,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 7467.299999952316,
+        "panelStage": "closed",
+        "phase": "idle"
+      },
+      {
+        "at": 7534.299999952316,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 7548.100000023842,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 7601.699999928474,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 7667.899999976158,
+        "panelStage": "closed",
+        "phase": "idle"
+      },
+      {
+        "at": 7736.699999928474,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 7748.100000023842,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 7755.600000023842,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 7781.600000023842,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 7784,
+        "panelStage": "open",
+        "phase": "idle"
+      }
+    ],
+    "repetitions": 5,
+    "rapidExitReversal": {
+      "atStage": "closing",
+      "delayMs": 25
+    },
+    "retainedDraft": "Keep this unsent draft through every opening and reversal.",
+    "before": {
+      "at": 2198,
+      "hidden": false,
+      "globalPendingAvatarCallbacks": 1,
+      "unassignedPendingAvatarCallbacks": 0,
+      "contexts": [
+        {
+          "id": 1,
+          "label": "native-pet",
+          "draws": 1075,
+          "clears": 106,
+          "avatarCallbacks": 97,
+          "pendingAvatarCallbacks": 1,
+          "resources": {
+            "Texture": {
+              "created": 9,
+              "deleted": 1,
+              "live": 8
+            },
+            "Framebuffer": {
+              "created": 5,
+              "deleted": 1,
+              "live": 4
+            },
+            "Renderbuffer": {
+              "created": 1,
+              "deleted": 0,
+              "live": 1
+            },
+            "Buffer": {
+              "created": 70,
+              "deleted": 36,
+              "live": 34
+            },
+            "Program": {
+              "created": 7,
+              "deleted": 4,
+              "live": 3
+            },
+            "Shader": {
+              "created": 14,
+              "deleted": 14,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 24,
+              "deleted": 14,
+              "live": 10
+            }
+          },
+          "contextLost": false
+        }
+      ],
+      "callbacks": [
+        {
+          "id": 1,
+          "kind": "avatar",
+          "executions": 97,
+          "pending": 1
+        }
+      ]
+    },
+    "after": {
+      "at": 8200.899999976158,
+      "hidden": false,
+      "globalPendingAvatarCallbacks": 1,
+      "unassignedPendingAvatarCallbacks": 0,
+      "contexts": [
+        {
+          "id": 1,
+          "label": "native-pet",
+          "draws": 4765,
+          "clears": 475,
+          "avatarCallbacks": 457,
+          "pendingAvatarCallbacks": 1,
+          "resources": {
+            "Texture": {
+              "created": 9,
+              "deleted": 1,
+              "live": 8
+            },
+            "Framebuffer": {
+              "created": 5,
+              "deleted": 1,
+              "live": 4
+            },
+            "Renderbuffer": {
+              "created": 1,
+              "deleted": 0,
+              "live": 1
+            },
+            "Buffer": {
+              "created": 70,
+              "deleted": 36,
+              "live": 34
+            },
+            "Program": {
+              "created": 7,
+              "deleted": 4,
+              "live": 3
+            },
+            "Shader": {
+              "created": 14,
+              "deleted": 14,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 24,
+              "deleted": 14,
+              "live": 10
+            }
+          },
+          "contextLost": false
+        }
+      ],
+      "callbacks": [
+        {
+          "id": 1,
+          "kind": "avatar",
+          "executions": 457,
+          "pending": 1
+        },
+        {
+          "id": 2,
+          "kind": "harness-panel-clock",
+          "executions": 356,
+          "pending": 0
+        }
+      ]
+    },
+    "fixtureTaskRequests": 2
+  },
+  "trace": {
+    "localTrace": ".local/buddy-runtime-native/chromium-trace.json",
+    "traceBytes": 31186482,
+    "traceSha256": "f5e680970984a02e7c473b32e7c9b5c4b8e54a746a7b49c4bc43b69573e12425",
+    "events": 163696,
+    "clock": "Trace ts/dur are Chromium monotonic microseconds across native processes; browser performance.now/rAF times are document-relative milliseconds. START/END TimeStamp events identify the timed window; different clock origins are not subtracted.",
+    "markers": [
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_RUNTIME_START",
+            "name": "INSIGHTOS_RUNTIME_START",
+            "sampleTraceId": 1270893913502954
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632291638987,
+        "tts": 1035429
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 1270893913502854
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632291684467,
+        "tts": 1046039
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 1270893913503599
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632291697884,
+        "tts": 1054927
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:open/thinking",
+            "name": "INSIGHTOS_STATE:open/thinking",
+            "sampleTraceId": 1270893913498216
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632293535456,
+        "tts": 1398430
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 1270893913498725
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632294194917,
+        "tts": 1467178
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 1270893913493527
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632296083195,
+        "tts": 1799323
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:closed/idle",
+            "name": "INSIGHTOS_STATE:closed/idle",
+            "sampleTraceId": 1270893913494502
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632296264412,
+        "tts": 1824686
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 1270893913494425
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632296336217,
+        "tts": 1837528
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 1270893913494083
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632296347793,
+        "tts": 1844887
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 1270893913494225
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632296399977,
+        "tts": 1857803
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:closed/idle",
+            "name": "INSIGHTOS_STATE:closed/idle",
+            "sampleTraceId": 1270893913494901
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632296466492,
+        "tts": 1871981
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 1270893913495017
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632296532258,
+        "tts": 1886613
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 1270893913494998
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632296544398,
+        "tts": 1894328
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 1270893913494602
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632296582437,
+        "tts": 1903723
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:closed/idle",
+            "name": "INSIGHTOS_STATE:closed/idle",
+            "sampleTraceId": 1270893913494771
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632296647786,
+        "tts": 1916972
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 1270893913495397
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632296714970,
+        "tts": 1927679
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 1270893913495379
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632296727311,
+        "tts": 1934903
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 1270893913495488
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632296766027,
+        "tts": 1945163
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:closed/idle",
+            "name": "INSIGHTOS_STATE:closed/idle",
+            "sampleTraceId": 1270893913495144
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632296830854,
+        "tts": 1958514
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 1270893913495266
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632296897907,
+        "tts": 1969266
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 1270893913495241
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632296911676,
+        "tts": 1976125
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 1270893913491803
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632296965249,
+        "tts": 1988031
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:closed/idle",
+            "name": "INSIGHTOS_STATE:closed/idle",
+            "sampleTraceId": 1270893913491967
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632297031569,
+        "tts": 2002478
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 1270893913491570
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632297100271,
+        "tts": 2016420
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 1270893913491546
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632297111747,
+        "tts": 2023296
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 1270893913491498
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632297119204,
+        "tts": 2027039
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 1270893913491684
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632297145215,
+        "tts": 2033501
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 1270893913491697
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632297147645,
+        "tts": 2034907
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "9923B25CCC1DB1EF83EADCEA3A8C2F12",
+            "message": "INSIGHTOS_RUNTIME_END",
+            "name": "INSIGHTOS_RUNTIME_END",
+            "sampleTraceId": 1270893913492444
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 7848,
+        "s": "t",
+        "tid": 112524,
+        "ts": 632297559929,
+        "tts": 2075422
+      }
+    ],
+    "relevantNames": [
+      {
+        "name": "DCompPresenter::CheckPendingFrames",
+        "count": 356
+      },
+      {
+        "name": "Graphics.Pipeline",
+        "count": 11520
+      },
+      {
+        "name": "DisplayScheduler::DrawAndSwap",
+        "count": 356
+      },
+      {
+        "name": "Display::DrawAndSwap",
+        "count": 356
+      },
+      {
+        "name": "SkiaRenderer::SwapBuffers",
+        "count": 356
+      },
+      {
+        "name": "SkiaOutputSurfaceImplOnGpu::SwapBuffers",
+        "count": 356
+      },
+      {
+        "name": "DXGISwapChainImageBacking::Present",
+        "count": 356
+      },
+      {
+        "name": "DCompPresenter::Present",
+        "count": 356
+      },
+      {
+        "name": "FramePresented",
+        "count": 11
+      },
+      {
+        "name": "SubmitCompositorFrameToPresentationCompositorFrame",
+        "count": 1032
+      },
+      {
+        "name": "StartDrawToSwapStart",
+        "count": 1032
+      },
+      {
+        "name": "Swap",
+        "count": 1388
+      },
+      {
+        "name": "SwapEndToPresentationCompositorFrame",
+        "count": 1032
+      },
+      {
+        "name": "Graphics.Pipeline.DrawAndSwap",
+        "count": 711
+      },
+      {
+        "name": "Graphics.Pipeline.Draw",
+        "count": 712
+      },
+      {
+        "name": "Graphics.Pipeline.WaitForSwap",
+        "count": 356
+      },
+      {
+        "name": "DisplayScheduler:pending_swaps",
+        "count": 712
+      },
+      {
+        "name": "WaitForPresentation",
+        "count": 356
+      },
+      {
+        "name": "AnimationFrame::Presentation",
+        "count": 353
+      }
+    ],
+    "presentationFeedback": {
+      "event": "AnimationFrame::Presentation",
+      "samplesFile": "artifacts/buddy-runtime-native/presentation-feedback.csv",
+      "rendererPid": 7848,
+      "fullTimedWindowRetained": true,
+      "eventCount": 353,
+      "uniqueTimestamps": 353,
+      "intervalSamples": 352,
+      "p95Ms": 16.789,
+      "maxMs": 17.274,
+      "above20Ms": 0,
+      "above50Ms": 0,
+      "worstIntervals": [
+        {
+          "fromTs": 632295657466,
+          "toTs": 632295674317,
+          "intervalMs": 16.851
+        },
+        {
+          "fromTs": 632297524035,
+          "toTs": 632297540888,
+          "intervalMs": 16.853
+        },
+        {
+          "fromTs": 632292890821,
+          "toTs": 632292907712,
+          "intervalMs": 16.891
+        },
+        {
+          "fromTs": 632292840818,
+          "toTs": 632292857768,
+          "intervalMs": 16.95
+        },
+        {
+          "fromTs": 632296474006,
+          "toTs": 632296491280,
+          "intervalMs": 17.274
+        }
+      ],
+      "firstSamples": [
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 293,
+              "source_id": 4294967296
+            },
+            "id": "bea483df0c42f4ec"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x6"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 7848,
+          "tid": 112524,
+          "ts": 632291674211
+        },
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 294,
+              "source_id": 4294967296
+            },
+            "id": "bea483df0c42f4c1"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x6"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 7848,
+          "tid": 112524,
+          "ts": 632291690946
+        },
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 295,
+              "source_id": 4294967296
+            },
+            "id": "bea483df0c42f4cd"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x6"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 7848,
+          "tid": 112524,
+          "ts": 632291707533
+        }
+      ],
+      "lastSamples": [
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 643,
+              "source_id": 4294967296
+            },
+            "id": "bea483df0c42cb1d"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x6"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 7848,
+          "tid": 112524,
+          "ts": 632297507369
+        },
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 644,
+              "source_id": 4294967296
+            },
+            "id": "bea483df0c42cbea"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x6"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 7848,
+          "tid": 112524,
+          "ts": 632297524035
+        },
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 645,
+              "source_id": 4294967296
+            },
+            "id": "bea483df0c42cbf7"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x6"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 7848,
+          "tid": 112524,
+          "ts": 632297540888
+        }
+      ],
+      "interpretation": "Chromium emits these events with presentation_feedback.timestamp, which strengthens the rAF-only evidence. Captured events include begin-frame IDs but no hardware-clock/completion flags. These are Chromium presentation-feedback timestamps; verified OS/hardware scanout is unclaimed.",
+      "sources": [
+        {
+          "url": "https://chromium.googlesource.com/chromium/src/third_party/+/refs/heads/main/blink/renderer/core/frame/animation_frame_timing_monitor.cc",
+          "function": "ReportPresentationTimeToTrace",
+          "observedSourceBlob": "889d81e50335cb65fbd6a7a507fdadb09012cf92",
+          "checkedAt": "2026-10-10",
+          "limit": "Current primary source; exact packaged Chromium152 source tag was unavailable to the web reader."
+        },
+        {
+          "url": "https://chromium.googlesource.com/chromium/src/+/e3a53f1c01e45bde54be17921f6960f22721efd5/ui/gfx/presentation_feedback.h",
+          "mechanism": "kHWClock and kHWCompletion distinguish hardware-origin/completion feedback from estimates; captured AnimationFrame events do not include these flags."
+        }
+      ]
+    },
+    "strictGates": {
+      "p95PresentedIntervals": "Chromium presentation-feedback intervals measured below; hardware-backed OS presentation remains unverified because feedback flags are absent.",
+      "noAppCausedOver50Ms": "A bounded trace with zero feedback intervals over50ms supports this run only; physical presentation and arbitrary workload attribution are unverified.",
+      "firstResponseWithinTwoPresentedFrames": "Unverified: state markers and frame IDs do not by themselves attribute the first visible pixel change to a causal input frame."
+    }
+  },
+  "measuredPerformanceTargetsMet": true,
+  "strictHardwarePresentationAcceptance": "Unverified; feedback hardware flags and causal first-response pixel/frame attribution are unavailable.",
+  "lifecycle": {
+    "ownerId": 2,
+    "nativeVisibilitySnapshots": {
+      "hiddenVisibility": {
+        "visible": false,
+        "revision": 3
+      },
+      "shownVisibility": {
+        "visible": true,
+        "revision": 4
+      },
+      "minimizedVisibility": {
+        "visible": false,
+        "revision": 5
+      },
+      "restoredVisibility": {
+        "visible": true,
+        "revision": 7
+      }
+    },
+    "countsFile": "artifacts/buddy-runtime-native/lifecycle-counts.csv",
+    "localFullSnapshots": ".local/buddy-runtime-native/lifecycle-snapshots.json",
+    "offscreen": {
+      "suspension": {
+        "durationMs": 457.2999999523163,
+        "globalPendingAvatarCallbacks": 1,
+        "unassignedPendingAvatarCallbacks": 0,
+        "contexts": [
+          {
+            "id": 1,
+            "label": "native-pet",
+            "drawDelta": 280,
+            "callbackDelta": 28,
+            "pending": 1
+          },
+          {
+            "id": 2,
+            "label": "isolated-lifecycle-owner",
+            "drawDelta": 0,
+            "callbackDelta": 0,
+            "pending": 0
+          }
+        ]
+      },
+      "restore": {
+        "durationMs": 261.2000000476837,
+        "globalPendingAvatarCallbacks": 2,
+        "unassignedPendingAvatarCallbacks": 0,
+        "contexts": [
+          {
+            "id": 1,
+            "label": "native-pet",
+            "drawDelta": 150,
+            "callbackDelta": 15,
+            "pending": 1
+          },
+          {
+            "id": 2,
+            "label": "isolated-lifecycle-owner",
+            "drawDelta": 150,
+            "callbackDelta": 14,
+            "pending": 1
+          }
+        ]
+      }
+    },
+    "hidden": {
+      "nativeWindowHidden": true,
+      "documentHidden": false,
+      "suspension": {
+        "durationMs": 459.1999999284744,
+        "globalPendingAvatarCallbacks": 0,
+        "unassignedPendingAvatarCallbacks": 0,
+        "contexts": [
+          {
+            "id": 1,
+            "label": "native-pet",
+            "drawDelta": 0,
+            "callbackDelta": 0,
+            "pending": 0
+          },
+          {
+            "id": 2,
+            "label": "isolated-lifecycle-owner",
+            "drawDelta": 0,
+            "callbackDelta": 0,
+            "pending": 0
+          }
+        ]
+      },
+      "settingsUpdate": {
+        "phase": "thinking",
+        "motion": true,
+        "reaction": 1,
+        "source": "simulated direct compiled-owner settings"
+      },
+      "restore": {
+        "durationMs": 287.5,
+        "globalPendingAvatarCallbacks": 2,
+        "unassignedPendingAvatarCallbacks": 0,
+        "contexts": [
+          {
+            "id": 1,
+            "label": "native-pet",
+            "drawDelta": 180,
+            "callbackDelta": 17,
+            "pending": 1
+          },
+          {
+            "id": 2,
+            "label": "isolated-lifecycle-owner",
+            "drawDelta": 180,
+            "callbackDelta": 17,
+            "pending": 1
+          }
+        ]
+      }
+    },
+    "minimized": {
+      "nativeWindowMinimized": true,
+      "documentHidden": false,
+      "suspension": {
+        "durationMs": 461.60000002384186,
+        "globalPendingAvatarCallbacks": 0,
+        "unassignedPendingAvatarCallbacks": 0,
+        "contexts": [
+          {
+            "id": 1,
+            "label": "native-pet",
+            "drawDelta": 0,
+            "callbackDelta": 0,
+            "pending": 0
+          },
+          {
+            "id": 2,
+            "label": "isolated-lifecycle-owner",
+            "drawDelta": 0,
+            "callbackDelta": 0,
+            "pending": 0
+          }
+        ]
+      },
+      "restore": {
+        "durationMs": 296.60000002384186,
+        "globalPendingAvatarCallbacks": 2,
+        "unassignedPendingAvatarCallbacks": 0,
+        "contexts": [
+          {
+            "id": 1,
+            "label": "native-pet",
+            "drawDelta": 180,
+            "callbackDelta": 18,
+            "pending": 1
+          },
+          {
+            "id": 2,
+            "label": "isolated-lifecycle-owner",
+            "drawDelta": 180,
+            "callbackDelta": 18,
+            "pending": 1
+          }
+        ]
+      }
+    },
+    "disposed": {
+      "suspension": {
+        "durationMs": 460.89999997615814,
+        "globalPendingAvatarCallbacks": 1,
+        "unassignedPendingAvatarCallbacks": 0,
+        "contexts": [
+          {
+            "id": 1,
+            "label": "native-pet",
+            "drawDelta": 280,
+            "callbackDelta": 27,
+            "pending": 1
+          },
+          {
+            "id": 2,
+            "label": "isolated-lifecycle-owner",
+            "drawDelta": 0,
+            "callbackDelta": 0,
+            "pending": 0
+          }
+        ]
+      },
+      "contextLost": true,
+      "handles": {
+        "Texture": {
+          "created": 9,
+          "deleted": 4,
+          "live": 5
+        },
+        "Framebuffer": {
+          "created": 5,
+          "deleted": 2,
+          "live": 3
+        },
+        "Renderbuffer": {
+          "created": 1,
+          "deleted": 1,
+          "live": 0
+        },
+        "Buffer": {
+          "created": 70,
+          "deleted": 70,
+          "live": 0
+        },
+        "Program": {
+          "created": 7,
+          "deleted": 7,
+          "live": 0
+        },
+        "Shader": {
+          "created": 14,
+          "deleted": 14,
+          "live": 0
+        },
+        "VertexArray": {
+          "created": 24,
+          "deleted": 24,
+          "live": 0
+        }
+      },
+      "textureClassification": {
+        "signatures": [
+          {
+            "storage": {
+              "target": 3553,
+              "internalFormat": 6408,
+              "width": 1,
+              "height": 1
+            }
+          },
+          {
+            "storage": {
+              "target": 34067,
+              "internalFormat": 6408,
+              "width": 1,
+              "height": 1
+            }
+          },
+          {
+            "storage": {
+              "target": 35866,
+              "internalFormat": 6408,
+              "width": 1,
+              "height": 1,
+              "depth": 1
+            }
+          },
+          {
+            "storage": {
+              "target": 32879,
+              "internalFormat": 6408,
+              "width": 1,
+              "height": 1,
+              "depth": 1
+            }
+          },
+          {
+            "storage": {
+              "target": 3553,
+              "levels": 1,
+              "internalFormat": 33327,
+              "width": 16,
+              "height": 16
+            },
+            "upload": {
+              "elementType": "Uint16Array",
+              "elements": 512,
+              "bytes": 1024,
+              "firstValues": [
+                12469,
+                15057,
+                12620,
+                14925,
+                13266,
+                14620,
+                13807,
+                14376
+              ]
+            }
+          }
+        ],
+        "dfgLutMatched": true,
+        "expectedUnmatchedHandles": 5,
+        "primaryInstalledSource": [
+          "node_modules/three/src/renderers/shaders/DFGLUTData.js:getDFGLUT",
+          "node_modules/three/src/renderers/WebGLRenderer.js:PBR dfgLUT uniform and dispose",
+          "node_modules/three/src/renderers/webgl/WebGLState.js:emptyTextures"
+        ],
+        "unmatchedFramebufferCreationOrders": [
+          0,
+          1,
+          2
+        ],
+        "framebufferSource": "node_modules/three/src/renderers/WebGLRenderer.js:initGLContext creates scratch/src/dst first; dispose contains no deleteFramebuffer call."
+      },
+      "diagnostics": {
+        "asset": "sprout",
+        "clips": [
+          "Sprout_Click",
+          "Sprout_Idle",
+          "Sprout_Listen",
+          "Sprout_Think",
+          "Sprout_Speak",
+          "Sprout_Blink"
+        ],
+        "assetIssues": [],
+        "vertices": 10328,
+        "triangles": 20384,
+        "frames": 82,
+        "intervalP95": 16.800000000000182,
+        "intervalMax": 17,
+        "missedBudgets": 0,
+        "renderP95": 0.7000000476837158,
+        "drawCalls": 10,
+        "resolution": "96 × 96",
+        "startup": {
+          "assetBytes": 1295856,
+          "fetchMs": 89.60000002384186,
+          "parseMs": 2.600000023841858,
+          "gpuSetupMs": 217.5,
+          "firstRenderMs": 310.5
+        },
+        "memory": {
+          "geometries": 0,
+          "textures": 1,
+          "geometryAttributeBytes": 1197416,
+          "environmentColorBytesEstimate": 1572864,
+          "note": "Geometry bytes describe CPU attribute storage. Environment estimate is one RGBA16F target; neither measures total GPU allocation or driver overhead."
+        }
+      },
+      "note": "One shared DFG_LUT16×16 RG16F texture (1024CPUbytes, exact upload signature matched), four internal1×1 fallback textures and the three constructor scratch/src/dst framebuffers remain unmatched by explicit delete calls in Three0.186.1. Actual forced context loss invalidates their context. Scene geometry/bone/morph/environment resources and other counted handles are explicitly disposed; Three info.memory.textures retains1 for its shared LUT. Physical VRAM reclamation is unmeasured."
+    }
+  },
+  "functionalPass": true,
+  "lifecycleFollowup": {
+    "checkedAt": "2026-10-11T02:57:53.634Z",
+    "sourceReportSha256": "9bf61222e012f97d1dcf4dff996951be51825b1cafbdc1664d1c03a155f2ca1b",
+    "previousAssertion": "The initial followup incorrectly expected every texture counter to become zero; the Three shared DFG LUT and fallback textures require classified lost-context reporting.",
+    "native": {
+      "bounds": {
+        "x": 812,
+        "y": 20,
+        "width": 296,
+        "height": 128
+      },
+      "workArea": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1032
+      },
+      "preferences": {
+        "sandbox": true,
+        "contextIsolation": true,
+        "nodeIntegration": false,
+        "webSecurity": true,
+        "backgroundThrottling": false
+      },
+      "versions": {
+        "node": "24.21.0",
+        "acorn": "8.18.0",
+        "ada": "4.0.0",
+        "amaro": "1.1.11",
+        "ares": "1.34.8",
+        "brotli": "1.2.0",
+        "cldr": "48.0",
+        "icu": "78.2",
+        "llhttp": "9.4.3",
+        "merve": "1.2.2",
+        "modules": "149",
+        "napi": "10",
+        "nbytes": "0.1.4",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.70.0",
+        "nghttp3": "",
+        "ngtcp2": "",
+        "openssl": "0.0.0",
+        "simdjson": "4.6.7",
+        "simdutf": "7.7.0",
+        "sqlite": "3.53.4",
+        "tz": "2026d",
+        "undici": "7.29.1",
+        "unicode": "17.0",
+        "uv": "1.52.1",
+        "uvwasi": "0.0.23",
+        "v8": "15.2.124.28-electron.0",
+        "zlib": "1.3.2.1-motley",
+        "zstd": "1.6.0",
+        "electron": "44.7.0",
+        "chrome": "152.0.7977.130"
+      },
+      "initialVisibilitySnapshot": {
+        "visible": true,
+        "revision": 2
+      }
+    },
+    "apiCalls": [
+      {
+        "pathname": "/api/status",
+        "method": "GET"
+      },
+      {
+        "pathname": "/api/session",
+        "method": "POST"
+      },
+      {
+        "pathname": "/api/computer/state",
+        "method": "GET"
+      },
+      {
+        "pathname": "/api/computer/request",
+        "method": "POST"
+      }
+    ]
+  },
+  "errors": []
+}

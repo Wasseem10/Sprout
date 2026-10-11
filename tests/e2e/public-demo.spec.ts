@@ -43,7 +43,7 @@ test('public demo keeps corrected budgets, choices and application review consis
   ).toHaveCount(0);
   const download = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Save sample plan' }).click();
-  expect((await download).suggestedFilename()).toBe('insightos-sample-plan.json');
+  expect((await download).suggestedFilename()).toBe('sprout-sample-plan.json');
   expect(apiCalls).toEqual([]);
   await page.getByRole('button', { name: 'Reset sample workflow' }).click();
   await expect(page.getByRole('heading', { name: 'Your choice. Your final say.' })).toHaveCount(0);

@@ -1,0 +1,403 @@
+{
+  "pass": true,
+  "source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source/sprout-soft-original-v008.blend",
+  "source_sha256": "ad1810d71b8643ac921ed21ff650bd04f31624942c059e18aa14f2134f4d9f54",
+  "asset_sha256": "1f86fbf8d11d00491d1cd41b72c066f1eadd5bff01a70a0cd75c75c4995bfe85",
+  "source_reopened": true,
+  "speak_frames_checked": 145,
+  "loop_seam_max_error": 0.0,
+  "fixed_root_and_feet": true,
+  "paired_core_shell_morphs": true,
+  "all_mesh_bounds_blender": {
+    "min": [
+      -1.0069615840911865,
+      -0.7368745803833008,
+      -1.0694684982299805
+    ],
+    "max": [
+      1.0069611072540283,
+      0.6514288187026978,
+      1.2520997524261475
+    ]
+  },
+  "core_containment_keyposes": [
+    {
+      "frame": 1,
+      "seconds": 0.0,
+      "minimum_core_clearance": 0.11870630830526352,
+      "outside_core_vertices": 0,
+      "left_bud_rotation": [
+        0.0,
+        0.0,
+        -0.04500000178813934
+      ],
+      "right_bud_rotation": [
+        0.0,
+        0.0,
+        0.04500000178813934
+      ]
+    },
+    {
+      "frame": 13,
+      "seconds": 0.5,
+      "minimum_core_clearance": 0.11833110451698303,
+      "outside_core_vertices": 0,
+      "left_bud_rotation": [
+        0.004723032005131245,
+        -0.004132653120905161,
+        -0.07333819568157196
+      ],
+      "right_bud_rotation": [
+        0.0,
+        0.0,
+        0.04500000178813934
+      ]
+    },
+    {
+      "frame": 26,
+      "seconds": 1.0416666666666667,
+      "minimum_core_clearance": 0.10703760385513306,
+      "outside_core_vertices": 0,
+      "left_bud_rotation": [
+        0.039983127266168594,
+        -0.03498523682355881,
+        -0.2848987579345703
+      ],
+      "right_bud_rotation": [
+        0.0,
+        0.0,
+        0.04500000178813934
+      ]
+    },
+    {
+      "frame": 40,
+      "seconds": 1.625,
+      "minimum_core_clearance": 0.1149793416261673,
+      "outside_core_vertices": 0,
+      "left_bud_rotation": [
+        0.022394880652427673,
+        -0.019595520570874214,
+        -0.17936928570270538
+      ],
+      "right_bud_rotation": [
+        0.0,
+        0.0,
+        0.04500000178813934
+      ]
+    },
+    {
+      "frame": 56,
+      "seconds": 2.2916666666666665,
+      "minimum_core_clearance": 0.11963736265897751,
+      "outside_core_vertices": 0,
+      "left_bud_rotation": [
+        5.309629614203004e-06,
+        -4.64592585558421e-06,
+        -0.04503185674548149
+      ],
+      "right_bud_rotation": [
+        0.0,
+        0.0,
+        0.04500000178813934
+      ]
+    },
+    {
+      "frame": 70,
+      "seconds": 2.875,
+      "minimum_core_clearance": 0.11834096163511276,
+      "outside_core_vertices": 0,
+      "left_bud_rotation": [
+        0.0,
+        0.0,
+        -0.04500000178813934
+      ],
+      "right_bud_rotation": [
+        0.016486871987581253,
+        0.014426012523472309,
+        0.14392122626304626
+      ]
+    },
+    {
+      "frame": 81,
+      "seconds": 3.3333333333333335,
+      "minimum_core_clearance": 0.10911846905946732,
+      "outside_core_vertices": 0,
+      "left_bud_rotation": [
+        0.0,
+        0.0,
+        -0.04500000178813934
+      ],
+      "right_bud_rotation": [
+        0.03995446860790253,
+        0.03496015816926956,
+        0.2847267985343933
+      ]
+    },
+    {
+      "frame": 97,
+      "seconds": 4.0,
+      "minimum_core_clearance": 0.11679966002702713,
+      "outside_core_vertices": 0,
+      "left_bud_rotation": [
+        0.0,
+        0.0,
+        -0.04500000178813934
+      ],
+      "right_bud_rotation": [
+        0.019999999552965164,
+        0.017500000074505806,
+        0.16500000655651093
+      ]
+    },
+    {
+      "frame": 113,
+      "seconds": 4.666666666666667,
+      "minimum_core_clearance": 0.1191498264670372,
+      "outside_core_vertices": 0,
+      "left_bud_rotation": [
+        0.0,
+        0.0,
+        -0.04500000178813934
+      ],
+      "right_bud_rotation": [
+        0.0,
+        0.0,
+        0.04500000178813934
+      ]
+    },
+    {
+      "frame": 126,
+      "seconds": 5.208333333333333,
+      "minimum_core_clearance": 0.11792389303445816,
+      "outside_core_vertices": 0,
+      "left_bud_rotation": [
+        0.0,
+        0.0,
+        -0.08996570110321045
+      ],
+      "right_bud_rotation": [
+        0.0,
+        0.0,
+        0.08996570110321045
+      ]
+    },
+    {
+      "frame": 139,
+      "seconds": 5.75,
+      "minimum_core_clearance": 0.11872462183237076,
+      "outside_core_vertices": 0,
+      "left_bud_rotation": [
+        0.0,
+        0.0,
+        -0.04500000178813934
+      ],
+      "right_bud_rotation": [
+        0.0,
+        0.0,
+        0.04500000178813934
+      ]
+    },
+    {
+      "frame": 145,
+      "seconds": 6.0,
+      "minimum_core_clearance": 0.11870630830526352,
+      "outside_core_vertices": 0,
+      "left_bud_rotation": [
+        0.0,
+        0.0,
+        -0.04500000178813934
+      ],
+      "right_bud_rotation": [
+        0.0,
+        0.0,
+        0.04500000178813934
+      ]
+    }
+  ],
+  "retained_happy_eye_samples": [
+    {
+      "clip": "Sprout_Blink",
+      "frames": 5,
+      "pass": true
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "frames": 41,
+      "pass": true
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "frames": 121,
+      "pass": true
+    },
+    {
+      "clip": "Sprout_Wake",
+      "frames": 31,
+      "pass": true
+    }
+  ],
+  "images": [
+    {
+      "clip": "Sprout_Idle",
+      "frame": 1,
+      "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v008-idle-1.png",
+      "sha256": "fa53be945f2e9f6075eb56f87bdb86bb35d762df1d28f20a8e0b11d6b9dcb28e",
+      "alpha_bounds": {
+        "min": [
+          66,
+          37
+        ],
+        "max": [
+          253,
+          252
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Idle",
+      "frame": 26,
+      "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v008-idle-26.png",
+      "sha256": "a912d6472b1634dec153fa35680481930ad46d608e81935cc1988ecb24c9bdfb",
+      "alpha_bounds": {
+        "min": [
+          64,
+          37
+        ],
+        "max": [
+          253,
+          252
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Listen",
+      "frame": 26,
+      "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v008-listen-26.png",
+      "sha256": "d81b9878a723f9e8424d83b13f3a45e298e8250a460c059ef772335d21d4dcf9",
+      "alpha_bounds": {
+        "min": [
+          64,
+          37
+        ],
+        "max": [
+          253,
+          252
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Think",
+      "frame": 26,
+      "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v008-think-26.png",
+      "sha256": "ed1137c82dcbd30def4d3f878433611cbb0547e9575dca093d1bae0b93d976c2",
+      "alpha_bounds": {
+        "min": [
+          64,
+          37
+        ],
+        "max": [
+          253,
+          252
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Speak",
+      "frame": 1,
+      "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v008-speak-1.png",
+      "sha256": "898e340df6759c795c8abf8bb40540e1783d370a8015c096c15bd0326d6b1ca9",
+      "alpha_bounds": {
+        "min": [
+          66,
+          37
+        ],
+        "max": [
+          253,
+          252
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Speak",
+      "frame": 26,
+      "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v008-speak-26.png",
+      "sha256": "7ddf4734b9089f899136cd92e54fa32e5b4ce84a104fd47c73fff72b1924922e",
+      "alpha_bounds": {
+        "min": [
+          66,
+          37
+        ],
+        "max": [
+          253,
+          254
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Speak",
+      "frame": 81,
+      "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v008-speak-81.png",
+      "sha256": "cd4a45870c5ddf94716f3349578dab26c8f35e23b75eefcf2c6e36e2eaf93cb3",
+      "alpha_bounds": {
+        "min": [
+          65,
+          37
+        ],
+        "max": [
+          254,
+          254
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Speak",
+      "frame": 126,
+      "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v008-speak-126.png",
+      "sha256": "c2f98a9117d3b84d1a27bb966fa7c63b280f6fab608aca93c6562353701ab34b",
+      "alpha_bounds": {
+        "min": [
+          66,
+          37
+        ],
+        "max": [
+          253,
+          253
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "frame": 1,
+      "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v008-sleeploop-1.png",
+      "sha256": "f7ecb10c576656d26d12ac23467e6ada9c62fc5012f6bb39d73ef04af8a5ef50",
+      "alpha_bounds": {
+        "min": [
+          57,
+          33
+        ],
+        "max": [
+          263,
+          164
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "frame": 16,
+      "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v008-joyjump-16.png",
+      "sha256": "04316215c9233973d82683b591920b64fd71389c20f3d85b903ebacb55777b07",
+      "alpha_bounds": {
+        "min": [
+          66,
+          91
+        ],
+        "max": [
+          252,
+          308
+        ]
+      }
+    }
+  ],
+  "original_source_lighting_transforms_and_values_verified": true,
+  "scope": "Actual reopened source and Cycles frames, no pixels fabricated. Source approximation, not exact browser/native rendering or continuous collision proof."
+}

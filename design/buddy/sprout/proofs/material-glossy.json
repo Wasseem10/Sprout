@@ -1,0 +1,16 @@
+{
+  "variant": "glossy",
+  "material": "MAT_Sprout_Prism",
+  "settings": {
+    "Metallic": 0.035,
+    "Roughness": 0.16,
+    "IOR": 1.44,
+    "Coat Weight": 0.5,
+    "Coat Roughness": 0.1,
+    "Transmission Weight": 0.0
+  },
+  "color_attribute": "Prism_Color",
+  "portable_vertex_color": true,
+  "external_textures": false,
+  "recipe": "one rising violet/coral lower-side ribbon, dominant aqua/blue face"
+}

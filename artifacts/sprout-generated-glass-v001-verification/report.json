@@ -1,0 +1,2539 @@
+{
+  "status": "passed",
+  "base": "http://127.0.0.1:5173",
+  "texturePath": "/buddy/sprout-glass-material-v002.png",
+  "source": {
+    "src/BuddyPanelPreview.tsx": "a4fa24e16463188b83bc3ab1417c6fbc5bb783b86dfbd0f6269c4d2dad834f22",
+    "src/buddy-panel-preview.css": "0e706af677e18ee2725fb915693157b796df75909bcef2408307786a5e6e6551",
+    "src/DesktopBuddy.tsx": "acf9588df2b9b1acca4a604453a8ef4e1bb361b1d28a7c4251fc25a205421cb8",
+    "src/buddy.css": "abbaa3956e4d096bf611937da172d7b7ab957da29169695c3f3a8263b6912448",
+    "src/useBuddyTilt.ts": "78690c7256f9d9f27e41b55311021b60d47027965ecb8f951eacf289f80d1a07",
+    "public/buddy/sprout-glass-material-v002.png": "4b3fcc8ed1c8c429b175dee3c4046d8d677da8f9bf2d08eb1c924d774a5d6db1"
+  },
+  "cases": [
+    {
+      "background": "light",
+      "strength": 0,
+      "style": {
+        "image": "none",
+        "opacity": 1,
+        "display": "block",
+        "pointerEvents": "none",
+        "glassDisplay": "block",
+        "lens": "radial-gradient(65% 38% at -18% -12%, rgba(131, 237, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 42% at 122% 12%, rgba(204, 188, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(70% 38% at 112% 115%, rgba(152, 231, 239, 0.44), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 30% at -18% 115%, rgba(211, 197, 250, 0.4), rgba(0, 0, 0, 0) 100%), linear-gradient(150deg, rgba(252, 254, 255, 0.72), rgba(249, 252, 255, 0.67) 55%, rgba(243, 249, 255, 0.7))",
+        "filter": "blur(10px) saturate(1.35)"
+      },
+      "name": "light-current",
+      "png": "light-current-panel.png",
+      "backgroundPng": "light-current-text-hidden.png",
+      "readingPng": "light-current-reading.png",
+      "minimumReadingContrast": 16.20110957433222,
+      "contrast": [
+        {
+          "text": "Sprout",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "20px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 17.121245886217007,
+          "pixelCount": 474,
+          "limitingBackground": {
+            "x": 106,
+            "y": 31,
+            "rgb": [
+              237,
+              249,
+              253
+            ]
+          }
+        },
+        {
+          "text": "Ready to talk",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 10.850251532821789,
+          "pixelCount": 558,
+          "limitingBackground": {
+            "x": 104,
+            "y": 57,
+            "rgb": [
+              241,
+              249,
+              253
+            ]
+          }
+        },
+        {
+          "text": "You",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 11.105298286426189,
+          "pixelCount": 155,
+          "limitingBackground": {
+            "x": 52,
+            "y": 135,
+            "rgb": [
+              247,
+              251,
+              253
+            ]
+          }
+        },
+        {
+          "text": "Can we take this one step at a time?",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 16.20110957433222,
+          "pixelCount": 1915,
+          "limitingBackground": {
+            "x": 305,
+            "y": 175,
+            "rgb": [
+              238,
+              240,
+              253
+            ]
+          }
+        },
+        {
+          "text": "Sprout",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 10.955508840733005,
+          "pixelCount": 307,
+          "limitingBackground": {
+            "x": 68,
+            "y": 278,
+            "rgb": [
+              246,
+              249,
+              254
+            ]
+          }
+        },
+        {
+          "text": "Of course. You can pause, ask me to repeat a detail, or change direction whenever you need.",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 16.89043371490549,
+          "pixelCount": 4905,
+          "limitingBackground": {
+            "x": 345,
+            "y": 312,
+            "rgb": [
+              240,
+              246,
+              253
+            ]
+          }
+        },
+        {
+          "text": "Ideas",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 17.03906209440775,
+          "pixelCount": 294,
+          "limitingBackground": {
+            "x": 59,
+            "y": 606,
+            "rgb": [
+              241,
+              247,
+              254
+            ]
+          }
+        },
+        {
+          "text": "Tools",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 16.947438247046524,
+          "pixelCount": 254,
+          "limitingBackground": {
+            "x": 166,
+            "y": 605,
+            "rgb": [
+              238,
+              247,
+              254
+            ]
+          }
+        },
+        {
+          "text": "Ask me anything…",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 16.859892521149344,
+          "pixelCount": 989,
+          "limitingBackground": {
+            "x": 161,
+            "y": 528,
+            "rgb": [
+              239,
+              246,
+              253
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "background": "light",
+      "strength": 18,
+      "style": {
+        "image": "url(\"http://127.0.0.1:5173/buddy/sprout-glass-material-v002.png\")",
+        "opacity": 0.18,
+        "display": "block",
+        "pointerEvents": "none",
+        "glassDisplay": "block",
+        "lens": "radial-gradient(65% 38% at -18% -12%, rgba(131, 237, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 42% at 122% 12%, rgba(204, 188, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(70% 38% at 112% 115%, rgba(152, 231, 239, 0.44), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 30% at -18% 115%, rgba(211, 197, 250, 0.4), rgba(0, 0, 0, 0) 100%), linear-gradient(150deg, rgba(252, 254, 255, 0.72), rgba(249, 252, 255, 0.67) 55%, rgba(243, 249, 255, 0.7))",
+        "filter": "blur(10px) saturate(1.35)"
+      },
+      "name": "light-pearl-18",
+      "png": "light-pearl-18-panel.png",
+      "backgroundPng": "light-pearl-18-text-hidden.png",
+      "minimumReadingContrast": 16.110999997626227,
+      "contrast": [
+        {
+          "text": "Sprout",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "20px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 16.581448934603944,
+          "pixelCount": 474,
+          "limitingBackground": {
+            "x": 106,
+            "y": 31,
+            "rgb": [
+              230,
+              246,
+              252
+            ]
+          }
+        },
+        {
+          "text": "Ready to talk",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 10.679803621442051,
+          "pixelCount": 558,
+          "limitingBackground": {
+            "x": 104,
+            "y": 57,
+            "rgb": [
+              236,
+              248,
+              252
+            ]
+          }
+        },
+        {
+          "text": "You",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 10.843251677468082,
+          "pixelCount": 155,
+          "limitingBackground": {
+            "x": 52,
+            "y": 135,
+            "rgb": [
+              241,
+              249,
+              252
+            ]
+          }
+        },
+        {
+          "text": "Can we take this one step at a time?",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 16.110999997626227,
+          "pixelCount": 1915,
+          "limitingBackground": {
+            "x": 305,
+            "y": 171,
+            "rgb": [
+              235,
+              240,
+              253
+            ]
+          }
+        },
+        {
+          "text": "Sprout",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 10.628351572112626,
+          "pixelCount": 307,
+          "limitingBackground": {
+            "x": 60,
+            "y": 282,
+            "rgb": [
+              240,
+              246,
+              253
+            ]
+          }
+        },
+        {
+          "text": "Of course. You can pause, ask me to repeat a detail, or change direction whenever you need.",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 16.381812641905004,
+          "pixelCount": 4905,
+          "limitingBackground": {
+            "x": 345,
+            "y": 312,
+            "rgb": [
+              234,
+              243,
+              252
+            ]
+          }
+        },
+        {
+          "text": "Ideas",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 16.53883964145828,
+          "pixelCount": 294,
+          "limitingBackground": {
+            "x": 76,
+            "y": 605,
+            "rgb": [
+              235,
+              244,
+              254
+            ]
+          }
+        },
+        {
+          "text": "Tools",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 16.47960428055598,
+          "pixelCount": 254,
+          "limitingBackground": {
+            "x": 161,
+            "y": 606,
+            "rgb": [
+              233,
+              244,
+              254
+            ]
+          }
+        },
+        {
+          "text": "Ask me anything…",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 16.31818936571569,
+          "pixelCount": 989,
+          "limitingBackground": {
+            "x": 41,
+            "y": 526,
+            "rgb": [
+              235,
+              242,
+              253
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "background": "light",
+      "strength": 26,
+      "style": {
+        "image": "url(\"http://127.0.0.1:5173/buddy/sprout-glass-material-v002.png\")",
+        "opacity": 0.26,
+        "display": "block",
+        "pointerEvents": "none",
+        "glassDisplay": "block",
+        "lens": "radial-gradient(65% 38% at -18% -12%, rgba(131, 237, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 42% at 122% 12%, rgba(204, 188, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(70% 38% at 112% 115%, rgba(152, 231, 239, 0.44), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 30% at -18% 115%, rgba(211, 197, 250, 0.4), rgba(0, 0, 0, 0) 100%), linear-gradient(150deg, rgba(252, 254, 255, 0.72), rgba(249, 252, 255, 0.67) 55%, rgba(243, 249, 255, 0.7))",
+        "filter": "blur(10px) saturate(1.35)"
+      },
+      "name": "light-pearl-26",
+      "png": "light-pearl-26-panel.png",
+      "backgroundPng": "light-pearl-26-text-hidden.png",
+      "readingPng": "light-pearl-26-reading.png",
+      "minimumReadingContrast": 16.051764636723924,
+      "contrast": [
+        {
+          "text": "Sprout",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "20px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 16.52387859953791,
+          "pixelCount": 474,
+          "limitingBackground": {
+            "x": 106,
+            "y": 31,
+            "rgb": [
+              228,
+              246,
+              252
+            ]
+          }
+        },
+        {
+          "text": "Ready to talk",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 10.600483480671906,
+          "pixelCount": 558,
+          "limitingBackground": {
+            "x": 104,
+            "y": 59,
+            "rgb": [
+              235,
+              247,
+              253
+            ]
+          }
+        },
+        {
+          "text": "You",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 10.736822434164747,
+          "pixelCount": 155,
+          "limitingBackground": {
+            "x": 52,
+            "y": 135,
+            "rgb": [
+              239,
+              248,
+              252
+            ]
+          }
+        },
+        {
+          "text": "Can we take this one step at a time?",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 16.07017465125474,
+          "pixelCount": 1915,
+          "limitingBackground": {
+            "x": 303,
+            "y": 171,
+            "rgb": [
+              234,
+              240,
+              252
+            ]
+          }
+        },
+        {
+          "text": "Sprout",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 10.590021354169073,
+          "pixelCount": 307,
+          "limitingBackground": {
+            "x": 46,
+            "y": 276,
+            "rgb": [
+              238,
+              246,
+              253
+            ]
+          }
+        },
+        {
+          "text": "Of course. You can pause, ask me to repeat a detail, or change direction whenever you need.",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 16.36340262737419,
+          "pixelCount": 4905,
+          "limitingBackground": {
+            "x": 66,
+            "y": 376,
+            "rgb": [
+              233,
+              243,
+              253
+            ]
+          }
+        },
+        {
+          "text": "Ideas",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 16.345217998551163,
+          "pixelCount": 294,
+          "limitingBackground": {
+            "x": 82,
+            "y": 605,
+            "rgb": [
+              232,
+              243,
+              254
+            ]
+          }
+        },
+        {
+          "text": "Tools",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 16.47960428055598,
+          "pixelCount": 254,
+          "limitingBackground": {
+            "x": 163,
+            "y": 598,
+            "rgb": [
+              233,
+              244,
+              254
+            ]
+          }
+        },
+        {
+          "text": "Ask me anything…",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 16.051764636723924,
+          "pixelCount": 989,
+          "limitingBackground": {
+            "x": 49,
+            "y": 532,
+            "rgb": [
+              233,
+              240,
+              253
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "background": "light",
+      "strength": 34,
+      "style": {
+        "image": "url(\"http://127.0.0.1:5173/buddy/sprout-glass-material-v002.png\")",
+        "opacity": 0.34,
+        "display": "block",
+        "pointerEvents": "none",
+        "glassDisplay": "block",
+        "lens": "radial-gradient(65% 38% at -18% -12%, rgba(131, 237, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 42% at 122% 12%, rgba(204, 188, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(70% 38% at 112% 115%, rgba(152, 231, 239, 0.44), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 30% at -18% 115%, rgba(211, 197, 250, 0.4), rgba(0, 0, 0, 0) 100%), linear-gradient(150deg, rgba(252, 254, 255, 0.72), rgba(249, 252, 255, 0.67) 55%, rgba(243, 249, 255, 0.7))",
+        "filter": "blur(10px) saturate(1.35)"
+      },
+      "name": "light-pearl-34",
+      "png": "light-pearl-34-panel.png",
+      "backgroundPng": "light-pearl-34-text-hidden.png",
+      "minimumReadingContrast": 15.850296132586893,
+      "contrast": [
+        {
+          "text": "Sprout",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "20px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 16.266341358184714,
+          "pixelCount": 474,
+          "limitingBackground": {
+            "x": 106,
+            "y": 31,
+            "rgb": [
+              226,
+              244,
+              253
+            ]
+          }
+        },
+        {
+          "text": "Ready to talk",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 10.410763086217434,
+          "pixelCount": 558,
+          "limitingBackground": {
+            "x": 104,
+            "y": 57,
+            "rgb": [
+              232,
+              245,
+              253
+            ]
+          }
+        },
+        {
+          "text": "You",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 10.61927845364831,
+          "pixelCount": 155,
+          "limitingBackground": {
+            "x": 53,
+            "y": 134,
+            "rgb": [
+              236,
+              247,
+              253
+            ]
+          }
+        },
+        {
+          "text": "Can we take this one step at a time?",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 16.040640560514785,
+          "pixelCount": 1915,
+          "limitingBackground": {
+            "x": 299,
+            "y": 177,
+            "rgb": [
+              233,
+              240,
+              252
+            ]
+          }
+        },
+        {
+          "text": "Sprout",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 10.466516478001134,
+          "pixelCount": 307,
+          "limitingBackground": {
+            "x": 58,
+            "y": 278,
+            "rgb": [
+              235,
+              245,
+              253
+            ]
+          }
+        },
+        {
+          "text": "Of course. You can pause, ask me to repeat a detail, or change direction whenever you need.",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 16.17135210639817,
+          "pixelCount": 4905,
+          "limitingBackground": {
+            "x": 343,
+            "y": 314,
+            "rgb": [
+              230,
+              242,
+              253
+            ]
+          }
+        },
+        {
+          "text": "Ideas",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 16.10768980036994,
+          "pixelCount": 294,
+          "limitingBackground": {
+            "x": 59,
+            "y": 606,
+            "rgb": [
+              231,
+              241,
+              254
+            ]
+          }
+        },
+        {
+          "text": "Tools",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 16.211568833605796,
+          "pixelCount": 254,
+          "limitingBackground": {
+            "x": 163,
+            "y": 598,
+            "rgb": [
+              231,
+              242,
+              254
+            ]
+          }
+        },
+        {
+          "text": "Ask me anything…",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 15.850296132586893,
+          "pixelCount": 989,
+          "limitingBackground": {
+            "x": 48,
+            "y": 537,
+            "rgb": [
+              230,
+              239,
+              252
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "background": "dark",
+      "strength": 0,
+      "style": {
+        "image": "none",
+        "opacity": 1,
+        "display": "block",
+        "pointerEvents": "none",
+        "glassDisplay": "block",
+        "lens": "radial-gradient(65% 38% at -18% -12%, rgba(131, 237, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 42% at 122% 12%, rgba(204, 188, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(70% 38% at 112% 115%, rgba(152, 231, 239, 0.44), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 30% at -18% 115%, rgba(211, 197, 250, 0.4), rgba(0, 0, 0, 0) 100%), linear-gradient(150deg, rgba(252, 254, 255, 0.72), rgba(249, 252, 255, 0.67) 55%, rgba(243, 249, 255, 0.7))",
+        "filter": "blur(10px) saturate(1.35)"
+      },
+      "name": "dark-current",
+      "png": "dark-current-panel.png",
+      "backgroundPng": "dark-current-text-hidden.png",
+      "readingPng": "dark-current-reading.png",
+      "minimumReadingContrast": 8.79169771210085,
+      "contrast": [
+        {
+          "text": "Sprout",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "20px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 9.317861280599265,
+          "pixelCount": 474,
+          "limitingBackground": {
+            "x": 150,
+            "y": 35,
+            "rgb": [
+              180,
+              185,
+              193
+            ]
+          }
+        },
+        {
+          "text": "Ready to talk",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 5.845223861576253,
+          "pixelCount": 558,
+          "limitingBackground": {
+            "x": 180,
+            "y": 57,
+            "rgb": [
+              179,
+              185,
+              192
+            ]
+          }
+        },
+        {
+          "text": "You",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 5.799315938825114,
+          "pixelCount": 155,
+          "limitingBackground": {
+            "x": 68,
+            "y": 141,
+            "rgb": [
+              179,
+              184,
+              192
+            ]
+          }
+        },
+        {
+          "text": "Can we take this one step at a time?",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 8.938533682016914,
+          "pixelCount": 1915,
+          "limitingBackground": {
+            "x": 251,
+            "y": 177,
+            "rgb": [
+              176,
+              181,
+              192
+            ]
+          }
+        },
+        {
+          "text": "Sprout",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 5.619731928547509,
+          "pixelCount": 307,
+          "limitingBackground": {
+            "x": 72,
+            "y": 282,
+            "rgb": [
+              176,
+              181,
+              191
+            ]
+          }
+        },
+        {
+          "text": "Of course. You can pause, ask me to repeat a detail, or change direction whenever you need.",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 8.79169771210085,
+          "pixelCount": 4905,
+          "limitingBackground": {
+            "x": 160,
+            "y": 368,
+            "rgb": [
+              173,
+              180,
+              190
+            ]
+          }
+        },
+        {
+          "text": "Ideas",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 12.010874575849735,
+          "pixelCount": 294,
+          "limitingBackground": {
+            "x": 79,
+            "y": 598,
+            "rgb": [
+              205,
+              209,
+              218
+            ]
+          }
+        },
+        {
+          "text": "Tools",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 11.921791084796173,
+          "pixelCount": 254,
+          "limitingBackground": {
+            "x": 166,
+            "y": 605,
+            "rgb": [
+              201,
+              209,
+              219
+            ]
+          }
+        },
+        {
+          "text": "Ask me anything…",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 10.360240488872137,
+          "pixelCount": 989,
+          "limitingBackground": {
+            "x": 182,
+            "y": 535,
+            "rgb": [
+              189,
+              195,
+              204
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "background": "dark",
+      "strength": 18,
+      "style": {
+        "image": "url(\"http://127.0.0.1:5173/buddy/sprout-glass-material-v002.png\")",
+        "opacity": 0.18,
+        "display": "block",
+        "pointerEvents": "none",
+        "glassDisplay": "block",
+        "lens": "radial-gradient(65% 38% at -18% -12%, rgba(131, 237, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 42% at 122% 12%, rgba(204, 188, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(70% 38% at 112% 115%, rgba(152, 231, 239, 0.44), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 30% at -18% 115%, rgba(211, 197, 250, 0.4), rgba(0, 0, 0, 0) 100%), linear-gradient(150deg, rgba(252, 254, 255, 0.72), rgba(249, 252, 255, 0.67) 55%, rgba(243, 249, 255, 0.7))",
+        "filter": "blur(10px) saturate(1.35)"
+      },
+      "name": "dark-pearl-18",
+      "png": "dark-pearl-18-panel.png",
+      "backgroundPng": "dark-pearl-18-text-hidden.png",
+      "minimumReadingContrast": 9.629116899940207,
+      "contrast": [
+        {
+          "text": "Sprout",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "20px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 10.121331200568132,
+          "pixelCount": 474,
+          "limitingBackground": {
+            "x": 150,
+            "y": 35,
+            "rgb": [
+              186,
+              193,
+              202
+            ]
+          }
+        },
+        {
+          "text": "Ready to talk",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 6.417723107443585,
+          "pixelCount": 558,
+          "limitingBackground": {
+            "x": 180,
+            "y": 57,
+            "rgb": [
+              186,
+              194,
+              202
+            ]
+          }
+        },
+        {
+          "text": "You",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 6.40398020844522,
+          "pixelCount": 155,
+          "limitingBackground": {
+            "x": 52,
+            "y": 135,
+            "rgb": [
+              185,
+              194,
+              202
+            ]
+          }
+        },
+        {
+          "text": "Can we take this one step at a time?",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 9.903330936645812,
+          "pixelCount": 1915,
+          "limitingBackground": {
+            "x": 299,
+            "y": 177,
+            "rgb": [
+              185,
+              190,
+              206
+            ]
+          }
+        },
+        {
+          "text": "Sprout",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 6.164710929407328,
+          "pixelCount": 307,
+          "limitingBackground": {
+            "x": 35,
+            "y": 273,
+            "rgb": [
+              182,
+              190,
+              201
+            ]
+          }
+        },
+        {
+          "text": "Of course. You can pause, ask me to repeat a detail, or change direction whenever you need.",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 9.629116899940207,
+          "pixelCount": 4905,
+          "limitingBackground": {
+            "x": 51,
+            "y": 375,
+            "rgb": [
+              178,
+              189,
+              200
+            ]
+          }
+        },
+        {
+          "text": "Ideas",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 12.399342787231266,
+          "pixelCount": 294,
+          "limitingBackground": {
+            "x": 78,
+            "y": 601,
+            "rgb": [
+              204,
+              213,
+              225
+            ]
+          }
+        },
+        {
+          "text": "Tools",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 12.374695461476636,
+          "pixelCount": 254,
+          "limitingBackground": {
+            "x": 162,
+            "y": 599,
+            "rgb": [
+              203,
+              213,
+              225
+            ]
+          }
+        },
+        {
+          "text": "Ask me anything…",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 10.95049873707097,
+          "pixelCount": 989,
+          "limitingBackground": {
+            "x": 41,
+            "y": 526,
+            "rgb": [
+              194,
+              200,
+              213
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "background": "dark",
+      "strength": 26,
+      "style": {
+        "image": "url(\"http://127.0.0.1:5173/buddy/sprout-glass-material-v002.png\")",
+        "opacity": 0.26,
+        "display": "block",
+        "pointerEvents": "none",
+        "glassDisplay": "block",
+        "lens": "radial-gradient(65% 38% at -18% -12%, rgba(131, 237, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 42% at 122% 12%, rgba(204, 188, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(70% 38% at 112% 115%, rgba(152, 231, 239, 0.44), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 30% at -18% 115%, rgba(211, 197, 250, 0.4), rgba(0, 0, 0, 0) 100%), linear-gradient(150deg, rgba(252, 254, 255, 0.72), rgba(249, 252, 255, 0.67) 55%, rgba(243, 249, 255, 0.7))",
+        "filter": "blur(10px) saturate(1.35)"
+      },
+      "name": "dark-pearl-26",
+      "png": "dark-pearl-26-panel.png",
+      "backgroundPng": "dark-pearl-26-text-hidden.png",
+      "readingPng": "dark-pearl-26-reading.png",
+      "minimumReadingContrast": 9.96166495473677,
+      "contrast": [
+        {
+          "text": "Sprout",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "20px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 10.587426415153793,
+          "pixelCount": 474,
+          "limitingBackground": {
+            "x": 162,
+            "y": 31,
+            "rgb": [
+              187,
+              198,
+              208
+            ]
+          }
+        },
+        {
+          "text": "Ready to talk",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 6.684733041523105,
+          "pixelCount": 558,
+          "limitingBackground": {
+            "x": 180,
+            "y": 57,
+            "rgb": [
+              189,
+              198,
+              207
+            ]
+          }
+        },
+        {
+          "text": "You",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 6.707267214041257,
+          "pixelCount": 155,
+          "limitingBackground": {
+            "x": 52,
+            "y": 135,
+            "rgb": [
+              187,
+              199,
+              207
+            ]
+          }
+        },
+        {
+          "text": "Can we take this one step at a time?",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 10.490576301506277,
+          "pixelCount": 1915,
+          "limitingBackground": {
+            "x": 52,
+            "y": 199,
+            "rgb": [
+              187,
+              197,
+              206
+            ]
+          }
+        },
+        {
+          "text": "Sprout",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 6.468959115529843,
+          "pixelCount": 307,
+          "limitingBackground": {
+            "x": 46,
+            "y": 276,
+            "rgb": [
+              185,
+              195,
+              205
+            ]
+          }
+        },
+        {
+          "text": "Of course. You can pause, ask me to repeat a detail, or change direction whenever you need.",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 9.96166495473677,
+          "pixelCount": 4905,
+          "limitingBackground": {
+            "x": 66,
+            "y": 376,
+            "rgb": [
+              181,
+              192,
+              205
+            ]
+          }
+        },
+        {
+          "text": "Ideas",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 12.630198525292705,
+          "pixelCount": 294,
+          "limitingBackground": {
+            "x": 79,
+            "y": 598,
+            "rgb": [
+              205,
+              215,
+              228
+            ]
+          }
+        },
+        {
+          "text": "Tools",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 12.615139849252087,
+          "pixelCount": 254,
+          "limitingBackground": {
+            "x": 161,
+            "y": 604,
+            "rgb": [
+              204,
+              215,
+              229
+            ]
+          }
+        },
+        {
+          "text": "Ask me anything…",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 11.18719323451365,
+          "pixelCount": 989,
+          "limitingBackground": {
+            "x": 48,
+            "y": 537,
+            "rgb": [
+              196,
+              202,
+              216
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "background": "dark",
+      "strength": 34,
+      "style": {
+        "image": "url(\"http://127.0.0.1:5173/buddy/sprout-glass-material-v002.png\")",
+        "opacity": 0.34,
+        "display": "block",
+        "pointerEvents": "none",
+        "glassDisplay": "block",
+        "lens": "radial-gradient(65% 38% at -18% -12%, rgba(131, 237, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 42% at 122% 12%, rgba(204, 188, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(70% 38% at 112% 115%, rgba(152, 231, 239, 0.44), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 30% at -18% 115%, rgba(211, 197, 250, 0.4), rgba(0, 0, 0, 0) 100%), linear-gradient(150deg, rgba(252, 254, 255, 0.72), rgba(249, 252, 255, 0.67) 55%, rgba(243, 249, 255, 0.7))",
+        "filter": "blur(10px) saturate(1.35)"
+      },
+      "name": "dark-pearl-34",
+      "png": "dark-pearl-34-panel.png",
+      "backgroundPng": "dark-pearl-34-text-hidden.png",
+      "minimumReadingContrast": 10.380307383342732,
+      "contrast": [
+        {
+          "text": "Sprout",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "20px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 10.931587216989929,
+          "pixelCount": 474,
+          "limitingBackground": {
+            "x": 162,
+            "y": 31,
+            "rgb": [
+              190,
+              201,
+              212
+            ]
+          }
+        },
+        {
+          "text": "Ready to talk",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 6.996301940070589,
+          "pixelCount": 558,
+          "limitingBackground": {
+            "x": 136,
+            "y": 57,
+            "rgb": [
+              191,
+              203,
+              212
+            ]
+          }
+        },
+        {
+          "text": "You",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 6.98207449043128,
+          "pixelCount": 155,
+          "limitingBackground": {
+            "x": 53,
+            "y": 134,
+            "rgb": [
+              190,
+              203,
+              212
+            ]
+          }
+        },
+        {
+          "text": "Can we take this one step at a time?",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 10.90450278691613,
+          "pixelCount": 1915,
+          "limitingBackground": {
+            "x": 267,
+            "y": 169,
+            "rgb": [
+              192,
+              200,
+              213
+            ]
+          }
+        },
+        {
+          "text": "Sprout",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 6.7375154327735585,
+          "pixelCount": 307,
+          "limitingBackground": {
+            "x": 42,
+            "y": 274,
+            "rgb": [
+              188,
+              199,
+              210
+            ]
+          }
+        },
+        {
+          "text": "Of course. You can pause, ask me to repeat a detail, or change direction whenever you need.",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 10.380307383342732,
+          "pixelCount": 4905,
+          "limitingBackground": {
+            "x": 61,
+            "y": 371,
+            "rgb": [
+              184,
+              196,
+              210
+            ]
+          }
+        },
+        {
+          "text": "Ideas",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 12.74899865446659,
+          "pixelCount": 294,
+          "limitingBackground": {
+            "x": 82,
+            "y": 603,
+            "rgb": [
+              205,
+              216,
+              231
+            ]
+          }
+        },
+        {
+          "text": "Tools",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 12.814127072051763,
+          "pixelCount": 254,
+          "limitingBackground": {
+            "x": 166,
+            "y": 605,
+            "rgb": [
+              204,
+              217,
+              231
+            ]
+          }
+        },
+        {
+          "text": "Ask me anything…",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 11.486886390227763,
+          "pixelCount": 989,
+          "limitingBackground": {
+            "x": 41,
+            "y": 528,
+            "rgb": [
+              197,
+              205,
+              219
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "background": "busy",
+      "strength": 0,
+      "style": {
+        "image": "none",
+        "opacity": 1,
+        "display": "block",
+        "pointerEvents": "none",
+        "glassDisplay": "block",
+        "lens": "radial-gradient(65% 38% at -18% -12%, rgba(131, 237, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 42% at 122% 12%, rgba(204, 188, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(70% 38% at 112% 115%, rgba(152, 231, 239, 0.44), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 30% at -18% 115%, rgba(211, 197, 250, 0.4), rgba(0, 0, 0, 0) 100%), linear-gradient(150deg, rgba(252, 254, 255, 0.72), rgba(249, 252, 255, 0.67) 55%, rgba(243, 249, 255, 0.7))",
+        "filter": "blur(10px) saturate(1.35)"
+      },
+      "name": "busy-current",
+      "png": "busy-current-panel.png",
+      "backgroundPng": "busy-current-text-hidden.png",
+      "readingPng": "busy-current-reading.png",
+      "minimumReadingContrast": 10.250018527452054,
+      "contrast": [
+        {
+          "text": "Sprout",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "20px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 14.214465845127348,
+          "pixelCount": 474,
+          "limitingBackground": {
+            "x": 106,
+            "y": 31,
+            "rgb": [
+              208,
+              230,
+              239
+            ]
+          }
+        },
+        {
+          "text": "Ready to talk",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 9.543595892356707,
+          "pixelCount": 558,
+          "limitingBackground": {
+            "x": 104,
+            "y": 57,
+            "rgb": [
+              229,
+              234,
+              238
+            ]
+          }
+        },
+        {
+          "text": "You",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 10.127448808244496,
+          "pixelCount": 155,
+          "limitingBackground": {
+            "x": 52,
+            "y": 135,
+            "rgb": [
+              247,
+              238,
+              236
+            ]
+          }
+        },
+        {
+          "text": "Can we take this one step at a time?",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 10.733582647566221,
+          "pixelCount": 1915,
+          "limitingBackground": {
+            "x": 140,
+            "y": 169,
+            "rgb": [
+              188,
+              199,
+              213
+            ]
+          }
+        },
+        {
+          "text": "Sprout",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 6.720785982317253,
+          "pixelCount": 307,
+          "limitingBackground": {
+            "x": 36,
+            "y": 274,
+            "rgb": [
+              186,
+              199,
+              212
+            ]
+          }
+        },
+        {
+          "text": "Of course. You can pause, ask me to repeat a detail, or change direction whenever you need.",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 10.250018527452054,
+          "pixelCount": 4905,
+          "limitingBackground": {
+            "x": 204,
+            "y": 338,
+            "rgb": [
+              182,
+              195,
+              209
+            ]
+          }
+        },
+        {
+          "text": "Ideas",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 16.517739720607963,
+          "pixelCount": 294,
+          "limitingBackground": {
+            "x": 51,
+            "y": 606,
+            "rgb": [
+              248,
+              241,
+              244
+            ]
+          }
+        },
+        {
+          "text": "Tools",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 13.232728307279086,
+          "pixelCount": 254,
+          "limitingBackground": {
+            "x": 166,
+            "y": 605,
+            "rgb": [
+              209,
+              220,
+              233
+            ]
+          }
+        },
+        {
+          "text": "Ask me anything…",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 12.428983775975711,
+          "pixelCount": 989,
+          "limitingBackground": {
+            "x": 37,
+            "y": 525,
+            "rgb": [
+              202,
+              214,
+              224
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "background": "busy",
+      "strength": 18,
+      "style": {
+        "image": "url(\"http://127.0.0.1:5173/buddy/sprout-glass-material-v002.png\")",
+        "opacity": 0.18,
+        "display": "block",
+        "pointerEvents": "none",
+        "glassDisplay": "block",
+        "lens": "radial-gradient(65% 38% at -18% -12%, rgba(131, 237, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 42% at 122% 12%, rgba(204, 188, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(70% 38% at 112% 115%, rgba(152, 231, 239, 0.44), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 30% at -18% 115%, rgba(211, 197, 250, 0.4), rgba(0, 0, 0, 0) 100%), linear-gradient(150deg, rgba(252, 254, 255, 0.72), rgba(249, 252, 255, 0.67) 55%, rgba(243, 249, 255, 0.7))",
+        "filter": "blur(10px) saturate(1.35)"
+      },
+      "name": "busy-pearl-18",
+      "png": "busy-pearl-18-panel.png",
+      "backgroundPng": "busy-pearl-18-text-hidden.png",
+      "minimumReadingContrast": 10.900449395740303,
+      "contrast": [
+        {
+          "text": "Sprout",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "20px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 14.209982867840516,
+          "pixelCount": 474,
+          "limitingBackground": {
+            "x": 106,
+            "y": 31,
+            "rgb": [
+              207,
+              230,
+              241
+            ]
+          }
+        },
+        {
+          "text": "Ready to talk",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 9.541339933281154,
+          "pixelCount": 558,
+          "limitingBackground": {
+            "x": 104,
+            "y": 57,
+            "rgb": [
+              225,
+              235,
+              239
+            ]
+          }
+        },
+        {
+          "text": "You",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 10.022136375823418,
+          "pixelCount": 155,
+          "limitingBackground": {
+            "x": 52,
+            "y": 135,
+            "rgb": [
+              241,
+              238,
+              238
+            ]
+          }
+        },
+        {
+          "text": "Can we take this one step at a time?",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 11.48687654393685,
+          "pixelCount": 1915,
+          "limitingBackground": {
+            "x": 94,
+            "y": 207,
+            "rgb": [
+              193,
+              206,
+              220
+            ]
+          }
+        },
+        {
+          "text": "Sprout",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 7.073998006764966,
+          "pixelCount": 307,
+          "limitingBackground": {
+            "x": 35,
+            "y": 273,
+            "rgb": [
+              190,
+              204,
+              219
+            ]
+          }
+        },
+        {
+          "text": "Of course. You can pause, ask me to repeat a detail, or change direction whenever you need.",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 10.900449395740303,
+          "pixelCount": 4905,
+          "limitingBackground": {
+            "x": 167,
+            "y": 377,
+            "rgb": [
+              187,
+              201,
+              216
+            ]
+          }
+        },
+        {
+          "text": "Ideas",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 16.196153052297987,
+          "pixelCount": 294,
+          "limitingBackground": {
+            "x": 44,
+            "y": 603,
+            "rgb": [
+              240,
+              240,
+              247
+            ]
+          }
+        },
+        {
+          "text": "Tools",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 13.551221598767347,
+          "pixelCount": 254,
+          "limitingBackground": {
+            "x": 166,
+            "y": 605,
+            "rgb": [
+              209,
+              223,
+              237
+            ]
+          }
+        },
+        {
+          "text": "Ask me anything…",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 12.477159624875489,
+          "pixelCount": 989,
+          "limitingBackground": {
+            "x": 37,
+            "y": 525,
+            "rgb": [
+              202,
+              214,
+              229
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "background": "busy",
+      "strength": 26,
+      "style": {
+        "image": "url(\"http://127.0.0.1:5173/buddy/sprout-glass-material-v002.png\")",
+        "opacity": 0.26,
+        "display": "block",
+        "pointerEvents": "none",
+        "glassDisplay": "block",
+        "lens": "radial-gradient(65% 38% at -18% -12%, rgba(131, 237, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 42% at 122% 12%, rgba(204, 188, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(70% 38% at 112% 115%, rgba(152, 231, 239, 0.44), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 30% at -18% 115%, rgba(211, 197, 250, 0.4), rgba(0, 0, 0, 0) 100%), linear-gradient(150deg, rgba(252, 254, 255, 0.72), rgba(249, 252, 255, 0.67) 55%, rgba(243, 249, 255, 0.7))",
+        "filter": "blur(10px) saturate(1.35)"
+      },
+      "name": "busy-pearl-26",
+      "png": "busy-pearl-26-panel.png",
+      "backgroundPng": "busy-pearl-26-text-hidden.png",
+      "readingPng": "busy-pearl-26-reading.png",
+      "minimumReadingContrast": 11.441191338186531,
+      "contrast": [
+        {
+          "text": "Sprout",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "20px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 14.293017830680931,
+          "pixelCount": 474,
+          "limitingBackground": {
+            "x": 106,
+            "y": 31,
+            "rgb": [
+              206,
+              231,
+              242
+            ]
+          }
+        },
+        {
+          "text": "Ready to talk",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 9.561027909557188,
+          "pixelCount": 558,
+          "limitingBackground": {
+            "x": 104,
+            "y": 57,
+            "rgb": [
+              225,
+              235,
+              242
+            ]
+          }
+        },
+        {
+          "text": "You",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 10.035266665850166,
+          "pixelCount": 155,
+          "limitingBackground": {
+            "x": 52,
+            "y": 135,
+            "rgb": [
+              238,
+              239,
+              239
+            ]
+          }
+        },
+        {
+          "text": "Can we take this one step at a time?",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 11.949491568104541,
+          "pixelCount": 1915,
+          "limitingBackground": {
+            "x": 94,
+            "y": 207,
+            "rgb": [
+              197,
+              210,
+              223
+            ]
+          }
+        },
+        {
+          "text": "Sprout",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 7.2786500250213155,
+          "pixelCount": 307,
+          "limitingBackground": {
+            "x": 36,
+            "y": 274,
+            "rgb": [
+              192,
+              207,
+              222
+            ]
+          }
+        },
+        {
+          "text": "Of course. You can pause, ask me to repeat a detail, or change direction whenever you need.",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 11.441191338186531,
+          "pixelCount": 4905,
+          "limitingBackground": {
+            "x": 206,
+            "y": 340,
+            "rgb": [
+              191,
+              206,
+              220
+            ]
+          }
+        },
+        {
+          "text": "Ideas",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 16.06286932902916,
+          "pixelCount": 294,
+          "limitingBackground": {
+            "x": 70,
+            "y": 605,
+            "rgb": [
+              239,
+              239,
+              247
+            ]
+          }
+        },
+        {
+          "text": "Tools",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 13.759908823062212,
+          "pixelCount": 254,
+          "limitingBackground": {
+            "x": 166,
+            "y": 605,
+            "rgb": [
+              209,
+              225,
+              239
+            ]
+          }
+        },
+        {
+          "text": "Ask me anything…",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 12.724192551886832,
+          "pixelCount": 989,
+          "limitingBackground": {
+            "x": 37,
+            "y": 525,
+            "rgb": [
+              204,
+              216,
+              231
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "background": "busy",
+      "strength": 34,
+      "style": {
+        "image": "url(\"http://127.0.0.1:5173/buddy/sprout-glass-material-v002.png\")",
+        "opacity": 0.34,
+        "display": "block",
+        "pointerEvents": "none",
+        "glassDisplay": "block",
+        "lens": "radial-gradient(65% 38% at -18% -12%, rgba(131, 237, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 42% at 122% 12%, rgba(204, 188, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(70% 38% at 112% 115%, rgba(152, 231, 239, 0.44), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 30% at -18% 115%, rgba(211, 197, 250, 0.4), rgba(0, 0, 0, 0) 100%), linear-gradient(150deg, rgba(252, 254, 255, 0.72), rgba(249, 252, 255, 0.67) 55%, rgba(243, 249, 255, 0.7))",
+        "filter": "blur(10px) saturate(1.35)"
+      },
+      "name": "busy-pearl-34",
+      "png": "busy-pearl-34-panel.png",
+      "backgroundPng": "busy-pearl-34-text-hidden.png",
+      "minimumReadingContrast": 11.770117871415158,
+      "contrast": [
+        {
+          "text": "Sprout",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "20px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 14.339288289498347,
+          "pixelCount": 474,
+          "limitingBackground": {
+            "x": 106,
+            "y": 31,
+            "rgb": [
+              207,
+              231,
+              244
+            ]
+          }
+        },
+        {
+          "text": "Ready to talk",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 9.550017539171641,
+          "pixelCount": 558,
+          "limitingBackground": {
+            "x": 104,
+            "y": 57,
+            "rgb": [
+              224,
+              235,
+              243
+            ]
+          }
+        },
+        {
+          "text": "You",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 10.017047917715143,
+          "pixelCount": 155,
+          "limitingBackground": {
+            "x": 53,
+            "y": 134,
+            "rgb": [
+              236,
+              239,
+              242
+            ]
+          }
+        },
+        {
+          "text": "Can we take this one step at a time?",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 12.351709543065166,
+          "pixelCount": 1915,
+          "limitingBackground": {
+            "x": 94,
+            "y": 207,
+            "rgb": [
+              198,
+              214,
+              226
+            ]
+          }
+        },
+        {
+          "text": "Sprout",
+          "color": "rgb(36, 59, 80)",
+          "fontSize": "14px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 7.54158970008646,
+          "pixelCount": 307,
+          "limitingBackground": {
+            "x": 36,
+            "y": 273,
+            "rgb": [
+              194,
+              211,
+              225
+            ]
+          }
+        },
+        {
+          "text": "Of course. You can pause, ask me to repeat a detail, or change direction whenever you need.",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 11.770117871415158,
+          "pixelCount": 4905,
+          "limitingBackground": {
+            "x": 166,
+            "y": 377,
+            "rgb": [
+              193,
+              209,
+              223
+            ]
+          }
+        },
+        {
+          "text": "Ideas",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 15.88091319203187,
+          "pixelCount": 294,
+          "limitingBackground": {
+            "x": 51,
+            "y": 606,
+            "rgb": [
+              236,
+              238,
+              248
+            ]
+          }
+        },
+        {
+          "text": "Tools",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "16px",
+          "reading": false,
+          "target": 4.5,
+          "minimum": 13.865168993529695,
+          "pixelCount": 254,
+          "limitingBackground": {
+            "x": 166,
+            "y": 605,
+            "rgb": [
+              209,
+              226,
+              240
+            ]
+          }
+        },
+        {
+          "text": "Ask me anything…",
+          "color": "rgb(6, 21, 38)",
+          "fontSize": "18px",
+          "reading": true,
+          "target": 7,
+          "minimum": 12.834016957504593,
+          "pixelCount": 989,
+          "limitingBackground": {
+            "x": 37,
+            "y": 525,
+            "rgb": [
+              204,
+              217,
+              233
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "layout": [
+    {
+      "name": "narrow-320",
+      "viewport": {
+        "width": 320,
+        "height": 1100
+      },
+      "documentWidth": 320,
+      "zoom": "1",
+      "panel": {
+        "x": 8,
+        "y": 713.1875,
+        "width": 304,
+        "height": 656
+      },
+      "input": {
+        "x": 32,
+        "y": 1191.1875,
+        "width": 256,
+        "height": 54
+      },
+      "bodyFont": "18px",
+      "feed": {
+        "clientWidth": 284,
+        "scrollWidth": 284,
+        "clientHeight": 354,
+        "scrollHeight": 354
+      },
+      "controls": [
+        {
+          "name": "Collapse buddy. Ready to talk",
+          "left": 16,
+          "right": -232,
+          "top": 20,
+          "bottom": -580
+        },
+        {
+          "name": "Collapse conversation",
+          "left": 244,
+          "right": -16,
+          "top": 26,
+          "bottom": -586
+        },
+        {
+          "name": "",
+          "left": 24,
+          "right": -24,
+          "top": 478,
+          "bottom": -124
+        },
+        {
+          "name": "Ideas",
+          "left": 24,
+          "right": -199.984375,
+          "top": 540,
+          "bottom": -72
+        },
+        {
+          "name": "Tools",
+          "left": 108.015625,
+          "right": -116.390625,
+          "top": 540,
+          "bottom": -72
+        },
+        {
+          "name": "Start voice conversation",
+          "left": 184,
+          "right": -76,
+          "top": 588,
+          "bottom": -24
+        },
+        {
+          "name": "Send request",
+          "left": 236,
+          "right": -24,
+          "top": 588,
+          "bottom": -24
+        }
+      ]
+    },
+    {
+      "name": "narrow-320-large-text",
+      "viewport": {
+        "width": 320,
+        "height": 1100
+      },
+      "documentWidth": 320,
+      "zoom": "1",
+      "panel": {
+        "x": 8,
+        "y": 444.1875,
+        "width": 304,
+        "height": 656
+      },
+      "input": {
+        "x": 32,
+        "y": 910.1875,
+        "width": 256,
+        "height": 66
+      },
+      "bodyFont": "22px",
+      "feed": {
+        "clientWidth": 284,
+        "scrollWidth": 284,
+        "clientHeight": 342,
+        "scrollHeight": 425
+      },
+      "controls": [
+        {
+          "name": "Collapse buddy. Ready to talk",
+          "left": 16,
+          "right": -232,
+          "top": 20,
+          "bottom": -580
+        },
+        {
+          "name": "Collapse conversation",
+          "left": 244,
+          "right": -16,
+          "top": 26,
+          "bottom": -586
+        },
+        {
+          "name": "",
+          "left": 24,
+          "right": -24,
+          "top": 466,
+          "bottom": -124
+        },
+        {
+          "name": "Ideas",
+          "left": 24,
+          "right": -199.984375,
+          "top": 540,
+          "bottom": -72
+        },
+        {
+          "name": "Tools",
+          "left": 108.015625,
+          "right": -116.390625,
+          "top": 540,
+          "bottom": -72
+        },
+        {
+          "name": "Start voice conversation",
+          "left": 184,
+          "right": -76,
+          "top": 588,
+          "bottom": -24
+        },
+        {
+          "name": "Send request",
+          "left": 236,
+          "right": -24,
+          "top": 588,
+          "bottom": -24
+        }
+      ]
+    },
+    {
+      "name": "css-zoom-200-percent",
+      "viewport": {
+        "width": 1280,
+        "height": 1600
+      },
+      "documentWidth": 1280,
+      "zoom": "2",
+      "panel": {
+        "x": 248,
+        "y": 953.1875,
+        "width": 784,
+        "height": 1312
+      },
+      "input": {
+        "x": 314,
+        "y": 1987.1875,
+        "width": 652,
+        "height": 108
+      },
+      "bodyFont": "18px",
+      "feed": {
+        "clientWidth": 360,
+        "scrollWidth": 360,
+        "clientHeight": 390,
+        "scrollHeight": 390
+      },
+      "controls": [
+        {
+          "name": "Collapse buddy. Ready to talk",
+          "left": 40,
+          "right": -600,
+          "top": 24,
+          "bottom": -1144
+        },
+        {
+          "name": "Collapse conversation",
+          "left": 656,
+          "right": -40,
+          "top": 52,
+          "bottom": -1172
+        },
+        {
+          "name": "",
+          "left": 66,
+          "right": -66,
+          "top": 1034,
+          "bottom": -170
+        },
+        {
+          "name": "Ideas",
+          "left": 66,
+          "right": -557.984375,
+          "top": 1158,
+          "bottom": -66
+        },
+        {
+          "name": "Tools",
+          "left": 234.015625,
+          "right": -390.8125,
+          "top": 1158,
+          "bottom": -66
+        },
+        {
+          "name": "Start voice conversation",
+          "left": 526,
+          "right": -170,
+          "top": 1158,
+          "bottom": -66
+        },
+        {
+          "name": "Send request",
+          "left": 630,
+          "right": -66,
+          "top": 1158,
+          "bottom": -66
+        }
+      ]
+    }
+  ],
+  "tilt": [
+    {
+      "direction": "left",
+      "transform": "matrix3d(0.999798, 0, 0.0200877, -1.11599e-05, 0, 1, 0, 0, -0.0200877, 0, 0.999798, -0.000555443, 0, 0, 0, 1)",
+      "contentGeometryUnchanged": true
+    },
+    {
+      "direction": "right",
+      "transform": "matrix3d(0.999798, 0, -0.0200877, 1.11599e-05, 0, 1, 0, 0, 0.0200877, 0, 0.999798, -0.000555443, 0, 0, 0, 1)",
+      "contentGeometryUnchanged": true
+    }
+  ],
+  "preferences": [
+    {
+      "feature": {
+        "name": "prefers-reduced-transparency",
+        "value": "reduce"
+      },
+      "style": {
+        "image": "none",
+        "opacity": 0,
+        "display": "block",
+        "pointerEvents": "none",
+        "glassDisplay": "block",
+        "lens": "none",
+        "filter": "none"
+      }
+    },
+    {
+      "feature": {
+        "name": "prefers-contrast",
+        "value": "more"
+      },
+      "style": {
+        "image": "none",
+        "opacity": 0,
+        "display": "block",
+        "pointerEvents": "none",
+        "glassDisplay": "block",
+        "lens": "none",
+        "filter": "none"
+      }
+    },
+    {
+      "feature": {
+        "name": "forced-colors",
+        "value": "active"
+      },
+      "style": {
+        "image": "none",
+        "opacity": 0,
+        "display": "block",
+        "pointerEvents": "none",
+        "glassDisplay": "none",
+        "lens": "none, none, none, none, none",
+        "filter": "blur(10px) saturate(1.35)"
+      }
+    }
+  ],
+  "apiRequests": [],
+  "externalRequests": [],
+  "pageErrors": [],
+  "failures": [],
+  "limitations": [
+    "Owned browser preview backgrounds only; no Windows compositor or desktop-refraction claim.",
+    "CSS zoom:2 and a 320px viewport are layout checks, not native Electron/browser zoom evidence.",
+    "Paired original/glyph-hidden PNGs measure computed foreground against rendered background at glyph locations; not antialiased ink or physical-display contrast.",
+    "Matched material captures use reduced motion with the real WebGL renderer. A separate normal-motion pass checks decorative-only tilt."
+  ],
+  "defaultMaterial": {
+    "image": "none",
+    "opacity": 1,
+    "display": "block",
+    "pointerEvents": "none",
+    "glassDisplay": "block",
+    "lens": "radial-gradient(65% 38% at -18% -12%, rgba(131, 237, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 42% at 122% 12%, rgba(204, 188, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(70% 38% at 112% 115%, rgba(152, 231, 239, 0.44), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 30% at -18% 115%, rgba(211, 197, 250, 0.4), rgba(0, 0, 0, 0) 100%), linear-gradient(150deg, rgba(252, 254, 255, 0.72), rgba(249, 252, 255, 0.67) 55%, rgba(243, 249, 255, 0.7))",
+    "filter": "blur(10px) saturate(1.35)"
+  },
+  "draftPreservation": {
+    "materialToggle": true,
+    "strengthChange": true,
+    "sameMountedInput": true
+  },
+  "servedTexture": {
+    "status": 200,
+    "bytes": 1724447,
+    "sha256": "4b3fcc8ed1c8c429b175dee3c4046d8d677da8f9bf2d08eb1c924d774a5d6db1"
+  },
+  "keyboardFocus": {
+    "focusVisible": true,
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(20, 90, 142)"
+  },
+  "reducedMotion": {
+    "tilt": "neutral",
+    "material": {
+      "image": "url(\"http://127.0.0.1:5173/buddy/sprout-glass-material-v002.png\")",
+      "opacity": 0.26,
+      "display": "block",
+      "pointerEvents": "none",
+      "glassDisplay": "block",
+      "lens": "radial-gradient(65% 38% at -18% -12%, rgba(131, 237, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 42% at 122% 12%, rgba(204, 188, 255, 0.5), rgba(0, 0, 0, 0) 100%), radial-gradient(70% 38% at 112% 115%, rgba(152, 231, 239, 0.44), rgba(0, 0, 0, 0) 100%), radial-gradient(65% 30% at -18% 115%, rgba(211, 197, 250, 0.4), rgba(0, 0, 0, 0) 100%), linear-gradient(150deg, rgba(252, 254, 255, 0.72), rgba(249, 252, 255, 0.67) 55%, rgba(243, 249, 255, 0.7))",
+      "filter": "blur(10px) saturate(1.35)"
+    }
+  },
+  "microphoneCalls": 0
+}

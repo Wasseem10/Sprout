@@ -1,0 +1,37 @@
+{
+  "source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-clay-v002.blend",
+  "source_sha256": "51cba14ada00b600a0cd67f43d2fecc5d40963818a1c5a91150bdcc495d87396",
+  "blender": "5.2.2 LTS",
+  "scenes": [
+    "INSIGHTOS_Sprout_v002"
+  ],
+  "objects": 28,
+  "bones": [
+    "ROOT",
+    "BODY",
+    "FACE_MOUNT",
+    "BUD_L_BASE",
+    "BUD_L_TIP",
+    "BUD_R_BASE",
+    "BUD_R_TIP",
+    "FOOT_L",
+    "FOOT_R"
+  ],
+  "body_vertices": 7528,
+  "morphs": [
+    "Basis",
+    "Jelly_Squash",
+    "Jelly_Sway_L",
+    "Jelly_Sway_R"
+  ],
+  "clips": [
+    "Sprout_Blink",
+    "Sprout_Click",
+    "Sprout_Idle",
+    "Sprout_Listen"
+  ],
+  "material": "MAT_Sprout_Clay",
+  "source_proxies": 7,
+  "camera": "CAM_sprout_hero",
+  "pass": true
+}

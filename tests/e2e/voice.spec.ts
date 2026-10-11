@@ -1,5 +1,9 @@
 import { test, expect, type Page } from '@playwright/test';
 
+// Keep mechanical conversation/VAD checks independent of headless GPU startup.
+// Actual animated avatars and frame budgets have their own studio/native gates.
+test.use({ reducedMotion: 'reduce' });
+
 const empty = { folder: null, code: null, browser: null, screen: null };
 async function setup(
   page: Page,
@@ -86,18 +90,27 @@ async function setup(
   });
   await page.goto('/');
   await expect(page.getByRole('button', { name: 'Start conversation' })).toBeEnabled();
+  // Shader/PMREM warmup must finish before the short synthetic utterance begins.
+  await expect(page.locator('.insight-signal').first()).toHaveAttribute(
+    'data-model',
+    /sprout|ribbon/,
+  );
   return commands;
 }
 
 async function setupRealtime(page: Page) {
   await page.addInitScript(() => {
     const w = window as any;
+    const NativeWebSocket = WebSocket;
     w.fakeSockets = [];
     class FakeScribeSocket {
       static OPEN = 1;
       readyState = 0;
       listeners = new Map<string, Array<(event: any) => void>>();
       constructor(readonly address: string) {
+        // Leave the dev server's HMR socket intact; only Scribe is a fixture.
+        if (new URL(address).hostname !== 'api.elevenlabs.io')
+          return new NativeWebSocket(address) as any;
         w.fakeSockets.push(this);
         setTimeout(() => {
           if (this.readyState !== 0) return;
@@ -167,7 +180,7 @@ test('buddy greets generally on Play and never narrates an old code artifact', a
   await page.goto('/?desktop=buddy');
   await page.getByRole('button', { name: 'Start voice conversation', exact: true }).click();
   await expect.poll(() => spoken.length).toBe(1);
-  expect(spoken[0]).toBe("Hi, I'm Insight. What would you like to do?");
+  expect(spoken[0]).toBe("Hi, I'm Sprout. What would you like to do?");
   await page.evaluate(() =>
     (window as any).emitScribe({ message_type: 'committed_transcript', text: 'Hi' }),
   );
@@ -176,6 +189,36 @@ test('buddy greets generally on Play and never narrates an old code artifact', a
   await expect(
     page.getByRole('button', { name: 'Pause voice conversation', exact: true }),
   ).toBeVisible();
+});
+
+test('a voice turn preserves the unsent buddy draft until typed submission', async ({ page }) => {
+  const commands = await setupRealtime(page);
+  await page.goto('/?desktop=buddy');
+  const start = page.getByRole('button', { name: 'Start voice conversation', exact: true });
+  await expect(start).toBeEnabled();
+  await page.getByRole('button', { name: /^Expand buddy\./ }).click();
+  const composer = page.getByRole('textbox', { name: 'Tell your buddy what to do' });
+  const draft = 'Keep this unsent draft while we talk.';
+  await composer.fill(draft);
+  await start.click();
+  await expect.poll(() => page.evaluate(() => (window as any).fakeSockets.length)).toBe(1);
+  await page.evaluate(() =>
+    (window as any).emitScribe({ message_type: 'committed_transcript', text: 'Find jobs' }),
+  );
+  await expect.poll(() => commands).toEqual(['Find jobs']);
+  await expect(page.getByRole('log', { name: 'Buddy conversation' })).toContainText(
+    'Your voice command reached the task handler.',
+  );
+  await expect(composer).toHaveValue(draft);
+  await page.getByRole('button', { name: 'Collapse conversation', exact: true }).click();
+  await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'closed');
+  await page.getByRole('button', { name: /^Expand buddy\./ }).click();
+  await expect(composer).toHaveValue(draft);
+  await page.getByRole('button', { name: 'Pause voice conversation', exact: true }).click();
+  // Submitting the text itself still consumes the draft through the typed path.
+  await composer.press('Enter');
+  await expect.poll(() => commands).toEqual(['Find jobs', draft]);
+  await expect(composer).toHaveValue('');
 });
 
 test('a voice follow-up interrupts work through the page-preserving endpoint', async ({ page }) => {
@@ -694,4 +737,93 @@ test('scroll down uses desktop scrolling and refreshes the screen', async ({ pag
     'scroll-down',
     'capture',
   ]);
+});
+
+test('muting before the delayed acknowledgment prevents acknowledgment and result speech', async ({
+  page,
+}) => {
+  await page.clock.install({ time: new Date('2030-01-01T00:00:00Z') });
+  await setupRealtime(page);
+  const spoken: string[] = [];
+  let taskStarted = false;
+  let release!: () => void;
+  const resultGate = new Promise<void>((resolve) => (release = resolve));
+  await page.route('**/api/computer/request', async (route) => {
+    taskStarted = true;
+    await resultGate;
+    await route.fulfill({
+      json: { state: empty, summary: 'The job search finished with spoken replies muted.' },
+    });
+  });
+  page.on('request', (request) => {
+    if (new URL(request.url()).pathname === '/api/voice/speak')
+      spoken.push(request.postDataJSON().text);
+  });
+  await page.keyboard.press('Control+Shift+Space');
+  await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBe(1);
+  await expect.poll(() => page.evaluate(() => (window as any).fakeSockets.length)).toBe(1);
+  await page.clock.pauseAt(new Date(await page.evaluate(() => Date.now() + 10)));
+  await page.evaluate(() =>
+    (window as any).emitScribe({ message_type: 'committed_transcript', text: 'Find jobs' }),
+  );
+  await expect.poll(() => taskStarted).toBe(true);
+  await page.getByRole('button', { name: 'Turn spoken replies off' }).click();
+  // The request began with speech enabled. The timer must read the current preference.
+  await page.clock.runFor(351);
+  expect(spoken).toEqual([]);
+  release();
+  await expect(page.getByRole('log', { name: 'Conversation transcript' })).toContainText(
+    'The job search finished with spoken replies muted.',
+  );
+  await page.clock.runFor(500);
+  expect(spoken).toEqual([]);
+  expect(await page.evaluate(() => (window as any).playbackStarts)).toBe(0);
+  await expect(page.getByRole('button', { name: 'Turn spoken replies on' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Pause conversation' })).toBeEnabled();
+  await page.getByRole('button', { name: 'Pause conversation' }).click();
+});
+
+test('muting during running work prevents a later failure from starting speech', async ({
+  page,
+}) => {
+  await page.clock.install({ time: new Date('2030-01-01T00:00:00Z') });
+  await setupRealtime(page);
+  const spoken: string[] = [];
+  let taskStarted = false;
+  let releaseFailure!: () => void;
+  const failureGate = new Promise<void>((resolve) => (releaseFailure = resolve));
+  await page.route('**/api/computer/request', async (route) => {
+    taskStarted = true;
+    await failureGate;
+    await route.fulfill({
+      status: 500,
+      json: { error: 'The fixture job search could not finish.' },
+    });
+  });
+  page.on('request', (request) => {
+    if (new URL(request.url()).pathname === '/api/voice/speak')
+      spoken.push(request.postDataJSON().text);
+  });
+  await page.keyboard.press('Control+Shift+Space');
+  await expect.poll(() => page.evaluate(() => (window as any).micCalls)).toBe(1);
+  await expect.poll(() => page.evaluate(() => (window as any).fakeSockets.length)).toBe(1);
+  await page.clock.pauseAt(new Date(await page.evaluate(() => Date.now() + 10)));
+  await page.evaluate(() =>
+    (window as any).emitScribe({ message_type: 'committed_transcript', text: 'Find jobs' }),
+  );
+  await expect.poll(() => taskStarted).toBe(true);
+  // Let the allowed acknowledgment start, then mute before the pending task fails.
+  await page.clock.runFor(350);
+  await expect.poll(() => spoken.length).toBe(1);
+  await page.getByRole('button', { name: 'Turn spoken replies off' }).click();
+  releaseFailure();
+  await expect(page.getByRole('log', { name: 'Conversation transcript' })).toContainText(
+    'The fixture job search could not finish.',
+  );
+  await page.clock.runFor(1000);
+  expect(spoken).toHaveLength(1);
+  expect(spoken[0]).toBe("I'll look for job openings.");
+  await expect(page.getByRole('button', { name: 'Turn spoken replies on' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Pause conversation' })).toBeEnabled();
+  await page.getByRole('button', { name: 'Pause conversation' }).click();
 });

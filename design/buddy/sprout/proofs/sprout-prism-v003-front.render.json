@@ -1,0 +1,64 @@
+{
+  "source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-clear-prism-rim-matched-v003.blend",
+  "source_sha256": "7eedbf68bd66c8242ccb91815c547b1e5da8832208f076a6989a589e7bf00e20",
+  "png": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-prism-v003-front.png",
+  "png_sha256": "47a46dd7ea30020f3e8cc1850622f8b62277534e3ae522e961aea9e4affc0033",
+  "bytes": 371572,
+  "blender": "5.2.2 LTS",
+  "device": "gpu",
+  "size": 640,
+  "samples": 96,
+  "colour": {
+    "view_transform": "Khronos PBR Neutral",
+    "look": "None",
+    "exposure": 0.0,
+    "gamma": 1.0
+  },
+  "camera": {
+    "position": [
+      0.10000000149011612,
+      -6.0,
+      0.23999999463558197
+    ],
+    "rotation": [
+      1.5441396236419678,
+      3.7296845611933804e-09,
+      0.016665125265717506
+    ],
+    "orthographic_span": 2.799999952316284
+  },
+  "pose": {
+    "clip": "Sprout_Idle",
+    "frame": 1,
+    "mount_yaw": 0,
+    "mount_pitch": 0,
+    "lids": {
+      "L": [
+        0.003000000026077032,
+        0.004000000189989805,
+        0.0010000000474974513
+      ],
+      "R": [
+        0.003000000026077032,
+        0.004000000189989805,
+        0.0010000000474974513
+      ]
+    }
+  },
+  "alpha": {
+    "min": 0.0,
+    "max": 1.0,
+    "nonzero_bounds_bottom_origin": {
+      "min": [
+        89,
+        56
+      ],
+      "max": [
+        550,
+        582
+      ]
+    },
+    "pixels_over_0_01": 174060
+  },
+  "scope": "Static source-backed Cycles fallback. Source unchanged; public copy requires root promotion. Supporting offline appearance, not exact Three pixels or motion/provider proof."
+}

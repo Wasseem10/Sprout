@@ -1,0 +1,39 @@
+{
+  "checkedAt": "2026-10-11T06:25:24.530Z",
+  "windowsRelease": "10.0.26300",
+  "captures": [
+    {
+      "material": "none",
+      "error": null,
+      "bounds": {
+        "x": 756,
+        "y": 180,
+        "width": 408,
+        "height": 672
+      },
+      "fixture": {
+        "x": 732,
+        "y": 156,
+        "width": 456,
+        "height": 720
+      }
+    },
+    {
+      "material": "acrylic",
+      "error": null,
+      "bounds": {
+        "x": 756,
+        "y": 180,
+        "width": 408,
+        "height": 672
+      },
+      "fixture": {
+        "x": 732,
+        "y": 156,
+        "width": 456,
+        "height": 720
+      }
+    }
+  ],
+  "scope": "Actual Windows compositor; isolated transparent window, production panel with static Sprout, owned opaque background. Inspect outside-rim pixels before considering integration."
+}

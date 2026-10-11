@@ -1,0 +1,183 @@
+SPROUT — EXPRESSIVE EYES, PRISM GLASS, SUBTLE DEPTH AND PRODUCT IDENTITY
+Implementation prompt · prepared 2026-10-11
+Status: implemented on ui/presentation-polish. See ../sprout/DELIVERY-v005.md for assets, verification and documented first-use timing/physical native-drag limits. The original brief follows unchanged.
+Current panel material: SPROUT-CLEAR-GLASS-v008.md records the bright translucent sheet and quiet dropdown requested in visual review; the dark v007 treatment is historical.
+
+Implement this brief in D:/hackathon2026/insightos-ui. The product's visible name is now Sprout. Refine the existing approved creature and compact companion panel: replace the visibly separate blue eyelids with the actual eyes closing into happy arcs; create a sleek, almost borderless Prism glass panel with matching glass buttons; add restrained pointer-driven perspective, lighting and shadow; and update visible product identity. Complete source authoring, integration, visual review and relevant verification. Deliver the actual working app and editable assets.
+
+1. BASELINE AND BOUNDARIES
+
+Inspect the current branch, diff and applicable AGENTS instructions first. Preparation baseline is commit 5125348ef7f4cb8cebfd552dd54ea27a6c9b7893 on ui/presentation-polish. Continue from whatever legitimate newer work exists; preserve unrelated edits.
+
+Read design/buddy/sprout/DELIVERY-v004.md and ASSET-HANDOFF-v004.md, the current asset manifest, and design/buddy/frutiger-aero/GLASS-PANEL-V005-STUDY.md. The latter's v005 identifies a historical panel study, not an already delivered v005 avatar. Previous instructions requiring the old lids, preserving the thick layered panel rim or prohibiting panel pointer movement are superseded by this brief. The user's latest direction is a sleek, almost borderless panel.
+
+Current stack: React 19, TypeScript, Vite, Electron and direct Three.js. Keep it. The unrelated Next application at the workspace root is outside this task. Existing ElevenLabs voice, interruption, permission handling, task execution, finance, OCR and backend contracts already work and must remain intact. This is a visual/identity refinement, not a new conversation implementation or financial redesign.
+
+Current source: design/buddy/sprout/source/sprout-prism-behaviours-v004.blend.
+Current canonical/runtime GLB: design/buddy/sprout/sprout-prism-v004.glb and public/buddy/sprout-v004.glb.
+Verified baseline SHA256: 77d4b92bc5d06e440706243f6ac9e6745073ba6f98d173b972114fabb02bde7c.
+Verify it against disk and the manifest. Author new versioned source/assets, preferably v005 if still unused. Preserve prior versions and evidence.
+
+Use the already authorized UI branch and existing draft PR https://github.com/Wasseem10/insightos/pull/1 for scoped commits/pushes. Keep it draft. Merging, production deployment and messaging the cousin are outside this brief.
+
+2. VISUAL REFERENCE AND VERIFIED EXAMPLES
+
+Open the user's unchanged reference:
+design/buddy/frutiger-aero/references/user-glass-buttons-2026-10-11.jpg
+SHA256: 5b2c0a75a0121b7c445c3de8c40d367b1f81dbcbfa553e37ff5331dece7d4975.
+This is user-provided visual reference, not third-party code to ship.
+
+Extract its optical hierarchy: a substantially clear central surface, a crisp curved highlight, a visible inner bevel, selective bright edge reflections and a faint opposing shadow. Use the brighter left pill as inspiration for primary actions; the quieter middle/right treatments inform secondary actions. Translate this more quietly to the large panel: a nearly disappearing boundary with occasional fine highlights, not an enlarged glowing button frame. The checkerboard is a transparency-preview convention, not an application texture. Its tiny lettering, dark background and intense magenta are not product requirements.
+
+Keep Sprout's palette: clear blue/aqua dominates, lavender is a secondary reflection and coral is a small warm undertone. The panel is calmer than Sprout. Avoid uniformly neon outlines, glitter, persistent shine sweeps or broad milky fills.
+
+Study actual upstream source, not screenshots alone. The following were inspected while preparing this brief:
+
+A. Liquid Glass React, MIT, MAX ROVENSKY:
+https://github.com/rdev/liquid-glass-react/blob/ac48eab18d1f7f444ae30002d240cae29c863a21/src/index.tsx
+https://github.com/rdev/liquid-glass-react/blob/ac48eab18d1f7f444ae30002d240cae29c863a21/LICENSE
+Examples: https://liquid-glass.maxrovensky.com/
+Useful mechanisms: separate warped backdrop and sharp content, edge-constrained chromatic treatment, directional rims and pill-button highlights. Adapt the necessary optical layers; do not import its full mouse-deformation or per-event React-state machinery.
+
+B. Vanilla Tilt, MIT:
+https://github.com/micku7zu/vanilla-tilt.js/blob/48f4ee931d4d91dcdd2f91803db67a9f3a16587e/src/vanilla-tilt.js
+https://github.com/micku7zu/vanilla-tilt.js/blob/48f4ee931d4d91dcdd2f91803db67a9f3a16587e/LICENSE
+Examples: https://micku7zu.github.io/vanilla-tilt.js/index.html
+Useful mechanisms: normalized pointer coordinates, bounded perspective rotation, a separate glare layer, frame-coalesced updates, reset on exit and cleanup. Its demo amplitude and optional gyroscope/scale are inappropriate here. Our smaller values below are design choices, not claims about its defaults.
+
+C. Platform constraints:
+https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/backdrop-filter
+https://www.electronjs.org/docs/latest/tutorial/custom-window-styles#limitations
+
+Keep a concise source-to-treatment record identifying what was adapted, what was rejected, the revision/license and visual evidence. Preserve required notices for copied/adapted code. A package's availability is not a reason to install it. Prefer a small implementation in the existing stack. The references guide rendering; runtime must not depend on their websites.
+
+3. FIX THE ACTUAL EYES IN BLENDER
+
+Verified diagnosis: EYE_L/R currently stay open. Blink grows separate LID_L/R flattened spheres over them. Sleep holds those covers at full size. MAT_Sprout_Lids_v003 is opaque, and CLOSED_EYE_L/R creases are separate geometry attached to the covers. The opaque old-blue plates explain the mismatch; recolouring them would leave the structural defect.
+
+Inspect 03_rig_and_shapes.py, 07_closed_eyes.py, 15_glass_candidates.py and 25_author_behaviours_v004.py in design/buddy/sprout. Confirm source and exported geometry before changes.
+
+Retain the open-eye navy oval shape and existing personality. Build an original continuous eye-shape transition, such as a CloseHappy shape key on each actual eye mesh:
+- At zero closure, reproduce the current open eye.
+- Intermediate shapes narrow smoothly without a plate sliding over the face.
+- Fully closed, each eye becomes a thin, rounded, relaxed upward arch: center higher than the corners, a gentle “^ ^” expression, not sharp chevrons or flat dashes.
+- Ordinary blinks close/open briefly and naturally. Sleep holds the contented closed expression throughout the resting breath.
+- Keep the eye marks close to the face and coherent with its deformation, recline and bounded pointer turns. They must remain clearly visible without looking like floating stickers or exposing the old oval beneath.
+
+Remove rendered blue LID and old CLOSED_EYE cover geometry from the new avatar. Do not hide the old slab using a transparent material. Author the white glints to collapse/retract with eye closure so they disappear naturally before full closure and reappear during opening. Use GLB-supported transform/morph animation, not assumed export of animated material opacity. Inspect exact glint object names from the asset before binding tracks.
+
+Preserve the nine-joint rig, body/core geometry, glass materials, texture, paired body/core morph meanings, eleven logical clip names/durations and non-eye animation samples. Update Blink, SleepEnter, SleepLoop and Wake eye-related tracks explicitly. Old Blink's lid-track bytes cannot stay identical after its owners are removed: document that deliberate exception rather than claiming total byte preservation.
+
+Review open/25%/50%/75%/closed shapes before integrating the rest of the app. Avoid self-intersection, inverted normals, degenerate closed geometry, unwanted holes and curves buried by the glass surface. Use smooth artist-authored geometry rather than simply flattening an oval.
+
+One agent owns Blender authoring. Save a new editable .blend and reproducible script without overwriting the active unrelated/unsaved scene. No new concept generation or paid service is necessary for this focused change.
+
+4. UPDATE THE EYE ANIMATION CONTRACT AND FALLBACKS
+
+Inspect src/buddyMotionController.ts, buddyRenderer.ts, buddyBehavior.ts and AssistantSignal.tsx.
+
+The current auditor permits lid transforms and body/core morphs; it does not automatically accept arbitrary eye weights. Add an explicit v005 capability/binding profile with exact eye and glint owners. Preserve strict legacy v004/v003 profiles so fallbacks still work.
+
+Use the existing single mixer/compositor. Ordinary Blink owns eye closure during normal phases; sleep/wake temporarily owns that same property. Suppress competing blink/gaze effects during sleep and blend interruptions from the visible pose. Do not let a generic paired-body-morph assignment accidentally overwrite eye morphs.
+
+The sleeping Z anchor currently reads LID_L/R bounds. Replace that lookup for the new profile with a stable evaluated face/eye anchor, while retaining legacy handling. Preserve the three Zs, closed-eye sleeping still under reduced motion, wake behavior and fresh confirmed-task Done logic.
+
+Deliver matching new idle and sleeping PNGs from the selected source. Update loader/default/manifest/fallback references together. Context loss while resting must keep the new closed-eye appearance; ordinary no-WebGL fallback must remain usable. Older assets may retain their historical appearance only when actually selected as a legacy fallback.
+
+5. BUILD A COHERENT GLASS PANEL AND BUTTON FAMILY
+
+Current evidence establishes translucency, but the visual result is still weak: src/buddy.css gives .buddy-play/.buddy-send solid blue fills; composer and local reading surfaces are pale and dense; secondary controls do not share the same optical treatment. Improve the material relationship, not just blur strength or saturation.
+
+Preserve the rounded silhouette, compact layout and clear hierarchy, but replace the thick layered rim. The panel should read as one continuous, almost borderless glass sheet. Remove the broad painted edge band, stacked concentric outlines and heavy white bevel. Use at most a faint hairline boundary where separation needs it, plus selective fine edge highlights and a soft contact shadow. Most of the perimeter should recede. Depth should come from translucency, reflections and subtle perspective rather than a conspicuous frame. Keep native layout padding and focus clearance independent of decorative border thickness.
+
+Create coordinated surface tokens and bounded decorative layers:
+- A transparent tinted body that admits background colour.
+- Sparse, hairline cyan/white edge highlights with softer lavender/coral reflections; no continuous luminous panel outline.
+- A barely visible inner-edge shade and restrained contact shadow to imply a thin glass sheet. Buttons may use a slightly more pronounced inset reflection than the panel.
+- A sharp, stable content layer above all filtering.
+- Local reading support only where text requires it, tuned against measured contrast.
+
+Give EVERY panel control an intentional family treatment: Mic/Pause, Send, Collapse/Hide, Stop, Ideas/Tools triggers, relevant disclosure actions and Character settings. Preserve their established shapes, meanings, accessibility and hierarchy; do not turn everything into an identical long pill. Primary actions can have deeper blue glass, brighter rims and a small luminous well; secondary actions should be clearer/quieter. Hover strengthens a local reflection; pressed state feels slightly inset. Focus must remain unmistakable. Stop retains a distinct readable semantic treatment.
+
+Keep 44px targets and already-correct icon centering in every state. Active Pause stays available during work. Disabled controls remain legible. Menus must prevent transcript text bleeding through; increase their local frosting/density without turning every surface opaque. Give the composer and reading surfaces quiet transitions rather than additional thick nested frames. Almost borderless describes the resting decoration, not keyboard focus: preserve strong focus-visible outlines and semantic control boundaries when needed.
+
+Produce a matched A/B study with the real component:
+A) Carefully layered glass with real backdrop filtering over owned browser content.
+B) A restrained edge-refraction candidate based on the inspected source.
+The previous turbulence-only edge experiment showed little benefit; do not replay it and call it new work. If B adds no visible benefit or harms compatibility/performance, select A and explain the visual comparison. Do not blur, displace or duplicate live text.
+
+Test actual layered compositing after the new transform wrapper is introduced. Parent opacity, masks and filters can restrict backdrop sampling; a CSS declaration alone is not evidence. Use light, dark and detailed owned backgrounds, empty/populated conversation and a button-state board. Keep Sprout more luminous than its surrounding UI.
+
+Native boundary: CSS cannot blur other desktop apps behind Electron. The recorded Acrylic study frosted the entire rectangular window, including outside the shaped rim, and was rejected. Read that evidence before considering another native study. Deliver the best supported transparent/glossy native material and actual webpage frosting; label any remaining desktop limitation accurately. No desktop screen capture, duplicated conversation texture or second WebGL renderer may become the panel's runtime material.
+
+6. ADD VERY SUBTLE POINTER-DRIVEN PANEL DEPTH
+
+This is a real lean of the expanded panel, with corresponding quiet lighting/shadow, not just a moving gradient.
+
+Start with yaw capped at approximately ±1.2 degrees, pitch at ±0.45 degrees and perspective 1600–2000px. Scale stays 1; no pointer-follow translation. These are initial tuning bounds, to reduce further if text shimmer, edge clipping or distraction appears. Prioritize the requested left/right lean; vertical response is secondary.
+
+Keep .buddy as the fixed, untransformed layout/input reference. Add one relative, full-size visual plane around the header, existing glass decoration and conversation content. Tilt that plane as one object. Keep dialogs outside it.
+
+Do not overwrite panel.shell's transform: useBuddyPanel owns its opening/reversal animation. Preserve its ref, timing, opacity and native acknowledgement coordinator. Tilt is enabled only after the expanded panel is fully open; closed/opening/closing states are neutral.
+
+Normalize pointer coordinates against the untransformed surface, not the moving plane. Sprout's current gaze basis uses the avatar's getBoundingClientRect; account explicitly for the parent perspective so panel tilt cannot feed back into avatar attention or introduce jitter. Use an untransformed layout-slot basis and preserve existing bounded 3D avatar movement.
+
+Use a frame-coalesced, time-based easing update through refs/CSS properties; avoid per-move React rerenders. Return smoothly to neutral on pointer exit. Clear pressed/frozen state on pointer cancellation or lost capture, and reset on window blur. Keep new listeners/animation frames bounded and cancel them when settled, hidden, offscreen, minimized, unmounted or paused. Track only pointer events in the app's owned surface; no new global OS polling or gyroscope.
+
+Move a subtle reflection along a small part of the thin glass edge and apply a tiny opposing contact-shadow offset (roughly 0–2px initially). The response must not reveal a thick frame or light the entire perimeter. Prefer translating a prepainted decorative layer over animating blur or rebuilding large gradients. No pulsing brightness, rainbow scan, elastic page wobble or perpetual animation.
+
+Keep interactions stable:
+- Freeze the current pose during pointer press/drag/selection; do not move the control out from under the pointer before release. A held press takes precedence over focus-triggered neutralization; defer that settling until release.
+- Settle to neutral for text editing, keyboard navigation and open menus/dialogs. Freeze during native window dragging and settle afterward; reset on app blur.
+- Preserve native drag regions, actual pointer hit testing, focus outlines, scroll position, textarea selection and drafts.
+- Use hover-capable fine pointers only. Touch/coarse pointers, reduced motion and the existing motion-pause control receive a static panel. Dynamic preference changes take effect immediately.
+- No native window resize/position IPC on pointer movement. Preserve work-area clamping and native topmost behavior.
+
+The native shell has only 8px padding. Do not assume a new shadow fits because rotation is small: the existing shadow already exceeds that space. Bound additional movement/spread and inspect transformed corners, focus rings and controls at all work-area edges and 200% zoom. Do not widen the native window just to hide a clipping defect.
+
+7. MAKE THE VISIBLE PRODUCT NAME SPROUT
+
+Use one plain “Sprout” identity, replacing the Insight + blue OS lockup. Keep the status beneath it, with balanced spacing beside the avatar. Reuse display constants if helpful, without building a new branding framework.
+
+Audit visible labels, ARIA names, transcript speaker labels, frontend greeting, browser title/description/theme metadata, native window/tray/menu/dialog labels and launcher display messages:
+- src/DesktopBuddy.tsx, ComputerCompanion.tsx, BuddyStudio.tsx
+- src/PublicDemo.tsx, App.tsx
+- BillWorkspace.tsx, FinancePanel.tsx, ConnectionsPanel.tsx
+- frontend-owned branded error/help copy in api.ts and voice.ts
+- index.html, electron/main.cjs and relevant launcher display strings.
+
+Choose a short browser title such as “Sprout — Your desktop companion.” Retain truthful capability/accessibility copy; change product identity without expanding capabilities. If adding a favicon, derive it from the approved Sprout asset with a legible small-size silhouette. No PWA manifest currently exists, so do not invent one as a rename prerequisite.
+
+This is a display rename. Preserve package name, repository/deployment URLs, window.insightos, IPC channels, INSIGHTOS_* variables, browser storage keys, cookies, database identifiers and existing asset contracts. Do not call app.setName or change Electron userData/profile location casually; existing preferences and sessions must survive.
+
+Keep historical documents, source citations, sample PDFs and old proof captures truthful. Do not global-replace their history. Backend-generated workbook/presentation metadata and planner/provider identity literals remain outside this UI pass; record those remaining surfaces for the backend owner instead of silently altering the cousin's work. Do not claim hosted domains, installed shortcuts or remote-generated output were renamed by editing the frontend.
+
+8. EXECUTION ORDER AND OWNERSHIP
+
+First capture the current actual eye closure and panel/button states. Read the reference and pinned code, record the diagnosed differences, then proceed:
+1) Author/review the new eye geometry and exported closure tracks.
+2) Build the real panel/button material study and select the stronger restrained candidate.
+3) Integrate the new eye contract/fallbacks and panel tilt with clear file ownership.
+4) Apply the visible Sprout identity consistently.
+5) Run focused checks, inspect the final small-size and native result, correct concrete visual defects, then deliver.
+
+Independent asset and panel work can run in parallel. Assign one Blender owner; one controller/renderer integration owner; one DesktopBuddy/CSS/tilt owner. Coordinate changes to shared components before editing them. A separate read-only reviewer should inspect eye ownership, transform composition, accessibility and the rename exclusions.
+
+9. ACCEPTANCE AND DELIVERY
+
+Visual acceptance is required, not inferred from successful tests:
+- Eye contact sheet at open, intermediate closure and fully closed; repeated blink, sleeping breath and wake. Inspect front/three-quarter and reclined poses at 44/72/96px plus an enlarged diagnostic. No blue covers, visible old oval, detached glints, buried or sharply angular curves.
+- Actual panel before/after beside the user reference; button states for normal/hover/pressed/focus/disabled, Mic/Pause and Stop. The panel must visibly read as a sleek, almost borderless glass sheet, without the old thick band, stacked rings or heavy nested composer outline. Verify this at rest and both tilt extremes. Light/dark/busy backgrounds, narrow 320px and nominal 392px, normal/Large text and 200% zoom.
+- Pointer recording through left/center/right, quick exit and reentry, button press, typing, text selection, menu/modal, drag, collapse/reopen and edge placement. The tilt must be visible but restrained; controls remain usable.
+- Web studio, panel preview, public demo and actual native tray/window show Sprout. Produce a classified remaining-name search, not an indiscriminate replacement.
+
+Technical checks should cover the changed risks:
+- Validate GLB, reopen saved Blender source, verify non-eye animation/material preservation and explicit eye-track changes.
+- Meaningful tests for Blink-versus-Sleep ownership, interrupted closure, glint cleanup, legacy capability profiles, head anchoring and sleeping PNG/context loss.
+- Tilt clamping, stable coordinate basis, lifecycle cleanup, motion preferences, focus/selection freeze, no native pointer-driven resize and no competing transform writers.
+- Existing voice interruption, immediate Stop, confirmed-completion gating, draft/selection/scroll preservation and native bounds/reversal remain correct.
+- Default and public builds. Reuse current focused test and native verification scripts where applicable; do not regenerate historical evidence.
+- Measure at least 7:1 contrast for sustained-reading text on actual composited backgrounds, retaining explicitly documented exceptions. Preserve at least 3:1 meaningful control/icon contrast, 44px targets, visible focus, solid/reduced-transparency and forced-colour paths.
+- Measure active pointer/animation performance on this host, targeting smooth 60Hz presentation. Compare with the v004 native timing baseline, report actual intervals and ensure new effects stop consuming frames after settling. Keep fixture evidence distinct from physical microphone/provider or hardware-scanout claims.
+
+Deliver versioned .blend/GLB/idle-and-sleep PNGs and manifest, the working UI/identity changes, source attribution, matched stills and short actual recordings, concise validation results and exact remaining platform limitations. Open the existing local studio for review. Preserve historical assets; do not restart unrelated services or rebuild delivered backend features. A polished screenshot alone is not completion: this must work during real interaction in the existing app.

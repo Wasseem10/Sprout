@@ -1,0 +1,5688 @@
+{
+  "variant": "prism-behaviours-v004",
+  "status": "Selected and promoted to the local application; see DELIVERY-v004.md for integrated verification and external limits",
+  "runtime_path": "public/buddy/sprout-v004.glb",
+  "runtime_sha256": "77d4b92bc5d06e440706243f6ac9e6745073ba6f98d173b972114fabb02bde7c",
+  "integration_record": "design/buddy/sprout/DELIVERY-v004.md",
+  "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-prism-v004.glb",
+  "sha256": "77d4b92bc5d06e440706243f6ac9e6745073ba6f98d173b972114fabb02bde7c",
+  "bytes": 1463568,
+  "editable_source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-prism-behaviours-v004.blend",
+  "editable_source_sha256": "77df8aa69295604c48dec23a0bccb837e2cbdc012f5212c10b76cc37bbf38518",
+  "immutable_source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-clear-prism-rim-matched-v003.blend",
+  "immutable_source_sha256": "7eedbf68bd66c8242ccb91815c547b1e5da8832208f076a6989a589e7bf00e20",
+  "frozen_v003_path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-prism-v003.glb",
+  "frozen_v003_sha256": "63bc8f0289634e03716732c6beefe2f3492d53d1f54ec04dd8e23d28fddf0a32",
+  "source_export": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-prism-behaviours-source-v004.glb",
+  "source_export_sha256": "b98b9359e52a4aada04c8ec80183acddaa3da86cd1f4f5eed7b413ab0929d681",
+  "blender": "5.2.2 LTS",
+  "generator": "Khronos glTF Blender I/O v5.2.40",
+  "settings": {
+    "filepath": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-prism-behaviours-source-v004.glb",
+    "export_format": "GLB",
+    "use_selection": true,
+    "use_active_scene": true,
+    "export_animations": true,
+    "export_animation_mode": "NLA_TRACKS",
+    "export_force_sampling": true,
+    "export_frame_step": 1,
+    "export_anim_slide_to_zero": true,
+    "export_apply": false,
+    "export_def_bones": false,
+    "export_morph": true,
+    "export_morph_normal": true,
+    "export_morph_animation": true,
+    "export_normals": true,
+    "export_texcoords": true,
+    "export_vertex_color": "ACTIVE",
+    "export_all_vertex_colors": true,
+    "export_optimize_animation_size": true,
+    "export_optimize_animation_keep_anim_armature": true,
+    "export_optimize_animation_keep_anim_object": true
+  },
+  "fps": 24,
+  "new_clips": {
+    "Sprout_JoyJump": {
+      "frames": 41,
+      "group": "full-body",
+      "beats": {
+        "anticipation": 0.18,
+        "apex": 0.625,
+        "landing": 1.0,
+        "settled": 1.6666666666666667
+      },
+      "duration": 1.6666666666666667,
+      "bounds": {
+        "min": [
+          -1.1479939222335815,
+          -1.0694684982299805,
+          -0.6890788674354553
+        ],
+        "max": [
+          1.1479934453964233,
+          1.8282254934310913,
+          0.8126625418663025
+        ]
+      },
+      "bounds_sample_count": 41,
+      "channels": [
+        {
+          "node": "ROOT",
+          "path": "translation"
+        },
+        {
+          "node": "ROOT",
+          "path": "rotation"
+        },
+        {
+          "node": "ROOT",
+          "path": "scale"
+        },
+        {
+          "node": "BODY",
+          "path": "translation"
+        },
+        {
+          "node": "BODY",
+          "path": "rotation"
+        },
+        {
+          "node": "BODY",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "translation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "rotation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "scale"
+        },
+        {
+          "node": "SPROUT_BODY",
+          "path": "weights"
+        },
+        {
+          "node": "SPROUT_CORE",
+          "path": "weights"
+        }
+      ],
+      "packaging_removed_generated_constant_channels": [
+        {
+          "node": "RIG_Sprout",
+          "path": "translation",
+          "sample_count": 2,
+          "maximum_sample_spread": 0.0,
+          "constant": [
+            0.0,
+            0.0,
+            -0.0
+          ]
+        },
+        {
+          "node": "RIG_Sprout",
+          "path": "rotation",
+          "sample_count": 2,
+          "maximum_sample_spread": 0.0,
+          "constant": [
+            0.0,
+            0.0,
+            -0.0,
+            1.0
+          ]
+        },
+        {
+          "node": "RIG_Sprout",
+          "path": "scale",
+          "sample_count": 2,
+          "maximum_sample_spread": 0.0,
+          "constant": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "bounds_shell_only": {
+        "min": [
+          -1.1479939222335815,
+          -1.0694684982299805,
+          -0.6890788674354553
+        ],
+        "max": [
+          1.1479934453964233,
+          1.8254806995391846,
+          0.7033770680427551
+        ]
+      },
+      "bounds_scope": "All11evaluated mesh vertices, every authored24Hz frame; continuous subframe extrema/native projection/Z path belong to integration."
+    },
+    "Sprout_SleepEnter": {
+      "frames": 41,
+      "group": "sleep",
+      "beats": {
+        "eyes_closed": 0.9,
+        "reclined": 1.6666666666666667
+      },
+      "duration": 1.6666666666666667,
+      "bounds": {
+        "min": [
+          -1.1028332710266113,
+          -1.115286946296692,
+          -1.2561579942703247
+        ],
+        "max": [
+          1.1028326749801636,
+          1.225106954574585,
+          0.7480847239494324
+        ]
+      },
+      "bounds_sample_count": 41,
+      "channels": [
+        {
+          "node": "ROOT",
+          "path": "translation"
+        },
+        {
+          "node": "ROOT",
+          "path": "rotation"
+        },
+        {
+          "node": "ROOT",
+          "path": "scale"
+        },
+        {
+          "node": "BODY",
+          "path": "translation"
+        },
+        {
+          "node": "BODY",
+          "path": "rotation"
+        },
+        {
+          "node": "BODY",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "translation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "rotation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "scale"
+        },
+        {
+          "node": "SPROUT_BODY",
+          "path": "weights"
+        },
+        {
+          "node": "SPROUT_CORE",
+          "path": "weights"
+        },
+        {
+          "node": "LID_L",
+          "path": "scale"
+        },
+        {
+          "node": "LID_R",
+          "path": "scale"
+        }
+      ],
+      "packaging_removed_generated_constant_channels": [
+        {
+          "node": "RIG_Sprout",
+          "path": "translation",
+          "sample_count": 2,
+          "maximum_sample_spread": 0.0,
+          "constant": [
+            0.0,
+            0.0,
+            -0.0
+          ]
+        },
+        {
+          "node": "RIG_Sprout",
+          "path": "rotation",
+          "sample_count": 2,
+          "maximum_sample_spread": 0.0,
+          "constant": [
+            0.0,
+            0.0,
+            -0.0,
+            1.0
+          ]
+        },
+        {
+          "node": "RIG_Sprout",
+          "path": "scale",
+          "sample_count": 2,
+          "maximum_sample_spread": 0.0,
+          "constant": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "node": "LID_L",
+          "path": "translation",
+          "sample_count": 2,
+          "maximum_sample_spread": 5.960464477539063e-08,
+          "constant": [
+            -0.3486376702785492,
+            0.2637554407119751,
+            0.7479068636894226
+          ]
+        },
+        {
+          "node": "LID_L",
+          "path": "rotation",
+          "sample_count": 2,
+          "maximum_sample_spread": 3.725290298461914e-09,
+          "constant": [
+            1.0135260708921123e-05,
+            -0.015250764787197113,
+            -0.006672061514109373,
+            0.9998614192008972
+          ]
+        },
+        {
+          "node": "LID_R",
+          "path": "translation",
+          "sample_count": 2,
+          "maximum_sample_spread": 2.9802322387695312e-08,
+          "constant": [
+            0.34000033140182495,
+            0.2650003135204315,
+            0.746999979019165
+          ]
+        },
+        {
+          "node": "LID_R",
+          "path": "rotation",
+          "sample_count": 2,
+          "maximum_sample_spread": 3.866821307596524e-10,
+          "constant": [
+            -5.551114581024696e-13,
+            7.340286156676257e-10,
+            4.831689492945657e-10,
+            1.0
+          ]
+        }
+      ],
+      "bounds_shell_only": {
+        "min": [
+          -1.1028332710266113,
+          -1.1151659488677979,
+          -1.2561579942703247
+        ],
+        "max": [
+          1.1028326749801636,
+          1.225106954574585,
+          0.655838668346405
+        ]
+      },
+      "bounds_scope": "All11evaluated mesh vertices, every authored24Hz frame; continuous subframe extrema/native projection/Z path belong to integration."
+    },
+    "Sprout_SleepLoop": {
+      "frames": 121,
+      "group": "sleep",
+      "beats": {
+        "breath_peak": 1.25,
+        "loop": 5
+      },
+      "duration": 5.0,
+      "bounds": {
+        "min": [
+          -1.1099437475204468,
+          -1.1133208274841309,
+          -1.2619614601135254
+        ],
+        "max": [
+          1.1099432706832886,
+          0.37123996019363403,
+          0.6085184812545776
+        ]
+      },
+      "bounds_sample_count": 121,
+      "channels": [
+        {
+          "node": "ROOT",
+          "path": "translation"
+        },
+        {
+          "node": "ROOT",
+          "path": "rotation"
+        },
+        {
+          "node": "ROOT",
+          "path": "scale"
+        },
+        {
+          "node": "BODY",
+          "path": "translation"
+        },
+        {
+          "node": "BODY",
+          "path": "rotation"
+        },
+        {
+          "node": "BODY",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "translation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "rotation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "scale"
+        },
+        {
+          "node": "SPROUT_BODY",
+          "path": "weights"
+        },
+        {
+          "node": "SPROUT_CORE",
+          "path": "weights"
+        },
+        {
+          "node": "LID_L",
+          "path": "scale"
+        },
+        {
+          "node": "LID_R",
+          "path": "scale"
+        }
+      ],
+      "packaging_removed_generated_constant_channels": [
+        {
+          "node": "RIG_Sprout",
+          "path": "translation",
+          "sample_count": 2,
+          "maximum_sample_spread": 0.0,
+          "constant": [
+            0.0,
+            0.0,
+            -0.0
+          ]
+        },
+        {
+          "node": "RIG_Sprout",
+          "path": "rotation",
+          "sample_count": 2,
+          "maximum_sample_spread": 0.0,
+          "constant": [
+            0.0,
+            0.0,
+            -0.0,
+            1.0
+          ]
+        },
+        {
+          "node": "RIG_Sprout",
+          "path": "scale",
+          "sample_count": 2,
+          "maximum_sample_spread": 0.0,
+          "constant": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "node": "LID_L",
+          "path": "translation",
+          "sample_count": 2,
+          "maximum_sample_spread": 5.960464477539063e-08,
+          "constant": [
+            -0.3486376702785492,
+            0.2637554407119751,
+            0.7479068636894226
+          ]
+        },
+        {
+          "node": "LID_L",
+          "path": "rotation",
+          "sample_count": 2,
+          "maximum_sample_spread": 1.862645149230957e-09,
+          "constant": [
+            1.0135267984878737e-05,
+            -0.015250764787197113,
+            -0.00667206197977066,
+            0.9998614192008972
+          ]
+        },
+        {
+          "node": "LID_R",
+          "path": "translation",
+          "sample_count": 2,
+          "maximum_sample_spread": 5.960464477539063e-08,
+          "constant": [
+            0.34000033140182495,
+            0.2650003135204315,
+            0.746999979019165
+          ]
+        },
+        {
+          "node": "LID_R",
+          "path": "rotation",
+          "sample_count": 2,
+          "maximum_sample_spread": 1.4020071215092855e-10,
+          "constant": [
+            -5.542233338928781e-13,
+            7.340285601564744e-10,
+            4.831689492945657e-10,
+            1.0
+          ]
+        }
+      ],
+      "bounds_shell_only": {
+        "min": [
+          -1.1099437475204468,
+          -1.1133208274841309,
+          -1.2619614601135254
+        ],
+        "max": [
+          1.1099432706832886,
+          0.2896990180015564,
+          0.6085184812545776
+        ]
+      },
+      "bounds_scope": "All11evaluated mesh vertices, every authored24Hz frame; continuous subframe extrema/native projection/Z path belong to integration."
+    },
+    "Sprout_Wake": {
+      "frames": 31,
+      "group": "sleep",
+      "beats": {
+        "eyes_open": 0.95,
+        "upright": 1.25
+      },
+      "duration": 1.25,
+      "bounds": {
+        "min": [
+          -1.1028332710266113,
+          -1.115286946296692,
+          -1.2561579942703247
+        ],
+        "max": [
+          1.1028326749801636,
+          1.225106954574585,
+          0.7480847239494324
+        ]
+      },
+      "bounds_sample_count": 31,
+      "channels": [
+        {
+          "node": "ROOT",
+          "path": "translation"
+        },
+        {
+          "node": "ROOT",
+          "path": "rotation"
+        },
+        {
+          "node": "ROOT",
+          "path": "scale"
+        },
+        {
+          "node": "BODY",
+          "path": "translation"
+        },
+        {
+          "node": "BODY",
+          "path": "rotation"
+        },
+        {
+          "node": "BODY",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "translation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "rotation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "scale"
+        },
+        {
+          "node": "SPROUT_BODY",
+          "path": "weights"
+        },
+        {
+          "node": "SPROUT_CORE",
+          "path": "weights"
+        },
+        {
+          "node": "LID_L",
+          "path": "scale"
+        },
+        {
+          "node": "LID_R",
+          "path": "scale"
+        }
+      ],
+      "packaging_removed_generated_constant_channels": [
+        {
+          "node": "RIG_Sprout",
+          "path": "translation",
+          "sample_count": 2,
+          "maximum_sample_spread": 0.0,
+          "constant": [
+            0.0,
+            0.0,
+            -0.0
+          ]
+        },
+        {
+          "node": "RIG_Sprout",
+          "path": "rotation",
+          "sample_count": 2,
+          "maximum_sample_spread": 0.0,
+          "constant": [
+            0.0,
+            0.0,
+            -0.0,
+            1.0
+          ]
+        },
+        {
+          "node": "RIG_Sprout",
+          "path": "scale",
+          "sample_count": 2,
+          "maximum_sample_spread": 0.0,
+          "constant": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "node": "LID_L",
+          "path": "translation",
+          "sample_count": 2,
+          "maximum_sample_spread": 5.960464477539063e-08,
+          "constant": [
+            -0.3486376702785492,
+            0.2637554407119751,
+            0.7479068636894226
+          ]
+        },
+        {
+          "node": "LID_L",
+          "path": "rotation",
+          "sample_count": 2,
+          "maximum_sample_spread": 1.862645149230957e-09,
+          "constant": [
+            1.0135267984878737e-05,
+            -0.015250764787197113,
+            -0.00667206197977066,
+            0.9998614192008972
+          ]
+        },
+        {
+          "node": "LID_R",
+          "path": "translation",
+          "sample_count": 2,
+          "maximum_sample_spread": 5.960464477539063e-08,
+          "constant": [
+            0.34000033140182495,
+            0.2650003135204315,
+            0.746999979019165
+          ]
+        },
+        {
+          "node": "LID_R",
+          "path": "rotation",
+          "sample_count": 2,
+          "maximum_sample_spread": 3.6115099799616246e-10,
+          "constant": [
+            -5.542233338928781e-13,
+            7.340285601564744e-10,
+            4.831689492945657e-10,
+            1.0
+          ]
+        }
+      ],
+      "bounds_shell_only": {
+        "min": [
+          -1.1028332710266113,
+          -1.115286946296692,
+          -1.2561579942703247
+        ],
+        "max": [
+          1.1028326749801636,
+          1.225106954574585,
+          0.655838668346405
+        ]
+      },
+      "bounds_scope": "All11evaluated mesh vertices, every authored24Hz frame; continuous subframe extrema/native projection/Z path belong to integration."
+    },
+    "Sprout_Done": {
+      "frames": 21,
+      "group": "reaction",
+      "beats": {
+        "nod": 0.2,
+        "proud_hold": 0.43,
+        "settled": 0.8333333333333334
+      },
+      "duration": 0.8333333333333334,
+      "bounds": {
+        "min": [
+          -1.0158635377883911,
+          -1.0787700414657593,
+          -0.6614365577697754
+        ],
+        "max": [
+          1.004191279411316,
+          1.2385309934616089,
+          0.7610428333282471
+        ]
+      },
+      "bounds_sample_count": 21,
+      "channels": [
+        {
+          "node": "REACTION_ROOT",
+          "path": "rotation"
+        },
+        {
+          "node": "REACTION_ROOT",
+          "path": "scale"
+        }
+      ],
+      "packaging_removed_generated_constant_channels": [
+        {
+          "node": "REACTION_ROOT",
+          "path": "translation",
+          "sample_count": 2,
+          "maximum_sample_spread": 0.0,
+          "constant": [
+            0.0,
+            0.0,
+            -0.0
+          ]
+        }
+      ],
+      "bounds_shell_only": {
+        "min": [
+          -1.0158635377883911,
+          -1.0787699222564697,
+          -0.6614365577697754
+        ],
+        "max": [
+          1.0040884017944336,
+          1.2385309934616089,
+          0.655838668346405
+        ]
+      },
+      "bounds_scope": "All11evaluated mesh vertices, every authored24Hz frame; continuous subframe extrema/native projection/Z path belong to integration."
+    }
+  },
+  "retained_clips": [
+    "Sprout_Click",
+    "Sprout_Idle",
+    "Sprout_Listen",
+    "Sprout_Think",
+    "Sprout_Speak",
+    "Sprout_Blink"
+  ],
+  "sleeping_hold": {
+    "clip": "Sprout_SleepLoop",
+    "time": 0.0,
+    "bounds_gltf": {
+      "min": [
+        -1.1028332710266113,
+        -1.113248348236084,
+        -1.2561579942703247
+      ],
+      "max": [
+        1.1028326749801636,
+        0.28122955560684204,
+        0.6085039377212524
+      ]
+    },
+    "face_anchor_gltf": [
+      0.0,
+      -0.1475500464439392,
+      -0.5464044809341431
+    ],
+    "foot_tips_gltf": {
+      "L": [
+        -0.4112107753753662,
+        -0.9794203639030457,
+        0.469766229391098
+      ],
+      "R": [
+        0.411210834980011,
+        -0.9794203639030457,
+        0.469766229391098
+      ]
+    },
+    "lids_scale": {
+      "LID_L": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "LID_R": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "containment": {
+      "outside_vertices": 0,
+      "min_clearance": 0.11276580393314362,
+      "max_signed_distance": -0.11276579834186427
+    },
+    "head_emitter_anchor_gltf": [
+      0,
+      0.41648428440093993,
+      0.0839950405061245
+    ],
+    "bounds_all11meshes_gltf": {
+      "min": [
+        -1.1028332710266113,
+        -1.113248348236084,
+        -1.2561579942703247
+      ],
+      "max": [
+        1.1028326749801636,
+        0.36648428440093994,
+        0.6085039377212524
+      ]
+    }
+  },
+  "pose_samples": [
+    {
+      "clip": "Sprout_JoyJump",
+      "time": 0.0,
+      "bounds_gltf": {
+        "min": [
+          -1.0038026571273804,
+          -1.0694684982299805,
+          -0.6577997803688049
+        ],
+        "max": [
+          1.0038021802902222,
+          1.225106954574585,
+          0.655838668346405
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.0,
+        -0.0
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      },
+      "containment": {
+        "outside_vertices": 0,
+        "min_clearance": 0.1195782870054245,
+        "max_signed_distance": -0.11957827425868572
+      }
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "time": 0.125,
+      "bounds_gltf": {
+        "min": [
+          -1.1007975339889526,
+          -1.0694684982299805,
+          -0.6703602075576782
+        ],
+        "max": [
+          1.1007970571517944,
+          0.9886678457260132,
+          0.6938725709915161
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.10522621870040894,
+        0.017306901514530182
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "time": 0.16666666666666666,
+      "bounds_gltf": {
+        "min": [
+          -1.1269861459732056,
+          -1.0694684982299805,
+          -0.6743186116218567
+        ],
+        "max": [
+          1.1269856691360474,
+          0.9251836538314819,
+          0.7033770680427551
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.13340957462787628,
+        0.02120889723300934
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      },
+      "containment": {
+        "outside_vertices": 0,
+        "min_clearance": 0.10976345092058182,
+        "max_signed_distance": -0.10976314265280962
+      }
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "time": 0.25,
+      "bounds_gltf": {
+        "min": [
+          -1.0397995710372925,
+          -0.9617146253585815,
+          -0.6583902835845947
+        ],
+        "max": [
+          1.0397989749908447,
+          1.24205482006073,
+          0.6739941835403442
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.06572051346302032,
+        0.011144209653139114
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.42992347478866577,
+          -0.9345052242279053,
+          0.02062021568417549
+        ],
+        "R": [
+          0.42992347478866577,
+          -0.9345052242279053,
+          0.02062021568417549
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "time": 0.375,
+      "bounds_gltf": {
+        "min": [
+          -0.9622037410736084,
+          -0.8020991086959839,
+          -0.6676293015480042
+        ],
+        "max": [
+          0.9622032642364502,
+          1.5886579751968384,
+          0.6252118349075317
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.31080174446105957,
+        -0.023586653172969818
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.42979350686073303,
+          -0.7759139537811279,
+          0.05564344674348831
+        ],
+        "R": [
+          0.42979350686073303,
+          -0.7759139537811279,
+          0.05564344674348831
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "time": 0.5,
+      "bounds_gltf": {
+        "min": [
+          -0.9865366816520691,
+          -0.5452944040298462,
+          -0.6721147298812866
+        ],
+        "max": [
+          0.9865362048149109,
+          1.7840988636016846,
+          0.633488118648529
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.5382323861122131,
+        -0.021369680762290955
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4298038184642792,
+          -0.519167959690094,
+          0.05286700651049614
+        ],
+        "R": [
+          0.4298038184642792,
+          -0.519167959690094,
+          0.05286700651049614
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "time": 0.625,
+      "bounds_gltf": {
+        "min": [
+          -0.9932830929756165,
+          -0.4922301769256592,
+          -0.6712679266929626
+        ],
+        "max": [
+          0.993282675743103,
+          1.8254806995391846,
+          0.6376808881759644
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.5835955739021301,
+        -0.01843387261033058
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4298204779624939,
+          -0.46620064973831177,
+          0.048374373465776443
+        ],
+        "R": [
+          0.4298204779624939,
+          -0.46620064973831177,
+          0.048374373465776443
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      },
+      "containment": {
+        "outside_vertices": 0,
+        "min_clearance": 0.11756028980016708,
+        "max_signed_distance": -0.11755979340523481
+      }
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "time": 0.75,
+      "bounds_gltf": {
+        "min": [
+          -1.0014501810073853,
+          -0.5403634309768677,
+          -0.6706220507621765
+        ],
+        "max": [
+          1.001449704170227,
+          1.7579182386398315,
+          0.6423779726028442
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.5258706212043762,
+        -0.01532091572880745
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.42983293533325195,
+          -0.5144081711769104,
+          0.04502042755484581
+        ],
+        "R": [
+          0.42983293533325195,
+          -0.5144081711769104,
+          0.04502042755484581
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "time": 0.875,
+      "bounds_gltf": {
+        "min": [
+          -1.0838048458099365,
+          -0.8585829734802246,
+          -0.6793310642242432
+        ],
+        "max": [
+          1.0838042497634888,
+          1.2360036373138428,
+          0.6757299304008484
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.12020525336265564,
+        0.0011061272816732526
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4298866391181946,
+          -0.832055926322937,
+          0.030544353649020195
+        ],
+        "R": [
+          0.42988666892051697,
+          -0.832055926322937,
+          0.030544353649020195
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "time": 1.0,
+      "bounds_gltf": {
+        "min": [
+          -1.1479939222335815,
+          -1.0694684982299805,
+          -0.6890788674354553
+        ],
+        "max": [
+          1.1479934453964233,
+          0.8699350357055664,
+          0.6986827254295349
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.15538109838962555,
+        0.010486440733075142
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      },
+      "containment": {
+        "outside_vertices": 0,
+        "min_clearance": 0.10834168642759323,
+        "max_signed_distance": -0.10834168060738095
+      }
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "time": 1.125,
+      "bounds_gltf": {
+        "min": [
+          -1.022107720375061,
+          -1.0189659595489502,
+          -0.6548245549201965
+        ],
+        "max": [
+          1.0221072435379028,
+          1.226870059967041,
+          0.6682016849517822
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.030470505356788635,
+        0.009401648305356503
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -0.9894973635673523,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -0.9894973635673523,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "time": 1.25,
+      "bounds_gltf": {
+        "min": [
+          -0.9946855306625366,
+          -1.0200226306915283,
+          -0.6518945693969727
+        ],
+        "max": [
+          0.9946850538253784,
+          1.298144817352295,
+          0.6568182706832886
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.0605769157409668,
+        0.004000762477517128
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -0.9905540347099304,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -0.9905540347099304,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "time": 1.375,
+      "bounds_gltf": {
+        "min": [
+          -1.0151220560073853,
+          -1.0671411752700806,
+          -0.6608708500862122
+        ],
+        "max": [
+          1.015121579170227,
+          1.2000302076339722,
+          0.6586552858352661
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.010012611746788025,
+        0.00013857906742487103
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -1.0376726388931274,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -1.0376726388931274,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "time": 1.5,
+      "bounds_gltf": {
+        "min": [
+          -1.012265682220459,
+          -1.0694684982299805,
+          -0.6601853370666504
+        ],
+        "max": [
+          1.0122652053833008,
+          1.2047890424728394,
+          0.6578561663627625
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.009228512644767761,
+        -0.0
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "time": 1.625,
+      "bounds_gltf": {
+        "min": [
+          -1.0046143531799316,
+          -1.0694684982299805,
+          -0.6580287218093872
+        ],
+        "max": [
+          1.0046138763427734,
+          1.2231547832489014,
+          0.6560323238372803
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.0008857697248458862,
+        -0.0
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "time": 1.6666666666666667,
+      "bounds_gltf": {
+        "min": [
+          -1.0038026571273804,
+          -1.0694684982299805,
+          -0.6577997803688049
+        ],
+        "max": [
+          1.0038021802902222,
+          1.225106954574585,
+          0.655838668346405
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.0,
+        -0.0
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      },
+      "containment": {
+        "outside_vertices": 0,
+        "min_clearance": 0.1195782870054245,
+        "max_signed_distance": -0.11957827425868572
+      }
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "time": 0.0,
+      "bounds_gltf": {
+        "min": [
+          -1.0038026571273804,
+          -1.0694684982299805,
+          -0.6577997803688049
+        ],
+        "max": [
+          1.0038021802902222,
+          1.225106954574585,
+          0.655838668346405
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.0,
+        -0.0
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      },
+      "containment": {
+        "outside_vertices": 0,
+        "min_clearance": 0.1195782870054245,
+        "max_signed_distance": -0.11957827425868572
+      }
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "time": 0.125,
+      "bounds_gltf": {
+        "min": [
+          -1.0053789615631104,
+          -1.0703177452087402,
+          -0.6647335290908813
+        ],
+        "max": [
+          1.0053784847259521,
+          1.2174687385559082,
+          0.6482963562011719
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.0019220858812332153,
+        -0.008422987535595894
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4294932186603546,
+          -1.041873574256897,
+          0.008472216315567493
+        ],
+        "R": [
+          0.4294932186603546,
+          -1.041873574256897,
+          0.008472216315567493
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.0054426430724561214,
+          0.0064401933923363686,
+          0.003447543364018202
+        ],
+        "LID_R": [
+          0.0054426430724561214,
+          0.0064401933923363686,
+          0.003447543364018202
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "time": 0.25,
+      "bounds_gltf": {
+        "min": [
+          -1.0097779035568237,
+          -1.0735396146774292,
+          -0.6849910020828247
+        ],
+        "max": [
+          1.0097774267196655,
+          1.1949083805084229,
+          0.6286318302154541
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.006531447172164917,
+        -0.03226466849446297
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4280824363231659,
+          -1.04656982421875,
+          0.03209242969751358
+        ],
+        "R": [
+          0.4280824363231659,
+          -1.04656982421875,
+          0.03209242969751358
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.036157406866550446,
+          0.0371241495013237,
+          0.03422392159700394
+        ],
+        "LID_R": [
+          0.036157406866550446,
+          0.0371241495013237,
+          0.03422392159700394
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "time": 0.375,
+      "bounds_gltf": {
+        "min": [
+          -1.016506314277649,
+          -1.0784742832183838,
+          -0.7172160744667053
+        ],
+        "max": [
+          1.0165058374404907,
+          1.1561601161956787,
+          0.6008747220039368
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.011408671736717224,
+        -0.06956698000431061
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4259483218193054,
+          -1.052242398262024,
+          0.06809358298778534
+        ],
+        "R": [
+          0.4259483218193054,
+          -1.052242398262024,
+          0.06809358298778534
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.13948142528533936,
+          0.1403445303440094,
+          0.13775520026683807
+        ],
+        "LID_R": [
+          0.13948142528533936,
+          0.1403445303440094,
+          0.13775520026683807
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "time": 0.5,
+      "bounds_gltf": {
+        "min": [
+          -1.0250718593597412,
+          -1.085166096687317,
+          -0.758389413356781
+        ],
+        "max": [
+          1.025071382522583,
+          1.0993146896362305,
+          0.5679161548614502
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.013774052262306213,
+        -0.1181882917881012
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.42330992221832275,
+          -1.0568456649780273,
+          0.11353746056556702
+        ],
+        "R": [
+          0.42330995202064514,
+          -1.0568456649780273,
+          0.11353746056556702
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.3379422128200531,
+          0.3386062681674957,
+          0.33661413192749023
+        ],
+        "LID_R": [
+          0.3379422128200531,
+          0.3386062681674957,
+          0.33661413192749023
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "time": 0.625,
+      "bounds_gltf": {
+        "min": [
+          -1.034981369972229,
+          -1.0899627208709717,
+          -0.8072606921195984
+        ],
+        "max": [
+          1.0349808931350708,
+          1.0230307579040527,
+          0.5332423448562622
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.011125311255455017,
+        -0.17544512450695038
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.42043158411979675,
+          -1.0585776567459106,
+          0.1652822196483612
+        ],
+        "R": [
+          0.42043161392211914,
+          -1.0585776567459106,
+          0.1652822196483612
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.6048136949539185,
+          0.6052100658416748,
+          0.6040209531784058
+        ],
+        "LID_R": [
+          0.6048136949539185,
+          0.6052100658416748,
+          0.6040209531784058
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "time": 0.75,
+      "bounds_gltf": {
+        "min": [
+          -1.045740008354187,
+          -1.094623327255249,
+          -0.8592634201049805
+        ],
+        "max": [
+          1.0457395315170288,
+          0.9282285571098328,
+          0.5084397196769714
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.0017872452735900879,
+        -0.2380400002002716
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.41760510206222534,
+          -1.0562214851379395,
+          0.22005663812160492
+        ],
+        "R": [
+          0.41760513186454773,
+          -1.0562214851379395,
+          0.22005663812160492
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.8611835241317749,
+          0.8613227605819702,
+          0.8609050512313843
+        ],
+        "LID_R": [
+          0.8611835241317749,
+          0.8613227605819702,
+          0.8609050512313843
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "time": 0.875,
+      "bounds_gltf": {
+        "min": [
+          -1.0568500757217407,
+          -1.101618766784668,
+          -0.9106882214546204
+        ],
+        "max": [
+          1.0568495988845825,
+          0.8177799582481384,
+          0.5348836779594421
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.014702558517456055,
+        -0.3022625744342804
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.41510963439941406,
+          -1.0493565797805786,
+          0.27463436126708984
+        ],
+        "R": [
+          0.41510969400405884,
+          -1.0493565797805786,
+          0.27463436126708984
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.9968985915184021,
+          0.9969017505645752,
+          0.9968923926353455
+        ],
+        "LID_R": [
+          0.9968985915184021,
+          0.9969017505645752,
+          0.9968923926353455
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "time": 0.9166666666666666,
+      "bounds_gltf": {
+        "min": [
+          -1.0605452060699463,
+          -1.1028602123260498,
+          -0.9484422206878662
+        ],
+        "max": [
+          1.060544729232788,
+          0.7787249088287354,
+          0.5424708127975464
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.02167166769504547,
+        -0.3233770430088043
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4143913984298706,
+          -1.046118140220642,
+          0.29226040840148926
+        ],
+        "R": [
+          0.4143914580345154,
+          -1.046118140220642,
+          0.29226040840148926
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "containment": {
+        "outside_vertices": 0,
+        "min_clearance": 0.11615434288978577,
+        "max_signed_distance": -0.11615433804870179
+      }
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "time": 1.0,
+      "bounds_gltf": {
+        "min": [
+          -1.0678107738494873,
+          -1.10580313205719,
+          -1.0187188386917114
+        ],
+        "max": [
+          1.067810297012329,
+          0.7000283002853394,
+          0.5564332604408264
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.037447258830070496,
+        -0.3643645942211151
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.41316068172454834,
+          -1.0384206771850586,
+          0.32606109976768494
+        ],
+        "R": [
+          0.4131607413291931,
+          -1.0384206771850586,
+          0.32606109976768494
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "time": 1.125,
+      "bounds_gltf": {
+        "min": [
+          -1.078118085861206,
+          -1.1116914749145508,
+          -1.1055283546447754
+        ],
+        "max": [
+          1.0781176090240479,
+          0.5821560025215149,
+          0.5746074914932251
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.06430739164352417,
+        -0.4209524691104889
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4118654131889343,
+          -1.0246267318725586,
+          0.3718648850917816
+        ],
+        "R": [
+          0.4118654429912567,
+          -1.0246267318725586,
+          0.3718648850917816
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "time": 1.25,
+      "bounds_gltf": {
+        "min": [
+          -1.0872650146484375,
+          -1.1148600578308105,
+          -1.1703002452850342
+        ],
+        "max": [
+          1.0872645378112793,
+          0.47335755825042725,
+          0.5894381999969482
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.09222511947154999,
+        -0.46925294399261475
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112001061439514,
+          -1.0097622871398926,
+          0.41017866134643555
+        ],
+        "R": [
+          0.4112001657485962,
+          -1.0097622871398926,
+          0.41017866134643555
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "time": 1.375,
+      "bounds_gltf": {
+        "min": [
+          -1.0947428941726685,
+          -1.1151659488677979,
+          -1.2155933380126953
+        ],
+        "max": [
+          1.0947422981262207,
+          0.3824532628059387,
+          0.5989633798599243
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.1176505982875824,
+        -0.5071637630462646
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4110194146633148,
+          -0.99593186378479,
+          0.43972349166870117
+        ],
+        "R": [
+          0.4110194742679596,
+          -0.99593186378479,
+          0.43972349166870117
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "time": 1.5,
+      "bounds_gltf": {
+        "min": [
+          -1.1000407934188843,
+          -1.114169716835022,
+          -1.2427027225494385
+        ],
+        "max": [
+          1.100040316581726,
+          0.316516637802124,
+          0.6051632165908813
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.1369650661945343,
+        -0.5330789685249329
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.41109830141067505,
+          -0.9852913618087769,
+          0.45963001251220703
+        ],
+        "R": [
+          0.4110983610153198,
+          -0.9852913618087769,
+          0.45963001251220703
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "time": 1.625,
+      "bounds_gltf": {
+        "min": [
+          -1.1026493310928345,
+          -1.1133174896240234,
+          -1.2553073167800903
+        ],
+        "max": [
+          1.1026488542556763,
+          0.283564031124115,
+          0.6082556247711182
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14684464037418365,
+        -0.5455341339111328
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112018644809723,
+          -0.9798124432563782,
+          0.4691063165664673
+        ],
+        "R": [
+          0.41120192408561707,
+          -0.9798124432563782,
+          0.4691063165664673
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "time": 1.6666666666666667,
+      "bounds_gltf": {
+        "min": [
+          -1.1028332710266113,
+          -1.113248348236084,
+          -1.2561579942703247
+        ],
+        "max": [
+          1.1028326749801636,
+          0.28122955560684204,
+          0.6085039377212524
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.1475500464439392,
+        -0.5464044809341431
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "containment": {
+        "outside_vertices": 0,
+        "min_clearance": 0.11276580393314362,
+        "max_signed_distance": -0.11276579834186427
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 0.0,
+      "bounds_gltf": {
+        "min": [
+          -1.1028332710266113,
+          -1.113248348236084,
+          -1.2561579942703247
+        ],
+        "max": [
+          1.1028326749801636,
+          0.28122955560684204,
+          0.6085039377212524
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.1475500464439392,
+        -0.5464044809341431
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "containment": {
+        "outside_vertices": 0,
+        "min_clearance": 0.11276580393314362,
+        "max_signed_distance": -0.11276579834186427
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 0.125,
+      "bounds_gltf": {
+        "min": [
+          -1.1039447784423828,
+          -1.1132371425628662,
+          -1.2570701837539673
+        ],
+        "max": [
+          1.103944182395935,
+          0.28255659341812134,
+          0.608501672744751
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14711014926433563,
+        -0.5468842387199402
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 0.25,
+      "bounds_gltf": {
+        "min": [
+          -1.1050293445587158,
+          -1.1132261753082275,
+          -1.2579585313796997
+        ],
+        "max": [
+          1.105028748512268,
+          0.2838500738143921,
+          0.6084994077682495
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14668114483356476,
+        -0.5473521947860718
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 0.375,
+      "bounds_gltf": {
+        "min": [
+          -1.1060600280761719,
+          -1.113215684890747,
+          -1.258800983428955
+        ],
+        "max": [
+          1.1060595512390137,
+          0.285078763961792,
+          0.6084973812103271
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.1462734043598175,
+        -0.5477967262268066
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 0.5,
+      "bounds_gltf": {
+        "min": [
+          -1.1070114374160767,
+          -1.113205909729004,
+          -1.2595775127410889
+        ],
+        "max": [
+          1.107010841369629,
+          0.2862117290496826,
+          0.6084953546524048
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14589715003967285,
+        -0.5482070446014404
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 0.625,
+      "bounds_gltf": {
+        "min": [
+          -1.1078600883483887,
+          -1.1131973266601562,
+          -1.2602684497833252
+        ],
+        "max": [
+          1.1078596115112305,
+          0.2872217893600464,
+          0.6084935665130615
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14556163549423218,
+        -0.5485730171203613
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 0.75,
+      "bounds_gltf": {
+        "min": [
+          -1.108585000038147,
+          -1.113189935684204,
+          -1.2608582973480225
+        ],
+        "max": [
+          1.1085845232009888,
+          0.2880840301513672,
+          0.6084921360015869
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.1452750861644745,
+        -0.5488855242729187
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 0.875,
+      "bounds_gltf": {
+        "min": [
+          -1.1091684103012085,
+          -1.1131839752197266,
+          -1.2613322734832764
+        ],
+        "max": [
+          1.1091679334640503,
+          0.2887774705886841,
+          0.6084909439086914
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.1450445055961609,
+        -0.5491369962692261
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 1.0,
+      "bounds_gltf": {
+        "min": [
+          -1.1095956563949585,
+          -1.1131796836853027,
+          -1.2616788148880005
+        ],
+        "max": [
+          1.1095951795578003,
+          0.28928518295288086,
+          0.6084901094436646
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.144875630736351,
+        -0.549321174621582
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 1.125,
+      "bounds_gltf": {
+        "min": [
+          -1.1098562479019165,
+          -1.113176941871643,
+          -1.2618902921676636
+        ],
+        "max": [
+          1.1098557710647583,
+          0.2895948886871338,
+          0.6084896326065063
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14477263391017914,
+        -0.5494334101676941
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 1.25,
+      "bounds_gltf": {
+        "min": [
+          -1.1099437475204468,
+          -1.1131761074066162,
+          -1.2619614601135254
+        ],
+        "max": [
+          1.1099432706832886,
+          0.2896990180015564,
+          0.6084893941879272
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14473797380924225,
+        -0.5494712591171265
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "containment": {
+        "outside_vertices": 0,
+        "min_clearance": 0.11318519711494446,
+        "max_signed_distance": -0.11318520103508822
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 1.375,
+      "bounds_gltf": {
+        "min": [
+          -1.1098562479019165,
+          -1.113176941871643,
+          -1.2618902921676636
+        ],
+        "max": [
+          1.1098557710647583,
+          0.2895948886871338,
+          0.6084896326065063
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14477263391017914,
+        -0.5494334101676941
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 1.5,
+      "bounds_gltf": {
+        "min": [
+          -1.1095956563949585,
+          -1.1131796836853027,
+          -1.2616788148880005
+        ],
+        "max": [
+          1.1095951795578003,
+          0.28928518295288086,
+          0.6084901094436646
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.144875630736351,
+        -0.549321174621582
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 1.625,
+      "bounds_gltf": {
+        "min": [
+          -1.1091684103012085,
+          -1.1131839752197266,
+          -1.2613322734832764
+        ],
+        "max": [
+          1.1091679334640503,
+          0.2887774705886841,
+          0.6084909439086914
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.1450445055961609,
+        -0.5491369962692261
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 1.75,
+      "bounds_gltf": {
+        "min": [
+          -1.108585000038147,
+          -1.113189935684204,
+          -1.2608582973480225
+        ],
+        "max": [
+          1.1085845232009888,
+          0.2880840301513672,
+          0.6084921360015869
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.1452750861644745,
+        -0.5488855242729187
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 1.875,
+      "bounds_gltf": {
+        "min": [
+          -1.1078600883483887,
+          -1.1131973266601562,
+          -1.2602684497833252
+        ],
+        "max": [
+          1.1078596115112305,
+          0.2872217893600464,
+          0.6084935665130615
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14556163549423218,
+        -0.5485730171203613
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 2.0,
+      "bounds_gltf": {
+        "min": [
+          -1.1070114374160767,
+          -1.113205909729004,
+          -1.2595775127410889
+        ],
+        "max": [
+          1.107010841369629,
+          0.2862117290496826,
+          0.6084953546524048
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14589715003967285,
+        -0.5482070446014404
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 2.125,
+      "bounds_gltf": {
+        "min": [
+          -1.1060600280761719,
+          -1.113215684890747,
+          -1.258800983428955
+        ],
+        "max": [
+          1.1060595512390137,
+          0.285078763961792,
+          0.6084973812103271
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.1462734043598175,
+        -0.5477967262268066
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 2.25,
+      "bounds_gltf": {
+        "min": [
+          -1.1050293445587158,
+          -1.1132261753082275,
+          -1.2579585313796997
+        ],
+        "max": [
+          1.105028748512268,
+          0.2838500738143921,
+          0.6084994077682495
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14668114483356476,
+        -0.5473521947860718
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 2.375,
+      "bounds_gltf": {
+        "min": [
+          -1.1039447784423828,
+          -1.1132371425628662,
+          -1.2570701837539673
+        ],
+        "max": [
+          1.103944182395935,
+          0.28255659341812134,
+          0.608501672744751
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14711014926433563,
+        -0.5468842387199402
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 2.5,
+      "bounds_gltf": {
+        "min": [
+          -1.1028332710266113,
+          -1.113248348236084,
+          -1.2561579942703247
+        ],
+        "max": [
+          1.1028326749801636,
+          0.28122955560684204,
+          0.6085039377212524
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.1475500464439392,
+        -0.5464044809341431
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 2.625,
+      "bounds_gltf": {
+        "min": [
+          -1.1017218828201294,
+          -1.1132597923278809,
+          -1.2552440166473389
+        ],
+        "max": [
+          1.1017214059829712,
+          0.2799016237258911,
+          0.6085062026977539
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14798994362354279,
+        -0.545924723148346
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 2.75,
+      "bounds_gltf": {
+        "min": [
+          -1.1006381511688232,
+          -1.113270878791809,
+          -1.254351019859314
+        ],
+        "max": [
+          1.1006375551223755,
+          0.27893057465553284,
+          0.6085084676742554
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14841903746128082,
+        -0.5454568266868591
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 2.875,
+      "bounds_gltf": {
+        "min": [
+          -1.0996087789535522,
+          -1.11328125,
+          -1.2535009384155273
+        ],
+        "max": [
+          1.099608302116394,
+          0.27826762199401855,
+          0.6085106134414673
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14882664382457733,
+        -0.5450122356414795
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 3.0,
+      "bounds_gltf": {
+        "min": [
+          -1.0986590385437012,
+          -1.1132910251617432,
+          -1.2527152299880981
+        ],
+        "max": [
+          1.0986584424972534,
+          0.27765557169914246,
+          0.6085125207901001
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14920292794704437,
+        -0.5446018576622009
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 3.125,
+      "bounds_gltf": {
+        "min": [
+          -1.0978120565414429,
+          -1.1132996082305908,
+          -1.2520134449005127
+        ],
+        "max": [
+          1.0978115797042847,
+          0.27710968255996704,
+          0.6085143089294434
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14953842759132385,
+        -0.5442359447479248
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 3.25,
+      "bounds_gltf": {
+        "min": [
+          -1.0970889329910278,
+          -1.113306999206543,
+          -1.251413345336914
+        ],
+        "max": [
+          1.0970884561538696,
+          0.27664342522621155,
+          0.6085158586502075
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14982499182224274,
+        -0.5439234972000122
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 3.375,
+      "bounds_gltf": {
+        "min": [
+          -1.0965070724487305,
+          -1.1133129596710205,
+          -1.2509300708770752
+        ],
+        "max": [
+          1.0965065956115723,
+          0.2762683033943176,
+          0.6085169315338135
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.15005557239055634,
+        -0.5436720848083496
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 3.5,
+      "bounds_gltf": {
+        "min": [
+          -1.096081018447876,
+          -1.1133172512054443,
+          -1.2505760192871094
+        ],
+        "max": [
+          1.0960805416107178,
+          0.2759935259819031,
+          0.6085177659988403
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.15022438764572144,
+        -0.5434878468513489
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 3.625,
+      "bounds_gltf": {
+        "min": [
+          -1.0958212614059448,
+          -1.1133198738098145,
+          -1.2503598928451538
+        ],
+        "max": [
+          1.0958207845687866,
+          0.2758258879184723,
+          0.6085183620452881
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.1503274291753769,
+        -0.5433754920959473
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 3.75,
+      "bounds_gltf": {
+        "min": [
+          -1.0957340002059937,
+          -1.1133208274841309,
+          -1.2502868175506592
+        ],
+        "max": [
+          1.095733404159546,
+          0.27576953172683716,
+          0.6085184812545776
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.15036210417747498,
+        -0.5433377623558044
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 3.875,
+      "bounds_gltf": {
+        "min": [
+          -1.0958212614059448,
+          -1.1133198738098145,
+          -1.2503598928451538
+        ],
+        "max": [
+          1.0958207845687866,
+          0.2758258879184723,
+          0.6085183620452881
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.1503274291753769,
+        -0.5433754920959473
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 4.0,
+      "bounds_gltf": {
+        "min": [
+          -1.096081018447876,
+          -1.1133172512054443,
+          -1.2505760192871094
+        ],
+        "max": [
+          1.0960805416107178,
+          0.2759935259819031,
+          0.6085177659988403
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.15022438764572144,
+        -0.5434878468513489
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 4.125,
+      "bounds_gltf": {
+        "min": [
+          -1.0965070724487305,
+          -1.1133129596710205,
+          -1.2509300708770752
+        ],
+        "max": [
+          1.0965065956115723,
+          0.2762683033943176,
+          0.6085169315338135
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.15005557239055634,
+        -0.5436720848083496
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 4.25,
+      "bounds_gltf": {
+        "min": [
+          -1.0970889329910278,
+          -1.113306999206543,
+          -1.251413345336914
+        ],
+        "max": [
+          1.0970884561538696,
+          0.27664342522621155,
+          0.6085158586502075
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14982499182224274,
+        -0.5439234972000122
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 4.375,
+      "bounds_gltf": {
+        "min": [
+          -1.0978120565414429,
+          -1.1132996082305908,
+          -1.2520134449005127
+        ],
+        "max": [
+          1.0978115797042847,
+          0.27710968255996704,
+          0.6085143089294434
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14953842759132385,
+        -0.5442359447479248
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 4.5,
+      "bounds_gltf": {
+        "min": [
+          -1.0986590385437012,
+          -1.1132910251617432,
+          -1.2527152299880981
+        ],
+        "max": [
+          1.0986584424972534,
+          0.27765557169914246,
+          0.6085125207901001
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14920292794704437,
+        -0.5446018576622009
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 4.625,
+      "bounds_gltf": {
+        "min": [
+          -1.0996087789535522,
+          -1.11328125,
+          -1.2535009384155273
+        ],
+        "max": [
+          1.099608302116394,
+          0.27826762199401855,
+          0.6085106134414673
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14882664382457733,
+        -0.5450122356414795
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 4.75,
+      "bounds_gltf": {
+        "min": [
+          -1.1006381511688232,
+          -1.113270878791809,
+          -1.254351019859314
+        ],
+        "max": [
+          1.1006375551223755,
+          0.27893057465553284,
+          0.6085084676742554
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14841903746128082,
+        -0.5454568266868591
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 4.875,
+      "bounds_gltf": {
+        "min": [
+          -1.1017218828201294,
+          -1.1132597923278809,
+          -1.2552440166473389
+        ],
+        "max": [
+          1.1017214059829712,
+          0.2799016237258911,
+          0.6085062026977539
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.14798994362354279,
+        -0.545924723148346
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "time": 5.0,
+      "bounds_gltf": {
+        "min": [
+          -1.1028332710266113,
+          -1.113248348236084,
+          -1.2561579942703247
+        ],
+        "max": [
+          1.1028326749801636,
+          0.28122955560684204,
+          0.6085039377212524
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.1475500464439392,
+        -0.5464044809341431
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "containment": {
+        "outside_vertices": 0,
+        "min_clearance": 0.11276580393314362,
+        "max_signed_distance": -0.11276579834186427
+      }
+    },
+    {
+      "clip": "Sprout_Wake",
+      "time": 0.0,
+      "bounds_gltf": {
+        "min": [
+          -1.1028332710266113,
+          -1.113248348236084,
+          -1.2561579942703247
+        ],
+        "max": [
+          1.1028326749801636,
+          0.28122955560684204,
+          0.6085039377212524
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.1475500464439392,
+        -0.5464044809341431
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4112107753753662,
+          -0.9794203639030457,
+          0.469766229391098
+        ],
+        "R": [
+          0.411210834980011,
+          -0.9794203639030457,
+          0.469766229391098
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "containment": {
+        "outside_vertices": 0,
+        "min_clearance": 0.11276580393314362,
+        "max_signed_distance": -0.11276579834186427
+      }
+    },
+    {
+      "clip": "Sprout_Wake",
+      "time": 0.125,
+      "bounds_gltf": {
+        "min": [
+          -1.1000407934188843,
+          -1.114169716835022,
+          -1.2427027225494385
+        ],
+        "max": [
+          1.100040316581726,
+          0.316516637802124,
+          0.6051632165908813
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.1369650661945343,
+        -0.5330789685249329
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.41109830141067505,
+          -0.9852913618087769,
+          0.45963001251220703
+        ],
+        "R": [
+          0.4110983610153198,
+          -0.9852913618087769,
+          0.45963001251220703
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Wake",
+      "time": 0.25,
+      "bounds_gltf": {
+        "min": [
+          -1.092467188835144,
+          -1.115286946296692,
+          -1.202683448791504
+        ],
+        "max": [
+          1.0924665927886963,
+          0.41032475233078003,
+          0.596329927444458
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.10967858135700226,
+        -0.49578723311424255
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.41103872656822205,
+          -1.000292420387268,
+          0.4309086203575134
+        ],
+        "R": [
+          0.4110387861728668,
+          -1.000292420387268,
+          0.4309086203575134
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Wake",
+      "time": 0.375,
+      "bounds_gltf": {
+        "min": [
+          -1.081321120262146,
+          -1.1131556034088135,
+          -1.129377841949463
+        ],
+        "max": [
+          1.0813205242156982,
+          0.5447293519973755,
+          0.5800788402557373
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.07366527616977692,
+        -0.4380902051925659
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.41157859563827515,
+          -1.019690752029419,
+          0.3855426013469696
+        ],
+        "R": [
+          0.41157862544059753,
+          -1.019690752029419,
+          0.3855426013469696
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Wake",
+      "time": 0.5,
+      "bounds_gltf": {
+        "min": [
+          -1.0678107738494873,
+          -1.10580313205719,
+          -1.0187188386917114
+        ],
+        "max": [
+          1.067810297012329,
+          0.7000283002853394,
+          0.5564332604408264
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.037447258830070496,
+        -0.3643645942211151
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.41316068172454834,
+          -1.0384206771850586,
+          0.32606109976768494
+        ],
+        "R": [
+          0.4131607413291931,
+          -1.0384206771850586,
+          0.32606109976768494
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Wake",
+      "time": 0.625,
+      "bounds_gltf": {
+        "min": [
+          -1.0531384944915771,
+          -1.0998291969299316,
+          -0.8938722014427185
+        ],
+        "max": [
+          1.053138017654419,
+          0.8555744886398315,
+          0.5266530513763428
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        -0.008438915014266968,
+        -0.28090935945510864
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4158895015716553,
+          -1.0521360635757446,
+          0.25665414333343506
+        ],
+        "R": [
+          0.41588956117630005,
+          -1.0521360635757446,
+          0.25665414333343506
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.9720839858055115,
+          0.9721119999885559,
+          0.9720280170440674
+        ],
+        "LID_R": [
+          0.9720839858055115,
+          0.9721119999885559,
+          0.9720280170440674
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Wake",
+      "time": 0.75,
+      "bounds_gltf": {
+        "min": [
+          -1.0384976863861084,
+          -1.0906888246536255,
+          -0.8253234624862671
+        ],
+        "max": [
+          1.0384972095489502,
+          0.9936544299125671,
+          0.5216400623321533
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.0088062584400177,
+        -0.19589488208293915
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4194691479206085,
+          -1.0582849979400635,
+          0.183366060256958
+        ],
+        "R": [
+          0.4194691479206085,
+          -1.0582849979400635,
+          0.183366060256958
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.6965438723564148,
+          0.6968482136726379,
+          0.6959351301193237
+        ],
+        "LID_R": [
+          0.6965438723564148,
+          0.6968482136726379,
+          0.6959351301193237
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Wake",
+      "time": 0.875,
+      "bounds_gltf": {
+        "min": [
+          -1.0250718593597412,
+          -1.085166096687317,
+          -0.758389413356781
+        ],
+        "max": [
+          1.025071382522583,
+          1.0993146896362305,
+          0.5679161548614502
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.013774052262306213,
+        -0.1181882917881012
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.42330992221832275,
+          -1.0568456649780273,
+          0.11353746056556702
+        ],
+        "R": [
+          0.42330995202064514,
+          -1.0568456649780273,
+          0.11353746056556702
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.3379422128200531,
+          0.3386062681674957,
+          0.33661413192749023
+        ],
+        "LID_R": [
+          0.3379422128200531,
+          0.3386062681674957,
+          0.33661413192749023
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Wake",
+      "time": 0.9583333333333334,
+      "bounds_gltf": {
+        "min": [
+          -1.017376184463501,
+          -1.079158067703247,
+          -0.7215299010276794
+        ],
+        "max": [
+          1.0173757076263428,
+          1.150640606880188,
+          0.5974332690238953
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.011845842003822327,
+        -0.07445403933525085
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4256756007671356,
+          -1.0528432130813599,
+          0.07273237407207489
+        ],
+        "R": [
+          0.4256756007671356,
+          -1.0528432130813599,
+          0.07273237407207489
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.15684160590171814,
+          0.15768730640411377,
+          0.15515021979808807
+        ],
+        "LID_R": [
+          0.15684160590171814,
+          0.15768730640411377,
+          0.15515021979808807
+        ]
+      },
+      "containment": {
+        "outside_vertices": 0,
+        "min_clearance": 0.118855781853199,
+        "max_signed_distance": -0.11885577316837725
+      }
+    },
+    {
+      "clip": "Sprout_Wake",
+      "time": 1.0,
+      "bounds_gltf": {
+        "min": [
+          -1.0140349864959717,
+          -1.0763566493988037,
+          -0.7053607702255249
+        ],
+        "max": [
+          1.0140345096588135,
+          1.171208381652832,
+          0.6108589768409729
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.009924620389938354,
+        -0.0557607039809227
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4267275035381317,
+          -1.050370454788208,
+          0.054894618690013885
+        ],
+        "R": [
+          0.4267275035381317,
+          -1.050370454788208,
+          0.054894618690013885
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.09473507106304169,
+          0.0956430584192276,
+          0.09291909635066986
+        ],
+        "LID_R": [
+          0.09473507106304169,
+          0.0956430584192276,
+          0.09291909635066986
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Wake",
+      "time": 1.125,
+      "bounds_gltf": {
+        "min": [
+          -1.0065559148788452,
+          -1.0710554122924805,
+          -0.670137882232666
+        ],
+        "max": [
+          1.006555438041687,
+          1.2115013599395752,
+          0.6429927349090576
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.003264591097831726,
+        -0.01475541666150093
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.42911505699157715,
+          -1.0432069301605225,
+          0.014796571806073189
+        ],
+        "R": [
+          0.42911505699157715,
+          -1.0432069301605225,
+          0.014796571806073189
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.010342338122427464,
+          0.011334974318742752,
+          0.008357067592442036
+        ],
+        "LID_R": [
+          0.010342338122427464,
+          0.011334974318742752,
+          0.008357067592442036
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Wake",
+      "time": 1.25,
+      "bounds_gltf": {
+        "min": [
+          -1.0038026571273804,
+          -1.0694684982299805,
+          -0.6577997803688049
+        ],
+        "max": [
+          1.0038021802902222,
+          1.225106954574585,
+          0.655838668346405
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.0,
+        -0.0
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      },
+      "containment": {
+        "outside_vertices": 0,
+        "min_clearance": 0.1195782870054245,
+        "max_signed_distance": -0.11957827425868572
+      }
+    },
+    {
+      "clip": "Sprout_Done",
+      "time": 0.0,
+      "bounds_gltf": {
+        "min": [
+          -1.0038026571273804,
+          -1.0694684982299805,
+          -0.6577997803688049
+        ],
+        "max": [
+          1.0038021802902222,
+          1.225106954574585,
+          0.655838668346405
+        ]
+      },
+      "face_anchor_gltf": [
+        0.0,
+        0.0,
+        -0.0
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      },
+      "containment": {
+        "outside_vertices": 0,
+        "min_clearance": 0.1195782870054245,
+        "max_signed_distance": -0.11957827425868572
+      }
+    },
+    {
+      "clip": "Sprout_Done",
+      "time": 0.125,
+      "bounds_gltf": {
+        "min": [
+          -1.0068453550338745,
+          -1.067553162574768,
+          -0.6603817939758301
+        ],
+        "max": [
+          1.0040884017944336,
+          1.2212529182434082,
+          0.653446614742279
+        ]
+      },
+      "face_anchor_gltf": [
+        -0.00045581249287351966,
+        0.0002588331699371338,
+        9.207986295223236e-06
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Done",
+      "time": 0.20833333333333334,
+      "bounds_gltf": {
+        "min": [
+          -1.0086380243301392,
+          -1.0666546821594238,
+          -0.6614365577697754
+        ],
+        "max": [
+          1.0040497779846191,
+          1.2192115783691406,
+          0.6523895859718323
+        ]
+      },
+      "face_anchor_gltf": [
+        -0.0007585546118207276,
+        0.000429302453994751,
+        2.2098422050476074e-05
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      },
+      "containment": {
+        "outside_vertices": 0,
+        "min_clearance": 0.11928877234458923,
+        "max_signed_distance": -0.1192887756482719
+      }
+    },
+    {
+      "clip": "Sprout_Done",
+      "time": 0.25,
+      "bounds_gltf": {
+        "min": [
+          -1.0084861516952515,
+          -1.0695871114730835,
+          -0.6595517992973328
+        ],
+        "max": [
+          1.00299870967865,
+          1.22404146194458,
+          0.6526253819465637
+        ]
+      },
+      "face_anchor_gltf": [
+        -0.0009071491658687592,
+        0.0005156993865966797,
+        1.8512830138206482e-05
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Done",
+      "time": 0.375,
+      "bounds_gltf": {
+        "min": [
+          -1.0075701475143433,
+          -1.0787698030471802,
+          -0.6534907817840576
+        ],
+        "max": [
+          0.9994723796844482,
+          1.2382423877716064,
+          0.6542108058929443
+        ]
+      },
+      "face_anchor_gltf": [
+        -0.0013385128695517778,
+        0.0007713288068771362,
+        -1.3874843716621399e-05
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Done",
+      "time": 0.4166666666666667,
+      "bounds_gltf": {
+        "min": [
+          -1.0081993341445923,
+          -1.0787699222564697,
+          -0.6532737612724304
+        ],
+        "max": [
+          0.9992557168006897,
+          1.238383173942566,
+          0.6540130972862244
+        ]
+      },
+      "face_anchor_gltf": [
+        -0.0014782638754695654,
+        0.0008515268564224243,
+        -1.5328172594308853e-05
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      },
+      "containment": {
+        "outside_vertices": 0,
+        "min_clearance": 0.1197734922170639,
+        "max_signed_distance": -0.11977348358607287
+      }
+    },
+    {
+      "clip": "Sprout_Done",
+      "time": 0.5,
+      "bounds_gltf": {
+        "min": [
+          -1.0094280242919922,
+          -1.078675389289856,
+          -0.6528623700141907
+        ],
+        "max": [
+          0.9988446831703186,
+          1.2385309934616089,
+          0.6536192893981934
+        ]
+      },
+      "face_anchor_gltf": [
+        -0.0017491583712399006,
+        0.0010066330432891846,
+        -1.7894897609949112e-05
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Done",
+      "time": 0.625,
+      "bounds_gltf": {
+        "min": [
+          -1.0136780738830566,
+          -1.0691568851470947,
+          -0.6546526551246643
+        ],
+        "max": [
+          1.0007530450820923,
+          1.2268511056900024,
+          0.652792751789093
+        ]
+      },
+      "face_anchor_gltf": [
+        -0.0021358949597924948,
+        0.0012124180793762207,
+        1.3902317732572556e-06
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Done",
+      "time": 0.75,
+      "bounds_gltf": {
+        "min": [
+          -1.015460729598999,
+          -1.0678799152374268,
+          -0.6543429493904114
+        ],
+        "max": [
+          1.000434160232544,
+          1.2255760431289673,
+          0.6522734761238098
+        ]
+      },
+      "face_anchor_gltf": [
+        -0.002482915297150612,
+        0.0014057308435440063,
+        4.682806320488453e-06
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Done",
+      "time": 0.8333333333333334,
+      "bounds_gltf": {
+        "min": [
+          -1.0158635377883911,
+          -1.0694684982299805,
+          -0.6535782814025879
+        ],
+        "max": [
+          0.9996100664138794,
+          1.2277898788452148,
+          0.652051568031311
+        ]
+      },
+      "face_anchor_gltf": [
+        -0.0026893639005720615,
+        0.0015249550342559814,
+        -0.0
+      ],
+      "foot_tips_gltf": {
+        "L": [
+          -0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ],
+        "R": [
+          0.4300000071525574,
+          -1.0399999618530273,
+          -0.0
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      },
+      "containment": {
+        "outside_vertices": 0,
+        "min_clearance": 0.11915339529514313,
+        "max_signed_distance": -0.1191533069001025
+      }
+    }
+  ],
+  "ownership": {
+    "full_body": [
+      "nine rig bones TRS",
+      "SPROUT_BODY complete3 morph vector",
+      "SPROUT_CORE complete3 morph vector"
+    ],
+    "sleep_additional": [
+      "LID_L scale",
+      "LID_R scale"
+    ],
+    "joy_lids": "Unchanged/unowned",
+    "Done": [
+      "REACTION_ROOT rotation",
+      "REACTION_ROOT scale"
+    ],
+    "reaction_root": "Exclusive serialized Click/Done; no tracks in joy/rest/wake"
+  },
+  "byte_contract": {
+    "original_binary_prefix_exact": true,
+    "nodes_skins_geometry_materials_images_exact": true,
+    "six_old_animation_streams_exact": true,
+    "new_clips_from_Blender_export_only": true
+  },
+  "packaging": "Append5 source-exported animation streams to frozen v003 with semantic node remap. Explicitly remove only manifest-listed unkeyed/generated constant object TRS after checking maximum sample spread<1e-6. Keep all authored channels, complete paired weights and sleeping constant lid scales. Full source-export GLB retained. No application-side filtering/motion reconstruction.",
+  "materials": [
+    {
+      "doubleSided": false,
+      "extensions": {
+        "KHR_materials_clearcoat": {
+          "clearcoatFactor": 0.8500000238418579,
+          "clearcoatRoughnessFactor": 0.04500000178813934
+        },
+        "KHR_materials_transmission": {
+          "transmissionFactor": 0.8799999952316284
+        },
+        "KHR_materials_volume": {
+          "attenuationColor": [
+            0.5225215554237366,
+            0.868899405002594,
+            1
+          ],
+          "attenuationDistance": 4.499999966472387,
+          "thicknessFactor": 0.3400000035762787
+        },
+        "KHR_materials_ior": {
+          "ior": 1.399999976158142
+        }
+      },
+      "name": "MAT_Sprout_ClearPrismRim_v003",
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0,
+        "roughnessFactor": 0.05999999865889549
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "MAT_Sprout_Eyes",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.003000000026077032,
+          0.008999999612569809,
+          0.02800000086426735,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.23000000417232513
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "MAT_Sprout_Glints",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.9599999785423279,
+          0.9900000095367432,
+          1,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.15000000596046448
+      }
+    },
+    {
+      "doubleSided": true,
+      "extensions": {
+        "KHR_materials_clearcoat": {
+          "clearcoatFactor": 0.6499999761581421,
+          "clearcoatRoughnessFactor": 0.06499999761581421
+        }
+      },
+      "name": "MAT_Sprout_Lids_v003",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.001934984466060996,
+          0.1873166710138321,
+          0.9551045894622803,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.1599999964237213
+      }
+    },
+    {
+      "doubleSided": true,
+      "emissiveFactor": [
+        1,
+        1,
+        1
+      ],
+      "emissiveTexture": {
+        "index": 0
+      },
+      "extensions": {
+        "KHR_materials_clearcoat": {
+          "clearcoatFactor": 0.03999999910593033,
+          "clearcoatRoughnessFactor": 0.10000000149011612
+        },
+        "KHR_materials_emissive_strength": {
+          "emissiveStrength": 1.100000023841858
+        }
+      },
+      "name": "MAT_Sprout_CoreLuminous_v003",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 1
+        },
+        "metallicFactor": 0,
+        "roughnessFactor": 0.15000000596046448
+      }
+    }
+  ],
+  "extensions": [
+    "KHR_materials_clearcoat",
+    "KHR_materials_transmission",
+    "KHR_materials_emissive_strength",
+    "KHR_materials_volume",
+    "KHR_materials_ior"
+  ],
+  "texture": {
+    "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\textures\\sprout-core-prism-v003.png",
+    "sha256": "4dbae7a23b6e0755c5eb5b131aca8dcc93d0705b44331a937c696c0a18a8ec33",
+    "bytes": 10247,
+    "size": [
+      128,
+      64
+    ],
+    "colour_space": "sRGB, original analytically generated RGB8 PNG",
+    "UV": "Core_Light_UV, spherical parameterization before X narrowing, seam-unwrapped, repeat",
+    "source": "Equations in21_luminous_core.py. No reference pixels/texture scroll/runtime shader.",
+    "packed_in_blend": true,
+    "embedded_in_glb": true,
+    "linear_emissive_strength": 1.1,
+    "centre_palette_srgb": [
+      0.01,
+      0.34,
+      1
+    ],
+    "lower_lobe": {
+      "centre_nz": -0.4,
+      "width": 0.55,
+      "lateral_strength": 0.84,
+      "centre_mask_floor": 0.05
+    }
+  },
+  "source_licences": "Original project-authored mesh/rig/morphs/animations/texture; no new third-party character or animation assets.",
+  "limits": [
+    "Nearest-normal core containment is sampled, not exhaustive collision proof.",
+    "All11mesh bounds sampled every authored24Hz frame; continuous subframe extrema/native projection/Z path belong to integration.",
+    "Cycles PNGs are source-backed approximations, not identical Three pixels or native desktop refraction."
+  ],
+  "reopened_source_audit": {
+    "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\v004-reopened-source.json",
+    "sha256": "239123e3b2ac47b259641385f0b47086e9a7554e69b5e21e93d7e71bd2678df6",
+    "pass": true
+  },
+  "fallbacks": {
+    "idle": {
+      "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-prism-v004.png",
+      "sha256": "35c5e60cb729bc8fa24e93b6ae9c02e39f734f5ee8817a79b5e9984142c913a1",
+      "bytes": 302929,
+      "size": 640,
+      "clip": "Sprout_Idle",
+      "time": 0.0,
+      "render_report": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\v004-idle-render.json",
+      "visually_reviewed": true,
+      "public_promotion": "Promoted by integration lead to public/buddy/sprout-v004.png"
+    },
+    "sleeping": {
+      "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-prism-sleep-v004.png",
+      "sha256": "5057988aa1ff338d1661f8eea095cafa2f66653c08addc4933be63eac0e3e83d",
+      "bytes": 246617,
+      "size": 640,
+      "clip": "Sprout_SleepLoop",
+      "time": 0.0,
+      "render_report": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\v004-sleep-render.json",
+      "visually_reviewed": true,
+      "public_promotion": "Promoted by integration lead to public/buddy/sprout-v004-sleep.png"
+    }
+  },
+  "checks": {
+    "binary_contract": {
+      "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\v004-binary-contract.json",
+      "sha256": "73f8b92a6aa892b871185646c49103789448a9174519f414c34aad1b1b152288",
+      "pass": true
+    },
+    "validator": {
+      "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\v004-gltf-validation.json",
+      "sha256": "57abd3d2051a64c929d664d9b1ac357d89735b1ec8142d0d7ff8b7d3282af059",
+      "pass": true
+    }
+  },
+  "visual_selection": {
+    "sleep_variant": "D",
+    "recline_radians": -0.91,
+    "BODY_local_vertical_scale": 0.82,
+    "FACE_MOUNT_countertilt_radians": 0.55,
+    "lids": "Original thin closed lids, full scale1; no extra eye/glint/gaze channels",
+    "reason": "Fine creases face viewer; navy eye undersides are covered while body still reclines with feet forward.",
+    "reference_image": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v004-sleep-face-D.png",
+    "accepted_scope": "Root visual source-pose approval and reviewed final sleeping PNG; actual browser/native integration separately verified by lead/runtime."
+  }
+}

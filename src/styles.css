@@ -1,22 +1,35 @@
 @import url('/fonts.css');
 :root {
   font-family: Inter, 'Segoe UI', Arial, sans-serif;
-  color: #f0f6ff;
-  background: #0b1424;
+  color: #f2f3ed;
+  background: #0b1013;
+  color-scheme: dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  --lime: #8fd3ff;
-  --muted: #a6bad0;
-  --line: #30445f;
-  --surface: #14243b;
-  --soft: #1b304d;
+  --lime: #b6e4d0;
+  --muted: #b1bdbd;
+  --line: #34434a;
+  --surface: #10191e;
+  --soft: #1b292e;
+  --font-display: 'Space Grotesk', 'Segoe UI', Arial, sans-serif;
 }
 * {
   box-sizing: border-box;
 }
 body {
   margin: 0;
+}
+h1,
+h2,
+h3,
+.brand {
+  font-family: var(--font-display);
+}
+input,
+output,
+.stat > strong {
+  font-variant-numeric: tabular-nums;
 }
 button,
 input,

@@ -14,6 +14,7 @@ const {
 } = require('electron');
 const path = require('node:path');
 const crypto = require('node:crypto');
+const { buddyBounds, buddySizes } = require('./buddy-window.cjs');
 const { readFile, stat } = require('node:fs/promises');
 const {
   validatePointerRequest,
@@ -113,7 +114,7 @@ app
     ipcMain.handle('insightos:choose-folder', async (event) => {
       nativeRequest(event);
       const selected = await dialog.showOpenDialog(BrowserWindow.fromWebContents(event.sender), {
-        title: 'Choose where InsightOS can create Python files',
+        title: 'Choose where Sprout can create Python files',
         properties: ['openDirectory', 'createDirectory'],
       });
       if (selected.canceled) return null;
@@ -310,11 +311,16 @@ app
     const work = screen.getPrimaryDisplay().workArea;
     const standaloneWorkspace = process.argv.includes('--workspace') || !!remote;
     const win = (companionWindow = new BrowserWindow({
-      width: standaloneWorkspace ? 1500 : 360,
-      height: standaloneWorkspace ? 950 : 86,
-      x: Math.round(work.x + (work.width - (standaloneWorkspace ? 1500 : 360)) / 2),
+      width: standaloneWorkspace ? 1500 : Math.min(buddySizes.pill.width, work.width),
+      height: standaloneWorkspace ? 950 : Math.min(buddySizes.pill.height, work.height),
+      x: Math.round(
+        work.x +
+          (work.width -
+            (standaloneWorkspace ? 1500 : Math.min(buddySizes.pill.width, work.width))) /
+            2,
+      ),
       y: work.y + 20,
-      title: 'InsightOS Buddy',
+      title: 'Sprout',
       frame: standaloneWorkspace,
       transparent: !standaloneWorkspace,
       backgroundColor: standaloneWorkspace ? '#101211' : '#00000000',
@@ -337,37 +343,80 @@ app
     win.webContents.on('will-navigate', (event, url) => {
       if (!trusted(url)) event.preventDefault();
     });
-    const resizeBuddy = (mode) => {
+    // Visual consumers observe the real window without changing background timers.
+    let visibilityRevision = 0;
+    const desktopVisibility = () => ({
+      visible: !win.isDestroyed() && win.isVisible() && !win.isMinimized(),
+      revision: visibilityRevision,
+    });
+    const publishVisibility = () => {
+      visibilityRevision++;
+      if (win.isDestroyed() || win.webContents.isDestroyed() || !trusted(win.webContents.getURL()))
+        return;
+      win.webContents.send('insightos:desktop-visibility-changed', desktopVisibility());
+    };
+    for (const event of ['show', 'hide', 'minimize', 'restore']) win.on(event, publishVisibility);
+    ipcMain.handle('insightos:desktop-visibility', (event) => {
+      nativeRequest(event);
+      if (event.sender !== win.webContents || event.senderFrame !== win.webContents.mainFrame)
+        throw new Error('Desktop visibility requires the companion main frame.');
+      return desktopVisibility();
+    });
+    // Native drag regions do not deliver DOM pointer events. Observe the Windows
+    // modal move loop so decorative tilt freezes without polling or moving the window.
+    let dragActive = false;
+    let dragRevision = 0;
+    const desktopDrag = () => ({ active: dragActive, revision: dragRevision });
+    const publishDrag = (active) => {
+      if (active === dragActive) return;
+      dragActive = active;
+      dragRevision++;
+      if (win.isDestroyed() || win.webContents.isDestroyed() || !trusted(win.webContents.getURL()))
+        return;
+      win.webContents.send('insightos:desktop-drag-changed', desktopDrag());
+    };
+    if (process.platform === 'win32') {
+      win.hookWindowMessage(0x0231, () => publishDrag(true)); // WM_ENTERSIZEMOVE
+      win.hookWindowMessage(0x0232, () => publishDrag(false)); // WM_EXITSIZEMOVE
+      // The normal close action hides this live window. Keep hooks until its
+      // native handle is destroyed, when Electron releases them with the window.
+    }
+    for (const event of ['hide', 'minimize', 'blur']) win.on(event, () => publishDrag(false));
+    ipcMain.handle('insightos:desktop-drag', (event) => {
+      nativeRequest(event);
+      if (event.sender !== win.webContents || event.senderFrame !== win.webContents.mainFrame)
+        throw new Error('Desktop drag state requires the companion main frame.');
+      return desktopDrag();
+    });
+    const resizeBuddy = (mode, requestId = 0) => {
       if (!['pill', 'panel', 'workspace'].includes(mode))
         throw new Error('Unknown companion mode.');
-      if (standaloneWorkspace) return;
-      const previous = win.getBounds();
-      if (windowMode !== 'workspace')
-        dockPosition = { x: previous.x, y: previous.y, width: previous.width };
-      const area = screen.getDisplayMatching(previous).workArea;
-      const width = Math.min(
-        mode === 'workspace' ? 1350 : mode === 'panel' ? 440 : 360,
-        area.width,
-      );
-      const height = Math.min(
-        mode === 'workspace' ? 900 : mode === 'panel' ? 580 : 86,
-        area.height,
-      );
-      const position = mode === 'workspace' ? null : dockPosition;
-      const x = position
-        ? position.x + (position.width - width) / 2
-        : area.x + (area.width - width) / 2;
-      const y = position?.y ?? area.y + 20;
-      windowMode = mode;
-      win.setAlwaysOnTop(mode !== 'workspace');
-      win.setSkipTaskbar(mode !== 'workspace');
-      win.setResizable(mode === 'workspace');
-      win.setBounds({
-        x: Math.round(Math.max(area.x, Math.min(x, area.x + area.width - width))),
-        y: Math.round(Math.max(area.y, Math.min(y, area.y + area.height - height))),
-        width,
-        height,
-      });
+      if (!Number.isSafeInteger(requestId) || requestId < 0)
+        throw new Error('Invalid companion layout request.');
+      if (!standaloneWorkspace) {
+        const previous = win.getBounds();
+        if (windowMode !== 'workspace') dockPosition = { x: previous.x, y: previous.y };
+        const area = screen.getDisplayMatching(previous).workArea;
+        windowMode = mode;
+        win.setSkipTaskbar(mode !== 'workspace');
+        win.setResizable(mode === 'workspace');
+        win.setBounds(buddyBounds(mode, area, dockPosition, win.webContents.getZoomFactor()));
+        // Electron 44's Windows floating level can lose topmost placement when
+        // moved behind the taskbar. Bounds above remain inside the work area.
+        win.setAlwaysOnTop(
+          mode !== 'workspace',
+          process.platform === 'win32' ? 'pop-up-menu' : 'floating',
+        );
+      }
+      const bounds = win.getBounds();
+      const content = win.getContentBounds();
+      const zoomFactor = win.webContents.getZoomFactor();
+      return {
+        mode,
+        requestId,
+        bounds,
+        viewport: { width: content.width / zoomFactor, height: content.height / zoomFactor },
+      };
     };
     const dispatch = (command) => {
       if (win.isDestroyed()) return;
@@ -377,9 +426,9 @@ app
       }
       win.webContents.send('insightos:desktop-command', command);
     };
-    ipcMain.handle('insightos:buddy-mode', (event, mode) => {
+    ipcMain.handle('insightos:buddy-mode', (event, mode, requestId) => {
       nativeRequest(event);
-      resizeBuddy(mode);
+      return resizeBuddy(mode, requestId);
     });
     ipcMain.handle('insightos:buddy-hide', (event) => {
       nativeRequest(event);
@@ -406,17 +455,17 @@ app
           pixels[i + 3] = inside ? 255 : 0;
         }
       tray = new Tray(nativeImage.createFromBitmap(pixels, { width: 32, height: 32 }));
-      tray.setToolTip('InsightOS — your desktop buddy');
+      tray.setToolTip('Sprout — your desktop buddy');
       tray.setContextMenu(
         Menu.buildFromTemplate([
           { label: 'Show buddy', click: () => dispatch('show') },
-          { label: 'Talk to InsightOS', click: () => dispatch('voice') },
+          { label: 'Talk to Sprout', click: () => dispatch('voice') },
           { label: 'Stop task and audio', click: () => dispatch('stop') },
           { type: 'separator' },
           { label: 'Settings', click: () => dispatch('settings') },
           { label: 'Open workspace', click: () => dispatch('workspace') },
           { type: 'separator' },
-          { label: 'Quit InsightOS', click: () => app.quit() },
+          { label: 'Quit Sprout', click: () => app.quit() },
         ]),
       );
       tray.on('click', () => dispatch('show'));
@@ -434,7 +483,7 @@ app
   })
   .catch((error) => {
     dialog.showErrorBox(
-      'InsightOS could not start',
+      'Sprout could not start',
       error.message + '\nRun npm run build first, or close an existing instance using port 4311.',
     );
     app.quit();

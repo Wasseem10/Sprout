@@ -65,8 +65,19 @@ declare global {
         provider: keyof typeof import('../shared/connections').accountUrls,
       ) => Promise<void>;
       platform: string;
-      setBuddyMode?: (mode: 'pill' | 'panel' | 'workspace') => Promise<void>;
+      setBuddyMode?: (
+        mode: 'pill' | 'panel' | 'workspace',
+        requestId?: number,
+      ) => Promise<import('./buddyPanelCoordinator').BuddyBoundsAcknowledgement>;
       hideBuddy?: () => Promise<void>;
+      desktopVisibility?: () => Promise<import('./desktopVisibility').DesktopVisibilitySnapshot>;
+      onDesktopVisibility?: (
+        callback: (snapshot: import('./desktopVisibility').DesktopVisibilitySnapshot) => void,
+      ) => () => void;
+      desktopDrag?: () => Promise<import('./desktopDrag').DesktopDragSnapshot>;
+      onDesktopDrag?: (
+        callback: (snapshot: import('./desktopDrag').DesktopDragSnapshot) => void,
+      ) => () => void;
       desktopShortcuts?: () => Promise<{ voice: boolean; stop: boolean }>;
       onDesktopCommand?: (callback: (command: string) => void) => () => void;
     };
@@ -253,7 +264,7 @@ export default function App() {
       } catch (error) {
         if (generation === startupGeneration.current)
           setStartupError(
-            error instanceof Error ? error.message : 'Start the backend to use InsightOS.',
+            error instanceof Error ? error.message : 'Start the backend to use Sprout.',
           );
       }
     })();
@@ -431,9 +442,7 @@ export default function App() {
           <span className="brand-symbol">
             <Sparkles size={22} aria-hidden="true" />
           </span>
-          <span>
-            insight<span className="brand-os">OS</span>
-          </span>
+          <span>Sprout</span>
         </a>
         <div className="side-section-label">YOUR SPACE</div>
         <a className="nav-item" href="/">
@@ -946,11 +955,7 @@ export default function App() {
               {messages.map((m) => (
                 <div key={m.id} className={`message ${m.role}`}>
                   <div className="message-label">
-                    {m.role === 'user'
-                      ? 'YOU'
-                      : m.role === 'error'
-                        ? 'NEEDS ATTENTION'
-                        : 'INSIGHTOS'}
+                    {m.role === 'user' ? 'YOU' : m.role === 'error' ? 'NEEDS ATTENTION' : 'SPROUT'}
                     {m.duration !== undefined && <span>{m.duration.toFixed(1)}s</span>}
                   </div>
                   <p>{m.text}</p>
@@ -995,7 +1000,7 @@ export default function App() {
                 }}
               >
                 <label className="sr-only" htmlFor="request">
-                  Ask InsightOS about your workspace
+                  Ask Sprout about your workspace
                 </label>
                 <textarea
                   ref={inputRef}
@@ -1087,7 +1092,7 @@ export default function App() {
           <span>
             {lastDuration !== null ? `Last request ${lastDuration.toFixed(2)}s` : 'No request yet'}
             <span className="statusbar-divider" />
-            InsightOS · v0.1
+            Sprout · v0.1
           </span>
         </footer>
       </div>

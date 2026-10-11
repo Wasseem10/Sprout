@@ -1,0 +1,248 @@
+{
+  "pass": true,
+  "assetSha256": "77d4b92bc5d06e440706243f6ac9e6745073ba6f98d173b972114fabb02bde7c",
+  "image": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\v004-fallback-backgrounds.png",
+  "rows": [
+    {
+      "pose": "idle",
+      "background": "bright",
+      "cssPixels": 44,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "35c5e60cb729bc8fa24e93b6ae9c02e39f734f5ee8817a79b5e9984142c913a1"
+    },
+    {
+      "pose": "idle",
+      "background": "bright",
+      "cssPixels": 56,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "35c5e60cb729bc8fa24e93b6ae9c02e39f734f5ee8817a79b5e9984142c913a1"
+    },
+    {
+      "pose": "idle",
+      "background": "bright",
+      "cssPixels": 72,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "35c5e60cb729bc8fa24e93b6ae9c02e39f734f5ee8817a79b5e9984142c913a1"
+    },
+    {
+      "pose": "idle",
+      "background": "bright",
+      "cssPixels": 96,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "35c5e60cb729bc8fa24e93b6ae9c02e39f734f5ee8817a79b5e9984142c913a1"
+    },
+    {
+      "pose": "idle",
+      "background": "dark",
+      "cssPixels": 44,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "35c5e60cb729bc8fa24e93b6ae9c02e39f734f5ee8817a79b5e9984142c913a1"
+    },
+    {
+      "pose": "idle",
+      "background": "dark",
+      "cssPixels": 56,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "35c5e60cb729bc8fa24e93b6ae9c02e39f734f5ee8817a79b5e9984142c913a1"
+    },
+    {
+      "pose": "idle",
+      "background": "dark",
+      "cssPixels": 72,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "35c5e60cb729bc8fa24e93b6ae9c02e39f734f5ee8817a79b5e9984142c913a1"
+    },
+    {
+      "pose": "idle",
+      "background": "dark",
+      "cssPixels": 96,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "35c5e60cb729bc8fa24e93b6ae9c02e39f734f5ee8817a79b5e9984142c913a1"
+    },
+    {
+      "pose": "idle",
+      "background": "busy",
+      "cssPixels": 44,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "35c5e60cb729bc8fa24e93b6ae9c02e39f734f5ee8817a79b5e9984142c913a1"
+    },
+    {
+      "pose": "idle",
+      "background": "busy",
+      "cssPixels": 56,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "35c5e60cb729bc8fa24e93b6ae9c02e39f734f5ee8817a79b5e9984142c913a1"
+    },
+    {
+      "pose": "idle",
+      "background": "busy",
+      "cssPixels": 72,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "35c5e60cb729bc8fa24e93b6ae9c02e39f734f5ee8817a79b5e9984142c913a1"
+    },
+    {
+      "pose": "idle",
+      "background": "busy",
+      "cssPixels": 96,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "35c5e60cb729bc8fa24e93b6ae9c02e39f734f5ee8817a79b5e9984142c913a1"
+    },
+    {
+      "pose": "sleeping",
+      "background": "bright",
+      "cssPixels": 44,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "5057988aa1ff338d1661f8eea095cafa2f66653c08addc4933be63eac0e3e83d"
+    },
+    {
+      "pose": "sleeping",
+      "background": "bright",
+      "cssPixels": 56,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "5057988aa1ff338d1661f8eea095cafa2f66653c08addc4933be63eac0e3e83d"
+    },
+    {
+      "pose": "sleeping",
+      "background": "bright",
+      "cssPixels": 72,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "5057988aa1ff338d1661f8eea095cafa2f66653c08addc4933be63eac0e3e83d"
+    },
+    {
+      "pose": "sleeping",
+      "background": "bright",
+      "cssPixels": 96,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "5057988aa1ff338d1661f8eea095cafa2f66653c08addc4933be63eac0e3e83d"
+    },
+    {
+      "pose": "sleeping",
+      "background": "dark",
+      "cssPixels": 44,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "5057988aa1ff338d1661f8eea095cafa2f66653c08addc4933be63eac0e3e83d"
+    },
+    {
+      "pose": "sleeping",
+      "background": "dark",
+      "cssPixels": 56,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "5057988aa1ff338d1661f8eea095cafa2f66653c08addc4933be63eac0e3e83d"
+    },
+    {
+      "pose": "sleeping",
+      "background": "dark",
+      "cssPixels": 72,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "5057988aa1ff338d1661f8eea095cafa2f66653c08addc4933be63eac0e3e83d"
+    },
+    {
+      "pose": "sleeping",
+      "background": "dark",
+      "cssPixels": 96,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "5057988aa1ff338d1661f8eea095cafa2f66653c08addc4933be63eac0e3e83d"
+    },
+    {
+      "pose": "sleeping",
+      "background": "busy",
+      "cssPixels": 44,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "5057988aa1ff338d1661f8eea095cafa2f66653c08addc4933be63eac0e3e83d"
+    },
+    {
+      "pose": "sleeping",
+      "background": "busy",
+      "cssPixels": 56,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "5057988aa1ff338d1661f8eea095cafa2f66653c08addc4933be63eac0e3e83d"
+    },
+    {
+      "pose": "sleeping",
+      "background": "busy",
+      "cssPixels": 72,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "5057988aa1ff338d1661f8eea095cafa2f66653c08addc4933be63eac0e3e83d"
+    },
+    {
+      "pose": "sleeping",
+      "background": "busy",
+      "cssPixels": 96,
+      "decoded": [
+        640,
+        640
+      ],
+      "sha256": "5057988aa1ff338d1661f8eea095cafa2f66653c08addc4933be63eac0e3e83d"
+    }
+  ],
+  "scope": "CPU decoded source PNGs on owned backgrounds at44/56/72/96px. Static compositional/eye-crease inspection, not browser fallback lifecycle, GLB refraction or native display evidence."
+}

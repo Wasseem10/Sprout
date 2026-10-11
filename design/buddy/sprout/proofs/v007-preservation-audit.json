@@ -1,0 +1,81 @@
+{
+  "pass": true,
+  "assetSha256": "dc609f0962b946bcae632988697d3dc12284e4405b03d80a3dd20950dd0fdb1c",
+  "sourceSha256": "d2fa7c070b0c28fbd93afafdc7215aed28224ce2bc1221350c4f40a42e66610a",
+  "unchangedFields": [
+    "nodes",
+    "skins",
+    "meshes",
+    "materials",
+    "images",
+    "textures",
+    "samplers",
+    "extensionsUsed"
+  ],
+  "originalBinaryPrefixBytesExact": 1383684,
+  "preservedNonSpeakClips": 10,
+  "allTenNonSpeakSourceExportClipsExact": true,
+  "sourceExportGeometryMaterialsHierarchyExact": true,
+  "speakChannels": 29,
+  "allSpeakSamplesExactlyFromBlenderSourceExport": true,
+  "durationSeconds": 6,
+  "maxSeamError": 0,
+  "rootAndFeetConstant": true,
+  "matchedShellCoreVectors": true,
+  "noEyeReactionOrGazeChannels": true,
+  "unchangedPreviousFiles": {
+    "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-prism-v005.glb": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2",
+    "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-happy-eyes-source-v005.glb": "54458172f8fbf32facd76abfbcff38d4e48ba05644fba554dd02329bb3807e1a",
+    "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-happy-eyes-v005.blend": "e97a0df2bafbffda9da972c538dbde60c54bc2d71efe264c163c8913c746a113",
+    "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v005.glb": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2",
+    "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v005.png": "1142a9ef44f70e13813e0ee542672852a7c2b5bbf5e87f89eb9c747159af6277",
+    "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v005-sleep.png": "e5666517a4556ed7939e042ff10464d751954f4053a4e499c262388ada488887",
+    "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-daylight-v006.glb": "b8de0b88395e4b876f0eb668a0a7f39317c24d3530c9d15e58a01c7aa561824f",
+    "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-daylight-source-v006.glb": "aa992bed4546ab5dc0b0cdbfda214e219cfd394ce06bd6802bc495ba46f05843",
+    "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-daylight-v006.blend": "5c0d0155d9f414886fd72ffd25276102f8800c77802bf72d8fecdc6fd7d5b775",
+    "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v006.glb": "b8de0b88395e4b876f0eb668a0a7f39317c24d3530c9d15e58a01c7aa561824f",
+    "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v006.png": "9032ab7125f370c6f4a1f229406ab69408633cca442604f714b14d2c6db6ce53",
+    "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v006-sleep.png": "c476ff185fd92212b70dc865096efab68e43534078de13a6447bdbf0e70c9a4f"
+  },
+  "sourceSamples": 145,
+  "sourceEyeSamples": [
+    {
+      "clip": "Sprout_Blink",
+      "frames": 5,
+      "pass": true
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "frames": 41,
+      "pass": true
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "frames": 121,
+      "pass": true
+    },
+    {
+      "clip": "Sprout_Wake",
+      "frames": 31,
+      "pass": true
+    }
+  ],
+  "sourceImagesVerified": 7,
+  "fallbacks": [
+    {
+      "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-speaking-v007.png",
+      "public": "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v007.png",
+      "inherited_from": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-daylight-v006.png",
+      "sha256": "9032ab7125f370c6f4a1f229406ab69408633cca442604f714b14d2c6db6ce53",
+      "reason": "Exact same source idle/sleep actions, meshes, materials and approved Daylight lighting."
+    },
+    {
+      "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-speaking-sleep-v007.png",
+      "public": "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v007-sleep.png",
+      "inherited_from": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-daylight-sleep-v006.png",
+      "sha256": "c476ff185fd92212b70dc865096efab68e43534078de13a6447bdbf0e70c9a4f",
+      "reason": "Exact same source idle/sleep actions, meshes, materials and approved Daylight lighting."
+    }
+  ],
+  "scope": "Source/export preservation and sampled animation validity; browser/native motion/flow verification recorded separately."
+}

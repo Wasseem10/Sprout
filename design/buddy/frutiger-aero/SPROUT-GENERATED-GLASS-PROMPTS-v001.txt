@@ -1,0 +1,27 @@
+SPROUT — GENERATED GLASS MATERIAL CONCEPT
+2026-10-11 · Preview only; no application or production asset replacement.
+Generated with the built-in image generation tool. Transparent background requested for both passes.
+
+PURPOSE
+Use generated artwork as a restrained decorative reflection/color layer inside the existing glass plane. Keep live Sprout, HTML text, buttons and actual backdrop blur separate. This artwork does not itself refract or blur the desktop.
+
+DIRECTION
+Bright aqua/ice-blue glass, lavender/coral undertones, quiet pale center, visible prismatic edge light. The refined image is a material study, not a complete UI or a production-ready responsive background. Before integration, validate its alpha edges and compositing, reduce or remove the baked perimeter, and test text contrast at normal and 200% zoom. Preview it behind the real interface before promoting a default.
+
+INITIAL GENERATION PROMPT (exact)
+Use case: stylized-concept.
+Asset type: preview concept for a decorative background skin behind a real interactive desktop assistant panel named Sprout. Generate the material artwork ONLY, never a complete UI.
+Primary request: One exquisite bright, clear, pearlescent liquid-glass panel, seen absolutely straight-on and orthographic. Portrait format about 4:5. A single softly rounded rectangular glass sheet almost fills the image with a small transparent margin. The panel is elegant and nearly borderless, with a very thin optically polished perimeter, smooth broad corner radii, gentle meniscus and believable glass thickness. It should feel like luminous sculpted glass, not a frosted plastic card or neon gaming frame.
+Color and material: clear ice-blue/aqua glass with tasteful visible lavender and soft coral undertones, like light dispersing naturally through optical glass. Cyan highlights toward the upper-left rim, lavender around the lower-left, faint peach-coral on the upper-right and lower-right. Colors must blend through translucent material, not separate painted stripes. Soft broad white studio reflections sweep near the edges; a few delicate liquid caustics and a restrained luminous depth gradient create tangible glossy curvature. Smooth photographic product-render quality.
+Composition: the central 75 percent is exceptionally quiet, pale luminous blue-white and low contrast for readable dark navy conversation text. The upper-left interior stays quiet for a LIVE avatar. Concentrate refraction, prismatic color and richer detail in the outer 10-15 percent. All four rounded corners and the whole panel fit inside the image. No perspective tilt, no extrusion outside the frame, no scenery, no visible table or wall. A tiny soft blue-gray contact shadow is acceptable beneath the lower outer edge.
+Critical constraints: no words, letters, logos, watermarks, icons, dots, microphone, avatar, face, controls, pills, internal cards, dividers or inset cutouts. No double border, metal bezel, thick tubular edge, dark navy fill, black background, brown patches, noisy rainbow holographic foil, glitter or starfield. This is a refined transparent decorative material plate intended for real HTML controls to be drawn on top. Transparent background outside the panel; preserve a clear, softly translucent interior. One panel only.
+
+REFINEMENT PROMPT (exact; input was the initial generation)
+Refine this decorative glass background plate for the Sprout desktop assistant. Keep the portrait aspect ratio, same single front-facing softly rounded rectangular glass sheet, quiet pale blue-white central reading area, and aqua/lavender/soft coral palette. Make one targeted design refinement: replace the thick, wavy, busy perimeter with a much thinner, immaculate optical-glass edge. Reduce the apparent rim thickness by 70 percent. Remove multiple contour lines, ragged outer glow, small sparkling flecks and crinkled cellophane-like ripples, especially along the bottom. Use a single clean continuous contour with controlled broad soft reflections and a delicate refractive meniscus. Preserve clear visible cyan on the left, lavender low on the left and soft coral on the right, blended naturally through glass. The result should look like a sleek high-end polished glass sheet with restrained pearlescent depth, almost borderless; not jelly, plastic packaging, chrome, glowing wire, or holographic foil. Keep the center calm and light, with no dark areas or distracting shapes. All corners inside the canvas. No UI, avatar, text, symbols, buttons, logos, extra objects, or watermarks. Preserve genuine alpha outside the panel and a clean smooth alpha boundary. This is material art for a live interface, not a screenshot of an app.
+
+FILES
+image-concepts/sprout-glass-material-v001.png — initial study
+image-concepts/sprout-glass-material-v002.png — refined rim / quieter highlights
+
+INTEGRATION CANDIDATE
+Use an opt-in material preview in BuddyPanelPreview.tsx, scoped from buddy-panel-preview.css to the existing .buddy-panel-glass decorative plane. Start with low opacity; the current live CSS lens stays responsible for legibility and blur. Keep content and avatar out of the tilting plane. Hide decorative texture for forced colors, increased contrast or reduced transparency. Preserve all production state/voice controls and the current approved default until the composited result is reviewed.

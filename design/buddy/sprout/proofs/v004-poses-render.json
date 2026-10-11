@@ -1,0 +1,210 @@
+{
+  "source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-prism-behaviours-initial-v004.blend",
+  "source_sha256": "1cbcaab1963be8c3c60ea1c238dfe575945765dffedf73b85ce883e327d37a7e",
+  "asset_sha256": "4b13bf58a64bdad345ae6c36739c61afcb479c0056b1634fa95bb52d0beee346",
+  "size": 320,
+  "samples": 24,
+  "device": "gpu",
+  "camera": {
+    "location": [
+      0.10000000149011612,
+      -6.0,
+      0.23999999463558197
+    ],
+    "target_blender": [
+      0,
+      0,
+      0.22
+    ],
+    "orthographic_span": 3.4000000953674316
+  },
+  "colour": {
+    "view": "Khronos PBR Neutral",
+    "exposure": 0.0
+  },
+  "images": [
+    {
+      "clip": "Sprout_JoyJump",
+      "frame": 5,
+      "time": 0.16666666666666666,
+      "png": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v004-joy-crouch.png",
+      "sha256": "b47d95589b7c203d975a434a6d2478e6c73d225e81817cabdc9fa79060785871",
+      "bytes": 87723,
+      "alpha_bounds_bottom_origin": {
+        "min": [
+          53,
+          37
+        ],
+        "max": [
+          266,
+          227
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "frame": 16,
+      "time": 0.625,
+      "png": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v004-joy-apex.png",
+      "sha256": "bf1d490889e1462a2a9ea2c6e66266040085cc4a77e7fc3d6f7817a51c05d55e",
+      "bytes": 91430,
+      "alpha_bounds_bottom_origin": {
+        "min": [
+          66,
+          92
+        ],
+        "max": [
+          253,
+          311
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "frame": 25,
+      "time": 1.0,
+      "png": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v004-joy-land.png",
+      "sha256": "0875622dfcb58f7b6b0c7155869ad5c161872b800822450217de6e8bf852c6c3",
+      "bytes": 87945,
+      "alpha_bounds_bottom_origin": {
+        "min": [
+          51,
+          37
+        ],
+        "max": [
+          268,
+          222
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "frame": 1,
+      "time": 0.0,
+      "png": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v004-sleep.png",
+      "sha256": "1001733c15d7726c4716d59372166236e3a48ba7107ecb8a0311ba0360ccd939",
+      "bytes": 72407,
+      "alpha_bounds_bottom_origin": {
+        "min": [
+          55,
+          33
+        ],
+        "max": [
+          264,
+          167
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Wake",
+      "frame": 16,
+      "time": 0.625,
+      "png": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v004-wake-mid.png",
+      "sha256": "3264f0a046ee88a129fb03fecdf199a9157441cadd1fd91e5522d9eb44be572b",
+      "bytes": 84672,
+      "alpha_bounds_bottom_origin": {
+        "min": [
+          60,
+          35
+        ],
+        "max": [
+          260,
+          213
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.9720839858055115,
+          0.9721119999885559,
+          0.9720280170440674
+        ],
+        "LID_R": [
+          0.9720839858055115,
+          0.9721119999885559,
+          0.9720280170440674
+        ]
+      }
+    },
+    {
+      "clip": "Sprout_Done",
+      "frame": 6,
+      "time": 0.20833333333333334,
+      "png": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v004-done-nod.png",
+      "sha256": "82eeb574d3fa11c75afb24b3048d12dd0db98fc8c5b69ce1e3a0bea5e321f40e",
+      "bytes": 90866,
+      "alpha_bounds_bottom_origin": {
+        "min": [
+          64,
+          38
+        ],
+        "max": [
+          255,
+          254
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ],
+        "LID_R": [
+          0.003000000026077032,
+          0.004000000189989805,
+          0.0010000000474974513
+        ]
+      }
+    }
+  ],
+  "scope": "Source-backed Cycles poses; original v003 materials/lightcards. Not exact Three pixels, native clipping, real task or audio proof. No source save/public promotion.",
+  "asset_path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-prism-initial-v004.glb",
+  "historical_initial_candidate": true
+}

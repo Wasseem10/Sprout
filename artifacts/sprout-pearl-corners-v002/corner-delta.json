@@ -1,0 +1,25 @@
+{
+  "scope": "Same-page original 40% and selected 58px corner-mask candidate. Direct browser captures, no image edits.",
+  "width": 392,
+  "height": 657,
+  "maskRadius": 58,
+  "edgeAllowancePixels": 2,
+  "stats": {
+    "inside": {
+      "changed": 4562,
+      "maxDelta": 30,
+      "over2": 2810
+    },
+    "outside": {
+      "changed": 197180,
+      "maxDelta": 11,
+      "over2": 29
+    },
+    "center": {
+      "changed": 93487,
+      "maxDelta": 2,
+      "over2": 0
+    }
+  },
+  "interpretation": "White center source/gradients are unchanged. Mask compositing introduces small raster rounding differences; this is not a claim of pixel identity."
+}

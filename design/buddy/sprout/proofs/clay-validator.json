@@ -1,0 +1,54 @@
+{
+  "input": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-proof-v002.glb",
+  "sha256": "b94192fea987064befd084a2a8ad2c27b9dcb7614ce2365fae88e2cc4e73fc15",
+  "validator": "2.0.0-dev.3.10",
+  "uri": "sprout-proof-v002.glb",
+  "mimeType": "model/gltf-binary",
+  "validatorVersion": "2.0.0-dev.3.10",
+  "validatedAt": "2026-10-11T01:40:46.989Z",
+  "issues": {
+    "numErrors": 0,
+    "numWarnings": 1,
+    "numInfos": 1,
+    "numHints": 0,
+    "messages": [
+      {
+        "code": "UNUSED_OBJECT",
+        "message": "This object may be unused.",
+        "severity": 2,
+        "pointer": "/meshes/0/primitives/0/attributes/TEXCOORD_0"
+      },
+      {
+        "code": "NODE_SKINNED_MESH_NON_ROOT",
+        "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+        "severity": 1,
+        "pointer": "/nodes/18"
+      }
+    ],
+    "truncated": false
+  },
+  "info": {
+    "version": "2.0",
+    "generator": "Khronos glTF Blender I/O v5.2.40",
+    "resources": [
+      {
+        "pointer": "/buffers/0",
+        "mimeType": "application/gltf-buffer",
+        "storage": "glb",
+        "byteLength": 1150264
+      }
+    ],
+    "animationCount": 4,
+    "materialCount": 3,
+    "hasMorphTargets": true,
+    "hasSkins": true,
+    "hasTextures": false,
+    "hasDefaultScene": true,
+    "drawCallCount": 7,
+    "totalVertexCount": 9792,
+    "totalTriangleCount": 19324,
+    "maxUVs": 1,
+    "maxInfluences": 4,
+    "maxAttributes": 5
+  }
+}

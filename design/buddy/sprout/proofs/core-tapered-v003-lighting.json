@@ -1,0 +1,144 @@
+{
+  "source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-core-refined-v003.blend",
+  "source_sha256": "70e6f1f95a82f0f9040f0c5537cb922c78969656a3d438d2ad172392b3ec529d",
+  "lighting_source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-core-tapered-v003.blend",
+  "lighting_source_sha256": "4bdc4a4dd1d3a8a6513d91f5871f00790e797bffd7de5ac874bd107ef558715c",
+  "model_glb": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-core-refined-v003.glb",
+  "model_glb_sha256": "2659add1d2ae3fac64df9f4a33a06b36f5c3368737ac92acfd30f9d3b4eefcc2",
+  "blender": "5.2.2 LTS",
+  "cards": [
+    {
+      "name": "REFLECTION_sprout_key_v003",
+      "position_three": [
+        -3.5,
+        3.8,
+        3
+      ],
+      "position_blender": [
+        -3.5,
+        -3.0,
+        3.799999952316284
+      ],
+      "width": 1.15,
+      "height": 3.4,
+      "colour_linear": [
+        1,
+        0.95,
+        0.9
+      ],
+      "intensity": 6,
+      "shape": "fixed normalized cubic profile"
+    },
+    {
+      "name": "REFLECTION_sprout_fill_v003",
+      "position_three": [
+        3.2,
+        1.5,
+        2
+      ],
+      "position_blender": [
+        3.200000047683716,
+        -2.0,
+        1.5
+      ],
+      "width": 0.75,
+      "height": 2.6,
+      "colour_linear": [
+        0.75,
+        0.92,
+        1
+      ],
+      "intensity": 0.8,
+      "shape": "fixed normalized cubic profile"
+    },
+    {
+      "name": "REFLECTION_sprout_rim_v003",
+      "position_three": [
+        1.2,
+        3,
+        -2
+      ],
+      "position_blender": [
+        1.2000000476837158,
+        2.0,
+        3.0
+      ],
+      "width": 2.8,
+      "height": 0.9,
+      "colour_linear": [
+        1,
+        1,
+        1
+      ],
+      "intensity": 6.4,
+      "shape": "rectangle"
+    }
+  ],
+  "profile_start": [
+    -0.12,
+    -0.5
+  ],
+  "profile_cubics": [
+    [
+      -0.4,
+      -0.44,
+      -0.5,
+      -0.15,
+      -0.32,
+      0.08
+    ],
+    [
+      -0.12,
+      0.3,
+      -0.1,
+      0.43,
+      0,
+      0.5
+    ],
+    [
+      0.16,
+      0.56,
+      0.34,
+      0.43,
+      0.28,
+      0.29
+    ],
+    [
+      0.22,
+      0.15,
+      0.36,
+      -0.1,
+      0.4,
+      -0.32
+    ],
+    [
+      0.42,
+      -0.46,
+      0.12,
+      -0.55,
+      -0.12,
+      -0.5
+    ]
+  ],
+  "unchanged_diffuse_lights": [
+    {
+      "role": "key",
+      "energy": 550.0,
+      "specular_factor": 0.0,
+      "visible_glossy": false
+    },
+    {
+      "role": "fill",
+      "energy": 45.0,
+      "specular_factor": 0.0,
+      "visible_glossy": false
+    },
+    {
+      "role": "rim",
+      "energy": 300.0,
+      "specular_factor": 0.0,
+      "visible_glossy": false
+    }
+  ],
+  "scope": "Supporting fixed-card Cycles recipe mirrored from runtime tapered trial. Physical diffuse lighting/raster PMREM differ; no pixel-equivalence, model export, public promotion, or render performed."
+}

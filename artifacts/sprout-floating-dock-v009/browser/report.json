@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-10-11T09:21:47.754Z",
+  "checks": {
+    "typing": {
+      "outline": "none",
+      "shadow": "none",
+      "outerShadow": "rgba(255, 255, 255, 0.6) 0px 1px 0px 0px inset, rgba(120, 200, 224, 0.086) 0px 0px 0px 3px",
+      "radius": "22px"
+    },
+    "collapsedButtons": [
+      {
+        "label": "Expand buddy. Ready to talk",
+        "width": 96,
+        "height": 96,
+        "appRegion": "no-drag"
+      },
+      {
+        "label": "Start voice conversation",
+        "width": 44,
+        "height": 44,
+        "appRegion": "no-drag"
+      }
+    ],
+    "dragRegion": "drag",
+    "forcedColors": {
+      "outline": "solid",
+      "width": "2px",
+      "color": "rgb(55, 0, 110)"
+    },
+    "keyboardAndVoice": "Avatar Enter opens, Escape restores avatar focus; Tab reaches mic; Enter starts local voice fixture, Pause/Stop stay reachable; draft retained.",
+    "smallViewport": true
+  },
+  "errors": [],
+  "requests": [],
+  "scope": "Actual components in Chromium; local voice fixtures; native drag CSS inspected, physical window dragging not simulated."
+}

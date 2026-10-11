@@ -1,0 +1,45 @@
+{
+  "bones": [
+    "ROOT",
+    "BODY",
+    "FACE_MOUNT",
+    "BUD_L_BASE",
+    "BUD_L_TIP",
+    "BUD_R_BASE",
+    "BUD_R_TIP",
+    "FOOT_L",
+    "FOOT_R"
+  ],
+  "shape_keys": [
+    "Basis",
+    "Jelly_Squash",
+    "Jelly_Sway_L",
+    "Jelly_Sway_R"
+  ],
+  "body_vertices": 7528,
+  "face_world_pose_preserved": true,
+  "shape_extreme_weight_sum_limit": 1,
+  "weight_max_influences": 4,
+  "face_nodes": {
+    "EYE_L": [
+      -0.3400000035762787,
+      -0.6259999871253967,
+      0.014999952167272568
+    ],
+    "EYE_R": [
+      0.3400000035762787,
+      -0.6259999871253967,
+      0.014999952167272568
+    ],
+    "LID_L": [
+      -0.3400000035762787,
+      -0.746999979019165,
+      0.2649999260902405
+    ],
+    "LID_R": [
+      0.3400000035762787,
+      -0.746999979019165,
+      0.2649999260902405
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-prism-behaviours-v004.blend",
+  "source_sha256": "77df8aa69295604c48dec23a0bccb837e2cbdc012f5212c10b76cc37bbf38518",
+  "asset_sha256": "77d4b92bc5d06e440706243f6ac9e6745073ba6f98d173b972114fabb02bde7c",
+  "size": 640,
+  "samples": 64,
+  "device": "gpu",
+  "camera": {
+    "location": [
+      0.10000000149011612,
+      -6.0,
+      0.23999999463558197
+    ],
+    "target_blender": [
+      0,
+      0,
+      0.24
+    ],
+    "orthographic_span": 3.440000057220459
+  },
+  "colour": {
+    "view": "Khronos PBR Neutral",
+    "exposure": 0.0
+  },
+  "images": [
+    {
+      "clip": "Sprout_SleepLoop",
+      "frame": 1,
+      "time": 0.0,
+      "png": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v004-sleep-fallback.png",
+      "sha256": "5057988aa1ff338d1661f8eea095cafa2f66653c08addc4933be63eac0e3e83d",
+      "bytes": 246617,
+      "alpha_bounds_bottom_origin": {
+        "min": [
+          114,
+          67
+        ],
+        "max": [
+          526,
+          344
+        ]
+      },
+      "lids_scale": {
+        "LID_L": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "LID_R": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "study_override": null
+    }
+  ],
+  "scope": "Source-backed Cycles poses; original v003 materials/lightcards. Not exact Three pixels, native clipping, real task or audio proof. No source save/public promotion."
+}

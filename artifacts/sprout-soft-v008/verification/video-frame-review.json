@@ -1,0 +1,16 @@
+{
+  "source": "artifacts/sprout-soft-v008/verification/actual-motion-review.webm",
+  "sha256": "421211bd556c2968b1b163e57888507c9a65acb1d2390f607a68bb871fe816b2",
+  "method": "Unmodified decoded frames extracted with FFmpeg from the actual Playwright-recorded browser video. No rescaling, recoloring, pose or image changes.",
+  "commands": [
+    "ffmpeg -ss 84 -i actual-motion-review.webm -t 5 -vf fps=2 video-frames/joy-%02d.png",
+    "ffmpeg -ss 65 -i actual-motion-review.webm -t 1 -vf fps=10 video-frames/blink-%02d.png"
+  ],
+  "selectedFrames": [
+    "video-frames/joy-04.png",
+    "video-frames/joy-06.png",
+    "video-frames/joy-08.png",
+    "video-frames/blink-06.png"
+  ],
+  "visualReview": "Inspected jump elevation, landing squash, return to neutral and closed happy-eye blink. Pigment remains attached through the changed poses; eyes remain navy with no blue lid cover. Exact event/compositor frame alignment is not claimed."
+}

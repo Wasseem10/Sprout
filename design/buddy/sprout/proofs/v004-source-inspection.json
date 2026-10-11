@@ -1,0 +1,1052 @@
+{
+  "source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-clear-prism-rim-matched-v003.blend",
+  "source_sha256": "7eedbf68bd66c8242ccb91815c547b1e5da8832208f076a6989a589e7bf00e20",
+  "scene": "INSIGHTOS_Sprout_v003_clear_prism_rim",
+  "fps": 24,
+  "bones": [
+    {
+      "name": "ROOT",
+      "parent": null,
+      "head": [
+        0.0,
+        0.0,
+        -0.6000000238418579
+      ],
+      "tail": [
+        0.0,
+        0.0,
+        -0.20000000298023224
+      ],
+      "matrix": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          -0.6000000238418579
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    {
+      "name": "BODY",
+      "parent": "ROOT",
+      "head": [
+        0.0,
+        0.0,
+        -0.5
+      ],
+      "tail": [
+        0.0,
+        0.0,
+        0.6000000238418579
+      ],
+      "matrix": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          -0.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    {
+      "name": "FACE_MOUNT",
+      "parent": "BODY",
+      "head": [
+        0.0,
+        -0.6259999871253967,
+        0.014999999664723873
+      ],
+      "tail": [
+        0.0,
+        -0.6259999871253967,
+        0.23999999463558197
+      ],
+      "matrix": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -1.0,
+          -0.6259999871253967
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.014999985694885254
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    {
+      "name": "BUD_L_BASE",
+      "parent": "BODY",
+      "head": [
+        -0.30000001192092896,
+        0.0,
+        0.6700000166893005
+      ],
+      "tail": [
+        -0.4099999964237213,
+        0.0,
+        0.9399999976158142
+      ],
+      "matrix": [
+        [
+          0.8576470613479614,
+          -0.3772968649864197,
+          0.3494117558002472,
+          -0.30000001192092896
+        ],
+        [
+          0.3772968649864197,
+          0.0,
+          -0.9260923862457275,
+          0.0
+        ],
+        [
+          0.3494117558002472,
+          0.9260924458503723,
+          0.14235292375087738,
+          0.6700000762939453
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    {
+      "name": "BUD_L_TIP",
+      "parent": "BUD_L_BASE",
+      "head": [
+        -0.4099999964237213,
+        0.0,
+        0.9399999976158142
+      ],
+      "tail": [
+        -0.46000000834465027,
+        0.0,
+        1.2000000476837158
+      ],
+      "matrix": [
+        [
+          0.964336633682251,
+          -0.18884745240211487,
+          0.18544934689998627,
+          -0.4099999964237213
+        ],
+        [
+          0.1888473927974701,
+          -7.450580596923828e-09,
+          -0.9820065498352051,
+          0.0
+        ],
+        [
+          0.18544936180114746,
+          0.9820066094398499,
+          0.03566332161426544,
+          0.940000057220459
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    {
+      "name": "BUD_R_BASE",
+      "parent": "BODY",
+      "head": [
+        0.3100000023841858,
+        0.0,
+        0.6600000262260437
+      ],
+      "tail": [
+        0.41999998688697815,
+        0.0,
+        0.8700000047683716
+      ],
+      "matrix": [
+        [
+          0.7846975326538086,
+          0.4640069901943207,
+          -0.4110320508480072,
+          0.3100000023841858
+        ],
+        [
+          -0.46400701999664307,
+          -1.4901161193847656e-08,
+          -0.8858315348625183,
+          0.0
+        ],
+        [
+          -0.4110320508480072,
+          0.8858316540718079,
+          0.2153024822473526,
+          0.6600000858306885
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    {
+      "name": "BUD_R_TIP",
+      "parent": "BUD_R_BASE",
+      "head": [
+        0.41999998688697815,
+        0.0,
+        0.8700000047683716
+      ],
+      "tail": [
+        0.47999998927116394,
+        0.0,
+        1.1299999952316284
+      ],
+      "matrix": [
+        [
+          0.949438214302063,
+          0.2248595654964447,
+          -0.21910125017166138,
+          0.41999998688697815
+        ],
+        [
+          -0.22485961019992828,
+          -1.4901161193847656e-08,
+          -0.9743912220001221,
+          -3.532549142093444e-09
+        ],
+        [
+          -0.2191012054681778,
+          0.9743911623954773,
+          0.05056183040142059,
+          0.8700000643730164
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    {
+      "name": "FOOT_L",
+      "parent": "ROOT",
+      "head": [
+        -0.4300000071525574,
+        0.0,
+        -0.6100000143051147
+      ],
+      "tail": [
+        -0.4300000071525574,
+        0.0,
+        -1.0399999618530273
+      ],
+      "matrix": [
+        [
+          1.0,
+          0.0,
+          -8.742277657347586e-08,
+          -0.4300000071525574
+        ],
+        [
+          8.742277657347586e-08,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          -1.0,
+          0.0,
+          -0.6100000143051147
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    {
+      "name": "FOOT_R",
+      "parent": "ROOT",
+      "head": [
+        0.4300000071525574,
+        0.0,
+        -0.6100000143051147
+      ],
+      "tail": [
+        0.4300000071525574,
+        0.0,
+        -1.0399999618530273
+      ],
+      "matrix": [
+        [
+          1.0,
+          0.0,
+          -8.742277657347586e-08,
+          0.4300000071525574
+        ],
+        [
+          8.742277657347586e-08,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          -1.0,
+          0.0,
+          -0.6100000143051147
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    }
+  ],
+  "objects": [
+    {
+      "name": "SPROUT_BODY",
+      "type": "MESH",
+      "parent": "RIG_Sprout",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": [],
+      "weight_counts": {
+        "ROOT": 0,
+        "BODY": 7005,
+        "FACE_MOUNT": 0,
+        "BUD_L_BASE": 935,
+        "BUD_L_TIP": 392,
+        "BUD_R_BASE": 898,
+        "BUD_R_TIP": 422,
+        "FOOT_L": 833,
+        "FOOT_R": 833
+      },
+      "bounds": [
+        [
+          -0.9988682270050049,
+          0.9988677501678467
+        ],
+        [
+          -0.6558386087417603,
+          0.6558388471603394
+        ],
+        [
+          -1.0694684982299805,
+          1.2248941659927368
+        ]
+      ]
+    },
+    {
+      "name": "SPROUT_CORE",
+      "type": "MESH",
+      "parent": "RIG_Sprout",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": [],
+      "weight_counts": {
+        "BODY": 610
+      },
+      "bounds": [
+        [
+          -0.7637662887573242,
+          0.7475997805595398
+        ],
+        [
+          -0.4949997067451477,
+          0.44499942660331726
+        ],
+        [
+          -0.7750000357627869,
+          0.7649999856948853
+        ]
+      ]
+    },
+    {
+      "name": "FACE_ANCHOR",
+      "type": "EMPTY",
+      "parent": "RIG_Sprout",
+      "location": [
+        0.0,
+        -0.24000000953674316,
+        -0.6259999871253967
+      ],
+      "rotation": [
+        -1.570796251296997,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "GAZE_L",
+      "type": "EMPTY",
+      "parent": "FACE_ANCHOR",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "GAZE_R",
+      "type": "EMPTY",
+      "parent": "FACE_ANCHOR",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "LID_L",
+      "type": "MESH",
+      "parent": "FACE_ANCHOR",
+      "location": [
+        -0.3486376702785492,
+        -0.7479068636894226,
+        0.2637554407119751
+      ],
+      "rotation": [
+        -0.00018325656128581613,
+        0.01334297377616167,
+        -0.030504604801535606
+      ],
+      "scale": [
+        0.003000000026077032,
+        0.004000000189989805,
+        0.0010000000474974513
+      ],
+      "constraints": [],
+      "weight_counts": {},
+      "bounds": [
+        [
+          -0.1959998905658722,
+          0.19599996507167816
+        ],
+        [
+          -0.027999991551041603,
+          0.027999984100461006
+        ],
+        [
+          -0.4959999918937683,
+          0.0
+        ]
+      ]
+    },
+    {
+      "name": "LID_R",
+      "type": "MESH",
+      "parent": "FACE_ANCHOR",
+      "location": [
+        0.34000033140182495,
+        -0.746999979019165,
+        0.2650003135204315
+      ],
+      "rotation": [
+        -1.1102235667262428e-12,
+        -9.663378985891313e-10,
+        1.4680571203129489e-09
+      ],
+      "scale": [
+        0.003000000026077032,
+        0.004000000189989805,
+        0.0010000000474974513
+      ],
+      "constraints": [],
+      "weight_counts": {},
+      "bounds": [
+        [
+          -0.1959998905658722,
+          0.19599996507167816
+        ],
+        [
+          -0.027999991551041603,
+          0.027999984100461006
+        ],
+        [
+          -0.4959999918937683,
+          0.0
+        ]
+      ]
+    },
+    {
+      "name": "EYE_L",
+      "type": "MESH",
+      "parent": "GAZE_L",
+      "location": [
+        -0.3400000035762787,
+        -0.6259999871253967,
+        0.014999999664723873
+      ],
+      "rotation": [
+        0.0,
+        -0.11999999731779099,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": [],
+      "weight_counts": {},
+      "bounds": [
+        [
+          -0.17699992656707764,
+          0.17699997127056122
+        ],
+        [
+          -0.07999996840953827,
+          0.07999996840953827
+        ],
+        [
+          -0.23499999940395355,
+          0.23499999940395355
+        ]
+      ]
+    },
+    {
+      "name": "EYE_R",
+      "type": "MESH",
+      "parent": "GAZE_R",
+      "location": [
+        0.3400000035762787,
+        -0.6259999871253967,
+        0.014999999664723873
+      ],
+      "rotation": [
+        0.0,
+        0.11999999731779099,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": [],
+      "weight_counts": {},
+      "bounds": [
+        [
+          -0.17699992656707764,
+          0.17699997127056122
+        ],
+        [
+          -0.07999996840953827,
+          0.07999996840953827
+        ],
+        [
+          -0.23499999940395355,
+          0.23499999940395355
+        ]
+      ]
+    },
+    {
+      "name": "CLOSED_EYE_L",
+      "type": "MESH",
+      "parent": "LID_L",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": [],
+      "weight_counts": {},
+      "bounds": [
+        [
+          -0.10999999940395355,
+          0.10999999940395355
+        ],
+        [
+          -0.041999999433755875,
+          -0.024000000208616257
+        ],
+        [
+          -0.26899999380111694,
+          -0.22300000488758087
+        ]
+      ]
+    },
+    {
+      "name": "CLOSED_EYE_R",
+      "type": "MESH",
+      "parent": "LID_R",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": [],
+      "weight_counts": {},
+      "bounds": [
+        [
+          -0.10999999940395355,
+          0.10999999940395355
+        ],
+        [
+          -0.041999999433755875,
+          -0.024000000208616257
+        ],
+        [
+          -0.26899999380111694,
+          -0.22300000488758087
+        ]
+      ]
+    }
+  ],
+  "owners": [
+    {
+      "owner": "RIG_Sprout",
+      "tracks": [
+        {
+          "name": "Sprout_Idle",
+          "action": "Sprout_Idle_Rig",
+          "range": [
+            1.0,
+            145.0
+          ],
+          "curves": [
+            "pose.bones[\"BODY\"].location",
+            "pose.bones[\"BODY\"].rotation_euler",
+            "pose.bones[\"BODY\"].scale",
+            "pose.bones[\"BUD_L_BASE\"].location",
+            "pose.bones[\"BUD_L_BASE\"].rotation_euler",
+            "pose.bones[\"BUD_L_BASE\"].scale",
+            "pose.bones[\"BUD_L_TIP\"].location",
+            "pose.bones[\"BUD_L_TIP\"].rotation_euler",
+            "pose.bones[\"BUD_L_TIP\"].scale",
+            "pose.bones[\"BUD_R_BASE\"].location",
+            "pose.bones[\"BUD_R_BASE\"].rotation_euler",
+            "pose.bones[\"BUD_R_BASE\"].scale",
+            "pose.bones[\"BUD_R_TIP\"].location",
+            "pose.bones[\"BUD_R_TIP\"].rotation_euler",
+            "pose.bones[\"BUD_R_TIP\"].scale",
+            "pose.bones[\"FACE_MOUNT\"].location",
+            "pose.bones[\"FACE_MOUNT\"].rotation_euler",
+            "pose.bones[\"FACE_MOUNT\"].scale",
+            "pose.bones[\"FOOT_L\"].location",
+            "pose.bones[\"FOOT_L\"].rotation_euler",
+            "pose.bones[\"FOOT_L\"].scale",
+            "pose.bones[\"FOOT_R\"].location",
+            "pose.bones[\"FOOT_R\"].rotation_euler",
+            "pose.bones[\"FOOT_R\"].scale",
+            "pose.bones[\"ROOT\"].location",
+            "pose.bones[\"ROOT\"].rotation_euler",
+            "pose.bones[\"ROOT\"].scale"
+          ]
+        },
+        {
+          "name": "Sprout_Listen",
+          "action": "Sprout_Listen_Rig",
+          "range": [
+            1.0,
+            145.0
+          ],
+          "curves": [
+            "pose.bones[\"BODY\"].location",
+            "pose.bones[\"BODY\"].rotation_euler",
+            "pose.bones[\"BODY\"].scale",
+            "pose.bones[\"BUD_L_BASE\"].location",
+            "pose.bones[\"BUD_L_BASE\"].rotation_euler",
+            "pose.bones[\"BUD_L_BASE\"].scale",
+            "pose.bones[\"BUD_L_TIP\"].location",
+            "pose.bones[\"BUD_L_TIP\"].rotation_euler",
+            "pose.bones[\"BUD_L_TIP\"].scale",
+            "pose.bones[\"BUD_R_BASE\"].location",
+            "pose.bones[\"BUD_R_BASE\"].rotation_euler",
+            "pose.bones[\"BUD_R_BASE\"].scale",
+            "pose.bones[\"BUD_R_TIP\"].location",
+            "pose.bones[\"BUD_R_TIP\"].rotation_euler",
+            "pose.bones[\"BUD_R_TIP\"].scale",
+            "pose.bones[\"FACE_MOUNT\"].location",
+            "pose.bones[\"FACE_MOUNT\"].rotation_euler",
+            "pose.bones[\"FACE_MOUNT\"].scale",
+            "pose.bones[\"FOOT_L\"].location",
+            "pose.bones[\"FOOT_L\"].rotation_euler",
+            "pose.bones[\"FOOT_L\"].scale",
+            "pose.bones[\"FOOT_R\"].location",
+            "pose.bones[\"FOOT_R\"].rotation_euler",
+            "pose.bones[\"FOOT_R\"].scale",
+            "pose.bones[\"ROOT\"].location",
+            "pose.bones[\"ROOT\"].rotation_euler",
+            "pose.bones[\"ROOT\"].scale"
+          ]
+        },
+        {
+          "name": "Sprout_Think",
+          "action": "Sprout_Think_Rig",
+          "range": [
+            1.0,
+            145.0
+          ],
+          "curves": [
+            "pose.bones[\"BODY\"].location",
+            "pose.bones[\"BODY\"].rotation_euler",
+            "pose.bones[\"BODY\"].scale",
+            "pose.bones[\"BUD_L_BASE\"].location",
+            "pose.bones[\"BUD_L_BASE\"].rotation_euler",
+            "pose.bones[\"BUD_L_BASE\"].scale",
+            "pose.bones[\"BUD_L_TIP\"].location",
+            "pose.bones[\"BUD_L_TIP\"].rotation_euler",
+            "pose.bones[\"BUD_L_TIP\"].scale",
+            "pose.bones[\"BUD_R_BASE\"].location",
+            "pose.bones[\"BUD_R_BASE\"].rotation_euler",
+            "pose.bones[\"BUD_R_BASE\"].scale",
+            "pose.bones[\"BUD_R_TIP\"].location",
+            "pose.bones[\"BUD_R_TIP\"].rotation_euler",
+            "pose.bones[\"BUD_R_TIP\"].scale",
+            "pose.bones[\"FACE_MOUNT\"].location",
+            "pose.bones[\"FACE_MOUNT\"].rotation_euler",
+            "pose.bones[\"FACE_MOUNT\"].scale",
+            "pose.bones[\"FOOT_L\"].location",
+            "pose.bones[\"FOOT_L\"].rotation_euler",
+            "pose.bones[\"FOOT_L\"].scale",
+            "pose.bones[\"FOOT_R\"].location",
+            "pose.bones[\"FOOT_R\"].rotation_euler",
+            "pose.bones[\"FOOT_R\"].scale",
+            "pose.bones[\"ROOT\"].location",
+            "pose.bones[\"ROOT\"].rotation_euler",
+            "pose.bones[\"ROOT\"].scale"
+          ]
+        },
+        {
+          "name": "Sprout_Speak",
+          "action": "Sprout_Speak_Rig",
+          "range": [
+            1.0,
+            145.0
+          ],
+          "curves": [
+            "pose.bones[\"BODY\"].location",
+            "pose.bones[\"BODY\"].rotation_euler",
+            "pose.bones[\"BODY\"].scale",
+            "pose.bones[\"BUD_L_BASE\"].location",
+            "pose.bones[\"BUD_L_BASE\"].rotation_euler",
+            "pose.bones[\"BUD_L_BASE\"].scale",
+            "pose.bones[\"BUD_L_TIP\"].location",
+            "pose.bones[\"BUD_L_TIP\"].rotation_euler",
+            "pose.bones[\"BUD_L_TIP\"].scale",
+            "pose.bones[\"BUD_R_BASE\"].location",
+            "pose.bones[\"BUD_R_BASE\"].rotation_euler",
+            "pose.bones[\"BUD_R_BASE\"].scale",
+            "pose.bones[\"BUD_R_TIP\"].location",
+            "pose.bones[\"BUD_R_TIP\"].rotation_euler",
+            "pose.bones[\"BUD_R_TIP\"].scale",
+            "pose.bones[\"FACE_MOUNT\"].location",
+            "pose.bones[\"FACE_MOUNT\"].rotation_euler",
+            "pose.bones[\"FACE_MOUNT\"].scale",
+            "pose.bones[\"FOOT_L\"].location",
+            "pose.bones[\"FOOT_L\"].rotation_euler",
+            "pose.bones[\"FOOT_L\"].scale",
+            "pose.bones[\"FOOT_R\"].location",
+            "pose.bones[\"FOOT_R\"].rotation_euler",
+            "pose.bones[\"FOOT_R\"].scale",
+            "pose.bones[\"ROOT\"].location",
+            "pose.bones[\"ROOT\"].rotation_euler",
+            "pose.bones[\"ROOT\"].scale"
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "Key",
+      "tracks": [
+        {
+          "name": "Sprout_Idle",
+          "action": "Sprout_Idle_Jelly",
+          "range": [
+            1.0,
+            145.0
+          ],
+          "curves": [
+            "key_blocks[\"Jelly_Squash\"].value",
+            "key_blocks[\"Jelly_Sway_L\"].value",
+            "key_blocks[\"Jelly_Sway_R\"].value"
+          ]
+        },
+        {
+          "name": "Sprout_Listen",
+          "action": "Sprout_Listen_Jelly",
+          "range": [
+            1.0,
+            145.0
+          ],
+          "curves": [
+            "key_blocks[\"Jelly_Squash\"].value",
+            "key_blocks[\"Jelly_Sway_L\"].value",
+            "key_blocks[\"Jelly_Sway_R\"].value"
+          ]
+        },
+        {
+          "name": "Sprout_Think",
+          "action": "Sprout_Think_Jelly",
+          "range": [
+            1.0,
+            145.0
+          ],
+          "curves": [
+            "key_blocks[\"Jelly_Squash\"].value",
+            "key_blocks[\"Jelly_Sway_L\"].value",
+            "key_blocks[\"Jelly_Sway_R\"].value"
+          ]
+        },
+        {
+          "name": "Sprout_Speak",
+          "action": "Sprout_Speak_Jelly",
+          "range": [
+            1.0,
+            145.0
+          ],
+          "curves": [
+            "key_blocks[\"Jelly_Squash\"].value",
+            "key_blocks[\"Jelly_Sway_L\"].value",
+            "key_blocks[\"Jelly_Sway_R\"].value"
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "Key.001",
+      "tracks": [
+        {
+          "name": "Sprout_Idle",
+          "action": "Sprout_Idle_Core_v003",
+          "range": [
+            1.0,
+            145.0
+          ],
+          "curves": [
+            "key_blocks[\"Jelly_Squash\"].value",
+            "key_blocks[\"Jelly_Sway_L\"].value",
+            "key_blocks[\"Jelly_Sway_R\"].value"
+          ]
+        },
+        {
+          "name": "Sprout_Listen",
+          "action": "Sprout_Listen_Core_v003",
+          "range": [
+            1.0,
+            145.0
+          ],
+          "curves": [
+            "key_blocks[\"Jelly_Squash\"].value",
+            "key_blocks[\"Jelly_Sway_L\"].value",
+            "key_blocks[\"Jelly_Sway_R\"].value"
+          ]
+        },
+        {
+          "name": "Sprout_Think",
+          "action": "Sprout_Think_Core_v003",
+          "range": [
+            1.0,
+            145.0
+          ],
+          "curves": [
+            "key_blocks[\"Jelly_Squash\"].value",
+            "key_blocks[\"Jelly_Sway_L\"].value",
+            "key_blocks[\"Jelly_Sway_R\"].value"
+          ]
+        },
+        {
+          "name": "Sprout_Speak",
+          "action": "Sprout_Speak_Core_v003",
+          "range": [
+            1.0,
+            145.0
+          ],
+          "curves": [
+            "key_blocks[\"Jelly_Squash\"].value",
+            "key_blocks[\"Jelly_Sway_L\"].value",
+            "key_blocks[\"Jelly_Sway_R\"].value"
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "REACTION_ROOT",
+      "tracks": [
+        {
+          "name": "Sprout_Click",
+          "action": "Sprout_Click_Reaction",
+          "range": [
+            1.0,
+            11.0
+          ],
+          "curves": [
+            "location",
+            "rotation_euler",
+            "scale"
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "LID_L",
+      "tracks": [
+        {
+          "name": "Sprout_Blink",
+          "action": "Sprout_Blink_L",
+          "range": [
+            1.0,
+            5.0
+          ],
+          "curves": [
+            "scale"
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "LID_R",
+      "tracks": [
+        {
+          "name": "Sprout_Blink",
+          "action": "Sprout_Blink_R",
+          "range": [
+            1.0,
+            5.0
+          ],
+          "curves": [
+            "scale"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "body_vertices": 7528,
+  "body_triangles": 15052,
+  "nonmanifold_edges": 0,
+  "dimensions": [
+    1.9977359771728516,
+    1.3116774559020996,
+    2.2943625450134277
+  ],
+  "runtime_mesh_vertices": 8952,
+  "source_masses_preserved": [
+    "SOURCE_Sprout_Body",
+    "SOURCE_Bud_L_Base",
+    "SOURCE_Bud_L_Tip",
+    "SOURCE_Bud_R_Base",
+    "SOURCE_Bud_R_Tip",
+    "SOURCE_Foot_L",
+    "SOURCE_Foot_R"
+  ],
+  "topology_finalized_before_keys": true
+}

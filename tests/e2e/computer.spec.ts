@@ -72,7 +72,7 @@ test('starts as a general assistant without preparing a file folder', async ({ p
     if (new URL(request.url()).pathname === '/api/computer/demo-folder') folderSetupCalls++;
   });
   await page.goto('/');
-  await expect(page.getByRole('region', { name: 'Start with InsightOS' })).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Start with Sprout' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Find jobs nearby' })).toBeEnabled();
   await expect(page.getByRole('button', { name: 'Open an app' })).toBeEnabled();
   expect(folderSetupCalls).toBe(0);
@@ -127,6 +127,9 @@ test('the buddy shows task progress without hiding the conversation controls', a
   await page.goto('/?desktop=buddy');
   await page.getByRole('button', { name: 'Expand conversation', exact: true }).click();
   await expect(page.getByLabel('Current task')).toContainText('Which color would you like?');
+  await expect(page.getByRole('button', { name: 'Send request', exact: true })).toBeInViewport({
+    ratio: 1,
+  });
   await expect(
     page.getByRole('button', { name: 'Start voice conversation', exact: true }),
   ).toBeVisible();
@@ -170,7 +173,7 @@ test('recovers a stale save folder after the backend restarts', async ({ page })
         });
   });
   await page.goto('/');
-  await expect(page.getByRole('region', { name: 'Start with InsightOS' })).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Start with Sprout' })).toBeVisible();
   const input = page.getByLabel('Tell your computer what to do');
   await input.fill('Can you make me a PowerPoint on George Washington?');
   await input.press('Enter');

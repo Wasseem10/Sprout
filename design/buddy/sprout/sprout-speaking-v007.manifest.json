@@ -1,0 +1,1114 @@
+{
+  "variant": "speaking-v007",
+  "status": "Authored and source/export integrity verified; browser/native integration recorded separately",
+  "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-speaking-v007.glb",
+  "sha256": "dc609f0962b946bcae632988697d3dc12284e4405b03d80a3dd20950dd0fdb1c",
+  "bytes": 1460192,
+  "editable_source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-speaking-v007.blend",
+  "editable_source_sha256": "d2fa7c070b0c28fbd93afafdc7215aed28224ce2bc1221350c4f40a42e66610a",
+  "source_export": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-speaking-source-v007.glb",
+  "source_export_sha256": "b71edbcab10fe818953276a73f5c6f5d8e35901b6b3fdaf5449cd40d319f74ae",
+  "baseline_path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-daylight-v006.glb",
+  "baseline_sha256": "b8de0b88395e4b876f0eb668a0a7f39317c24d3530c9d15e58a01c7aa561824f",
+  "blender": "5.2.2 LTS",
+  "settings": {
+    "filepath": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-speaking-source-v007.glb",
+    "export_format": "GLB",
+    "use_selection": true,
+    "use_active_scene": true,
+    "export_animations": true,
+    "export_animation_mode": "NLA_TRACKS",
+    "export_force_sampling": true,
+    "export_frame_step": 1,
+    "export_anim_slide_to_zero": true,
+    "export_apply": false,
+    "export_def_bones": false,
+    "export_morph": true,
+    "export_morph_normal": true,
+    "export_morph_animation": true,
+    "export_normals": true,
+    "export_texcoords": true,
+    "export_vertex_color": "ACTIVE",
+    "export_all_vertex_colors": true,
+    "export_optimize_animation_size": true,
+    "export_optimize_animation_keep_anim_armature": true,
+    "export_optimize_animation_keep_anim_object": true,
+    "export_morph_reset_sk_data": false,
+    "export_optimize_disable_viewport": false
+  },
+  "profile": "happy-morph-v005",
+  "appearance_profile": "daylight",
+  "authoring": {
+    "clip": "Sprout_Speak",
+    "duration_seconds": 6,
+    "fps": 24,
+    "channels": 29,
+    "source_frames": 145,
+    "identity": "Planted explaining; alternating bud phrases with 130ms tip follow-through; slow chest expansion.",
+    "foot_and_root_trs_constant": true,
+    "eye_reaction_or_gaze_channels_added": false,
+    "new_mouth_or_phoneme_sync": false
+  },
+  "source_lighting": {
+    "cards": {
+      "key": [
+        7,
+        [
+          0.92,
+          0.97,
+          1
+        ]
+      ],
+      "fill": [
+        6,
+        [
+          0.78,
+          0.92,
+          1
+        ]
+      ],
+      "rim": [
+        6,
+        [
+          0.84,
+          1,
+          0.95
+        ]
+      ],
+      "upper": [
+        8,
+        [
+          0.88,
+          0.95,
+          1
+        ]
+      ]
+    },
+    "key_watts": 385,
+    "fill_watts": 45,
+    "rim_watts": 200,
+    "world_strength": 0.18,
+    "scope": "Cycles approximation of daylight runtime reflection direction; not identical renderer pixels"
+  },
+  "materials": [
+    {
+      "doubleSided": false,
+      "extensions": {
+        "KHR_materials_clearcoat": {
+          "clearcoatFactor": 0.5199999809265137,
+          "clearcoatRoughnessFactor": 0.10000000149011612
+        },
+        "KHR_materials_transmission": {
+          "transmissionFactor": 0.800000011920929
+        },
+        "KHR_materials_volume": {
+          "attenuationColor": [
+            0.5225215554237366,
+            0.868899405002594,
+            1
+          ],
+          "attenuationDistance": 4.499999966472387,
+          "thicknessFactor": 0.3400000035762787
+        },
+        "KHR_materials_ior": {
+          "ior": 1.399999976158142
+        }
+      },
+      "name": "MAT_Sprout_DaylightShell_v006",
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0,
+        "roughnessFactor": 0.10999999940395355
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "MAT_Sprout_Eyes",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.003000000026077032,
+          0.008999999612569809,
+          0.02800000086426735,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.23000000417232513
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "MAT_Sprout_Glints",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.9599999785423279,
+          0.9900000095367432,
+          1,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.15000000596046448
+      }
+    },
+    {
+      "doubleSided": true,
+      "emissiveFactor": [
+        0.7799999713897705,
+        0.7799999713897705,
+        0.7799999713897705
+      ],
+      "emissiveTexture": {
+        "index": 0
+      },
+      "extensions": {
+        "KHR_materials_clearcoat": {
+          "clearcoatFactor": 0.03999999910593033,
+          "clearcoatRoughnessFactor": 0.10000000149011612
+        }
+      },
+      "name": "MAT_Sprout_DaylightCore_v006",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 1
+        },
+        "metallicFactor": 0,
+        "roughnessFactor": 0.15000000596046448
+      }
+    }
+  ],
+  "eye_clips": {
+    "Sprout_Blink": {
+      "removed_lid_channels": [
+        {
+          "node": "LID_L",
+          "path": "scale"
+        },
+        {
+          "node": "LID_R",
+          "path": "scale"
+        }
+      ],
+      "added_face_channels": [
+        {
+          "node": "EYE_L",
+          "path": "weights"
+        },
+        {
+          "node": "GLINT_L",
+          "path": "scale"
+        },
+        {
+          "node": "EYE_R",
+          "path": "weights"
+        },
+        {
+          "node": "GLINT_R",
+          "path": "scale"
+        }
+      ],
+      "source_closure_samples": [
+        0,
+        0.6996996877668379,
+        1,
+        0.34934934338291845,
+        0
+      ],
+      "duration": 0.16666666666666666,
+      "channels": 4
+    },
+    "Sprout_SleepEnter": {
+      "removed_lid_channels": [
+        {
+          "node": "LID_L",
+          "path": "scale"
+        },
+        {
+          "node": "LID_R",
+          "path": "scale"
+        }
+      ],
+      "added_face_channels": [
+        {
+          "node": "EYE_L",
+          "path": "weights"
+        },
+        {
+          "node": "GLINT_L",
+          "path": "scale"
+        },
+        {
+          "node": "EYE_R",
+          "path": "weights"
+        },
+        {
+          "node": "GLINT_R",
+          "path": "scale"
+        }
+      ],
+      "source_closure_samples": [
+        0,
+        0.000032969239588316,
+        0.0005064626327819295,
+        0.002449993357375577,
+        0.007364432024466502,
+        0.017020817976575474,
+        0.03325717877577972,
+        0.05778452366202682,
+        0.09201110745812799,
+        0.13689209235919728,
+        0.1928100645601809,
+        0.2594898522675813,
+        0.3359500820094997,
+        0.42049187224906487,
+        0.51072426529618,
+        0.603624577756162,
+        0.6956307608802039,
+        0.7827624892806625,
+        0.8607658170484327,
+        0.9252771352743124,
+        0.9720000170611285,
+        0.9968892819172627,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "duration": 1.6666666666666667,
+      "channels": 33
+    },
+    "Sprout_SleepLoop": {
+      "removed_lid_channels": [
+        {
+          "node": "LID_L",
+          "path": "scale"
+        },
+        {
+          "node": "LID_R",
+          "path": "scale"
+        }
+      ],
+      "added_face_channels": [
+        {
+          "node": "EYE_L",
+          "path": "weights"
+        },
+        {
+          "node": "GLINT_L",
+          "path": "scale"
+        },
+        {
+          "node": "EYE_R",
+          "path": "weights"
+        },
+        {
+          "node": "GLINT_R",
+          "path": "scale"
+        }
+      ],
+      "source_closure_samples": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "duration": 5,
+      "channels": 33
+    },
+    "Sprout_Wake": {
+      "removed_lid_channels": [
+        {
+          "node": "LID_L",
+          "path": "scale"
+        },
+        {
+          "node": "LID_R",
+          "path": "scale"
+        }
+      ],
+      "added_face_channels": [
+        {
+          "node": "EYE_L",
+          "path": "weights"
+        },
+        {
+          "node": "GLINT_L",
+          "path": "scale"
+        },
+        {
+          "node": "EYE_R",
+          "path": "weights"
+        },
+        {
+          "node": "GLINT_R",
+          "path": "scale"
+        }
+      ],
+      "source_closure_samples": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0.9996940414230148,
+        0.9720000170611285,
+        0.9055410767938044,
+        0.8099927429680351,
+        0.6956307608802039,
+        0.5725713334642015,
+        0.450074063168393,
+        0.3359500820094997,
+        0.2361132566396658,
+        0.15430452432241049,
+        0.09201110745812799,
+        0.048592591727221454,
+        0.021612939325061527,
+        0.007364432024466502,
+        0.0015536902362370754,
+        0.00010284954668940961,
+        0
+      ],
+      "duration": 1.25,
+      "channels": 33
+    }
+  },
+  "removed_rendered_objects": [
+    "CLOSED_EYE_L",
+    "CLOSED_EYE_R",
+    "LID_L",
+    "LID_R"
+  ],
+  "baseline_source_inspection": {
+    "blender": "5.2.2 LTS",
+    "source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-daylight-v006.blend",
+    "source_sha256": "5c0d0155d9f414886fd72ffd25276102f8800c77802bf72d8fecdc6fd7d5b775",
+    "scene": "INSIGHTOS_Sprout_v006_daylight",
+    "objects": 30,
+    "bones": [
+      {
+        "name": "ROOT",
+        "parent": null,
+        "matrix_local": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            -1,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            -0.6000000238418579
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "BODY",
+        "parent": "ROOT",
+        "matrix_local": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            -1,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            -0.5
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "FACE_MOUNT",
+        "parent": "BODY",
+        "matrix_local": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            -1,
+            -0.6259999871253967
+          ],
+          [
+            0,
+            1,
+            0,
+            0.014999985694885254
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "BUD_L_BASE",
+        "parent": "BODY",
+        "matrix_local": [
+          [
+            0.8576470613479614,
+            -0.3772968649864197,
+            0.3494117558002472,
+            -0.30000001192092896
+          ],
+          [
+            0.3772968649864197,
+            0,
+            -0.9260923862457275,
+            0
+          ],
+          [
+            0.3494117558002472,
+            0.9260924458503723,
+            0.14235292375087738,
+            0.6700000762939453
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "BUD_L_TIP",
+        "parent": "BUD_L_BASE",
+        "matrix_local": [
+          [
+            0.964336633682251,
+            -0.18884745240211487,
+            0.18544934689998627,
+            -0.4099999964237213
+          ],
+          [
+            0.1888473927974701,
+            -7.450580596923828e-9,
+            -0.9820065498352051,
+            0
+          ],
+          [
+            0.18544936180114746,
+            0.9820066094398499,
+            0.03566332161426544,
+            0.940000057220459
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "BUD_R_BASE",
+        "parent": "BODY",
+        "matrix_local": [
+          [
+            0.7846975326538086,
+            0.4640069901943207,
+            -0.4110320508480072,
+            0.3100000023841858
+          ],
+          [
+            -0.46400701999664307,
+            -1.4901161193847656e-8,
+            -0.8858315348625183,
+            0
+          ],
+          [
+            -0.4110320508480072,
+            0.8858316540718079,
+            0.2153024822473526,
+            0.6600000858306885
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "BUD_R_TIP",
+        "parent": "BUD_R_BASE",
+        "matrix_local": [
+          [
+            0.949438214302063,
+            0.2248595654964447,
+            -0.21910125017166138,
+            0.41999998688697815
+          ],
+          [
+            -0.22485961019992828,
+            -1.4901161193847656e-8,
+            -0.9743912220001221,
+            -3.532549142093444e-9
+          ],
+          [
+            -0.2191012054681778,
+            0.9743911623954773,
+            0.05056183040142059,
+            0.8700000643730164
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "FOOT_L",
+        "parent": "ROOT",
+        "matrix_local": [
+          [
+            1,
+            0,
+            -8.742277657347586e-8,
+            -0.4300000071525574
+          ],
+          [
+            8.742277657347586e-8,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            -1,
+            0,
+            -0.6100000143051147
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "name": "FOOT_R",
+        "parent": "ROOT",
+        "matrix_local": [
+          [
+            1,
+            0,
+            -8.742277657347586e-8,
+            0.4300000071525574
+          ],
+          [
+            8.742277657347586e-8,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            -1,
+            0,
+            -0.6100000143051147
+          ],
+          [
+            0,
+            0,
+            0,
+            1
+          ]
+        ]
+      }
+    ],
+    "tracks": {
+      "RIG_Sprout": [
+        {
+          "name": "Sprout_Idle",
+          "action": "Sprout_Idle_Rig",
+          "range": [
+            1,
+            145
+          ]
+        },
+        {
+          "name": "Sprout_Listen",
+          "action": "Sprout_Listen_Rig",
+          "range": [
+            1,
+            145
+          ]
+        },
+        {
+          "name": "Sprout_Think",
+          "action": "Sprout_Think_Rig",
+          "range": [
+            1,
+            145
+          ]
+        },
+        {
+          "name": "Sprout_Speak",
+          "action": "Sprout_Speak_Rig",
+          "range": [
+            1,
+            145
+          ]
+        },
+        {
+          "name": "Sprout_JoyJump",
+          "action": "Sprout_JoyJump_Rig_v004",
+          "range": [
+            1,
+            41
+          ]
+        },
+        {
+          "name": "Sprout_SleepEnter",
+          "action": "Sprout_SleepEnter_Rig_v004",
+          "range": [
+            1,
+            41
+          ]
+        },
+        {
+          "name": "Sprout_SleepLoop",
+          "action": "Sprout_SleepLoop_Rig_v004",
+          "range": [
+            1,
+            121
+          ]
+        },
+        {
+          "name": "Sprout_Wake",
+          "action": "Sprout_Wake_Rig_v004",
+          "range": [
+            1,
+            31
+          ]
+        }
+      ],
+      "Key": [
+        {
+          "name": "Sprout_Idle",
+          "action": "Sprout_Idle_Jelly",
+          "range": [
+            1,
+            145
+          ]
+        },
+        {
+          "name": "Sprout_Listen",
+          "action": "Sprout_Listen_Jelly",
+          "range": [
+            1,
+            145
+          ]
+        },
+        {
+          "name": "Sprout_Think",
+          "action": "Sprout_Think_Jelly",
+          "range": [
+            1,
+            145
+          ]
+        },
+        {
+          "name": "Sprout_Speak",
+          "action": "Sprout_Speak_Jelly",
+          "range": [
+            1,
+            145
+          ]
+        },
+        {
+          "name": "Sprout_JoyJump",
+          "action": "Sprout_JoyJump_Key_v004",
+          "range": [
+            1,
+            41
+          ]
+        },
+        {
+          "name": "Sprout_SleepEnter",
+          "action": "Sprout_SleepEnter_Key_v004",
+          "range": [
+            1,
+            41
+          ]
+        },
+        {
+          "name": "Sprout_SleepLoop",
+          "action": "Sprout_SleepLoop_Key_v004",
+          "range": [
+            1,
+            121
+          ]
+        },
+        {
+          "name": "Sprout_Wake",
+          "action": "Sprout_Wake_Key_v004",
+          "range": [
+            1,
+            31
+          ]
+        }
+      ],
+      "Key.001": [
+        {
+          "name": "Sprout_Idle",
+          "action": "Sprout_Idle_Core_v003",
+          "range": [
+            1,
+            145
+          ]
+        },
+        {
+          "name": "Sprout_Listen",
+          "action": "Sprout_Listen_Core_v003",
+          "range": [
+            1,
+            145
+          ]
+        },
+        {
+          "name": "Sprout_Think",
+          "action": "Sprout_Think_Core_v003",
+          "range": [
+            1,
+            145
+          ]
+        },
+        {
+          "name": "Sprout_Speak",
+          "action": "Sprout_Speak_Core_v003",
+          "range": [
+            1,
+            145
+          ]
+        },
+        {
+          "name": "Sprout_JoyJump",
+          "action": "Sprout_JoyJump_Key.001_v004",
+          "range": [
+            1,
+            41
+          ]
+        },
+        {
+          "name": "Sprout_SleepEnter",
+          "action": "Sprout_SleepEnter_Key.001_v004",
+          "range": [
+            1,
+            41
+          ]
+        },
+        {
+          "name": "Sprout_SleepLoop",
+          "action": "Sprout_SleepLoop_Key.001_v004",
+          "range": [
+            1,
+            121
+          ]
+        },
+        {
+          "name": "Sprout_Wake",
+          "action": "Sprout_Wake_Key.001_v004",
+          "range": [
+            1,
+            31
+          ]
+        }
+      ]
+    }
+  },
+  "new_accessor_provenance": [
+    {
+      "source_accessor": 214,
+      "runtime_accessor": 227,
+      "sha256": "2d42ec5a09a566dd5e33b800047f764b168a9a4f5b75e844d95b0c50d3d61b51"
+    },
+    {
+      "source_accessor": 215,
+      "runtime_accessor": 228,
+      "sha256": "e1728b4b835664e9722b4f3e4e65724bde9ca2e677394a12effe6f4eb09e55cb"
+    },
+    {
+      "source_accessor": 216,
+      "runtime_accessor": 229,
+      "sha256": "4f0946d92eda014d4b7abef47631c760f1be60e155aa964df19c4971fed1ec32"
+    },
+    {
+      "source_accessor": 217,
+      "runtime_accessor": 230,
+      "sha256": "23f352b6ab676393cd1a7011ee9a38db3f35760e7de058fc60e05136ecd5764d"
+    },
+    {
+      "source_accessor": 218,
+      "runtime_accessor": 231,
+      "sha256": "00d6be2b4957943139498b12703ad1d478d2bb5a468b9a16e120d97f44c408f1"
+    },
+    {
+      "source_accessor": 219,
+      "runtime_accessor": 232,
+      "sha256": "6d8ae824980e004176cc901116d7aa2a755a057a2dca1348c4b07f1cc8afd421"
+    },
+    {
+      "source_accessor": 220,
+      "runtime_accessor": 233,
+      "sha256": "87dd90aeba75ad7332197c20dd0592b050b1dc28d35685bfe2e0cf311cb66283"
+    },
+    {
+      "source_accessor": 221,
+      "runtime_accessor": 234,
+      "sha256": "7d46778ac7e0b5cb1debf95fdfc519d2dbf72ca5bb6aa8808b75a5bd5dfbf337"
+    },
+    {
+      "source_accessor": 222,
+      "runtime_accessor": 235,
+      "sha256": "c0940c9381fdf59f5d64b48fe9f6bf4242cd908381943d1f395aaf7e06f1fa34"
+    },
+    {
+      "source_accessor": 223,
+      "runtime_accessor": 236,
+      "sha256": "147aa03d43e0390380effea185da76cff72f5481b1df23533110c8ea301ef5e3"
+    },
+    {
+      "source_accessor": 224,
+      "runtime_accessor": 237,
+      "sha256": "10f699c201cff5b551a31620bb3f918af0d7c717531959159c851c755a2ebd8b"
+    },
+    {
+      "source_accessor": 225,
+      "runtime_accessor": 238,
+      "sha256": "0ae0e4c9b0204af1a2451c1b50fa78543cc6b410a1e24a14598f37b2e60e7ef8"
+    },
+    {
+      "source_accessor": 226,
+      "runtime_accessor": 239,
+      "sha256": "401025196a610173db1d09ad0d500e1f0e1bf7e554c8dfaf8a795d573d8c91e4"
+    },
+    {
+      "source_accessor": 227,
+      "runtime_accessor": 240,
+      "sha256": "e9acb8b429d1117da44351870f3df79149541d432439604778903c6969869010"
+    },
+    {
+      "source_accessor": 228,
+      "runtime_accessor": 241,
+      "sha256": "43b5bc3f5c9454ab016ed90bdec0e67fbee361eb41018b4c2ab817d9b0f9830d"
+    }
+  ],
+  "preservation": {
+    "pass": true,
+    "previous_file_hashes": {
+      "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-prism-v005.glb": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2",
+      "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-happy-eyes-source-v005.glb": "54458172f8fbf32facd76abfbcff38d4e48ba05644fba554dd02329bb3807e1a",
+      "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-happy-eyes-v005.blend": "e97a0df2bafbffda9da972c538dbde60c54bc2d71efe264c163c8913c746a113",
+      "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v005.glb": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2",
+      "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v005.png": "1142a9ef44f70e13813e0ee542672852a7c2b5bbf5e87f89eb9c747159af6277",
+      "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v005-sleep.png": "e5666517a4556ed7939e042ff10464d751954f4053a4e499c262388ada488887",
+      "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-daylight-v006.glb": "b8de0b88395e4b876f0eb668a0a7f39317c24d3530c9d15e58a01c7aa561824f",
+      "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-daylight-source-v006.glb": "aa992bed4546ab5dc0b0cdbfda214e219cfd394ce06bd6802bc495ba46f05843",
+      "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-daylight-v006.blend": "5c0d0155d9f414886fd72ffd25276102f8800c77802bf72d8fecdc6fd7d5b775",
+      "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v006.glb": "b8de0b88395e4b876f0eb668a0a7f39317c24d3530c9d15e58a01c7aa561824f",
+      "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v006.png": "9032ab7125f370c6f4a1f229406ab69408633cca442604f714b14d2c6db6ce53",
+      "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v006-sleep.png": "c476ff185fd92212b70dc865096efab68e43534078de13a6447bdbf0e70c9a4f"
+    },
+    "exception": "Only Sprout_Speak animation dictionary and its source-authored animation accessors are new.",
+    "all_original_binary_bytes_exact": true,
+    "geometry_materials_hierarchy_skins_exact": true,
+    "all_ten_non_speak_animations_exact": true
+  },
+  "fallbacks": [
+    {
+      "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-speaking-v007.png",
+      "public": "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v007.png",
+      "inherited_from": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-daylight-v006.png",
+      "sha256": "9032ab7125f370c6f4a1f229406ab69408633cca442604f714b14d2c6db6ce53",
+      "reason": "Exact same source idle/sleep actions, meshes, materials and approved Daylight lighting."
+    },
+    {
+      "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-speaking-sleep-v007.png",
+      "public": "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v007-sleep.png",
+      "inherited_from": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-daylight-sleep-v006.png",
+      "sha256": "c476ff185fd92212b70dc865096efab68e43534078de13a6447bdbf0e70c9a4f",
+      "reason": "Exact same source idle/sleep actions, meshes, materials and approved Daylight lighting."
+    }
+  ],
+  "scope": "Versioned Blender animation asset. Original v005/v006 and live Blender untouched. Runtime integration verified separately.",
+  "baseline_source_export": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-daylight-source-v006.glb"
+}

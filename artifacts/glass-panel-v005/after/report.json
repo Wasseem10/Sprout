@@ -1,0 +1,1133 @@
+{
+  "checkedAt": "2026-10-11T06:22:08.463Z",
+  "stage": "after",
+  "source": {
+    "src/DesktopBuddy.tsx": "c6a97b14beb1426d580d2ac24dc6ddeec1a57efa1c4cfb5b4f78b4606c948fff",
+    "src/buddy.css": "bd176572e6c2dce677c0b865deeb2bf9f6642188e873d241252915ecd6d1e36c"
+  },
+  "results": [
+    {
+      "name": "panel-392-populated-light",
+      "viewport": 440,
+      "populated": true,
+      "background": "light",
+      "metrics": {
+        "panel": {
+          "x": 24,
+          "y": 24,
+          "width": 392,
+          "height": 656
+        },
+        "rootWidth": 440,
+        "innerWidth": 440,
+        "opticalLayers": {
+          "frameBackground": "none",
+          "innerBackground": "linear-gradient(125deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 36%, rgba(255, 255, 255, 0.176) 74%, rgba(255, 255, 255, 0.23)), radial-gradient(at 5% 4%, rgba(139, 232, 255, 0.33), rgba(0, 0, 0, 0) 56%), radial-gradient(at 2% 100%, rgba(187, 166, 234, 0.22), rgba(0, 0, 0, 0) 65%), radial-gradient(at 100% 76%, rgba(255, 194, 183, 0.22), rgba(0, 0, 0, 0) 58%), linear-gradient(160deg, rgba(223, 243, 255, 0.22), rgba(213, 233, 255, 0.14) 55%, rgba(205, 223, 255, 0.25))",
+          "backdropFilter": "blur(20px) saturate(1.15)",
+          "opacity": "1"
+        },
+        "voice": {
+          "button": {
+            "x": 287,
+            "y": 603,
+            "width": 44,
+            "height": 44
+          },
+          "svg": {
+            "x": 297.5,
+            "y": 613.5,
+            "width": 23,
+            "height": 23
+          },
+          "centreError": {
+            "x": 0,
+            "y": 0
+          },
+          "padding": [
+            "0px",
+            "0px",
+            "0px",
+            "0px"
+          ],
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(16, 71, 161)",
+          "disabled": false
+        },
+        "bodyFont": "18px"
+      },
+      "samples": [
+        {
+          "x": 196,
+          "y": 295,
+          "rgba": [
+            238,
+            246,
+            254,
+            255
+          ]
+        },
+        {
+          "x": 118,
+          "y": 367,
+          "rgba": [
+            238,
+            246,
+            254,
+            255
+          ]
+        },
+        {
+          "x": 274,
+          "y": 407,
+          "rgba": [
+            227,
+            232,
+            245,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "name": "panel-392-populated-dark",
+      "viewport": 440,
+      "populated": true,
+      "background": "dark",
+      "metrics": {
+        "panel": {
+          "x": 24,
+          "y": 24,
+          "width": 392,
+          "height": 656
+        },
+        "rootWidth": 440,
+        "innerWidth": 440,
+        "opticalLayers": {
+          "frameBackground": "none",
+          "innerBackground": "linear-gradient(125deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 36%, rgba(255, 255, 255, 0.176) 74%, rgba(255, 255, 255, 0.23)), radial-gradient(at 5% 4%, rgba(139, 232, 255, 0.33), rgba(0, 0, 0, 0) 56%), radial-gradient(at 2% 100%, rgba(187, 166, 234, 0.22), rgba(0, 0, 0, 0) 65%), radial-gradient(at 100% 76%, rgba(255, 194, 183, 0.22), rgba(0, 0, 0, 0) 58%), linear-gradient(160deg, rgba(223, 243, 255, 0.22), rgba(213, 233, 255, 0.14) 55%, rgba(205, 223, 255, 0.25))",
+          "backdropFilter": "blur(20px) saturate(1.15)",
+          "opacity": "1"
+        },
+        "voice": {
+          "button": {
+            "x": 287,
+            "y": 603,
+            "width": 44,
+            "height": 44
+          },
+          "svg": {
+            "x": 297.5,
+            "y": 613.5,
+            "width": 23,
+            "height": 23
+          },
+          "centreError": {
+            "x": 0,
+            "y": 0
+          },
+          "padding": [
+            "0px",
+            "0px",
+            "0px",
+            "0px"
+          ],
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(16, 71, 161)",
+          "disabled": false
+        },
+        "bodyFont": "18px"
+      },
+      "samples": [
+        {
+          "x": 196,
+          "y": 295,
+          "rgba": [
+            220,
+            228,
+            238,
+            255
+          ]
+        },
+        {
+          "x": 118,
+          "y": 367,
+          "rgba": [
+            220,
+            228,
+            237,
+            255
+          ]
+        },
+        {
+          "x": 274,
+          "y": 407,
+          "rgba": [
+            110,
+            114,
+            132,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "name": "panel-392-populated-busy",
+      "viewport": 440,
+      "populated": true,
+      "background": "busy",
+      "metrics": {
+        "panel": {
+          "x": 24,
+          "y": 24,
+          "width": 392,
+          "height": 656
+        },
+        "rootWidth": 440,
+        "innerWidth": 440,
+        "opticalLayers": {
+          "frameBackground": "none",
+          "innerBackground": "linear-gradient(125deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 36%, rgba(255, 255, 255, 0.176) 74%, rgba(255, 255, 255, 0.23)), radial-gradient(at 5% 4%, rgba(139, 232, 255, 0.33), rgba(0, 0, 0, 0) 56%), radial-gradient(at 2% 100%, rgba(187, 166, 234, 0.22), rgba(0, 0, 0, 0) 65%), radial-gradient(at 100% 76%, rgba(255, 194, 183, 0.22), rgba(0, 0, 0, 0) 58%), linear-gradient(160deg, rgba(223, 243, 255, 0.22), rgba(213, 233, 255, 0.14) 55%, rgba(205, 223, 255, 0.25))",
+          "backdropFilter": "blur(20px) saturate(1.15)",
+          "opacity": "1"
+        },
+        "voice": {
+          "button": {
+            "x": 287,
+            "y": 603,
+            "width": 44,
+            "height": 44
+          },
+          "svg": {
+            "x": 297.5,
+            "y": 613.5,
+            "width": 23,
+            "height": 23
+          },
+          "centreError": {
+            "x": 0,
+            "y": 0
+          },
+          "padding": [
+            "0px",
+            "0px",
+            "0px",
+            "0px"
+          ],
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(16, 71, 161)",
+          "disabled": false
+        },
+        "bodyFont": "18px"
+      },
+      "samples": [
+        {
+          "x": 196,
+          "y": 295,
+          "rgba": [
+            229,
+            237,
+            247,
+            255
+          ]
+        },
+        {
+          "x": 118,
+          "y": 367,
+          "rgba": [
+            229,
+            238,
+            248,
+            255
+          ]
+        },
+        {
+          "x": 274,
+          "y": 407,
+          "rgba": [
+            221,
+            220,
+            231,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "name": "panel-392-empty-light",
+      "viewport": 440,
+      "populated": false,
+      "background": "light",
+      "metrics": {
+        "panel": {
+          "x": 24,
+          "y": 24,
+          "width": 392,
+          "height": 656
+        },
+        "rootWidth": 440,
+        "innerWidth": 440,
+        "opticalLayers": {
+          "frameBackground": "none",
+          "innerBackground": "linear-gradient(125deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 36%, rgba(255, 255, 255, 0.176) 74%, rgba(255, 255, 255, 0.23)), radial-gradient(at 5% 4%, rgba(139, 232, 255, 0.33), rgba(0, 0, 0, 0) 56%), radial-gradient(at 2% 100%, rgba(187, 166, 234, 0.22), rgba(0, 0, 0, 0) 65%), radial-gradient(at 100% 76%, rgba(255, 194, 183, 0.22), rgba(0, 0, 0, 0) 58%), linear-gradient(160deg, rgba(223, 243, 255, 0.22), rgba(213, 233, 255, 0.14) 55%, rgba(205, 223, 255, 0.25))",
+          "backdropFilter": "blur(20px) saturate(1.15)",
+          "opacity": "1"
+        },
+        "voice": {
+          "button": {
+            "x": 287,
+            "y": 603,
+            "width": 44,
+            "height": 44
+          },
+          "svg": {
+            "x": 297.5,
+            "y": 613.5,
+            "width": 23,
+            "height": 23
+          },
+          "centreError": {
+            "x": 0,
+            "y": 0
+          },
+          "padding": [
+            "0px",
+            "0px",
+            "0px",
+            "0px"
+          ],
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(16, 71, 161)",
+          "disabled": false
+        },
+        "bodyFont": "18px"
+      },
+      "samples": [
+        {
+          "x": 196,
+          "y": 295,
+          "rgba": [
+            223,
+            234,
+            247,
+            255
+          ]
+        },
+        {
+          "x": 118,
+          "y": 367,
+          "rgba": [
+            221,
+            234,
+            247,
+            255
+          ]
+        },
+        {
+          "x": 274,
+          "y": 407,
+          "rgba": [
+            227,
+            232,
+            245,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "name": "panel-392-empty-dark",
+      "viewport": 440,
+      "populated": false,
+      "background": "dark",
+      "metrics": {
+        "panel": {
+          "x": 24,
+          "y": 24,
+          "width": 392,
+          "height": 656
+        },
+        "rootWidth": 440,
+        "innerWidth": 440,
+        "opticalLayers": {
+          "frameBackground": "none",
+          "innerBackground": "linear-gradient(125deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 36%, rgba(255, 255, 255, 0.176) 74%, rgba(255, 255, 255, 0.23)), radial-gradient(at 5% 4%, rgba(139, 232, 255, 0.33), rgba(0, 0, 0, 0) 56%), radial-gradient(at 2% 100%, rgba(187, 166, 234, 0.22), rgba(0, 0, 0, 0) 65%), radial-gradient(at 100% 76%, rgba(255, 194, 183, 0.22), rgba(0, 0, 0, 0) 58%), linear-gradient(160deg, rgba(223, 243, 255, 0.22), rgba(213, 233, 255, 0.14) 55%, rgba(205, 223, 255, 0.25))",
+          "backdropFilter": "blur(20px) saturate(1.15)",
+          "opacity": "1"
+        },
+        "voice": {
+          "button": {
+            "x": 287,
+            "y": 603,
+            "width": 44,
+            "height": 44
+          },
+          "svg": {
+            "x": 297.5,
+            "y": 613.5,
+            "width": 23,
+            "height": 23
+          },
+          "centreError": {
+            "x": 0,
+            "y": 0
+          },
+          "padding": [
+            "0px",
+            "0px",
+            "0px",
+            "0px"
+          ],
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(16, 71, 161)",
+          "disabled": false
+        },
+        "bodyFont": "18px"
+      },
+      "samples": [
+        {
+          "x": 196,
+          "y": 295,
+          "rgba": [
+            79,
+            91,
+            112,
+            255
+          ]
+        },
+        {
+          "x": 118,
+          "y": 367,
+          "rgba": [
+            76,
+            90,
+            111,
+            255
+          ]
+        },
+        {
+          "x": 274,
+          "y": 407,
+          "rgba": [
+            110,
+            114,
+            132,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "name": "panel-392-empty-busy",
+      "viewport": 440,
+      "populated": false,
+      "background": "busy",
+      "metrics": {
+        "panel": {
+          "x": 24,
+          "y": 24,
+          "width": 392,
+          "height": 656
+        },
+        "rootWidth": 440,
+        "innerWidth": 440,
+        "opticalLayers": {
+          "frameBackground": "none",
+          "innerBackground": "linear-gradient(125deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 36%, rgba(255, 255, 255, 0.176) 74%, rgba(255, 255, 255, 0.23)), radial-gradient(at 5% 4%, rgba(139, 232, 255, 0.33), rgba(0, 0, 0, 0) 56%), radial-gradient(at 2% 100%, rgba(187, 166, 234, 0.22), rgba(0, 0, 0, 0) 65%), radial-gradient(at 100% 76%, rgba(255, 194, 183, 0.22), rgba(0, 0, 0, 0) 58%), linear-gradient(160deg, rgba(223, 243, 255, 0.22), rgba(213, 233, 255, 0.14) 55%, rgba(205, 223, 255, 0.25))",
+          "backdropFilter": "blur(20px) saturate(1.15)",
+          "opacity": "1"
+        },
+        "voice": {
+          "button": {
+            "x": 287,
+            "y": 603,
+            "width": 44,
+            "height": 44
+          },
+          "svg": {
+            "x": 297.5,
+            "y": 613.5,
+            "width": 23,
+            "height": 23
+          },
+          "centreError": {
+            "x": 0,
+            "y": 0
+          },
+          "padding": [
+            "0px",
+            "0px",
+            "0px",
+            "0px"
+          ],
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(16, 71, 161)",
+          "disabled": false
+        },
+        "bodyFont": "18px"
+      },
+      "samples": [
+        {
+          "x": 196,
+          "y": 295,
+          "rgba": [
+            144,
+            166,
+            190,
+            255
+          ]
+        },
+        {
+          "x": 118,
+          "y": 367,
+          "rgba": [
+            151,
+            174,
+            198,
+            255
+          ]
+        },
+        {
+          "x": 274,
+          "y": 407,
+          "rgba": [
+            221,
+            220,
+            231,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "name": "panel-320css-populated-light",
+      "viewport": 320,
+      "populated": true,
+      "background": "light",
+      "metrics": {
+        "panel": {
+          "x": 8,
+          "y": 16,
+          "width": 304,
+          "height": 656
+        },
+        "rootWidth": 320,
+        "innerWidth": 320,
+        "opticalLayers": {
+          "frameBackground": "none",
+          "innerBackground": "linear-gradient(125deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 36%, rgba(255, 255, 255, 0.176) 74%, rgba(255, 255, 255, 0.23)), radial-gradient(at 5% 4%, rgba(139, 232, 255, 0.33), rgba(0, 0, 0, 0) 56%), radial-gradient(at 2% 100%, rgba(187, 166, 234, 0.22), rgba(0, 0, 0, 0) 65%), radial-gradient(at 100% 76%, rgba(255, 194, 183, 0.22), rgba(0, 0, 0, 0) 58%), linear-gradient(160deg, rgba(223, 243, 255, 0.22), rgba(213, 233, 255, 0.14) 55%, rgba(205, 223, 255, 0.25))",
+          "backdropFilter": "blur(20px) saturate(1.15)",
+          "opacity": "1"
+        },
+        "voice": {
+          "button": {
+            "x": 192,
+            "y": 604,
+            "width": 44,
+            "height": 44
+          },
+          "svg": {
+            "x": 202.5,
+            "y": 614.5,
+            "width": 23,
+            "height": 23
+          },
+          "centreError": {
+            "x": 0,
+            "y": 0
+          },
+          "padding": [
+            "0px",
+            "0px",
+            "0px",
+            "0px"
+          ],
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(16, 71, 161)",
+          "disabled": false
+        },
+        "bodyFont": "18px"
+      },
+      "samples": [
+        {
+          "x": 152,
+          "y": 295,
+          "rgba": [
+            239,
+            246,
+            254,
+            255
+          ]
+        },
+        {
+          "x": 91,
+          "y": 367,
+          "rgba": [
+            238,
+            246,
+            255,
+            255
+          ]
+        },
+        {
+          "x": 213,
+          "y": 407,
+          "rgba": [
+            240,
+            245,
+            254,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "name": "panel-320css-populated-dark",
+      "viewport": 320,
+      "populated": true,
+      "background": "dark",
+      "metrics": {
+        "panel": {
+          "x": 8,
+          "y": 16,
+          "width": 304,
+          "height": 656
+        },
+        "rootWidth": 320,
+        "innerWidth": 320,
+        "opticalLayers": {
+          "frameBackground": "none",
+          "innerBackground": "linear-gradient(125deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 36%, rgba(255, 255, 255, 0.176) 74%, rgba(255, 255, 255, 0.23)), radial-gradient(at 5% 4%, rgba(139, 232, 255, 0.33), rgba(0, 0, 0, 0) 56%), radial-gradient(at 2% 100%, rgba(187, 166, 234, 0.22), rgba(0, 0, 0, 0) 65%), radial-gradient(at 100% 76%, rgba(255, 194, 183, 0.22), rgba(0, 0, 0, 0) 58%), linear-gradient(160deg, rgba(223, 243, 255, 0.22), rgba(213, 233, 255, 0.14) 55%, rgba(205, 223, 255, 0.25))",
+          "backdropFilter": "blur(20px) saturate(1.15)",
+          "opacity": "1"
+        },
+        "voice": {
+          "button": {
+            "x": 192,
+            "y": 604,
+            "width": 44,
+            "height": 44
+          },
+          "svg": {
+            "x": 202.5,
+            "y": 614.5,
+            "width": 23,
+            "height": 23
+          },
+          "centreError": {
+            "x": 0,
+            "y": 0
+          },
+          "padding": [
+            "0px",
+            "0px",
+            "0px",
+            "0px"
+          ],
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(16, 71, 161)",
+          "disabled": false
+        },
+        "bodyFont": "18px"
+      },
+      "samples": [
+        {
+          "x": 152,
+          "y": 295,
+          "rgba": [
+            220,
+            228,
+            238,
+            255
+          ]
+        },
+        {
+          "x": 91,
+          "y": 367,
+          "rgba": [
+            220,
+            228,
+            238,
+            255
+          ]
+        },
+        {
+          "x": 213,
+          "y": 407,
+          "rgba": [
+            225,
+            230,
+            240,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "name": "panel-320css-populated-busy",
+      "viewport": 320,
+      "populated": true,
+      "background": "busy",
+      "metrics": {
+        "panel": {
+          "x": 8,
+          "y": 16,
+          "width": 304,
+          "height": 656
+        },
+        "rootWidth": 320,
+        "innerWidth": 320,
+        "opticalLayers": {
+          "frameBackground": "none",
+          "innerBackground": "linear-gradient(125deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 36%, rgba(255, 255, 255, 0.176) 74%, rgba(255, 255, 255, 0.23)), radial-gradient(at 5% 4%, rgba(139, 232, 255, 0.33), rgba(0, 0, 0, 0) 56%), radial-gradient(at 2% 100%, rgba(187, 166, 234, 0.22), rgba(0, 0, 0, 0) 65%), radial-gradient(at 100% 76%, rgba(255, 194, 183, 0.22), rgba(0, 0, 0, 0) 58%), linear-gradient(160deg, rgba(223, 243, 255, 0.22), rgba(213, 233, 255, 0.14) 55%, rgba(205, 223, 255, 0.25))",
+          "backdropFilter": "blur(20px) saturate(1.15)",
+          "opacity": "1"
+        },
+        "voice": {
+          "button": {
+            "x": 192,
+            "y": 604,
+            "width": 44,
+            "height": 44
+          },
+          "svg": {
+            "x": 202.5,
+            "y": 614.5,
+            "width": 23,
+            "height": 23
+          },
+          "centreError": {
+            "x": 0,
+            "y": 0
+          },
+          "padding": [
+            "0px",
+            "0px",
+            "0px",
+            "0px"
+          ],
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(16, 71, 161)",
+          "disabled": false
+        },
+        "bodyFont": "18px"
+      },
+      "samples": [
+        {
+          "x": 152,
+          "y": 295,
+          "rgba": [
+            238,
+            244,
+            252,
+            255
+          ]
+        },
+        {
+          "x": 91,
+          "y": 367,
+          "rgba": [
+            237,
+            244,
+            253,
+            255
+          ]
+        },
+        {
+          "x": 213,
+          "y": 407,
+          "rgba": [
+            236,
+            241,
+            250,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "name": "panel-320css-empty-light",
+      "viewport": 320,
+      "populated": false,
+      "background": "light",
+      "metrics": {
+        "panel": {
+          "x": 8,
+          "y": 16,
+          "width": 304,
+          "height": 656
+        },
+        "rootWidth": 320,
+        "innerWidth": 320,
+        "opticalLayers": {
+          "frameBackground": "none",
+          "innerBackground": "linear-gradient(125deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 36%, rgba(255, 255, 255, 0.176) 74%, rgba(255, 255, 255, 0.23)), radial-gradient(at 5% 4%, rgba(139, 232, 255, 0.33), rgba(0, 0, 0, 0) 56%), radial-gradient(at 2% 100%, rgba(187, 166, 234, 0.22), rgba(0, 0, 0, 0) 65%), radial-gradient(at 100% 76%, rgba(255, 194, 183, 0.22), rgba(0, 0, 0, 0) 58%), linear-gradient(160deg, rgba(223, 243, 255, 0.22), rgba(213, 233, 255, 0.14) 55%, rgba(205, 223, 255, 0.25))",
+          "backdropFilter": "blur(20px) saturate(1.15)",
+          "opacity": "1"
+        },
+        "voice": {
+          "button": {
+            "x": 192,
+            "y": 604,
+            "width": 44,
+            "height": 44
+          },
+          "svg": {
+            "x": 202.5,
+            "y": 614.5,
+            "width": 23,
+            "height": 23
+          },
+          "centreError": {
+            "x": 0,
+            "y": 0
+          },
+          "padding": [
+            "0px",
+            "0px",
+            "0px",
+            "0px"
+          ],
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(16, 71, 161)",
+          "disabled": false
+        },
+        "bodyFont": "18px"
+      },
+      "samples": [
+        {
+          "x": 152,
+          "y": 295,
+          "rgba": [
+            224,
+            235,
+            247,
+            255
+          ]
+        },
+        {
+          "x": 91,
+          "y": 367,
+          "rgba": [
+            222,
+            235,
+            250,
+            255
+          ]
+        },
+        {
+          "x": 213,
+          "y": 407,
+          "rgba": [
+            227,
+            232,
+            243,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "name": "panel-320css-empty-dark",
+      "viewport": 320,
+      "populated": false,
+      "background": "dark",
+      "metrics": {
+        "panel": {
+          "x": 8,
+          "y": 16,
+          "width": 304,
+          "height": 656
+        },
+        "rootWidth": 320,
+        "innerWidth": 320,
+        "opticalLayers": {
+          "frameBackground": "none",
+          "innerBackground": "linear-gradient(125deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 36%, rgba(255, 255, 255, 0.176) 74%, rgba(255, 255, 255, 0.23)), radial-gradient(at 5% 4%, rgba(139, 232, 255, 0.33), rgba(0, 0, 0, 0) 56%), radial-gradient(at 2% 100%, rgba(187, 166, 234, 0.22), rgba(0, 0, 0, 0) 65%), radial-gradient(at 100% 76%, rgba(255, 194, 183, 0.22), rgba(0, 0, 0, 0) 58%), linear-gradient(160deg, rgba(223, 243, 255, 0.22), rgba(213, 233, 255, 0.14) 55%, rgba(205, 223, 255, 0.25))",
+          "backdropFilter": "blur(20px) saturate(1.15)",
+          "opacity": "1"
+        },
+        "voice": {
+          "button": {
+            "x": 192,
+            "y": 604,
+            "width": 44,
+            "height": 44
+          },
+          "svg": {
+            "x": 202.5,
+            "y": 614.5,
+            "width": 23,
+            "height": 23
+          },
+          "centreError": {
+            "x": 0,
+            "y": 0
+          },
+          "padding": [
+            "0px",
+            "0px",
+            "0px",
+            "0px"
+          ],
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(16, 71, 161)",
+          "disabled": false
+        },
+        "bodyFont": "18px"
+      },
+      "samples": [
+        {
+          "x": 152,
+          "y": 295,
+          "rgba": [
+            79,
+            91,
+            112,
+            255
+          ]
+        },
+        {
+          "x": 91,
+          "y": 367,
+          "rgba": [
+            78,
+            93,
+            116,
+            255
+          ]
+        },
+        {
+          "x": 213,
+          "y": 407,
+          "rgba": [
+            110,
+            114,
+            130,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "name": "panel-320css-empty-busy",
+      "viewport": 320,
+      "populated": false,
+      "background": "busy",
+      "metrics": {
+        "panel": {
+          "x": 8,
+          "y": 16,
+          "width": 304,
+          "height": 656
+        },
+        "rootWidth": 320,
+        "innerWidth": 320,
+        "opticalLayers": {
+          "frameBackground": "none",
+          "innerBackground": "linear-gradient(125deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 36%, rgba(255, 255, 255, 0.176) 74%, rgba(255, 255, 255, 0.23)), radial-gradient(at 5% 4%, rgba(139, 232, 255, 0.33), rgba(0, 0, 0, 0) 56%), radial-gradient(at 2% 100%, rgba(187, 166, 234, 0.22), rgba(0, 0, 0, 0) 65%), radial-gradient(at 100% 76%, rgba(255, 194, 183, 0.22), rgba(0, 0, 0, 0) 58%), linear-gradient(160deg, rgba(223, 243, 255, 0.22), rgba(213, 233, 255, 0.14) 55%, rgba(205, 223, 255, 0.25))",
+          "backdropFilter": "blur(20px) saturate(1.15)",
+          "opacity": "1"
+        },
+        "voice": {
+          "button": {
+            "x": 192,
+            "y": 604,
+            "width": 44,
+            "height": 44
+          },
+          "svg": {
+            "x": 202.5,
+            "y": 614.5,
+            "width": 23,
+            "height": 23
+          },
+          "centreError": {
+            "x": 0,
+            "y": 0
+          },
+          "padding": [
+            "0px",
+            "0px",
+            "0px",
+            "0px"
+          ],
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(16, 71, 161)",
+          "disabled": false
+        },
+        "bodyFont": "18px"
+      },
+      "samples": [
+        {
+          "x": 152,
+          "y": 295,
+          "rgba": [
+            218,
+            216,
+            224,
+            255
+          ]
+        },
+        {
+          "x": 91,
+          "y": 367,
+          "rgba": [
+            211,
+            217,
+            232,
+            255
+          ]
+        },
+        {
+          "x": 213,
+          "y": 407,
+          "rgba": [
+            197,
+            200,
+            210,
+            255
+          ]
+        }
+      ]
+    }
+  ],
+  "voiceStates": [
+    {
+      "phase": "idle",
+      "name": "Start voice conversation",
+      "pressed": "false",
+      "disabled": false,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "colour": "rgb(255, 255, 255)",
+      "background": "rgb(16, 71, 161)",
+      "centreError": [
+        0,
+        0
+      ],
+      "iconContrast": 8.613727565045481,
+      "fixtureState": {
+        "phase": "idle",
+        "sessionActive": null
+      }
+    },
+    {
+      "phase": "listening",
+      "name": "Pause voice conversation",
+      "pressed": "true",
+      "disabled": false,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "colour": "rgb(255, 255, 255)",
+      "background": "rgb(20, 57, 111)",
+      "centreError": [
+        0,
+        0
+      ],
+      "iconContrast": 11.384983784259099,
+      "fixtureState": {
+        "phase": "listening",
+        "sessionActive": null
+      }
+    },
+    {
+      "phase": "speaking",
+      "name": "Pause voice conversation",
+      "pressed": "true",
+      "disabled": false,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "colour": "rgb(255, 255, 255)",
+      "background": "rgb(20, 57, 111)",
+      "centreError": [
+        0,
+        0
+      ],
+      "iconContrast": 11.384983784259099,
+      "fixtureState": {
+        "phase": "speaking",
+        "sessionActive": null
+      }
+    },
+    {
+      "phase": "thinking",
+      "name": "Start voice conversation",
+      "pressed": "false",
+      "disabled": true,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "colour": "rgb(255, 255, 255)",
+      "background": "rgb(16, 71, 161)",
+      "centreError": [
+        0,
+        0
+      ],
+      "iconContrast": 8.613727565045481,
+      "fixtureState": {
+        "phase": "processing",
+        "sessionActive": null
+      }
+    },
+    {
+      "phase": "thinking",
+      "name": "Pause voice conversation",
+      "pressed": "true",
+      "disabled": false,
+      "padding": [
+        "0px",
+        "0px",
+        "0px",
+        "0px"
+      ],
+      "colour": "rgb(255, 255, 255)",
+      "background": "rgb(20, 57, 111)",
+      "centreError": [
+        0,
+        0
+      ],
+      "iconContrast": 11.384983784259099,
+      "fixtureState": {
+        "phase": "processing",
+        "sessionActive": true
+      }
+    }
+  ],
+  "errorContrast": 7.920703912324779,
+  "popup": {
+    "x": 23,
+    "y": 171,
+    "width": 274,
+    "height": 340
+  },
+  "stop": {
+    "x": 204,
+    "y": 42,
+    "width": 44,
+    "height": 44
+  },
+  "requests": [],
+  "browserErrors": [],
+  "limits": [
+    "Developer-owned fixture renders the actual DesktopBuddy. All data/voice state is local simulation. No backend or provider request.",
+    "CSS backdrop proof over owned webpage pixels, not blur/refraction of the OS desktop.",
+    "No-WebGL authored PNG keeps avatar pixels fixed for matched panel comparisons.",
+    "320CSSpx and Large tested here; real Electron zoom/native compositor requires separate evidence.",
+    "Pixel points establish background influence in recorded empty states; they are not opacity/contrast estimates."
+  ]
+}

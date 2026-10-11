@@ -1,0 +1,267 @@
+{
+  "checkedAt": "2026-10-11T02:53:32.663Z",
+  "pass": true,
+  "assetSha256": "34cd83c23c60afedbf6edd9e9e337af4715a6f60070fe59ca90b9a8b7a73d756",
+  "assetBytes": 1295856,
+  "recordingActive": false,
+  "nativeVisibilityProof": true,
+  "implementation": "actual useVoice, MediaRecorder, HTMLAudio, Web Audio meter and final animated Sprout in isolated Electron --dev",
+  "input": "local oscillator, no physical microphone capture",
+  "output": "local PCM WAV fixtures, no ElevenLabs provider calls; device audibility not asserted",
+  "scope": "All API endpoints are local fixtures. Native layout and production voice/renderer modules are unchanged; the read-only presentation ref is exposed only in this test window. Recording is not a frame-performance measurement.",
+  "recordingScope": "Video-only Playwright capture. Actual synthetic PCM playback, interruption and cleanup are asserted by the audio elements, tracks and meter; this is not recorded live speech.",
+  "servedAssets": [
+    {
+      "status": 200,
+      "bytes": 1295856,
+      "header": "glTF",
+      "version": 2,
+      "declaredBytes": 1295856,
+      "sha256": "34cd83c23c60afedbf6edd9e9e337af4715a6f60070fe59ca90b9a8b7a73d756"
+    }
+  ],
+  "sequence": [
+    {
+      "step": "collapsed-final-sprout",
+      "at": 2417.399999976158,
+      "panelStage": "closed",
+      "draft": "",
+      "sample": {
+        "inputLevel": null,
+        "outputLevel": null,
+        "inputSampledAt": 426.2999999523163,
+        "outputSampledAt": 426.2999999523163,
+        "playbackGeneration": 1,
+        "outputPlaying": false,
+        "source": "voice"
+      }
+    },
+    {
+      "step": "open-and-type-unsent-draft",
+      "at": 4881.5,
+      "panelStage": "open",
+      "draft": "Keep this unsent draft while we talk.",
+      "sample": {
+        "inputLevel": null,
+        "outputLevel": null,
+        "inputSampledAt": 426.2999999523163,
+        "outputSampledAt": 426.2999999523163,
+        "playbackGeneration": 1,
+        "outputPlaying": false,
+        "source": "voice"
+      }
+    },
+    {
+      "step": "first-measured-reply-draft-preserved",
+      "at": 8217.699999928474,
+      "panelStage": "open",
+      "draft": "Keep this unsent draft while we talk.",
+      "sample": {
+        "inputLevel": 0,
+        "outputLevel": 0.42346855295400493,
+        "inputSampledAt": 8207.799999952316,
+        "outputSampledAt": 8189.199999928474,
+        "playbackGeneration": 5,
+        "outputPlaying": true,
+        "source": "voice"
+      }
+    },
+    {
+      "step": "native-hidden-with-active-voice",
+      "at": 8276,
+      "panelStage": "open",
+      "draft": "Keep this unsent draft while we talk.",
+      "sample": {
+        "inputLevel": 0,
+        "outputLevel": 0.4235856870603972,
+        "inputSampledAt": 8273.599999904633,
+        "outputSampledAt": 8268.699999928474,
+        "playbackGeneration": 5,
+        "outputPlaying": true,
+        "source": "voice"
+      }
+    },
+    {
+      "step": "native-show-restored-current-speaking-phase",
+      "at": 9231,
+      "panelStage": "open",
+      "draft": "Keep this unsent draft while we talk.",
+      "sample": {
+        "inputLevel": 0,
+        "outputLevel": 0.42189695053466436,
+        "inputSampledAt": 9159.699999928474,
+        "outputSampledAt": 9229.099999904633,
+        "playbackGeneration": 5,
+        "outputPlaying": true,
+        "source": "voice"
+      }
+    },
+    {
+      "step": "explicit-pause-cleared-capture-and-playback",
+      "at": 9355.399999976158,
+      "panelStage": "open",
+      "draft": "Keep this unsent draft while we talk.",
+      "sample": {
+        "inputLevel": null,
+        "outputLevel": null,
+        "inputSampledAt": 9301.199999928474,
+        "outputSampledAt": 9301.199999928474,
+        "playbackGeneration": 6,
+        "outputPlaying": false,
+        "source": "voice"
+      }
+    }
+  ],
+  "draft": "Keep this unsent draft while we talk.",
+  "draftPreservedAcrossHideShow": true,
+  "visibilityCheck": {
+    "before": {
+      "at": 8265.899999976158,
+      "native": {
+        "visible": true,
+        "revision": 2
+      },
+      "documentHidden": false,
+      "phase": "speaking",
+      "sample": {
+        "inputLevel": 0,
+        "outputLevel": 0.42606999916907434,
+        "inputSampledAt": 8207.799999952316,
+        "outputSampledAt": 8232.899999976158,
+        "playbackGeneration": 5,
+        "outputPlaying": true,
+        "source": "voice"
+      },
+      "playback": {
+        "index": 1,
+        "paused": false,
+        "ended": false,
+        "currentTime": 0.125214,
+        "duration": 4
+      },
+      "liveTrackIds": [
+        "990eb4e3-afd0-466d-b24a-602c4eca6d07"
+      ],
+      "recorderStates": [
+        "inactive",
+        "recording"
+      ],
+      "draft": "Keep this unsent draft while we talk."
+    },
+    "hidden": {
+      "at": 8939.099999904633,
+      "native": {
+        "visible": false,
+        "revision": 3
+      },
+      "documentHidden": false,
+      "phase": "speaking",
+      "sample": {
+        "inputLevel": 0,
+        "outputLevel": 0.42618814042697417,
+        "inputSampledAt": 8922.799999952316,
+        "outputSampledAt": 8908.799999952316,
+        "playbackGeneration": 5,
+        "outputPlaying": true,
+        "source": "voice"
+      },
+      "playback": {
+        "index": 1,
+        "paused": false,
+        "ended": false,
+        "currentTime": 0.8,
+        "duration": 4
+      },
+      "liveTrackIds": [
+        "990eb4e3-afd0-466d-b24a-602c4eca6d07"
+      ],
+      "recorderStates": [
+        "inactive",
+        "recording"
+      ],
+      "draft": "Keep this unsent draft while we talk."
+    },
+    "restored": {
+      "at": 9223.899999976158,
+      "native": {
+        "visible": true,
+        "revision": 4
+      },
+      "documentHidden": false,
+      "phase": "speaking",
+      "sample": {
+        "inputLevel": 0,
+        "outputLevel": 0.42339998591522443,
+        "inputSampledAt": 9159.699999928474,
+        "outputSampledAt": 9193.399999976158,
+        "playbackGeneration": 5,
+        "outputPlaying": true,
+        "source": "voice"
+      },
+      "playback": {
+        "index": 1,
+        "paused": false,
+        "ended": false,
+        "currentTime": 1.083303,
+        "duration": 4
+      },
+      "liveTrackIds": [
+        "990eb4e3-afd0-466d-b24a-602c4eca6d07"
+      ],
+      "recorderStates": [
+        "inactive",
+        "recording"
+      ],
+      "draft": "Keep this unsent draft while we talk."
+    },
+    "hiddenPlaybackAdvanceSeconds": 0.6747860000000001,
+    "scope": "Actual isolated BrowserWindow hide/show with production visibility IPC/helper and animated renderer. Local oscillator capture and PCM reply use real MediaRecorder/HTMLAudio/Web Audio; no physical microphone/provider or OS-presentation proof."
+  },
+  "firstMeasuredOutput": {
+    "inputLevel": 0,
+    "outputLevel": 0.42346855295400493,
+    "inputSampledAt": 8207.799999952316,
+    "outputSampledAt": 8189.199999928474,
+    "playbackGeneration": 5,
+    "outputPlaying": true,
+    "source": "voice"
+  },
+  "cleanup": "explicit Pause voice conversation control stopped all capture/playback",
+  "stopped": {
+    "sample": {
+      "inputLevel": null,
+      "outputLevel": null,
+      "inputSampledAt": 9301.199999928474,
+      "outputSampledAt": 9301.199999928474,
+      "playbackGeneration": 6,
+      "outputPlaying": false,
+      "source": "voice"
+    },
+    "tracksEnded": true,
+    "audioPaused": true,
+    "inputReads": 40,
+    "renderer": "webgl",
+    "motionReduced": false,
+    "documentFits": true
+  },
+  "transcriptions": 1,
+  "speechRequests": 2,
+  "spokenTexts": [
+    "Hi, I'm Insight. What would you like to do?",
+    "Local animated voice proof. You can interrupt this reply."
+  ],
+  "localRoutes": [
+    "/api/session",
+    "/api/voice/realtime-token",
+    "/api/voice/speak",
+    "/api/voice/transcribe",
+    "/api/computer/request",
+    "/api/voice/speak"
+  ],
+  "interceptedComputerRequests": [
+    {
+      "request": "First synthetic turn"
+    }
+  ],
+  "pageErrors": []
+}

@@ -1,0 +1,72 @@
+{
+  "checkedAt": "2026-10-11T08:01:28.029Z",
+  "requests": [],
+  "errors": [],
+  "variants": [
+    {
+      "name": "baseline",
+      "css": "",
+      "actual": {
+        "opacity": "1",
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "filter": "none",
+        "childFilter": "blur(14px) saturate(1.12)",
+        "animationCount": 1
+      }
+    },
+    {
+      "name": "filter-on-glass",
+      "css": ".buddy-panel-glass { backdrop-filter: blur(14px) saturate(112%); } .buddy-panel-glass::after { backdrop-filter: none; }",
+      "actual": {
+        "opacity": "1",
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "filter": "blur(14px) saturate(1.12)",
+        "childFilter": "none",
+        "animationCount": 1
+      }
+    },
+    {
+      "name": "filter-on-plane",
+      "css": ".buddy-visual-plane { backdrop-filter: blur(14px) saturate(112%); border-radius:31px; } .buddy-panel-glass::after { backdrop-filter: none; }",
+      "actual": {
+        "opacity": "1",
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "filter": "none",
+        "childFilter": "none",
+        "animationCount": 1
+      }
+    },
+    {
+      "name": "no-fill-animation",
+      "css": "",
+      "animations": [
+        {
+          "playState": "finished",
+          "currentTime": 220,
+          "effect": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 220,
+            "easing": "cubic-bezier(0.2, 0.7, 0.2, 1)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1,
+            "activeDuration": 220,
+            "currentIteration": 0,
+            "endTime": 220,
+            "localTime": 220,
+            "progress": 1
+          }
+        }
+      ],
+      "actual": {
+        "opacity": "1",
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "filter": "none",
+        "childFilter": "blur(14px) saturate(1.12)",
+        "animationCount": 0
+      }
+    }
+  ]
+}

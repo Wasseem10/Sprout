@@ -1,0 +1,66 @@
+{
+  "input": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-core-v003.glb",
+  "sha256": "093e731f14b7b1bc4290b3b0124e6cfab48f8cbbde9b68141b93550d3ad4d4d5",
+  "validator": "2.0.0-dev.3.10",
+  "uri": "sprout-core-v003.glb",
+  "mimeType": "model/gltf-binary",
+  "validatorVersion": "2.0.0-dev.3.10",
+  "validatedAt": "2026-10-11T03:30:30.601Z",
+  "issues": {
+    "numErrors": 0,
+    "numWarnings": 2,
+    "numInfos": 1,
+    "numHints": 0,
+    "messages": [
+      {
+        "code": "UNUSED_OBJECT",
+        "message": "This object may be unused.",
+        "severity": 2,
+        "pointer": "/meshes/0/primitives/0/attributes/TEXCOORD_0"
+      },
+      {
+        "code": "NODE_SKINNED_MESH_NON_ROOT",
+        "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+        "severity": 1,
+        "pointer": "/nodes/21"
+      },
+      {
+        "code": "NODE_SKINNED_MESH_NON_ROOT",
+        "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+        "severity": 1,
+        "pointer": "/nodes/22"
+      }
+    ],
+    "truncated": false
+  },
+  "info": {
+    "version": "2.0",
+    "generator": "Khronos glTF Blender I/O v5.2.40",
+    "extensionsUsed": [
+      "KHR_materials_clearcoat",
+      "KHR_materials_transmission",
+      "KHR_materials_volume",
+      "KHR_materials_ior"
+    ],
+    "resources": [
+      {
+        "pointer": "/buffers/0",
+        "mimeType": "application/gltf-buffer",
+        "storage": "glb",
+        "byteLength": 1341140
+      }
+    ],
+    "animationCount": 6,
+    "materialCount": 5,
+    "hasMorphTargets": true,
+    "hasSkins": true,
+    "hasTextures": false,
+    "hasDefaultScene": true,
+    "drawCallCount": 11,
+    "totalVertexCount": 10938,
+    "totalTriangleCount": 21600,
+    "maxUVs": 1,
+    "maxInfluences": 4,
+    "maxAttributes": 6
+  }
+}

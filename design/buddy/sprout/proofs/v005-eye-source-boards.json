@@ -1,0 +1,23 @@
+{
+  "pass": true,
+  "source_sha256": "e97a0df2bafbffda9da972c538dbde60c54bc2d71efe264c163c8913c746a113",
+  "asset_sha256": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2",
+  "outputs": [
+    {
+      "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\v005-eye-morph-source-contact-sheet.png",
+      "sha256": "2ab4cd05b25428b4fb4477bce71d2c6755c6f087b247f1965f344b3d6a36156e",
+      "bytes": 332323
+    },
+    {
+      "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\v005-eye-tiny-source-comparison.png",
+      "sha256": "90e97a09b9b3980bbcc2dca4a3851cc4887df64291c665cfbc82ad0c6192244e",
+      "bytes": 100925
+    }
+  ],
+  "sizes": [
+    44,
+    72,
+    96
+  ],
+  "scope": "CPU contact sheets of the eight actual source PNGs; tiny reductions support geometry review and do not replace browser/native44/72/96 gates."
+}

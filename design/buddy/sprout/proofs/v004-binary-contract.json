@@ -1,0 +1,99 @@
+{
+  "asset": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-prism-v004.glb",
+  "sha256": "77d4b92bc5d06e440706243f6ac9e6745073ba6f98d173b972114fabb02bde7c",
+  "bytes": 1463568,
+  "pass": true,
+  "old_v003_sha256": "63bc8f0289634e03716732c6beefe2f3492d53d1f54ec04dd8e23d28fddf0a32",
+  "preserved": [
+    "exact old binary prefix",
+    "nodes/skins/geometry/materials/images/textures",
+    "all6 old animation streams"
+  ],
+  "new_clips": [
+    {
+      "clip": "Sprout_Done",
+      "duration": 0.8333333134651184,
+      "channels": 2,
+      "complete_ownership": true,
+      "paired_morph_samples_equal": "not_owned"
+    },
+    {
+      "clip": "Sprout_JoyJump",
+      "duration": 1.6666666269302368,
+      "channels": 29,
+      "complete_ownership": true,
+      "paired_morph_samples_equal": true
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "duration": 1.6666666269302368,
+      "channels": 31,
+      "complete_ownership": true,
+      "paired_morph_samples_equal": true
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "duration": 5.0,
+      "channels": 31,
+      "complete_ownership": true,
+      "paired_morph_samples_equal": true
+    },
+    {
+      "clip": "Sprout_Wake",
+      "duration": 1.25,
+      "channels": 31,
+      "complete_ownership": true,
+      "paired_morph_samples_equal": true
+    }
+  ],
+  "endpoint_max_error": {
+    "Joy_neutral_endpoints": 0.0,
+    "Done_neutral_endpoints": 0.0,
+    "Sleep_enter_to_loop": 1.1920928955078125e-07,
+    "Sleep_loop_endpoint": 5.960464477539063e-08,
+    "Sleep_loop_to_wake": 0.0,
+    "Wake_to_neutral": 0.0
+  },
+  "sleep_lid_max_sample_spread": {
+    "LID_L": 5.960464477539063e-08,
+    "LID_R": 5.960464477539063e-08
+  },
+  "sleep_velocity_seam": [
+    {
+      "node": "BODY",
+      "path": "scale",
+      "max_one_sided_seam_velocity_difference": 1.454660270379729e-06
+    },
+    {
+      "node": "BUD_L_BASE",
+      "path": "rotation",
+      "max_one_sided_seam_velocity_difference": 1.4320128286709555e-06
+    },
+    {
+      "node": "BUD_L_TIP",
+      "path": "rotation",
+      "max_one_sided_seam_velocity_difference": 2.861528829139928e-06
+    },
+    {
+      "node": "BUD_R_BASE",
+      "path": "rotation",
+      "max_one_sided_seam_velocity_difference": 1.4346443976019294e-06
+    },
+    {
+      "node": "BUD_R_TIP",
+      "path": "rotation",
+      "max_one_sided_seam_velocity_difference": 2.861110857899068e-06
+    },
+    {
+      "node": "SPROUT_BODY",
+      "path": "weights",
+      "max_one_sided_seam_velocity_difference": 8.359806593291608e-07
+    },
+    {
+      "node": "SPROUT_CORE",
+      "path": "weights",
+      "max_one_sided_seam_velocity_difference": 8.359806593291608e-07
+    }
+  ],
+  "scope": "Exact glTF stream/owner/sample audit; no material pixel decoding, skin collision, controller crossfade, or display timing claim."
+}

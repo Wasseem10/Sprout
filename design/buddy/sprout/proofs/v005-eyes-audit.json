@@ -1,0 +1,89 @@
+{
+  "pass": true,
+  "source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-happy-eyes-v005.blend",
+  "source_sha256": "e97a0df2bafbffda9da972c538dbde60c54bc2d71efe264c163c8913c746a113",
+  "asset_sha256": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2",
+  "blender": "5.2.2 LTS",
+  "source_reopened": true,
+  "source_action_samples": [
+    {
+      "clip": "Sprout_Blink",
+      "frame_count": 5,
+      "first": [
+        0.0,
+        0.0
+      ],
+      "last": [
+        0.0,
+        0.0
+      ],
+      "peak": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "frame_count": 41,
+      "first": [
+        0.0,
+        0.0
+      ],
+      "last": [
+        1.0,
+        1.0
+      ],
+      "peak": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "frame_count": 121,
+      "first": [
+        1.0,
+        1.0
+      ],
+      "last": [
+        1.0,
+        1.0
+      ],
+      "peak": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "clip": "Sprout_Wake",
+      "frame_count": 31,
+      "first": [
+        1.0,
+        1.0
+      ],
+      "last": [
+        0.0,
+        0.0
+      ],
+      "peak": [
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "images": [],
+  "render": {
+    "mode": "audit",
+    "device": "cpu",
+    "size": 320,
+    "samples": 16,
+    "colour_view": "Khronos PBR Neutral",
+    "camera_span": 3.440000057220459,
+    "target_blender": [
+      0.0,
+      0.0,
+      0.23999999463558197
+    ]
+  },
+  "scope": "Actual reopened source actions and eye morph geometry. Source-backed Cycles study/fallback; not exact Three pixels, native clipping or live voice. Unsaved isolated process, no public promotion."
+}
