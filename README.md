@@ -1,8 +1,22 @@
-# InsightOS
+# Sprout
+
+**Your work, within reach.** A voice-first Windows companion for blind and low-vision people to create, review and revise editable visual work through conversation.
+
+## Meet Sprout
+
+The updated interface pairs a pearl-glass conversation panel with Sprout, an animated blue-and-lilac avatar. Expand the panel to read the conversation and use the Ideas, Tools, microphone and message controls, or collapse it to a compact companion.
+
+| Conversation panel | Sprout avatar |
+| --- | --- |
+| <img src="docs/images/sprout-conversation.png" alt="Sprout's pearl-glass conversation panel with readable sample messages, Ideas and Tools menus, microphone and send controls" width="340"> | <img src="docs/images/sprout-avatar.png" alt="Sprout, a glossy blue-and-lilac character with dark eyes, a small smile and two rounded antennae" width="340"> |
+
+<img src="docs/images/sprout-compact.png" alt="Sprout's collapsed companion with the avatar and microphone control" width="300">
+
+*Interface screenshots use local sample messages from the desktop UI preview. The avatar image is the authored Soft Original reference; the app renders the character in animated 3D. These visuals do not establish release acceptance for the presentation features described below.*
 
 > **Current build status — October 11, 2026:** the running Windows app keeps edits and Undo in one working presentation. The next source build adds branching diagrams, verified data charts and spoken layout review, but is still under acceptance testing. Do not infer release readiness from older checks or from the public Vercel sample. [Current implementation evidence](AGENTS.md) · [Master build plan](INSIGHTOS-MASTER-BUILD-PROMPT.md).
 
-**Current pitch:** Create visual work you can share, understand how it looks, and change it through conversation. Insight is a Windows voice companion for blind and low-vision people to create, review and revise editable presentations. Its focused demonstration is precise editing and independent review: direct an image's placement, question a diagram's branch, trace a chart to its source, and undo a change.
+**Current pitch:** Create visual work you can share, understand how it looks, and change it through conversation. Sprout is a Windows voice companion for blind and low-vision people to create, review and revise editable presentations. Its focused demonstration is precise editing and independent review: direct an image's placement, question a diagram's branch, trace a chart to its source, and undo a change.
 
 The proposed recording and supported limits are in [PRESENTATION-DEMO.md](PRESENTATION-DEMO.md). Older finance, bill and general-computer examples below remain historical or secondary workflows; they are not the current submission story. Native slide construction uses editable PowerPoint output, not simulated mouse drawing. Unrestricted desktop control and Amazon checkout are not supported.
 
@@ -10,9 +24,9 @@ The proposed recording and supported limits are in [PRESENTATION-DEMO.md](PRESEN
 
 **Reliability limitation:** the latest prospective real-model regression run completed 8 of 17 feasible editing workflows. It made no wrong-slide mutations, but too many valid edits were rejected and some accepted edits lost meaning. This is a development snapshot, not a demo-ready release. Optional stronger-model writing and copy review remain experimental and disabled by default. Software tests and compilation passing do not establish reliable AI conversations. See [verification](VERIFICATION.md).
 
-**Your work, within reach.** InsightOS is a voice-first desktop companion built to help blind and low-vision people investigate spreadsheet data, inspect the evidence, and create Excel workbooks and PowerPoint presentations from the same verified analysis.
+**Your work, within reach.** Sprout is a voice-first desktop companion built to help blind and low-vision people investigate spreadsheet data, inspect the evidence, and create Excel workbooks and PowerPoint presentations from the same verified analysis.
 
-**Spreadsheet workflow: Insight Studio.** Open `http://127.0.0.1:5173/?workspace=studio`, or tell the floating buddy “Start the analysis demo.” Compare continuously operating locations, inspect contributing source rows, explore regions by keyboard, undo changes, verify the comparison with Databricks, and say “Create an Excel and PowerPoint report.” The generated workbook includes editable formulas and every source record; the six-slide presentation includes an editable native chart and source evidence. Analysis changes invalidate report links until regeneration. The studio accepts the documented six-column CSV or plain-value XLSX format. See [the studio rehearsal and pitch](STUDIO-DEMO.md).
+**Spreadsheet workflow: Sprout Studio.** Open `http://127.0.0.1:5173/?workspace=studio`, or tell the floating buddy “Start the analysis demo.” Compare continuously operating locations, inspect contributing source rows, explore regions by keyboard, undo changes, verify the comparison with Databricks, and say “Create an Excel and PowerPoint report.” The generated workbook includes editable formulas and every source record; the six-slide presentation includes an editable native chart and source evidence. Analysis changes invalidate report links until regeneration. The studio accepts the documented six-column CSV or plain-value XLSX format. See [the studio rehearsal and pitch](STUDIO-DEMO.md).
 
 The two built-in bill and finance workflows below remain available. The published Vercel sample still demonstrates the earlier bill workflow; the new connected studio runs in the local desktop app.
 
@@ -20,13 +34,13 @@ The two built-in bill and finance workflows below remain available. The publishe
 - **[Source](https://github.com/Wasseem10/insightos)** · **[Full desktop demo script](COMPUTER-DEMO.md)** · **[Submission description](DEVPOST-DRAFT.md)**.
 - The full Windows companion uses **Hugging Face** for document extraction and request interpretation, **ElevenLabs** for voice, and **Databricks** for live SQL bill verification. The bill workflow passed a real provider rehearsal. The user also reported that the laptop hears speech and interruptions work; a full recording rehearsal remains.
 
-![InsightOS bill workspace](artifacts/bill-workspace.png)
+![Sprout bill workspace](artifacts/bill-workspace.png)
 
-**Bills, understood:** Open **Bills & energy** or `http://127.0.0.1:5173/?workspace=energy`. Choose PDF/PNG/JPEG bills (5 MB each, up to four), or say “find my latest two electricity bills in Downloads.” Insight lists matching filenames first and reads them after “yes.” Each document has editable extracted fields, a first-page preview and source quotes. Confirm every bill before comparing usage, effective rate and other current charges. Say “review bill 2026-09” to correct a confirmed document and recalculate. Missing, inconsistent or duplicate-month fields require review. Bill text/images go to the configured AI provider; original files are unchanged, and extracted documents stay in the current session. Saving an energy plan stores its numeric baseline and answers, not the PDF.
+**Bills, understood:** Open **Bills & energy** or `http://127.0.0.1:5173/?workspace=energy`. Choose PDF/PNG/JPEG bills (5 MB each, up to four), or say “find my latest two electricity bills in Downloads.” Sprout lists matching filenames first and reads them after “yes.” Each document has editable extracted fields, a first-page preview and source quotes. Confirm every bill before comparing usage, effective rate and other current charges. Say “review bill 2026-09” to correct a confirmed document and recalculate. Missing, inconsistent or duplicate-month fields require review. Bill text/images go to the configured AI provider; original files are unchanged, and extracted documents stay in the current session. Saving an energy plan stores its numeric baseline and answers, not the PDF.
 
 Recording sequence: “Read sample PDF bills” → “yes” → “confirm this bill” twice → “I can only afford thirty dollars a month” → “choose weather sealing” → “prepare my energy application” → “use demo details.” Two synthetic PDFs show $195 → $240, with a $45 usage effect. The OUC card links to real local information; quotes and the browser application are fictional. `npm run test:bills` checks live Hugging Face text/vision extraction, calculations, budget correction and owned-form verification. The user reported microphone and interruption success; a full recording rehearsal remains.
 
-**Finance, within reach:** InsightOS now turns household transaction spreadsheets into a voice-guided finance workspace. Import CSV/XLSX, hear spending changes, test hypothetical budget reductions, compare a fixed-rate payment with a personal limit, undo changes, and export a real Excel workbook or create PowerPoint slides. The floating desktop buddy keeps the same conversation. Open the **Finance & Excel** tab or `http://127.0.0.1:5173/?workspace=finance` while developing.
+**Finance, within reach:** Sprout now turns household transaction spreadsheets into a voice-guided finance workspace. Import CSV/XLSX, hear spending changes, test hypothetical budget reductions, compare a fixed-rate payment with a personal limit, undo changes, and export a real Excel workbook or create PowerPoint slides. The floating desktop buddy keeps the same conversation. Open the **Finance & Excel** tab or `http://127.0.0.1:5173/?workspace=finance` while developing.
 
 For the focused hackathon demo, say: “Start the finance demo” → “Why did my spending increase?” → “What happens if I spend one hundred dollars less on groceries?” → “Check a $1200 loan at 12% APR over 24 months with a $30 limit” → “Change the payment limit to $60” → “Export my finance Excel workbook.” Sample data is labeled. Calculations use integer cents; the AI interprets requests rather than inventing totals. `npm run test:finance` exercises the real HF intent call and generated Excel/PPTX files. See [recording sequence](COMPUTER-DEMO.md#finance-recording-sequence).
 
@@ -36,13 +50,11 @@ A voice-first desktop companion for people who have difficulty seeing or operati
 
 **Verified locally:** the native floating buddy, real Hugging Face planning/code generation and vision, ElevenLabs transcription/speech API calls, editable PowerPoint generation and launch, calculated Excel analysis and launch, Python/VS Code, screen capture, controlled browser search and form filling, and the original CSV flow. An isolated Electron test used the configured Hugging Face vision model to find a synthetic local button, then moved the real Windows pointer, clicked and scrolled that page, and rejected reuse of the same capture token. A synthetic audio-to-code-to-VS-Code-to-spoken-reply chain passed. The user reported working microphone input and spoken web output before the conversation-mode change; the combined live microphone, speaker interruption, and click on an ordinary site still need a physical rehearsal. See [verification](VERIFICATION.md) and [sponsor status](SPONSOR-INTEGRATIONS.md).
 
-![The general computer companion](artifacts/companion-home.png)
-
 ## Run locally
 
-**Energy and affordability demo:** say “Start the energy demo,” give a monthly payment limit, choose an improvement, then ask “Prepare my energy application.” Use “use demo details” for a fictional applicant. Insight fills and verifies a real browser rehearsal, catches payments above the stated limit, and reads the answers back. Say “save my energy plan” to save explicitly and “resume my energy plan” to restore it. Saved plans use Neon when connected, otherwise local storage. No application is sent to a utility or lender. See the energy sequence in [COMPUTER-DEMO.md](COMPUTER-DEMO.md). `npm run test:energy` exercises correction, browser verification, and live Hugging Face slide generation when configured.
+**Energy and affordability demo:** say “Start the energy demo,” give a monthly payment limit, choose an improvement, then ask “Prepare my energy application.” Use “use demo details” for a fictional applicant. Sprout fills and verifies a real browser rehearsal, catches payments above the stated limit, and reads the answers back. Say “save my energy plan” to save explicitly and “resume my energy plan” to restore it. Saved plans use Neon when connected, otherwise local storage. No application is sent to a utility or lender. See the energy sequence in [COMPUTER-DEMO.md](COMPUTER-DEMO.md). `npm run test:energy` exercises correction, browser verification, and live Hugging Face slide generation when configured.
 
-The desktop shortcut **InsightOS** opens the buddy without a terminal. Its launcher reuses running development services or starts the compiled app when they are stopped. Run `npm run build` after code changes before using the compiled app.
+The desktop launcher opens Sprout without a terminal. Its launcher reuses running development services or starts the compiled app when they are stopped. Run `npm run build` after code changes before using the compiled app.
 
 The buddy now supports an observe → act → check loop for multi-step browser and office goals. For a read-only rehearsal, ask “Open https://books.toscrape.com and then open Travel. Tell me the first book's price.” A real Hugging Face rehearsal completed navigation and read the displayed result; see `artifacts/goal-rehearsal.json`. Requests may ask for clarification or stop at site barriers. This does not establish reliable shopping checkout or arbitrary application control.
 
@@ -62,7 +74,7 @@ npm run dev
 
 No cloud account is needed in default sample mode. `setup:desktop` downloads the Electron runtime if npm's install-script policy skipped it. Keep HOST=127.0.0.1 and PORT=4311 for local Electron. Do not run two copies against the same ports. Close the desktop and stop the development terminal with Ctrl+C.
 
-For a production desktop: `npm run build` then `npm start`. For browser development: `npm run dev:web`, then open `http://127.0.0.1:5173`. For the compiled browser app: build then `npm run start:web`, and open `http://127.0.0.1:4311`. On this configured laptop, the existing InsightOS shortcut starts the desktop app; the launcher is `scripts/open-insightos.ps1`.
+For a production desktop: `npm run build` then `npm start`. For browser development: `npm run dev:web`, then open `http://127.0.0.1:5173`. For the compiled browser app: build then `npm run start:web`, and open `http://127.0.0.1:4311`. On this configured laptop, the existing desktop shortcut starts the desktop app; the launcher is `scripts/open-insightos.ps1`.
 
 ## Public Vercel demo
 
