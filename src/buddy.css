@@ -30,6 +30,13 @@ html.desktop-buddy,
   line-height: 1.55;
   isolation: isolate;
 }
+.buddy-visual-plane {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  isolation: isolate;
+  transform-origin: 50% 50%;
+}
 .buddy button,
 .buddy textarea,
 .buddy summary {
@@ -109,11 +116,13 @@ html.desktop-buddy,
   z-index: -1;
   pointer-events: none;
   border-radius: 14px;
-  background: #edf8ffed;
-  mask-image:
-    linear-gradient(to right, transparent, #000 12px, #000 calc(100% - 12px), transparent),
-    linear-gradient(to bottom, transparent, #000 8px, #000 calc(100% - 8px), transparent);
-  mask-composite: intersect;
+  background: radial-gradient(
+    ellipse at center,
+    #f4f9fff2 0%,
+    #f4f9fff2 66%,
+    #f4f9ff9e 84%,
+    #f4f9ff00 100%
+  );
 }
 .buddy[data-panel-stage='open'] .buddy-identity strong {
   font-size: 20px;
@@ -180,17 +189,76 @@ html.desktop-buddy,
   border-radius: 12px;
   color: var(--buddy-ink);
 }
+.buddy-icon,
+.buddy-play,
+.buddy-send,
+.buddy-disclosure-trigger,
+.buddy-disclosure-panel button,
+.buddy-result-actions button {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid #b6cbd766;
+  background-color: #eaf5ffdc;
+  background-image: linear-gradient(155deg, #ffffff60, #ffffff00 48%, #b8c2ee18);
+  box-shadow:
+    inset 0 1px 1px #ffffffbd,
+    inset 0 -2px 3px #6273a21e,
+    0 2px 3px #1024400c;
+}
+.buddy-icon::before,
+.buddy-play::before,
+.buddy-send::before,
+.buddy-disclosure-trigger::before,
+.buddy-disclosure-panel button::before,
+.buddy-result-actions button::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    130deg,
+    #cbf4fff2,
+    #ffffffaa 22%,
+    #d8c6f530 47%,
+    #e6c7ee99 82%,
+    #eac1b88c
+  );
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+.buddy-icon::after,
+.buddy-play::after,
+.buddy-send::after,
+.buddy-disclosure-trigger::after,
+.buddy-disclosure-panel button::after,
+.buddy-result-actions button::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 32% 0%, #ffffff3b, transparent 62%);
+  box-shadow: inset 0 -1px 2px #42557b20;
+}
+.buddy button:active:not(:disabled) {
+  box-shadow:
+    inset 0 2px 4px #2038562e,
+    inset 0 -1px 1px #ffffffa3;
+}
 .buddy[data-panel-stage='open'] .buddy-icon:not(.stop) {
-  background: #edf8ffde;
-  box-shadow: inset 0 1px 0 #ffffffc9;
+  background-color: #edf8ffd9;
 }
 .buddy-icon:hover:not(:disabled) {
-  background: #e6effc;
+  background-color: #f4faffec;
   color: #103b85;
 }
 .buddy-icon.stop {
   color: #a12635;
-  background: #fff0f2;
+  background-color: #fff0f2e8;
   border: 1px solid #d78f98;
 }
 .buddy-window-actions .buddy-icon:last-child {
@@ -206,8 +274,15 @@ html.desktop-buddy,
   padding: 0;
   border-radius: 13px;
   color: #fff;
-  background: var(--buddy-blue);
-  box-shadow: inset 0 1px 0 #ffffff35;
+  border-color: #84b8e08c;
+  background-color: #123f7bf0;
+  background-image:
+    radial-gradient(ellipse at 20% 0%, #66c7ef4d, transparent 66%),
+    linear-gradient(145deg, #ffffff20, #8f91de0a 55%, #b1a2e22e);
+  box-shadow:
+    inset 0 1px 2px #e0f7ffab,
+    inset 0 -3px 5px #0d204447,
+    0 2px 4px #19385c14;
 }
 .buddy-play {
   border-radius: 50%;
@@ -217,21 +292,23 @@ html.desktop-buddy,
   display: block;
 }
 .buddy-play.playing {
-  background: #14396f;
+  background-color: #14365af5;
 }
 .buddy-play[data-phase='listening'] {
   box-shadow:
     0 0 0 2px #a2d6f0,
-    inset 0 1px 0 #ffffff35;
+    inset 0 1px 2px #e0f7ffab,
+    inset 0 -3px 5px #0d204447;
 }
 .buddy-play[data-phase='speaking'] {
   box-shadow:
     0 0 0 2px #c1baf0,
-    inset 0 1px 0 #ffffff35;
+    inset 0 1px 2px #e0f7ffab,
+    inset 0 -3px 5px #0d204447;
 }
 .buddy-play:hover:not(:disabled),
 .buddy-send:hover:not(:disabled) {
-  background: #103f91;
+  background-color: #164676f5;
 }
 .buddy-panel {
   position: absolute;
@@ -244,30 +321,29 @@ html.desktop-buddy,
   inset: 0 auto auto 0;
   width: 100%;
   height: min(656px, 100%);
-  border: 1px solid #bce4f2;
+  border: 0;
   border-radius: 31px;
   z-index: -1;
   pointer-events: none;
   opacity: 0;
   background: transparent;
-  box-shadow:
-    0 10px 24px #122c4e25,
-    inset 0 1px 1px #ffffff,
-    inset 0 -2px 2px #687ea64d;
+  /* Own the filter at the animated sheet: its retained opacity animation
+     creates a backdrop root that prevents descendant filters sampling the page. */
+  backdrop-filter: blur(14px) saturate(112%);
+  box-shadow: inset 0 -1px 1px #182d4b16;
   transform-origin: 48px 0;
 }
 .buddy-panel-rim {
   position: absolute;
   inset: 0;
   z-index: -1;
-  border-radius: 30px;
-  padding: 7px;
-  /* Keep the approved rim paint, but stop its full-box tint occluding the interior. */
+  border-radius: inherit;
+  padding: 1px;
+  /* Sparse thin-sheet reflections, not the previous seven-pixel painted frame. */
   background:
-    linear-gradient(145deg, #ffffffc9 0%, #ffffff00 25%, #ffffff00 72%, #ffffffe0),
-    radial-gradient(ellipse at 0% 0%, #67d9ffce, transparent 60%),
-    radial-gradient(ellipse at 0% 95%, #b8a2f4b8, transparent 54%),
-    radial-gradient(ellipse at 100% 90%, #ffc5bac9, transparent 50%), #d9efff99;
+    radial-gradient(ellipse at 12% 0%, #ddf8ffb8, transparent 40%),
+    radial-gradient(ellipse at 0% 88%, #b8a2f459, transparent 29%),
+    radial-gradient(ellipse at 100% 92%, #ffd0c452, transparent 30%);
   mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
@@ -280,27 +356,49 @@ html.desktop-buddy,
   pointer-events: none;
 }
 .buddy-panel-glass::before {
-  inset: 2px;
-  border-radius: 28px;
-  border: 1px solid #ffffffb8;
-  box-shadow: inset 0 1px 1px #fff;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 1px #ffffff45;
 }
 .buddy-panel-glass::after {
-  inset: 7px;
-  border-radius: 23px;
+  inset: 0;
+  border-radius: inherit;
   /* The readable surface is owned HTML, not a capture of the desktop behind Electron. */
   /* Background-responsive frost; sharp content has local backing, never a full opaque slab. */
   background:
-    linear-gradient(125deg, #ffffff38, #ffffff00 36%, #ffffff2d 74%, #ffffff3b),
-    radial-gradient(ellipse at 5% 4%, #8be8ff54, transparent 56%),
-    radial-gradient(ellipse at 2% 100%, #bba6ea38, transparent 65%),
-    radial-gradient(ellipse at 100% 76%, #ffc2b738, transparent 58%),
-    linear-gradient(160deg, #dff3ff38, #d5e9ff24 55%, #cddfff40);
-  backdrop-filter: blur(20px) saturate(115%);
-  box-shadow:
-    0 0 0 1px #ffffffb8,
-    inset 0 2px 3px #ffffffe0,
-    inset 0 -1px 5px #899ac52b;
+    linear-gradient(128deg, #ffffff24, #ffffff00 36%, #ffffff12 78%),
+    radial-gradient(ellipse at 0% 0%, #8be8ff26, transparent 52%),
+    radial-gradient(ellipse at 0% 100%, #bba6ea18, transparent 56%),
+    radial-gradient(ellipse at 100% 80%, #ffc2b714, transparent 52%),
+    linear-gradient(160deg, #e0f4ff24, #d5e9ff12 55%, #cddfff24);
+  box-shadow: inset 0 -1px 2px #314c701c;
+}
+.buddy-panel-shadow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: -2;
+  box-shadow: 0 3px 7px #102b4d25;
+  transform: translate(var(--buddy-shadow-x, 0px), var(--buddy-shadow-y, 0px));
+}
+.buddy-panel-light {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  padding: 1px;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.buddy-panel-light::before {
+  content: '';
+  position: absolute;
+  inset: -12px;
+  background: radial-gradient(ellipse at 28% 0%, #e6faff99, transparent 37%);
+  transform: translate(var(--buddy-light-x, 0px), var(--buddy-light-y, 0px));
 }
 .buddy-panel {
   display: flex;
@@ -444,13 +542,13 @@ html.desktop-buddy,
   position: relative;
   flex-shrink: 0;
   padding: 12px;
-  border: 1px solid #9db6d1;
+  border: 1px solid #c0d1df66;
   border-radius: 22px;
-  background: linear-gradient(125deg, #ffffffd9, #f4f8ffd9 55%, #f9f3ffd9);
-  backdrop-filter: blur(16px);
+  background: linear-gradient(125deg, #f4faffdc, #f3f6ffdc 58%, #f8f3ffdc);
+  backdrop-filter: blur(10px);
   box-shadow:
-    inset 0 1px 0 #fff,
-    0 4px 14px #254d7914;
+    inset 0 1px 1px #ffffffb8,
+    inset 0 -1px 3px #8999c51a;
 }
 .buddy-composer:focus-within,
 .buddy-composer.listening {
@@ -491,14 +589,14 @@ html.desktop-buddy,
   align-items: center;
   gap: 5px;
   min-height: 44px;
-  padding: 8px 7px;
+  padding: 8px 9px;
   color: var(--buddy-ink);
-  border-radius: 10px;
+  border-radius: 16px;
   font-size: 16px;
 }
 .buddy-disclosure-trigger:hover,
 .buddy-disclosure-trigger[aria-expanded='true'] {
-  background: #edf3fc;
+  background-color: #f5fbffee;
 }
 .buddy-disclosure-panel {
   position: absolute;
@@ -667,8 +765,28 @@ html.desktop-buddy,
   }
 }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .buddy button::before,
+  .buddy button::after {
+    display: none;
+  }
+  .buddy-icon,
+  .buddy-disclosure-trigger,
+  .buddy-disclosure-panel button,
+  .buddy-result-actions button {
+    background: #f8fbff;
+    box-shadow: none;
+  }
+  .buddy-play,
+  .buddy-send {
+    background: #123f7b;
+    box-shadow: none;
+  }
+  .buddy-icon.stop {
+    background: #fff0f2;
+  }
   .buddy-panel-glass {
     background: #d6e4f4;
+    backdrop-filter: none;
   }
   .buddy-panel-glass::after {
     background: #f8fbff;
@@ -694,6 +812,10 @@ html.desktop-buddy,
   }
 }
 @media (forced-colors: active) {
+  .buddy button::before,
+  .buddy button::after {
+    display: none;
+  }
   .buddy-panel-glass {
     display: none;
   }

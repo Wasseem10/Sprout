@@ -34,17 +34,9 @@ const BONE_NAMES = new Set([
   'FOOT_L',
   'FOOT_R',
 ]);
-const REQUIRED_NODES = [
-  'SPROUT_ROOT',
-  'REACTION_ROOT',
-  'GAZE_L',
-  'GAZE_R',
-  'EYE_L',
-  'EYE_R',
-  'LID_L',
-  'LID_R',
-];
+const REQUIRED_NODES = ['SPROUT_ROOT', 'REACTION_ROOT', 'GAZE_L', 'GAZE_R', 'EYE_L', 'EYE_R'];
 const REQUIRED_MORPHS = ['Jelly_Squash', 'Jelly_Sway_L', 'Jelly_Sway_R'];
+const BODY_MESH_NAMES = new Set(['SPROUT_BODY', 'SPROUT_CORE']);
 const TRANSFORM_PROPERTIES = new Set(['position', 'quaternion', 'scale']);
 const ATTENTION_YAW = (10 * Math.PI) / 180;
 const ATTENTION_PITCH = (6 * Math.PI) / 180;
@@ -54,6 +46,17 @@ const MAX_ATTENTION_COMPRESSION = 1;
 const ATTENTION_BODY_SCALE = [0.055, -0.085, 0.055] as const;
 const BODY_BEHAVIORS = SPROUT_BEHAVIOR_CLIPS.filter((name) => name !== 'Sprout_Done');
 const SLEEP_CLIPS = ['Sprout_SleepEnter', 'Sprout_SleepLoop', 'Sprout_Wake'];
+
+export type SproutEyeProfile = 'legacy-lids' | 'happy-eyes-v005';
+/** An actual exported eye morph selects the strict profile, never a filename or UI request. */
+export function sproutEyeProfile(root: Object3D): SproutEyeProfile {
+  return ['L', 'R'].some((side) => {
+    const eye = root.getObjectByName(`EYE_${side}`);
+    return eye instanceof Mesh && Boolean(eye.morphTargetDictionary?.CloseHappy !== undefined);
+  })
+    ? 'happy-eyes-v005'
+    : 'legacy-lids';
+}
 
 /** Invalid coordinates clear both axes rather than leaving a partially stale target. */
 export function finiteSproutGaze(x: number, y: number) {
@@ -118,15 +121,54 @@ export class SproutAttentionController {
 /** Reject overlapping authored owners rather than silently stripping export channels. */
 export function auditSproutModel(root: Object3D, clips: AnimationClip[]): string[] {
   const errors: string[] = [];
-  for (const name of [...REQUIRED_NODES, ...BONE_NAMES]) {
+  const eyeProfile = sproutEyeProfile(root);
+  const eyeOwners = new Map<string, Mesh>();
+  for (const name of [
+    ...REQUIRED_NODES,
+    ...BONE_NAMES,
+    ...(eyeProfile === 'legacy-lids' ? ['LID_L', 'LID_R'] : ['GLINT_L', 'GLINT_R']),
+  ]) {
     if (!root.getObjectByName(name)) errors.push(`Missing node: ${name}`);
+  }
+  if (eyeProfile === 'happy-eyes-v005') {
+    for (const side of ['L', 'R']) {
+      const eye = root.getObjectByName(`EYE_${side}`);
+      if (
+        !(eye instanceof Mesh) ||
+        JSON.stringify(eye.morphTargetDictionary) !== JSON.stringify({ CloseHappy: 0 }) ||
+        eye.morphTargetInfluences?.length !== 1
+      )
+        errors.push(`Expected one CloseHappy eye vector: EYE_${side}`);
+      else {
+        eyeOwners.set(eye.name, eye);
+        eyeOwners.set(eye.uuid, eye);
+        if (Math.abs(eye.morphTargetInfluences![0]) > 0.0001)
+          errors.push(`Eye must load open: EYE_${side}`);
+        for (const attribute of ['position', 'normal']) {
+          const basis = eye.geometry.getAttribute(attribute);
+          const targets = eye.geometry.morphAttributes[attribute];
+          if (!basis || targets?.length !== 1 || targets[0].count !== basis.count)
+            errors.push(`Missing complete eye morph ${attribute}: EYE_${side}`);
+        }
+      }
+      if (eye?.parent !== root.getObjectByName(`GAZE_${side}`))
+        errors.push(`Eye must remain on gaze mount: EYE_${side}`);
+      const glint = root.getObjectByName(`GLINT_${side}`);
+      if (glint?.parent !== root.getObjectByName(`GAZE_${side}`))
+        errors.push(`Glint must remain on gaze mount: GLINT_${side}`);
+      if (glint?.scale.toArray().some((value) => Math.abs(value - 1) > 0.0001))
+        errors.push(`Glint must load visible: GLINT_${side}`);
+      for (const old of [`LID_${side}`, `CLOSED_EYE_${side}`])
+        if (root.getObjectByName(old)) errors.push(`Legacy eye cover in happy-eye profile: ${old}`);
+    }
   }
   const sprout = root.getObjectByName('SPROUT_ROOT');
   if (root.getObjectByName('REACTION_ROOT')?.parent !== sprout)
     errors.push('REACTION_ROOT must be a direct child of SPROUT_ROOT');
   const morphOwners = new Map<string, Mesh>();
   root.traverse((node) => {
-    if (!(node instanceof Mesh) || !node.morphTargetDictionary) return;
+    if (!(node instanceof Mesh) || !BODY_MESH_NAMES.has(node.name) || !node.morphTargetDictionary)
+      return;
     if (REQUIRED_MORPHS.every((name) => name in node.morphTargetDictionary!)) {
       morphOwners.set(node.name, node);
       morphOwners.set(node.uuid, node);
@@ -173,6 +215,19 @@ export function auditSproutModel(root: Object3D, clips: AnimationClip[]): string
         parsed.propertyIndex === undefined &&
         Boolean(morphOwner) &&
         track.getValueSize() === morphOwner?.morphTargetInfluences?.length;
+      const eyeMorph =
+        parsed.propertyName === 'morphTargetInfluences' &&
+        parsed.propertyIndex === undefined &&
+        eyeOwners.has(target) &&
+        track.getValueSize() === 1;
+      const eyeChannel =
+        eyeProfile === 'happy-eyes-v005'
+          ? eyeMorph ||
+            (['GLINT_L', 'GLINT_R'].includes(semantic) &&
+              parsed.propertyName === 'scale' &&
+              parsed.propertyIndex === undefined &&
+              track.getValueSize() === 3)
+          : ['LID_L', 'LID_R'].includes(semantic) && transform;
       hasMorph ||= morph;
       if (morph && morphOwner) {
         if (completeMorphOwners.has(morphOwner))
@@ -183,16 +238,47 @@ export function auditSproutModel(root: Object3D, clips: AnimationClip[]): string
         clip.name === 'Sprout_Click' || clip.name === 'Sprout_Done'
           ? semantic === 'REACTION_ROOT' && transform
           : clip.name === 'Sprout_Blink'
-            ? ['LID_L', 'LID_R'].includes(semantic) && transform
+            ? eyeChannel
             : (BONE_NAMES.has(semantic) && transform) ||
               morph ||
               (SLEEP_CLIPS.includes(clip.name) &&
-                ['LID_L', 'LID_R'].includes(semantic) &&
-                parsed.propertyName === 'scale');
+                eyeChannel &&
+                (eyeProfile === 'happy-eyes-v005' || parsed.propertyName === 'scale'));
       if (!permitted) errors.push(`Unexpected owner: ${clip.name} → ${track.name}`);
       if (![...track.times, ...track.values].every(Number.isFinite))
         errors.push(`Non-finite channel: ${track.name}`);
+      if (eyeMorph && [...track.values].some((value) => value < 0 || value > 1))
+        errors.push(`Eye closure outside [0,1]: ${clip.name} → ${track.name}`);
+      if (eyeProfile === 'happy-eyes-v005' && eyeChannel) {
+        const values = [...track.values];
+        const size = track.getValueSize();
+        const start = values.slice(0, size);
+        const end = values.slice(-size);
+        const closed = eyeMorph ? 1 : 0.001;
+        const open = eyeMorph ? 0 : 1;
+        const near = (sample: number[], target: number) =>
+          sample.every((value) => Math.abs(value - target) < 0.0001);
+        const startsClosed = ['Sprout_SleepLoop', 'Sprout_Wake'].includes(clip.name);
+        const endsClosed = ['Sprout_SleepEnter', 'Sprout_SleepLoop'].includes(clip.name);
+        if (!near(start, startsClosed ? closed : open) || !near(end, endsClosed ? closed : open))
+          errors.push(`Invalid eye endpoints: ${clip.name} → ${track.name}`);
+        if (
+          clip.name === 'Sprout_Blink' &&
+          !values.some((value) => Math.abs(value - closed) < 0.0001)
+        )
+          errors.push(`Blink never closes: ${track.name}`);
+        if (clip.name === 'Sprout_SleepLoop' && !near(values, closed))
+          errors.push(`Sleep eye must remain closed: ${track.name}`);
+      }
     }
+    if (
+      eyeProfile === 'happy-eyes-v005' &&
+      (clip.name === 'Sprout_Blink' || SLEEP_CLIPS.includes(clip.name))
+    )
+      for (const side of ['L', 'R'])
+        for (const channel of [`EYE_${side}.morphTargetInfluences`, `GLINT_${side}.scale`])
+          if (!channels.has(channel))
+            errors.push(`Missing happy-eye channel: ${clip.name} → ${channel}`);
     if (
       BASE_NAMES.some((name) => name === clip.name) ||
       BODY_BEHAVIORS.some((name) => name === clip.name)
@@ -206,7 +292,7 @@ export function auditSproutModel(root: Object3D, clips: AnimationClip[]): string
           for (const property of TRANSFORM_PROPERTIES)
             if (!channels.has(`${bone}.${property}`))
               errors.push(`Missing full pose channel: ${clip.name} → ${bone}.${property}`);
-        if (SLEEP_CLIPS.includes(clip.name))
+        if (eyeProfile === 'legacy-lids' && SLEEP_CLIPS.includes(clip.name))
           for (const side of ['L', 'R'])
             if (!channels.has(`LID_${side}.scale`))
               errors.push(`Missing sleep lid: ${clip.name} → LID_${side}`);
@@ -279,6 +365,7 @@ export function auditSproutModel(root: Object3D, clips: AnimationClip[]): string
 }
 
 export type SproutMotionSnapshot = {
+  eyeProfile: SproutEyeProfile;
   phase: BuddyVisualState;
   moving: boolean;
   weights: Record<string, number>;
@@ -302,6 +389,7 @@ export type SproutMotionSnapshot = {
 /** One mixer composes full-body poses, exclusive lids and serialized reaction overlays. */
 export class SproutMotionController {
   readonly mixer: AnimationMixer;
+  readonly eyeProfile: SproutEyeProfile;
   private base = new Map<string, AnimationAction>();
   private weights: Record<string, number> = {};
   private transition: {
@@ -343,6 +431,17 @@ export class SproutMotionController {
       rest: number[];
     }[];
   } | null = null;
+  private eyeHandoff: {
+    action: AnimationAction;
+    channels: {
+      node: Object3D;
+      property: 'morphTargetInfluences' | 'scale';
+      track: NumberKeyframeTrack | VectorKeyframeTrack;
+    }[];
+    active: boolean;
+    weight: number;
+    from: number;
+  } | null = null;
   readonly capabilities: BuddyBehaviorCapabilities;
 
   constructor(
@@ -351,6 +450,7 @@ export class SproutMotionController {
     private gazeTravel = 0.04,
   ) {
     this.mixer = new AnimationMixer(root);
+    this.eyeProfile = sproutEyeProfile(root);
     this.capabilities = {
       joy: clips.some((clip) => clip.name === 'Sprout_JoyJump'),
       sleep: SLEEP_CLIPS.every((name) => clips.some((clip) => clip.name === name)),
@@ -375,6 +475,36 @@ export class SproutMotionController {
       const action = this.mixer.clipAction(clip).setLoop(LoopOnce, 1);
       action.clampWhenFinished = true;
       this.oneShots.set(name, { action, active: false, generation: 0, finished: null });
+    }
+    const blink = clips.find((clip) => clip.name === 'Sprout_Blink');
+    if (this.eyeProfile === 'happy-eyes-v005' && blink) {
+      const channels = blink.tracks.flatMap((track) => {
+        const parsed = PropertyBinding.parseTrackName(track.name);
+        const node =
+          root.getObjectByName(parsed.nodeName) ??
+          root.getObjectByProperty('uuid', parsed.nodeName);
+        if (!node) return [];
+        const property = parsed.propertyName;
+        if (property !== 'scale' && property !== 'morphTargetInfluences') return [];
+        const rest =
+          property === 'scale'
+            ? node.scale.toArray()
+            : [...((node as Mesh).morphTargetInfluences ?? [])];
+        const hold =
+          property === 'scale'
+            ? new VectorKeyframeTrack(track.name, [0, 1], [...rest, ...rest])
+            : new NumberKeyframeTrack(track.name, [0, 1], [...rest, ...rest]);
+        return [{ node, property: property as 'scale' | 'morphTargetInfluences', track: hold }];
+      });
+      const action = this.mixer.clipAction(
+        new AnimationClip(
+          'Runtime_EyeHandoff',
+          1,
+          channels.map(({ track }) => track),
+        ),
+      );
+      action.setEffectiveTimeScale(0).setEffectiveWeight(0);
+      this.eyeHandoff = { action, channels, active: false, weight: 0, from: 0 };
     }
     const reaction = root.getObjectByName('REACTION_ROOT');
     const click = clips.find((clip) => clip.name === 'Sprout_Click');
@@ -422,7 +552,12 @@ export class SproutMotionController {
         );
       })?.name ?? `${node.name}.${property}`;
     root.traverse((node) => {
-      if (!(node instanceof Mesh) || !node.morphTargetDictionary || !node.morphTargetInfluences)
+      if (
+        !(node instanceof Mesh) ||
+        !BODY_MESH_NAMES.has(node.name) ||
+        !node.morphTargetDictionary ||
+        !node.morphTargetInfluences
+      )
         return;
       if (!REQUIRED_MORPHS.every((name) => name in node.morphTargetDictionary!)) return;
       const vector = node.morphTargetInfluences.map((_, index) =>
@@ -507,6 +642,7 @@ export class SproutMotionController {
     if (!this.base.has(target)) return;
     this.target = target;
     this.bodyFinished = null;
+    if (this.eyeHandoff?.active) this.eyeHandoff.from = this.eyeHandoff.weight;
     for (const [name, action] of this.base) {
       action.stopFading().stopWarping();
       if (BODY_BEHAVIORS.some((body) => body === name) && name !== target) action.paused = true;
@@ -689,8 +825,28 @@ export class SproutMotionController {
   private beginBody(name: string, mode: BuddyBehaviorMode) {
     this.generation += 1;
     this.pendingDone = null;
+    if (
+      SLEEP_CLIPS.includes(name) &&
+      this.oneShots.get('Sprout_Blink')?.active &&
+      this.eyeHandoff
+    ) {
+      for (const { node, property, track } of this.eyeHandoff.channels) {
+        const value =
+          property === 'scale'
+            ? node.scale.toArray()
+            : [...((node as Mesh).morphTargetInfluences ?? [])];
+        track.values.set([...value, ...value]);
+      }
+      this.eyeHandoff.active = true;
+      this.eyeHandoff.weight = this.eyeHandoff.from = 1;
+      this.eyeHandoff.action.reset().setEffectiveTimeScale(0).setEffectiveWeight(1).play();
+    }
     for (const shot of this.oneShots.keys())
-      if (shot !== 'Runtime_ReactionReturn') this.stopShot(shot);
+      if (
+        shot !== 'Runtime_ReactionReturn' &&
+        (shot !== 'Sprout_Blink' || SLEEP_CLIPS.includes(name))
+      )
+        this.stopShot(shot);
     this.gazeTarget = { x: 0, y: 0 };
     this.changeMode(mode);
     this.retarget(name, 0.16, true);
@@ -740,6 +896,11 @@ export class SproutMotionController {
   private park() {
     this.transition = null;
     this.bodyFinished = null;
+    if (this.eyeHandoff) {
+      this.eyeHandoff.action.stop();
+      this.eyeHandoff.active = false;
+      this.eyeHandoff.weight = this.eyeHandoff.from = 0;
+    }
     const target = this.sleeping && this.capabilities.sleep ? 'Sprout_SleepLoop' : 'Sprout_Idle';
     for (const [name, action] of this.base) {
       action.stop();
@@ -870,6 +1031,10 @@ export class SproutMotionController {
       this.transition.elapsed += dt;
       const progress = Math.min(1, this.transition.elapsed / this.transition.duration);
       const alpha = progress * progress * (3 - 2 * progress);
+      if (this.eyeHandoff?.active) {
+        this.eyeHandoff.weight = this.eyeHandoff.from * (1 - alpha);
+        this.eyeHandoff.action.setEffectiveWeight(this.eyeHandoff.weight);
+      }
       for (const [name, action] of this.base) {
         const weight =
           (this.transition.from[name] ?? 0) * (1 - alpha) +
@@ -891,6 +1056,10 @@ export class SproutMotionController {
       this.attentionSquash.time = this.compression;
     }
     this.mixer.update(dt);
+    if (this.eyeHandoff?.active && this.eyeHandoff.weight <= 1e-10) {
+      this.eyeHandoff.action.stop();
+      this.eyeHandoff.active = false;
+    }
     // Stop after mixer iteration, avoiding action-array mutation inside its finished event.
     for (const [name, shot] of this.oneShots) {
       if (shot.finished === shot.generation) {
@@ -943,6 +1112,7 @@ export class SproutMotionController {
 
   snapshot(): SproutMotionSnapshot {
     return {
+      eyeProfile: this.eyeProfile,
       phase: this.phase,
       moving: this.moving,
       weights: { ...this.weights },

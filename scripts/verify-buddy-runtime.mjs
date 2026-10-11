@@ -17,6 +17,7 @@ const artifactDir = path.resolve(proofOutputPath('artifacts/buddy-runtime-native
 const local = path.resolve(proofLocalDirectory, 'buddy-runtime-native');
 const dist = path.resolve('dist');
 const lifecycleOnly = process.argv.includes('--lifecycle-only');
+const warmTilt = process.argv.includes('--warm-tilt');
 await Promise.all([mkdir(artifactDir, { recursive: true }), mkdir(local, { recursive: true })]);
 const rendererChunk = (await readdir(path.join(dist, 'assets'))).find((name) =>
   /^buddyRenderer-.*\.js$/.test(name),
@@ -31,6 +32,46 @@ const assetDefinition = JSON.parse(
 const hasTransmission = assetDefinition.materials.some(
   (material) => (material.extensions?.KHR_materials_transmission?.transmissionFactor ?? 0) > 0,
 );
+// Actual v005 eye geometry adds two disposable morph arrays. This changes the
+// explicit-delete count, never the permitted residual handles after disposal.
+const assetEyes = assetDefinition.nodes
+  .filter((node) => /^EYE_[LR]$/.test(node.name ?? ''))
+  .map((node) => ({
+    name: node.name,
+    mesh: node.mesh,
+    definition: assetDefinition.meshes[node.mesh],
+  }));
+const hasHappyEyeMorphs = assetEyes.some((eye) =>
+  eye.definition.primitives.some((primitive) => (primitive.targets?.length ?? 0) > 0),
+);
+const eyeMorphTextureSignatures = [];
+if (hasHappyEyeMorphs) {
+  expect(assetEyes.map((eye) => eye.name).sort()).toEqual(['EYE_L', 'EYE_R']);
+  expect(new Set(assetEyes.map((eye) => eye.mesh)).size).toBe(2);
+  for (const eye of assetEyes) {
+    expect(eye.definition.extras?.targetNames).toEqual(['CloseHappy']);
+    expect(eye.definition.weights).toEqual([0]);
+    expect(eye.definition.primitives).toHaveLength(1);
+    const primitive = eye.definition.primitives[0];
+    expect(primitive.targets).toHaveLength(1);
+    expect(Object.keys(primitive.targets[0]).sort()).toEqual(['NORMAL', 'POSITION']);
+    const position = assetDefinition.accessors[primitive.attributes.POSITION];
+    expect(position.count).toBe(534);
+    expect(position.type).toBe('VEC3');
+    for (const attribute of ['POSITION', 'NORMAL']) {
+      const accessor = assetDefinition.accessors[primitive.targets[0][attribute]];
+      expect(accessor.count).toBe(position.count);
+      expect(accessor.type).toBe('VEC3');
+    }
+    eyeMorphTextureSignatures.push({
+      target: 35866,
+      internalFormat: 34836,
+      width: position.count * 2,
+      height: 1,
+      depth: 1,
+    });
+  }
+}
 // This is a narrow classification of the installed implementation, not an
 // allowance for arbitrary renderer leftovers or a physical-VRAM assertion.
 const threeSourceEvidence = [
@@ -68,6 +109,12 @@ const threeSourceEvidence = [
     sha256: '280b75b70d9d55c39d4121d5244c22ee445d27cc05ed6b134c3a5bde6b81b3da',
     mechanism:
       'getDFGLUT supplies the shared16×16 RG16F lookup texture; its exact upload prefix is asserted below.',
+  },
+  {
+    path: 'src/renderers/webgl/WebGLMorphtargets.js',
+    sha256: '2ce90a7fbe8d817b2addec2e70047c5c240dd366ba2b5a4ffb52acf5b5758907',
+    mechanism:
+      'Lines34–52 encode POSITION+NORMAL as two RGBA32F texels per vertex in a FloatType DataArrayTexture. Lines128–140 attach a geometry-dispose listener that disposes the texture and removes its WeakMap entry.',
   },
 ];
 expect(JSON.parse(await readFile('node_modules/three/package.json', 'utf8')).version).toBe(
@@ -468,6 +515,33 @@ try {
     'thinking',
   );
   await expect(page.locator('.buddy-face .insight-signal')).toHaveAttribute('data-phase', 'idle');
+  if (warmTilt && !lifecycleOnly) {
+    // Explicitly labelled steady-state study. The separate first-use trace must
+    // remain available; this warmup does not certify first-interaction latency.
+    await composer.blur();
+    const surface = await buddy.boundingBox();
+    const start = await page.evaluate(() => performance.now());
+    for (const fraction of [0.9, 0.1]) {
+      await page.mouse.move(
+        surface.x + surface.width * fraction,
+        surface.y + surface.height * 0.34,
+        { steps: 8 },
+      );
+      await expect(page.locator('.buddy-visual-plane')).toHaveAttribute('data-tilt', 'active');
+      await expect
+        .poll(() =>
+          page.locator('.buddy-visual-plane').evaluate((element) => element.style.willChange),
+        )
+        .toBe('');
+    }
+    report.tiltWarmup = {
+      explicit: true,
+      start,
+      end: await page.evaluate(() => performance.now()),
+      scope:
+        'Real pointer tilt in both directions before the measured interval; excludes first-use shader work. Compare the separately retained first-use report.',
+    };
+  }
   await close.click();
   await expect(buddy).toHaveAttribute('data-panel-stage', 'closed');
   await page.waitForTimeout(300);
@@ -509,6 +583,38 @@ try {
     const startedAt = await page.evaluate(() => window.__buddyRuntimeProbe.begin());
     await pet.click();
     await expect(buddy).toHaveAttribute('data-panel-stage', 'open');
+    // Exercise the real pointer-driven plane before editing deliberately
+    // neutralizes it. Keep capture/video outside this measured interaction.
+    const pointerSurface = await buddy.boundingBox();
+    expect(pointerSurface).not.toBeNull();
+    const pointerSweep = [];
+    for (const fraction of [0.85, 0.15, 0.8, 0.2, 0.5]) {
+      await page.mouse.move(
+        pointerSurface.x + pointerSurface.width * fraction,
+        pointerSurface.y + pointerSurface.height * 0.34,
+        { steps: 8 },
+      );
+      await page.waitForTimeout(100);
+      pointerSweep.push(
+        await page.locator('.buddy-visual-plane').evaluate((element) => ({
+          state: element.dataset.tilt,
+          transform: getComputedStyle(element).transform,
+        })),
+      );
+    }
+    expect(pointerSweep.some((pose) => pose.state === 'active')).toBe(true);
+    await expect
+      .poll(() =>
+        page.locator('.buddy-visual-plane').evaluate((element) => element.style.willChange),
+      )
+      .toBe('');
+    const settledStart = await snapshot();
+    await page.waitForTimeout(200);
+    const settledEnd = await snapshot();
+    const decorativeCallbacks = (sample) =>
+      sample.callbacks.filter((record) => record.kind === 'other-application');
+    expect(decorativeCallbacks(settledEnd)).toEqual(decorativeCallbacks(settledStart));
+    expect(decorativeCallbacks(settledEnd).every((record) => record.pending === 0)).toBe(true);
     await composer.pressSequentially(
       'Explain these options in plain language while I compare them.',
       { delay: 15 },
@@ -552,6 +658,12 @@ try {
       startedAt,
       durationMs: measurement.endedAt - startedAt,
       ...measurement,
+      pointerSweep,
+      settledDecoration: {
+        intervalMs: 200,
+        before: decorativeCallbacks(settledStart),
+        after: decorativeCallbacks(settledEnd),
+      },
       repetitions: 5,
       rapidExitReversal: { atStage: reversalStage, delayMs: 25 },
       retainedDraft: await composer.inputValue(),
@@ -845,7 +957,19 @@ try {
     (texture) =>
       !textureSignatures.some((residual) => JSON.stringify(texture) === JSON.stringify(residual)),
   );
-  expect(explicitlyDisposedTextures).toHaveLength(hasTransmission ? 5 : 3);
+  const matchesEyeMorphTexture = (texture) =>
+    eyeMorphTextureSignatures.some(
+      (storage) => JSON.stringify(texture.storage) === JSON.stringify(storage),
+    );
+  const explicitlyDisposedEyeMorphTextures =
+    explicitlyDisposedTextures.filter(matchesEyeMorphTexture);
+  expect(explicitlyDisposedEyeMorphTextures.map((texture) => texture.storage)).toEqual(
+    eyeMorphTextureSignatures,
+  );
+  expect(textureSignatures.filter(matchesEyeMorphTexture)).toHaveLength(0);
+  expect(explicitlyDisposedTextures).toHaveLength(
+    (hasTransmission ? 5 : 3) + eyeMorphTextureSignatures.length,
+  );
   expect(
     ownerRecord(disposedEnd).resources.Texture.deleted -
       ownerRecord(ownerActive).resources.Texture.deleted,
@@ -886,6 +1010,13 @@ try {
       transmission: { presentInActualGlb: hasTransmission, matched: transmission },
       expectedUnmatchedResources,
       explicitlyDisposedTextures,
+      eyeMorphTextures: {
+        profile: hasHappyEyeMorphs ? 'happy-eyes-v005' : 'legacy-nonmorph-eyes',
+        actualGlbEyeNodes: assetEyes.map((eye) => eye.name),
+        expectedStorage: eyeMorphTextureSignatures,
+        explicitlyDeleted: explicitlyDisposedEyeMorphTextures,
+        residualCount: 0,
+      },
       ownedModelTexturesExplicitlyDeleted: true,
       unmatchedFramebufferCreationOrders:
         ownerRecord(disposedEnd).unmatchedFramebufferCreationOrders,

@@ -671,7 +671,7 @@ export default function ComputerCompanion() {
         try {
           body = JSON.parse(raw);
         } catch {
-          throw new Error('Insight’s local service is reconnecting. Try reading the bill again.');
+          throw new Error('Sprout’s local service is reconnecting. Try reading the bill again.');
         }
         if (!response.ok) throw new Error(body.error ?? 'The bill could not be read.');
         result = body;
@@ -711,7 +711,7 @@ export default function ComputerCompanion() {
       try {
         body = JSON.parse(raw);
       } catch {
-        throw new Error('Insight’s local service is reconnecting. Try importing the file again.');
+        throw new Error('Sprout’s local service is reconnecting. Try importing the file again.');
       }
       if (!response.ok) throw new Error(body.error ?? 'The finance file could not be imported.');
       if (!body.state || typeof body.summary !== 'string')
@@ -746,7 +746,7 @@ export default function ComputerCompanion() {
     if (dockMode) setDockExpanded(true);
     const greeting =
       desktopBuddy && !greeted.current && speech
-        ? "Hi, I'm Insight. What would you like to do?"
+        ? "Hi, I'm Sprout. What would you like to do?"
         : undefined;
     greeted.current = true;
     void voice.startConversation(greeting);
@@ -879,7 +879,7 @@ export default function ComputerCompanion() {
         <>
           {desktopBuddy && (
             <div className="desktop-workspace-bar">
-              <span>InsightOS workspace</span>
+              <span>Sprout workspace</span>
               <button
                 onClick={() => {
                   switchDockMode(true);
@@ -894,13 +894,11 @@ export default function ComputerCompanion() {
             Skip to request input
           </a>
           <header className="companion-header">
-            <a className="brand" href="/" aria-label="InsightOS home">
+            <a className="brand" href="/" aria-label="Sprout home">
               <span className="brand-symbol">
                 <Sparkles size={23} aria-hidden="true" />
               </span>
-              <span>
-                insight<span className="brand-os">OS</span>
-              </span>
+              <span>Sprout</span>
             </a>
             <span className="companion-tag">Your personal desktop companion</span>
             <div className="companion-header-actions">
@@ -992,10 +990,7 @@ export default function ComputerCompanion() {
                 />
               )}
               {tab === 'home' && (
-                <section
-                  className="computer-artifact computer-home"
-                  aria-label="Start with InsightOS"
-                >
+                <section className="computer-artifact computer-home" aria-label="Start with Sprout">
                   <div className="computer-artifact-heading">
                     <div>
                       <h2>What can I help with?</h2>
@@ -1577,7 +1572,7 @@ export default function ComputerCompanion() {
                         ? 'YOU'
                         : m.role === 'error'
                           ? 'NEEDS ATTENTION'
-                          : 'INSIGHTOS'}
+                          : 'SPROUT'}
                     </span>
                     <p>{m.text}</p>
                   </div>
@@ -1716,7 +1711,7 @@ export default function ComputerCompanion() {
       >
         <div className="computer-dialog-heading">
           <h2 id="computer-dialog-title">
-            {modal === 'screens' ? 'Choose what InsightOS can see' : 'Settings & connections'}
+            {modal === 'screens' ? 'Choose what Sprout can see' : 'Settings & connections'}
           </h2>
           <button aria-label="Close dialog" className="icon-button" onClick={() => setModal(null)}>
             <X size={20} aria-hidden="true" />

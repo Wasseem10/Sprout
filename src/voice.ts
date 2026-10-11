@@ -386,7 +386,7 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
         const name = error instanceof Error ? error.name : '';
         errorHandler.current(
           name === 'NotAllowedError'
-            ? 'Microphone permission was denied. Allow microphone access for InsightOS, then try again. You can also type.'
+            ? 'Microphone permission was denied. Allow microphone access for Sprout, then try again. You can also type.'
             : name === 'NotFoundError'
               ? 'No microphone was found. Connect one, then try again.'
               : name === 'NotReadableError'

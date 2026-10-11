@@ -114,7 +114,7 @@ app
     ipcMain.handle('insightos:choose-folder', async (event) => {
       nativeRequest(event);
       const selected = await dialog.showOpenDialog(BrowserWindow.fromWebContents(event.sender), {
-        title: 'Choose where InsightOS can create Python files',
+        title: 'Choose where Sprout can create Python files',
         properties: ['openDirectory', 'createDirectory'],
       });
       if (selected.canceled) return null;
@@ -320,7 +320,7 @@ app
             2,
       ),
       y: work.y + 20,
-      title: 'InsightOS Buddy',
+      title: 'Sprout',
       frame: standaloneWorkspace,
       transparent: !standaloneWorkspace,
       backgroundColor: standaloneWorkspace ? '#101211' : '#00000000',
@@ -361,6 +361,32 @@ app
       if (event.sender !== win.webContents || event.senderFrame !== win.webContents.mainFrame)
         throw new Error('Desktop visibility requires the companion main frame.');
       return desktopVisibility();
+    });
+    // Native drag regions do not deliver DOM pointer events. Observe the Windows
+    // modal move loop so decorative tilt freezes without polling or moving the window.
+    let dragActive = false;
+    let dragRevision = 0;
+    const desktopDrag = () => ({ active: dragActive, revision: dragRevision });
+    const publishDrag = (active) => {
+      if (active === dragActive) return;
+      dragActive = active;
+      dragRevision++;
+      if (win.isDestroyed() || win.webContents.isDestroyed() || !trusted(win.webContents.getURL()))
+        return;
+      win.webContents.send('insightos:desktop-drag-changed', desktopDrag());
+    };
+    if (process.platform === 'win32') {
+      win.hookWindowMessage(0x0231, () => publishDrag(true)); // WM_ENTERSIZEMOVE
+      win.hookWindowMessage(0x0232, () => publishDrag(false)); // WM_EXITSIZEMOVE
+      // The normal close action hides this live window. Keep hooks until its
+      // native handle is destroyed, when Electron releases them with the window.
+    }
+    for (const event of ['hide', 'minimize', 'blur']) win.on(event, () => publishDrag(false));
+    ipcMain.handle('insightos:desktop-drag', (event) => {
+      nativeRequest(event);
+      if (event.sender !== win.webContents || event.senderFrame !== win.webContents.mainFrame)
+        throw new Error('Desktop drag state requires the companion main frame.');
+      return desktopDrag();
     });
     const resizeBuddy = (mode, requestId = 0) => {
       if (!['pill', 'panel', 'workspace'].includes(mode))
@@ -429,17 +455,17 @@ app
           pixels[i + 3] = inside ? 255 : 0;
         }
       tray = new Tray(nativeImage.createFromBitmap(pixels, { width: 32, height: 32 }));
-      tray.setToolTip('InsightOS — your desktop buddy');
+      tray.setToolTip('Sprout — your desktop buddy');
       tray.setContextMenu(
         Menu.buildFromTemplate([
           { label: 'Show buddy', click: () => dispatch('show') },
-          { label: 'Talk to InsightOS', click: () => dispatch('voice') },
+          { label: 'Talk to Sprout', click: () => dispatch('voice') },
           { label: 'Stop task and audio', click: () => dispatch('stop') },
           { type: 'separator' },
           { label: 'Settings', click: () => dispatch('settings') },
           { label: 'Open workspace', click: () => dispatch('workspace') },
           { type: 'separator' },
-          { label: 'Quit InsightOS', click: () => app.quit() },
+          { label: 'Quit Sprout', click: () => app.quit() },
         ]),
       );
       tray.on('click', () => dispatch('show'));
@@ -457,7 +483,7 @@ app
   })
   .catch((error) => {
     dialog.showErrorBox(
-      'InsightOS could not start',
+      'Sprout could not start',
       error.message + '\nRun npm run build first, or close an existing instance using port 4311.',
     );
     app.quit();

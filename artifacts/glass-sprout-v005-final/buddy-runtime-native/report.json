@@ -1,0 +1,1503 @@
+{
+  "checkedAt": "2026-10-11T08:04:03.629Z",
+  "pass": false,
+  "asset": {
+    "url": "/buddy/sprout-v005.glb",
+    "bytes": 1445476,
+    "sha256": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2",
+    "binaryHeader": "glTF",
+    "rendererChunk": "buddyRenderer-Ztm8NTJW.js",
+    "served": [
+      {
+        "url": "/buddy/sprout-v005.glb",
+        "sha256": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2"
+      }
+    ]
+  },
+  "scope": {
+    "ui": "Actual compiled dist served at the native shell trusted local origin; actual main/preload/security/IPC, fresh isolated profile. Initial dev avatar warms bootstrap; this is not a cold-load test.",
+    "interaction": "Real panel typing, one delayed local task response driving authoritative thinking/idle, repeated open/close and rapid reversals. No mic, TTS, provider or production backend task.",
+    "timing": "Test-only WebGL/rAF API wrappers add overhead. Document rAF and actual avatar draw callback clocks are proxies, not OS presentation. No screenshot, video, GPU info or memory dump inside the timed interaction.",
+    "resources": "Created/deleted WebGL handle counts, not allocated bytes, physical VRAM or driver reclamation. The live field means created minus explicit delete, not validity after context loss. Test-held references intentionally prevent a GC claim.",
+    "lifecycle": "Actual compiled renderer API in a separate 96px test owner after panel timing; actual IntersectionObserver offscreen and native window hide/show; actual dispose. Native pet counts remain separate."
+  },
+  "native": {
+    "bounds": {
+      "x": 812,
+      "y": 20,
+      "width": 296,
+      "height": 128
+    },
+    "workArea": {
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1032
+    },
+    "preferences": {
+      "sandbox": true,
+      "contextIsolation": true,
+      "nodeIntegration": false,
+      "webSecurity": true,
+      "backgroundThrottling": false
+    },
+    "versions": {
+      "node": "24.21.0",
+      "acorn": "8.18.0",
+      "ada": "4.0.0",
+      "amaro": "1.1.11",
+      "ares": "1.34.8",
+      "brotli": "1.2.0",
+      "cldr": "48.0",
+      "icu": "78.2",
+      "llhttp": "9.4.3",
+      "merve": "1.2.2",
+      "modules": "149",
+      "napi": "10",
+      "nbytes": "0.1.4",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.70.0",
+      "nghttp3": "",
+      "ngtcp2": "",
+      "openssl": "0.0.0",
+      "simdjson": "4.6.7",
+      "simdutf": "7.7.0",
+      "sqlite": "3.53.4",
+      "tz": "2026d",
+      "undici": "7.29.1",
+      "unicode": "17.0",
+      "uv": "1.52.1",
+      "uvwasi": "0.0.23",
+      "v8": "15.2.124.28-electron.0",
+      "zlib": "1.3.2.1-motley",
+      "zstd": "1.6.0",
+      "electron": "44.7.0",
+      "chrome": "152.0.7977.130"
+    },
+    "initialVisibilitySnapshot": {
+      "visible": true,
+      "revision": 2
+    }
+  },
+  "interaction": {
+    "startedAt": 2685.399999976158,
+    "durationMs": 8155.700000047684,
+    "endedAt": 10841.100000023842,
+    "documentRafClock": {
+      "samples": 484,
+      "p95Ms": 16.800000000000182,
+      "maxMs": 83.40000000000009,
+      "above20Ms": 1,
+      "above50Ms": 1
+    },
+    "avatar": [
+      {
+        "id": 1,
+        "label": "native-pet",
+        "drawCallbackClock": {
+          "samples": 484,
+          "p95Ms": 16.800000000000182,
+          "maxMs": 83.40000000000009,
+          "above20Ms": 1,
+          "above50Ms": 1
+        },
+        "callbackCPUP95Ms": 1.5,
+        "callbackCPUMaxMs": 2.700000047683716
+      }
+    ],
+    "mutations": [
+      {
+        "at": 2720.5,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 2735,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 6557.600000023842,
+        "panelStage": "open",
+        "phase": "thinking"
+      },
+      {
+        "at": 7230.600000023842,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 9221.100000023842,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 9401.199999928474,
+        "panelStage": "closed",
+        "phase": "idle"
+      },
+      {
+        "at": 9484.799999952316,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 9501.5,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 9558.199999928474,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 9617.199999928474,
+        "panelStage": "closed",
+        "phase": "idle"
+      },
+      {
+        "at": 9701.600000023842,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 9717.100000023842,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 9789.899999976158,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 9867.399999976158,
+        "panelStage": "closed",
+        "phase": "idle"
+      },
+      {
+        "at": 9936.399999976158,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 9949.5,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 10005.399999976158,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 10069.399999976158,
+        "panelStage": "closed",
+        "phase": "idle"
+      },
+      {
+        "at": 10151.699999928474,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 10165.600000023842,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 10203.699999928474,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 10266.299999952316,
+        "panelStage": "closed",
+        "phase": "idle"
+      },
+      {
+        "at": 10351.299999952316,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 10365.600000023842,
+        "panelStage": "open",
+        "phase": "idle"
+      },
+      {
+        "at": 10398.399999976158,
+        "panelStage": "closing",
+        "phase": "idle"
+      },
+      {
+        "at": 10422.699999928474,
+        "panelStage": "preparing-open",
+        "phase": "idle"
+      },
+      {
+        "at": 10424.5,
+        "panelStage": "open",
+        "phase": "idle"
+      }
+    ],
+    "pointerSweep": [
+      {
+        "state": "active",
+        "transform": "matrix3d(0.999912, 3.53831e-05, -0.0132592, 7.36622e-06, 0, 0.999996, 0.00266856, -1.48253e-06, 0.0132592, -0.00266832, 0.999909, -0.000555505, 0, 0, 0, 1)"
+      },
+      {
+        "state": "active",
+        "transform": "matrix3d(0.999909, -3.3982e-05, 0.0135117, -7.5065e-06, 0, 0.999997, 0.002515, -1.39722e-06, -0.0135118, -0.00251477, 0.999906, -0.000555503, 0, 0, 0, 1)"
+      },
+      {
+        "state": "active",
+        "transform": "matrix3d(0.999934, 2.8888e-05, -0.0114941, 6.3856e-06, 0, 0.999997, 0.00251329, -1.39627e-06, 0.0114941, -0.00251312, 0.999931, -0.000555517, 0, 0, 0, 1)"
+      },
+      {
+        "state": "active",
+        "transform": "matrix3d(0.999937, -2.82253e-05, 0.0112305, -6.23915e-06, 0, 0.999997, 0.00251327, -1.39626e-06, -0.0112305, -0.00251311, 0.999934, -0.000555519, 0, 0, 0, 1)"
+      },
+      {
+        "state": "active",
+        "transform": "matrix3d(1, -1.21489e-06, 0.000483387, -2.68548e-07, 0, 0.999997, 0.00251327, -1.39626e-06, -0.000483389, -0.00251327, 0.999997, -0.000555554, 0, 0, 0, 1)"
+      }
+    ],
+    "settledDecoration": {
+      "intervalMs": 200,
+      "before": [
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 85,
+          "pending": 0
+        }
+      ],
+      "after": [
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 85,
+          "pending": 0
+        }
+      ]
+    },
+    "repetitions": 5,
+    "rapidExitReversal": {
+      "atStage": "closing",
+      "delayMs": 25
+    },
+    "retainedDraft": "Keep this unsent draft through every opening and reversal.",
+    "before": {
+      "at": 2613.6999999284744,
+      "hidden": false,
+      "globalPendingAvatarCallbacks": 1,
+      "unassignedPendingAvatarCallbacks": 0,
+      "contexts": [
+        {
+          "id": 1,
+          "label": "native-pet",
+          "draws": 1389,
+          "clears": 314,
+          "avatarCallbacks": 92,
+          "pendingAvatarCallbacks": 1,
+          "resources": {
+            "Texture": {
+              "created": 16,
+              "deleted": 3,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 11,
+              "deleted": 5,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 10,
+              "deleted": 6,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 96,
+                "height": 96
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            9,
+            10
+          ],
+          "contextLost": false
+        }
+      ],
+      "callbacks": [
+        {
+          "id": 1,
+          "kind": "avatar",
+          "executions": 92,
+          "pending": 1
+        },
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 0,
+          "pending": 0
+        }
+      ]
+    },
+    "after": {
+      "at": 10847.100000023842,
+      "hidden": false,
+      "globalPendingAvatarCallbacks": 1,
+      "unassignedPendingAvatarCallbacks": 0,
+      "contexts": [
+        {
+          "id": 1,
+          "label": "native-pet",
+          "draws": 9670,
+          "clears": 2225,
+          "avatarCallbacks": 582,
+          "pendingAvatarCallbacks": 1,
+          "resources": {
+            "Texture": {
+              "created": 29,
+              "deleted": 16,
+              "live": 13
+            },
+            "Framebuffer": {
+              "created": 37,
+              "deleted": 31,
+              "live": 6
+            },
+            "Renderbuffer": {
+              "created": 49,
+              "deleted": 45,
+              "live": 4
+            },
+            "Buffer": {
+              "created": 68,
+              "deleted": 40,
+              "live": 28
+            },
+            "Program": {
+              "created": 11,
+              "deleted": 4,
+              "live": 7
+            },
+            "Shader": {
+              "created": 22,
+              "deleted": 22,
+              "live": 0
+            },
+            "VertexArray": {
+              "created": 28,
+              "deleted": 15,
+              "live": 13
+            }
+          },
+          "unmatchedTextureSignatures": [
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 34067,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 32879,
+                "internalFormat": 6408,
+                "width": 1,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 384,
+                "height": 512
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 33327,
+                "width": 16,
+                "height": 16
+              },
+              "upload": {
+                "elementType": "Uint16Array",
+                "elements": 512,
+                "bytes": 1024,
+                "firstValues": [
+                  12469,
+                  15057,
+                  12620,
+                  14925,
+                  13266,
+                  14620,
+                  13807,
+                  14376
+                ]
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1068,
+                "height": 1,
+                "depth": 1
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 1,
+                "internalFormat": 34836,
+                "width": 8,
+                "height": 8
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 1278,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "levels": 8,
+                "internalFormat": 35907,
+                "width": 128,
+                "height": 64
+              }
+            },
+            {
+              "storage": {
+                "target": 35866,
+                "internalFormat": 34836,
+                "width": 15288,
+                "height": 1,
+                "depth": 3
+              }
+            },
+            {
+              "storage": {
+                "target": 3553,
+                "internalFormat": 34842,
+                "width": 72,
+                "height": 72
+              }
+            }
+          ],
+          "unmatchedFramebufferCreationOrders": [
+            0,
+            1,
+            2,
+            3,
+            35,
+            36
+          ],
+          "contextLost": false
+        }
+      ],
+      "callbacks": [
+        {
+          "id": 1,
+          "kind": "avatar",
+          "executions": 582,
+          "pending": 1
+        },
+        {
+          "id": 2,
+          "kind": "other-application",
+          "executions": 102,
+          "pending": 0
+        },
+        {
+          "id": 3,
+          "kind": "harness-panel-clock",
+          "executions": 485,
+          "pending": 0
+        }
+      ]
+    },
+    "fixtureTaskRequests": 2
+  },
+  "trace": {
+    "localTrace": ".local\\glass-sprout-v005-final\\buddy-runtime-native\\chromium-trace.json",
+    "traceBytes": 45617453,
+    "traceSha256": "ce90dd8207acc6637623fc61f97d7f76f36af77b5839c74d385c273ec3fe3ec8",
+    "events": 243294,
+    "clock": "Trace ts/dur are Chromium monotonic microseconds across native processes; browser performance.now/rAF times are document-relative milliseconds. START/END TimeStamp events identify the timed window; different clock origins are not subtracted.",
+    "markers": [
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_RUNTIME_START",
+            "name": "INSIGHTOS_RUNTIME_START",
+            "sampleTraceId": 6222412210848916
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651027865929,
+        "tts": 1130796
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 6222412210848962
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651027901606,
+        "tts": 1139774
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 6222412210848783
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651027916058,
+        "tts": 1149897
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:open/thinking",
+            "name": "INSIGHTOS_STATE:open/thinking",
+            "sampleTraceId": 6222412210859253
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651031738778,
+        "tts": 1976905
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 6222412210856676
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651032411679,
+        "tts": 2052723
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 6222412210863264
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651034402265,
+        "tts": 2507829
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:closed/idle",
+            "name": "INSIGHTOS_STATE:closed/idle",
+            "sampleTraceId": 6222412210863524
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651034582253,
+        "tts": 2544717
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 6222412210863382
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651034665972,
+        "tts": 2561657
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 6222412210863458
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651034682654,
+        "tts": 2573826
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 6222412210860743
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651034739331,
+        "tts": 2596708
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:closed/idle",
+            "name": "INSIGHTOS_STATE:closed/idle",
+            "sampleTraceId": 6222412210860619
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651034798284,
+        "tts": 2615561
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 6222412210860859
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651034882646,
+        "tts": 2631441
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 6222412210860801
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651034898190,
+        "tts": 2642995
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 6222412210860240
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651034971016,
+        "tts": 2668348
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:closed/idle",
+            "name": "INSIGHTOS_STATE:closed/idle",
+            "sampleTraceId": 6222412210860110
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651035048444,
+        "tts": 2691554
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 6222412210860486
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651035117560,
+        "tts": 2708449
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 6222412210860304
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651035130596,
+        "tts": 2717991
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 6222412210861815
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651035186521,
+        "tts": 2739105
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:closed/idle",
+            "name": "INSIGHTOS_STATE:closed/idle",
+            "sampleTraceId": 6222412210861690
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651035250517,
+        "tts": 2759314
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 6222412210862058
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651035332779,
+        "tts": 2773948
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 6222412210861878
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651035346665,
+        "tts": 2783223
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 6222412210861230
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651035384812,
+        "tts": 2798256
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:closed/idle",
+            "name": "INSIGHTOS_STATE:closed/idle",
+            "sampleTraceId": 6222412210861099
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651035447390,
+        "tts": 2814955
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 6222412210861466
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651035532410,
+        "tts": 2831078
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 6222412210861536
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651035546650,
+        "tts": 2840878
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:closing/idle",
+            "name": "INSIGHTOS_STATE:closing/idle",
+            "sampleTraceId": 6222412210861349
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651035579493,
+        "tts": 2851013
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:preparing-open/idle",
+            "name": "INSIGHTOS_STATE:preparing-open/idle",
+            "sampleTraceId": 6222412210861408
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651035603814,
+        "tts": 2858060
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_STATE:open/idle",
+            "name": "INSIGHTOS_STATE:open/idle",
+            "sampleTraceId": 6222412210861396
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651035605575,
+        "tts": 2859794
+      },
+      {
+        "args": {
+          "data": {
+            "frame": "19A73FD565982F43FF006B70E72936F5",
+            "message": "INSIGHTOS_RUNTIME_END",
+            "name": "INSIGHTOS_RUNTIME_END",
+            "sampleTraceId": 6222412210834386
+          }
+        },
+        "cat": "devtools.timeline",
+        "name": "TimeStamp",
+        "ph": "I",
+        "pid": 112740,
+        "s": "t",
+        "tid": 141084,
+        "ts": 651036022201,
+        "tts": 2910232
+      }
+    ],
+    "relevantNames": [
+      {
+        "name": "DCompPresenter::CheckPendingFrames",
+        "count": 487
+      },
+      {
+        "name": "Graphics.Pipeline",
+        "count": 15567
+      },
+      {
+        "name": "DisplayScheduler::DrawAndSwap",
+        "count": 487
+      },
+      {
+        "name": "Display::DrawAndSwap",
+        "count": 487
+      },
+      {
+        "name": "SkiaRenderer::SwapBuffers",
+        "count": 487
+      },
+      {
+        "name": "SkiaOutputSurfaceImplOnGpu::SwapBuffers",
+        "count": 487
+      },
+      {
+        "name": "DXGISwapChainImageBacking::Present",
+        "count": 487
+      },
+      {
+        "name": "DCompPresenter::Present",
+        "count": 487
+      },
+      {
+        "name": "FramePresented",
+        "count": 11
+      },
+      {
+        "name": "Swap throttled",
+        "count": 3
+      },
+      {
+        "name": "SubmitCompositorFrameToPresentationCompositorFrame",
+        "count": 1292
+      },
+      {
+        "name": "StartDrawToSwapStart",
+        "count": 1292
+      },
+      {
+        "name": "Swap",
+        "count": 1777
+      },
+      {
+        "name": "SwapEndToPresentationCompositorFrame",
+        "count": 1288
+      },
+      {
+        "name": "Graphics.Pipeline.DrawAndSwap",
+        "count": 973
+      },
+      {
+        "name": "Graphics.Pipeline.Draw",
+        "count": 974
+      },
+      {
+        "name": "Graphics.Pipeline.WaitForSwap",
+        "count": 487
+      },
+      {
+        "name": "DisplayScheduler:pending_swaps",
+        "count": 974
+      },
+      {
+        "name": "WaitForPresentation",
+        "count": 487
+      },
+      {
+        "name": "AnimationFrame::Presentation",
+        "count": 484
+      },
+      {
+        "name": "SwapStartToPresentation",
+        "count": 2
+      }
+    ],
+    "presentationFeedback": {
+      "event": "AnimationFrame::Presentation",
+      "samplesFile": "artifacts\\glass-sprout-v005-final\\buddy-runtime-native\\presentation-feedback.csv",
+      "rendererPid": 112740,
+      "fullTimedWindowRetained": true,
+      "eventCount": 484,
+      "uniqueTimestamps": 483,
+      "intervalSamples": 482,
+      "p95Ms": 16.775,
+      "maxMs": 83.34,
+      "above20Ms": 2,
+      "above50Ms": 1,
+      "worstIntervals": [
+        {
+          "fromTs": 651031724798,
+          "toTs": 651031741713,
+          "intervalMs": 16.915
+        },
+        {
+          "fromTs": 651029874851,
+          "toTs": 651029891798,
+          "intervalMs": 16.947
+        },
+        {
+          "fromTs": 651033108100,
+          "toTs": 651033125174,
+          "intervalMs": 17.074
+        },
+        {
+          "fromTs": 651029891798,
+          "toTs": 651029924815,
+          "intervalMs": 33.017
+        },
+        {
+          "fromTs": 651027991683,
+          "toTs": 651028075023,
+          "intervalMs": 83.34
+        }
+      ],
+      "firstSamples": [
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 368,
+              "source_id": 4294967296
+            },
+            "id": "04b61b403d79449d"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x6"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 112740,
+          "tid": 141084,
+          "ts": 651027891701
+        },
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 369,
+              "source_id": 4294967296
+            },
+            "id": "04b61b403d794485"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x6"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 112740,
+          "tid": 141084,
+          "ts": 651027908337
+        },
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 370,
+              "source_id": 4294967296
+            },
+            "id": "04b61b403d7944f9"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x6"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 112740,
+          "tid": 141084,
+          "ts": 651027925051
+        }
+      ],
+      "lastSamples": [
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 853,
+              "source_id": 4294967296
+            },
+            "id": "04b61b403d790b88"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x6"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 112740,
+          "tid": 141084,
+          "ts": 651035974649
+        },
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 854,
+              "source_id": 4294967296
+            },
+            "id": "04b61b403d790bff"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x6"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 112740,
+          "tid": 141084,
+          "ts": 651035991324
+        },
+        {
+          "args": {
+            "begin_frame_id": {
+              "sequence_number": 855,
+              "source_id": 4294967296
+            },
+            "id": "04b61b403d790bf3"
+          },
+          "cat": "devtools.timeline",
+          "id2": {
+            "local": "0x6"
+          },
+          "name": "AnimationFrame::Presentation",
+          "ph": "n",
+          "pid": 112740,
+          "tid": 141084,
+          "ts": 651036007967
+        }
+      ],
+      "interpretation": "Chromium emits these events with presentation_feedback.timestamp, which strengthens the rAF-only evidence. Captured events include begin-frame IDs but no hardware-clock/completion flags. These are Chromium presentation-feedback timestamps; verified OS/hardware scanout is unclaimed.",
+      "sources": [
+        {
+          "url": "https://chromium.googlesource.com/chromium/src/third_party/+/refs/heads/main/blink/renderer/core/frame/animation_frame_timing_monitor.cc",
+          "function": "ReportPresentationTimeToTrace",
+          "observedSourceBlob": "889d81e50335cb65fbd6a7a507fdadb09012cf92",
+          "checkedAt": "2026-10-10",
+          "limit": "Current primary source; exact packaged Chromium152 source tag was unavailable to the web reader."
+        },
+        {
+          "url": "https://chromium.googlesource.com/chromium/src/+/e3a53f1c01e45bde54be17921f6960f22721efd5/ui/gfx/presentation_feedback.h",
+          "mechanism": "kHWClock and kHWCompletion distinguish hardware-origin/completion feedback from estimates; captured AnimationFrame events do not include these flags."
+        }
+      ]
+    },
+    "strictGates": {
+      "p95PresentedIntervals": "Chromium presentation-feedback intervals measured below; hardware-backed OS presentation remains unverified because feedback flags are absent.",
+      "noAppCausedOver50Ms": "A bounded trace with zero feedback intervals over50ms supports this run only; physical presentation and arbitrary workload attribution are unverified.",
+      "firstResponseWithinTwoPresentedFrames": "Unverified: state markers and frame IDs do not by themselves attribute the first visible pixel change to a causal input frame."
+    }
+  },
+  "measuredPerformanceTargetsMet": false,
+  "strictHardwarePresentationAcceptance": "Unverified; feedback hardware flags and causal first-response pixel/frame attribution are unavailable.",
+  "error": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: true\nReceived: false\n    at captureRawStack (D:\\hackathon2026\\insightos-ui\\node_modules\\playwright-core\\lib\\coreBundle.js:9282:17)\n    at callMatcherAsStep (D:\\hackathon2026\\insightos-ui\\node_modules\\playwright\\lib\\matchers\\expect.js:13316:57)\n    at Object.toBe (D:\\hackathon2026\\insightos-ui\\node_modules\\playwright\\lib\\matchers\\expect.js:13308:23)\n    at D:\\hackathon2026\\insightos-ui\\scripts\\verify-buddy-runtime.mjs:683:50"
+}

@@ -53,7 +53,7 @@ const states: {
 export default function BuddyStudio() {
   const reviewAssetName = new URLSearchParams(window.location.search).get('asset');
   const reviewAssetUrl =
-    reviewAssetName && ['sprout-v003', 'sprout-v004'].includes(reviewAssetName)
+    reviewAssetName && ['sprout-v003', 'sprout-v004', 'sprout-v005'].includes(reviewAssetName)
       ? `/buddy/${reviewAssetName}.glb`
       : undefined;
   const [phase, setPhase] = useState<BuddyVisualState>('idle');
@@ -190,11 +190,9 @@ export default function BuddyStudio() {
         Skip to state controls
       </a>
       <header className="studio-nav">
-        <a className="studio-brand" href="?demo=public" aria-label="InsightOS sample home">
+        <a className="studio-brand" href="?demo=public" aria-label="Sprout sample home">
           <Sparkles size={25} aria-hidden="true" />
-          <span>
-            Insight<span>OS</span>
-          </span>
+          <span>Sprout</span>
         </a>
         <a className="studio-nav-label" href="?studio=panel">
           Panel & backgrounds
@@ -412,7 +410,7 @@ export default function BuddyStudio() {
               <fieldset>
                 <legend>Actual-size comparison</legend>
                 <div className="studio-size-buttons">
-                  {[44, 96, 160, 320].map((value) => (
+                  {[44, 72, 96, 160, 320].map((value) => (
                     <button
                       key={value}
                       type="button"
@@ -527,7 +525,7 @@ export default function BuddyStudio() {
         </dl>
       </main>
       <footer className="studio-footer">
-        <span>InsightOS / Visual exploration</span>
+        <span>Sprout / Visual exploration</span>
         <span>Keyboard access and reduced motion supported</span>
         <a
           href="https://threejs.org/examples/webgl_animation_skinning_morph.html"

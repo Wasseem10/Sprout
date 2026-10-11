@@ -1,4 +1,4 @@
-// Real isolated Electron app and authored v004 clips. Only API/audio inputs are local fixtures.
+// Real isolated Electron app and authored clips. Only API/audio inputs are local fixtures.
 // This recording is a functional proof, never a frame-performance measurement.
 import { _electron as electron, expect } from '@playwright/test';
 import assert from 'node:assert/strict';
@@ -6,16 +6,26 @@ import { createHash } from 'node:crypto';
 import { mkdtemp, mkdir, readFile, rename, unlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import {
+  proofAssetFile,
+  proofAssetUrl,
+  proofCanonicalFile,
+  proofOutputPath,
+  proofLocalDirectory,
+} from './buddy-proof-options.mjs';
 
-const output = path.resolve('artifacts/glass-sprout-v004/native-behaviors');
-const local = path.resolve('.local/glass-sprout-v004');
+const output = path.resolve(proofOutputPath('artifacts/native-behaviors'));
+const local = path.resolve(proofLocalDirectory);
 const compiled = !process.argv.includes('--development');
 const recording = !process.argv.includes('--no-record');
-const assetUrl = '/buddy/sprout-v004.glb';
+const assetUrl = proofAssetUrl;
 const sha = (bytes) => createHash('sha256').update(bytes).digest('hex');
-const assetBytes = await readFile(path.resolve('public/buddy/sprout-v004.glb'));
+const assetBytes = await readFile(path.resolve('public/buddy', proofAssetFile));
 const assetSha256 = sha(assetBytes);
-assert.equal(assetSha256, sha(await readFile('design/buddy/sprout/sprout-prism-v004.glb')));
+assert.equal(
+  assetSha256,
+  sha(await readFile(path.join('design/buddy/sprout', proofCanonicalFile))),
+);
 const gltf = JSON.parse(assetBytes.subarray(20, 20 + assetBytes.readUInt32LE(12)).toString());
 const requiredClips = [
   'Sprout_JoyJump',
@@ -34,14 +44,21 @@ if (compiled)
   assert.equal(
     sha(await readFile(path.join(dist, assetUrl))),
     assetSha256,
-    'Build final v004 dist first.',
+    'Build the selected final asset into dist first.',
   );
 await Promise.all([mkdir(output, { recursive: true }), mkdir(local, { recursive: true })]);
 const isolatedData = await mkdtemp(path.join(tmpdir(), 'insightos-behaviors-native-'));
 const entry = path.join(local, `behaviors-main-${process.pid}.cjs`);
 await writeFile(
   entry,
-  `const { app, session } = require('electron');\napp.setPath('userData', ${JSON.stringify(isolatedData)});\nglobal.__behaviorBootstrapBlocked = [];\napp.whenReady().then(() => { session.defaultSession.webRequest.onBeforeRequest({ urls: ['http://127.0.0.1:5173/api/*'] }, (details, callback) => { global.__behaviorBootstrapBlocked.push(details.url); callback({ cancel: true }); }); });\nrequire(${JSON.stringify(path.resolve('electron/main.cjs'))});\n`,
+  `const { app, session, Tray } = require('electron');\napp.setPath('userData', ${JSON.stringify(isolatedData)});\nglobal.__behaviorBootstrapBlocked = [];\nglobal.__sproutTray = {};\nconst originalTooltip = Tray.prototype.setToolTip;\nTray.prototype.setToolTip = function(value) { global.__sproutTray.tooltip = value; return originalTooltip.call(this, value); };\nconst originalMenu = Tray.prototype.setContextMenu;\nTray.prototype.setContextMenu = function(menu) { global.__sproutTray.labels = menu.items.map(item => item.label); return originalMenu.call(this, menu); };\napp.whenReady().then(() => { session.defaultSession.webRequest.onBeforeRequest({ urls: ['http://127.0.0.1:5173/api/*'] }, (details, callback) => { global.__behaviorBootstrapBlocked.push(details.url); callback({ cancel: true }); }); });\nrequire(${JSON.stringify(path.resolve('electron/main.cjs'))});\n`,
+);
+// Capture, then invoke, the actual registered callbacks for a labelled native-drag
+// fixture. Real Windows hooks still install; this does not claim a physical drag.
+await writeFile(
+  entry,
+  `const { BrowserWindow: ProofWindow } = require('electron');\nglobal.__sproutMoveHooks = new Map();\nconst originalHook = ProofWindow.prototype.hookWindowMessage;\nProofWindow.prototype.hookWindowMessage = function(message, callback) { global.__sproutMoveHooks.set(message, callback); return originalHook.call(this, message, callback); };\n` +
+    (await readFile(entry, 'utf8')),
 );
 
 function wav() {
@@ -114,7 +131,10 @@ try {
     timeout: 30000,
     recordVideo: recording ? { dir: output, size: { width: 600, height: 800 } } : undefined,
   });
-  deadline = setTimeout(() => desktop.process().kill('SIGKILL'), 65000);
+  deadline = setTimeout(
+    () => desktop.process().kill('SIGKILL'),
+    process.argv.includes('--physical-drag') ? 150000 : 65000,
+  );
   page = await desktop.firstWindow();
   page.setDefaultTimeout(6000);
   await page.waitForURL('http://127.0.0.1:5173/?desktop=buddy', {
@@ -320,6 +340,14 @@ try {
     nodeIntegration: false,
     webSecurity: true,
   });
+  report.identity = await desktop.evaluate(({ BrowserWindow }) => ({
+    title: BrowserWindow.getAllWindows()[0].getTitle(),
+    tray: global.__sproutTray,
+  }));
+  assert.ok(report.identity.title.startsWith('Sprout'));
+  assert.equal(report.identity.tray.tooltip, 'Sprout — your desktop buddy');
+  assert.ok(report.identity.tray.labels.includes('Talk to Sprout'));
+  assert.ok(report.identity.tray.labels.includes('Quit Sprout'));
   const native = () =>
     desktop.evaluate(({ BrowserWindow, screen }) => {
       const win = BrowserWindow.getAllWindows()[0];
@@ -423,6 +451,128 @@ try {
   await pet.press('Enter');
   await expect(buddy).toHaveAttribute('data-panel-stage', 'open');
   await expect(signal).toHaveCSS('width', '72px');
+  const plane = buddy.locator('.buddy-visual-plane');
+  const panelBounds = await buddy.boundingBox();
+  report.pointerSequence = [];
+  for (const fraction of [0.02, 0.5, 0.98, 0.5]) {
+    await page.mouse.move(
+      panelBounds.x + panelBounds.width * fraction,
+      panelBounds.y + panelBounds.height * 0.3,
+      { steps: 14 },
+    );
+    await page.waitForTimeout(220);
+    report.pointerSequence.push(
+      await plane.evaluate((element) => ({
+        transform: element.style.transform,
+        tilt: element.dataset.tilt,
+      })),
+    );
+  }
+  assert.ok(report.pointerSequence.some((pose) => pose.tilt === 'active'));
+  if (process.platform === 'win32') {
+    await page.mouse.move(
+      panelBounds.x + panelBounds.width * 0.92,
+      panelBounds.y + panelBounds.height * 0.3,
+    );
+    await expect(plane).toHaveAttribute('data-tilt', 'active');
+    await expect.poll(() => plane.evaluate((element) => element.style.willChange)).toBe('');
+    const held = await plane.evaluate((element) => element.style.transform);
+    const initialNative = await native();
+    const registered = await desktop.evaluate(({ BrowserWindow }) => {
+      const win = BrowserWindow.getAllWindows()[0];
+      const states = [0x0231, 0x0232].map((message) => win.isWindowMessageHooked(message));
+      global.__sproutMoveHooks.get(0x0231)(Buffer.alloc(8), Buffer.alloc(8));
+      return states;
+    });
+    assert.deepEqual(registered, [true, true]);
+    await expect
+      .poll(() => page.evaluate(async () => (await window.insightos.desktopDrag()).active))
+      .toBe(true);
+    await page.mouse.move(
+      panelBounds.x + panelBounds.width * 0.08,
+      panelBounds.y + panelBounds.height * 0.3,
+    );
+    await page.mouse.down();
+    await page.mouse.up();
+    await page.waitForTimeout(150);
+    assert.equal(await plane.evaluate((element) => element.style.transform), held);
+    await desktop.evaluate(() =>
+      global.__sproutMoveHooks.get(0x0232)(Buffer.alloc(8), Buffer.alloc(8)),
+    );
+    await expect(plane).toHaveAttribute('data-tilt', 'neutral');
+    assert.deepEqual((await native()).bounds, initialNative.bounds);
+    report.nativeDrag = {
+      scope:
+        'Actual registered Windows move-loop callbacks invoked by local fixture; real read-only IPC and production tilt consumer. Not a physical pointer drag.',
+      registered,
+      frozenPose: held,
+      settledNeutral: true,
+      nativeBoundsUnchanged: true,
+    };
+    await desktop.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].close());
+    await expect.poll(async () => (await native()).visible).toBe(false);
+    await expect(buddy).toHaveAttribute('data-panel-stage', 'closed');
+    await desktop.evaluate(({ BrowserWindow }) => {
+      const win = BrowserWindow.getAllWindows()[0];
+      win.show();
+      win.focus();
+    });
+    const retained = await desktop.evaluate(({ BrowserWindow }) =>
+      [0x0231, 0x0232].map((message) =>
+        BrowserWindow.getAllWindows()[0].isWindowMessageHooked(message),
+      ),
+    );
+    assert.deepEqual(retained, [true, true]);
+    report.nativeDrag.hooksRetainedAfterCloseHideShow = retained;
+    await pet.press('Enter');
+    await expect(buddy).toHaveAttribute('data-panel-stage', 'open');
+    if (process.argv.includes('--physical-drag')) {
+      await desktop.evaluate(({ BrowserWindow }) =>
+        BrowserWindow.getAllWindows()[0].setTitle('Sprout — drag verification'),
+      );
+      await page.evaluate(() => {
+        window.__physicalDrag = [];
+        window.insightos.onDesktopDrag((value) =>
+          window.__physicalDrag.push({
+            ...value,
+            at: performance.now(),
+            transform: document.querySelector('.buddy-visual-plane').style.transform,
+          }),
+        );
+      });
+      const beforeDrag = await native();
+      console.log('READY_FOR_PHYSICAL_DRAG: Sprout — drag verification');
+      await expect
+        .poll(
+          () =>
+            page.evaluate(
+              () =>
+                window.__physicalDrag.some((value) => value.active) &&
+                window.__physicalDrag.at(-1)?.active === false,
+            ),
+          { timeout: 60000 },
+        )
+        .toBe(true);
+      await expect(plane).toHaveAttribute('data-tilt', 'neutral');
+      const afterDrag = await native();
+      assert.ok(
+        beforeDrag.bounds.x !== afterDrag.bounds.x || beforeDrag.bounds.y !== afterDrag.bounds.y,
+        'A real native window drag must move its native bounds.',
+      );
+      report.nativeDrag.physical = {
+        before: beforeDrag,
+        after: afterDrag,
+        events: await page.evaluate(() => window.__physicalDrag),
+        settledNeutral: true,
+      };
+      await desktop.evaluate(
+        ({ BrowserWindow }, title) => BrowserWindow.getAllWindows()[0].setTitle(title),
+        report.identity.title,
+      );
+    }
+  }
+  await page.mouse.move(0, 0);
+  await expect(plane).toHaveAttribute('data-tilt', 'neutral');
   const draft = 'Keep this draft while Sprout celebrates, rests and wakes.';
   await composer.fill(draft);
   await checkpoint('72-expanded-native-clamped');
@@ -576,7 +726,7 @@ try {
     })),
   }));
   report.pass = true;
-  console.log('Native v004 Character/task/voice behavior proof passed.');
+  console.log('Native Character/task/voice and Sprout identity proof passed.');
 } catch (error) {
   report.failure = error.stack ?? error.message;
   throw error;

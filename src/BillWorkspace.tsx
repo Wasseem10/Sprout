@@ -210,7 +210,7 @@ export default function BillWorkspace({
       <div className="bill-top">
         <div>
           <div className="bill-overline">
-            <ScanLine size={15} aria-hidden="true" /> INSIGHT / HOME & ENERGY
+            <ScanLine size={15} aria-hidden="true" /> SPROUT / HOME & ENERGY
           </div>
           <h2>Your bills, understood.</h2>
           <p>Read the numbers. Understand the change. Make your next move.</p>
@@ -357,7 +357,7 @@ export default function BillWorkspace({
               higher this month?”
             </h3>
             <p>
-              Start with two electricity bills. Insight reads each document, checks the totals with
+              Start with two electricity bills. Sprout reads each document, checks the totals with
               you, and breaks down what changed.
             </p>
             <div className="bill-speech-example">

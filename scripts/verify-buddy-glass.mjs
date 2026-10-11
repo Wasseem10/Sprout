@@ -11,7 +11,7 @@ const argument = (name, fallback) =>
 const tag = argument('proof-tag', 'glass-panel-study');
 const stage = argument('stage', 'before');
 assert.match(tag, /^[a-zA-Z0-9][a-zA-Z0-9-]{0,63}$/);
-assert.match(stage, /^(before|after|lens)$/);
+assert.match(stage, /^(before|after|lens|refraction)$/);
 const output = path.join('artifacts', tag, stage);
 await mkdir(output, { recursive: true });
 const base = process.env.INSIGHTOS_PROOF_URL || 'http://127.0.0.1:5173';
@@ -35,6 +35,51 @@ const colourContrast = (foreground, background) => {
   );
   return (values[0] + 0.05) / (values[1] + 0.05);
 };
+async function actualIconContrast(button, foreground) {
+  const region = await button.evaluate((element) => {
+    const icon = element.querySelector('svg');
+    const outer = element.getBoundingClientRect(),
+      rect = icon.getBoundingClientRect();
+    const style = icon.getAttribute('style');
+    icon.style.visibility = 'hidden';
+    return {
+      x: rect.x - outer.x,
+      y: rect.y - outer.y,
+      width: rect.width,
+      height: rect.height,
+      style,
+    };
+  });
+  let pixels;
+  try {
+    pixels = await button.screenshot();
+  } finally {
+    await button
+      .locator('svg')
+      .evaluate(
+        (icon, style) =>
+          style === null ? icon.removeAttribute('style') : icon.setAttribute('style', style),
+        region.style,
+      );
+  }
+  const image = await loadImage(pixels),
+    canvas = createCanvas(image.width, image.height),
+    ctx = canvas.getContext('2d');
+  ctx.drawImage(image, 0, 0);
+  const values = ctx.getImageData(
+    Math.ceil(region.x),
+    Math.ceil(region.y),
+    Math.floor(region.width),
+    Math.floor(region.height),
+  ).data;
+  let minimum = Infinity;
+  for (let i = 0; i < values.length; i += 4)
+    minimum = Math.min(
+      minimum,
+      colourContrast(foreground, `rgb(${values[i]},${values[i + 1]},${values[i + 2]})`),
+    );
+  return minimum;
+}
 const source = Object.fromEntries(
   await Promise.all(
     ['src/DesktopBuddy.tsx', 'src/buddy.css'].map(async (name) => [
@@ -65,7 +110,7 @@ const sample=[{id:'glass-user',role:'user',text:'Can we take this one step at a 
 function Fixture(){
  const [config,setConfig]=useState({background:'light',populated:true,large:false,phase:'idle',expanded:true,disabled:false});
  const [request,setRequest]=useState('');const input=useRef(null),feed=useRef(null),memory=useRef({scrollTop:0,followLatest:true});
- window.__glassFixture={update:(next)=>setConfig(current=>({...current,...next}))};
+ window.__glassFixture={update:(next)=>setConfig(current=>({...current,...next})),setRequest};
  const talking=config.sessionActive??(config.phase==='listening'||config.phase==='speaking');const noop=()=>{};
  return React.createElement('div',{className:'proof-scene','data-background':config.background},
  React.createElement('div',{className:'buddy-shell'+(config.large?' large-text':'')},React.createElement(DesktopBuddy,{
@@ -119,6 +164,64 @@ try {
   await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'open');
   await page.evaluate(() => document.fonts.ready);
   await expect(page.locator('.insight-signal img')).toBeVisible();
+  if (stage === 'refraction') {
+    // Source-inspired feImage + RGB edge refraction, with an original rounded-rect
+    // normal map. This is a bounded test-only candidate, not the old noise lens.
+    await page.evaluate(() => {
+      const glass = document.querySelector('.buddy-panel-glass');
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('aria-hidden', 'true');
+      svg.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden';
+      svg.innerHTML =
+        '<defs><filter id="proof-prism-edge" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB"><feImage result="normal" width="100%" height="100%" preserveAspectRatio="none"/><feDisplacementMap in="SourceGraphic" in2="normal" scale="8.6" xChannelSelector="R" yChannelSelector="B" result="r"/><feColorMatrix in="r" type="matrix" values="1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0" result="red"/><feDisplacementMap in="SourceGraphic" in2="normal" scale="9" xChannelSelector="R" yChannelSelector="B" result="g"/><feColorMatrix in="g" type="matrix" values="0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0" result="green"/><feDisplacementMap in="SourceGraphic" in2="normal" scale="9.4" xChannelSelector="R" yChannelSelector="B" result="b"/><feColorMatrix in="b" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0" result="blue"/><feBlend in="red" in2="green" mode="screen" result="rg"/><feBlend in="rg" in2="blue" mode="screen"/></filter></defs>';
+      document.body.append(svg);
+      const map = () => {
+        const width = Math.round(glass.clientWidth),
+          height = Math.round(glass.clientHeight);
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        const image = ctx.createImageData(width, height);
+        const radius = 31;
+        for (let y = 0; y < height; y++)
+          for (let x = 0; x < width; x++) {
+            const cx = Math.max(radius, Math.min(width - radius, x));
+            const cy = Math.max(radius, Math.min(height - radius, y));
+            let nx = 0,
+              ny = 0,
+              distance;
+            if (cx !== x && cy !== y) {
+              const length = Math.hypot(x - cx, y - cy);
+              nx = (x - cx) / length;
+              ny = (y - cy) / length;
+              distance = radius - length;
+            } else {
+              const distances = [x, width - 1 - x, y, height - 1 - y];
+              distance = Math.min(...distances);
+              const side = distances.indexOf(distance);
+              nx = side === 0 ? -1 : side === 1 ? 1 : 0;
+              ny = side === 2 ? -1 : side === 3 ? 1 : 0;
+            }
+            const strength = Math.max(0, 1 - Math.max(0, distance) / 12);
+            const i = (y * width + x) * 4;
+            image.data[i] = 128 + Math.round(nx * 100 * strength);
+            image.data[i + 1] = 128;
+            image.data[i + 2] = 128 + Math.round(ny * 100 * strength);
+            image.data[i + 3] = 255;
+          }
+        ctx.putImageData(image, 0, 0);
+        svg.querySelector('feImage').setAttribute('href', canvas.toDataURL());
+      };
+      const observer = new ResizeObserver(map);
+      observer.observe(glass);
+      map();
+    });
+    temporaryStyle = await page.addStyleTag({
+      content:
+        '.buddy-panel-glass{backdrop-filter:blur(14px) saturate(112%) url(#proof-prism-edge)}',
+    });
+  }
   if (stage === 'lens') {
     // Experimental edge-only lens. Original small SVG graph; no copied source or live-DOM texture.
     await page.evaluate(() => {
@@ -172,7 +275,8 @@ try {
             opticalLayers: {
               frameBackground: css.backgroundImage,
               innerBackground: inner.backgroundImage,
-              backdropFilter: inner.backdropFilter,
+              backdropFilter: css.backdropFilter,
+              innerBackdropFilter: inner.backdropFilter,
               opacity: css.opacity,
             },
             voice: {
@@ -263,7 +367,7 @@ try {
         ],
       };
     });
-    metrics.iconContrast = colourContrast(metrics.colour, metrics.background);
+    metrics.iconContrast = await actualIconContrast(button, metrics.colour);
     metrics.fixtureState = state;
     voiceStates.push(metrics);
   }
@@ -274,6 +378,45 @@ try {
       if (!state.disabled) assert.ok(state.iconContrast >= 3);
     }
   assert.equal(voiceStates.at(-1).disabled, false, 'Active Pause remains available while busy.');
+  await page.setViewportSize({ width: 440, height: 704 });
+  await page.evaluate(() => {
+    window.__glassFixture.update({
+      background: 'busy',
+      phase: 'idle',
+      sessionActive: null,
+      large: false,
+      error: false,
+      populated: true,
+    });
+    window.__glassFixture.setRequest('A readable glass control.');
+  });
+  const primary = page.locator('.buddy-play');
+  const controlStates = [];
+  for (const interaction of ['normal', 'hover', 'focus', 'pressed', 'disabled']) {
+    await page.mouse.move(435, 700);
+    await primary.evaluate((element) => element.blur());
+    if (interaction === 'hover') await primary.hover();
+    if (interaction === 'focus') await primary.focus();
+    if (interaction === 'pressed') {
+      await primary.hover();
+      await page.mouse.down();
+    }
+    if (interaction === 'disabled')
+      await page.evaluate(() => window.__glassFixture.update({ disabled: true }));
+    await page
+      .locator('.proof-scene')
+      .screenshot({ path: path.join(output, `buttons-${interaction}.png`) });
+    controlStates.push({
+      interaction,
+      contrast:
+        interaction === 'disabled' ? null : await actualIconContrast(primary, 'rgb(255,255,255)'),
+    });
+    if (interaction === 'pressed') await page.mouse.up();
+  }
+  await page.evaluate(() => window.__glassFixture.update({ disabled: false }));
+  if (stage !== 'before')
+    for (const sample of controlStates)
+      if (sample.contrast !== null) assert.ok(sample.contrast >= 3);
   assert.equal(await page.evaluate(() => window.__glassMicCalls), 0);
   await page.evaluate(() =>
     window.__glassFixture.update({
@@ -334,6 +477,7 @@ try {
         source,
         results,
         voiceStates,
+        controlStates,
         errorContrast,
         popup,
         stop,
@@ -352,7 +496,11 @@ try {
     ) + '\n',
   );
   console.log(
-    JSON.stringify({ output, stage, captures: results.length + 3, voiceStates, requests }, null, 2),
+    JSON.stringify(
+      { output, stage, captures: results.length + 3 + controlStates.length, voiceStates, requests },
+      null,
+      2,
+    ),
   );
   if (temporaryStyle) await temporaryStyle.evaluate((element) => element.remove());
 } finally {

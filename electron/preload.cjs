@@ -28,6 +28,12 @@ contextBridge.exposeInMainWorld('insightos', {
     ipcRenderer.on('insightos:desktop-visibility-changed', listener);
     return () => ipcRenderer.removeListener('insightos:desktop-visibility-changed', listener);
   },
+  desktopDrag: () => ipcRenderer.invoke('insightos:desktop-drag'),
+  onDesktopDrag: (callback) => {
+    const listener = (_event, snapshot) => callback(snapshot);
+    ipcRenderer.on('insightos:desktop-drag-changed', listener);
+    return () => ipcRenderer.removeListener('insightos:desktop-drag-changed', listener);
+  },
   desktopShortcuts: () => ipcRenderer.invoke('insightos:desktop-shortcuts'),
   onDesktopCommand: (callback) => {
     const listener = (_event, command) => callback(command);

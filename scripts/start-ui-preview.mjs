@@ -66,9 +66,13 @@ try {
     '127.0.0.1',
   ]);
   // Reuse an existing server only when it serves this checkout's authored asset.
-  const buddyAsset = ['sprout-v004.glb', 'sprout-v003.glb', 'sprout-v002.glb', 'insight-core-v1.glb'].find(
-    (filename) => existsSync(path.join(workspace, 'public/buddy', filename)),
-  );
+  const buddyAsset = [
+    'sprout-v005.glb',
+    'sprout-v004.glb',
+    'sprout-v003.glb',
+    'sprout-v002.glb',
+    'insight-core-v1.glb',
+  ].find((filename) => existsSync(path.join(workspace, 'public/buddy', filename)));
   if (!buddyAsset) throw new Error('No authored buddy asset is available in this checkout.');
   const response = await fetch(`http://127.0.0.1:5173/buddy/${buddyAsset}`, {
     signal: AbortSignal.timeout(5000),
@@ -77,8 +81,7 @@ try {
   const digest = (value) => createHash('sha256').update(value).digest('hex');
   if (
     !response.ok ||
-    digest(served) !==
-      digest(readFileSync(path.join(workspace, 'public/buddy', buddyAsset)))
+    digest(served) !== digest(readFileSync(path.join(workspace, 'public/buddy', buddyAsset)))
   ) {
     throw new Error(
       'Port 5173 serves a different UI checkout. Close that preview before starting this one.',
@@ -99,7 +102,7 @@ try {
     process.exitCode = 1;
   });
   child.unref();
-  console.log('InsightOS UI opened. Studio: http://127.0.0.1:5173/?studio=buddy');
+  console.log('Sprout UI opened. Studio: http://127.0.0.1:5173/?studio=buddy');
 } catch (error) {
   console.error(error.message);
   process.exitCode = 1;

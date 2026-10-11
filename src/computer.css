@@ -1044,7 +1044,7 @@
 .character-settings {
   margin: 0 0 20px;
   padding: 16px;
-  border: 1px solid currentColor;
+  border: 1px solid #a8b7ce66;
   border-radius: 14px;
 }
 .character-settings legend {
@@ -1059,6 +1059,37 @@
 .character-settings-actions button {
   min-height: 44px;
   padding: 8px 16px;
+  color: #13243d;
+  background:
+    radial-gradient(ellipse at 25% 0%, #ffffff8c, transparent 70%),
+    linear-gradient(145deg, #eaf7fff2, #edeafbf2 78%, #f7e9e8f2);
+  border: 1px solid #bbd6e2a3;
+  border-radius: 20px;
+  box-shadow:
+    inset 0 1px 1px #ffffffcf,
+    inset 0 -2px 3px #657ba333,
+    0 2px 4px #0c234114;
+}
+.character-settings-actions button:hover:not(:disabled) {
+  background-color: #f8fcff;
+  border-color: #75b2d3;
+}
+.character-settings-actions button:active:not(:disabled) {
+  box-shadow: inset 0 2px 4px #25466238;
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .character-settings-actions button {
+    background: #f8fbff;
+    box-shadow: none;
+  }
+}
+@media (forced-colors: active) {
+  .character-settings-actions button {
+    color: ButtonText;
+    background: ButtonFace;
+    border: 1px solid ButtonText;
+    box-shadow: none;
+  }
 }
 .character-settings p {
   margin: 12px 0 0;

@@ -180,7 +180,7 @@ test('buddy greets generally on Play and never narrates an old code artifact', a
   await page.goto('/?desktop=buddy');
   await page.getByRole('button', { name: 'Start voice conversation', exact: true }).click();
   await expect.poll(() => spoken.length).toBe(1);
-  expect(spoken[0]).toBe("Hi, I'm Insight. What would you like to do?");
+  expect(spoken[0]).toBe("Hi, I'm Sprout. What would you like to do?");
   await page.evaluate(() =>
     (window as any).emitScribe({ message_type: 'committed_transcript', text: 'Hi' }),
   );

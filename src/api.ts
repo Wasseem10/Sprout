@@ -41,7 +41,7 @@ export async function api<T>(url: string, body?: unknown, signal?: AbortSignal):
     result = JSON.parse(text);
   } catch {
     throw new Error(
-      'Insight’s local service returned an incomplete response. It may be restarting. Please try again in a moment.',
+      'Sprout’s local service returned an incomplete response. It may be restarting. Please try again in a moment.',
     );
   }
   if (!response.ok) throw new Error(result.error ?? `Request failed (${response.status}).`);

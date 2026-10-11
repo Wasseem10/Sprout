@@ -34,6 +34,7 @@ import {
   finiteSproutGaze,
   SproutAttentionController,
   SproutMotionController,
+  type SproutEyeProfile,
 } from './buddyMotionController';
 import { observeDesktopVisibility } from './desktopVisibility';
 import {
@@ -72,6 +73,7 @@ export type BuddyRendererDiagnostics = {
   reflectionProfile: BuddyReflectionProfile;
   toneMapping: BuddyToneMapping;
   clips: string[];
+  eyeProfile: SproutEyeProfile | null;
   assetIssues: string[];
   vertices: number;
   triangles: number;
@@ -252,6 +254,7 @@ async function loadModel(
 } | null> {
   const issues: string[] = [];
   const candidates: [string, BuddyAsset][] = [
+    ['/buddy/sprout-v005.glb', 'sprout'],
     ['/buddy/sprout-v004.glb', 'sprout'],
     ['/buddy/sprout-v003.glb', 'sprout'],
     ['/buddy/sprout-v002.glb', 'sprout'],
@@ -305,6 +308,67 @@ const describeTexture = (texture: Texture | null) => {
   const image = texture.image as { width?: number; height?: number } | undefined;
   return { colorSpace: texture.colorSpace, width: image?.width ?? 0, height: image?.height ?? 0 };
 };
+
+/** Layout coordinates ignore the visual-plane perspective; the fixed surface supplies viewport origin. */
+export function neutralAvatarRect(owner: HTMLElement, surface: HTMLElement | null) {
+  if (!surface) return owner.getBoundingClientRect();
+  const layoutPoint = (element: HTMLElement) => {
+    let left = 0;
+    let top = 0;
+    for (
+      let node: HTMLElement | null = element;
+      node;
+      node = node.offsetParent as HTMLElement | null
+    ) {
+      left += node.offsetLeft;
+      top += node.offsetTop;
+      const parent = node.offsetParent as HTMLElement | null;
+      if (parent) {
+        left += parent.clientLeft;
+        top += parent.clientTop;
+      }
+    }
+    return { left, top };
+  };
+  const avatar = layoutPoint(owner);
+  const fixed = layoutPoint(surface);
+  let scrollLeft = surface.scrollLeft;
+  let scrollTop = surface.scrollTop;
+  for (let node = owner.parentElement; node && node !== surface; node = node.parentElement) {
+    scrollLeft += node.scrollLeft;
+    scrollTop += node.scrollTop;
+  }
+  const viewport = surface.getBoundingClientRect();
+  return {
+    left: viewport.left + avatar.left - fixed.left - scrollLeft,
+    top: viewport.top + avatar.top - fixed.top - scrollTop,
+    width: owner.offsetWidth,
+    height: owner.offsetHeight,
+  };
+}
+
+/** Evaluated posed geometry keeps the sleeping emitter attached to either authored eye profile. */
+export function sproutSleepHeadAnchor(
+  model: Group,
+  camera: OrthographicCamera,
+  eyeProfile: SproutEyeProfile,
+): BuddyBehaviorSnapshot['headAnchor'] {
+  model.updateMatrixWorld(true);
+  camera.updateMatrixWorld(true);
+  const bounds = new Box3();
+  const partBounds = new Box3();
+  for (const name of eyeProfile === 'happy-eyes-v005' ? ['EYE_L', 'EYE_R'] : ['LID_L', 'LID_R']) {
+    const part = model.getObjectByName(name);
+    if (part) bounds.union(partBounds.setFromObject(part, true));
+  }
+  if (bounds.isEmpty()) return null;
+  const head = bounds.getCenter(new Vector3());
+  head.y = bounds.max.y + 0.05;
+  head.project(camera);
+  return Number.isFinite(head.x) && Number.isFinite(head.y)
+    ? { x: (head.x + 1) / 2, y: (1 - head.y) / 2 }
+    : null;
+}
 
 /** Owns one canvas, scene and animation clock. No voice resources or per-frame React state. */
 export async function createBuddyRenderer(
@@ -449,6 +513,7 @@ export async function createBuddyRenderer(
   let pointer = { x: 0, y: 0 };
   let attentionFocused = true;
   const attentionRegion = owner.closest<HTMLElement>('.buddy, .studio-preview') ?? owner;
+  const attentionSurface = owner.closest<HTMLElement>('.buddy');
   let lastReaction = initial.reaction ?? 0;
   let lastBlink = initial.blink ?? 0;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -468,28 +533,12 @@ export async function createBuddyRenderer(
   controller?.setPhase(settings.phase);
   controller?.setMotion(moving());
   controller?.setBehavior(settings.behavior);
-  const headPosition = new Vector3();
-  const lidBounds = new Box3();
-  const oneLidBounds = new Box3();
   let lastBehaviorKey = '';
   const behaviorSnapshot = (): BuddyBehaviorSnapshot => {
     const state = controller?.behaviorSnapshot();
     let headAnchor: BuddyBehaviorSnapshot['headAnchor'] = null;
-    if (state?.mode === 'sleep') {
-      model.updateMatrixWorld(true);
-      camera.updateMatrixWorld(true);
-      lidBounds.makeEmpty();
-      for (const name of ['LID_L', 'LID_R']) {
-        const lid = model.getObjectByName(name);
-        if (lid) lidBounds.union(oneLidBounds.setFromObject(lid, true));
-      }
-      if (!lidBounds.isEmpty()) {
-        lidBounds.getCenter(headPosition);
-        headPosition.y = lidBounds.max.y + 0.05;
-        headPosition.project(camera);
-        headAnchor = { x: (headPosition.x + 1) / 2, y: (1 - headPosition.y) / 2 };
-      }
-    }
+    if (state?.mode === 'sleep' && controller)
+      headAnchor = sproutSleepHeadAnchor(model, camera, controller.eyeProfile);
     return {
       mode: state?.mode ?? 'normal',
       sleeping: state?.sleeping ?? false,
@@ -518,6 +567,7 @@ export async function createBuddyRenderer(
     reflectionProfile,
     toneMapping,
     clips: gltf.animations.map((clip) => clip.name),
+    eyeProfile: controller?.eyeProfile ?? null,
     assetIssues: issues,
     vertices,
     triangles,
@@ -693,10 +743,9 @@ export async function createBuddyRenderer(
     refresh();
   };
   const move = (event: PointerEvent) => {
-    // Listen across the stable panel, but aim from the avatar's own centre.
-    // An expanded panel may place the avatar far from the panel centre;
-    // only its WebGL mesh rotates, so this DOM basis never follows the turn.
-    const rect = owner.getBoundingClientRect();
+    // The panel's visual plane leans around a fixed layout slot. Its perspective
+    // must never feed back into gaze or move the neutral avatar-centred basis.
+    const rect = neutralAvatarRect(owner, attentionSurface);
     attentionFocused = true;
     pointer =
       rect.width > 0 && rect.height > 0

@@ -139,6 +139,7 @@ try {
     new MutationObserver(() => {
       window.__panelStages.push({
         at: performance.now(),
+        zoomFactor: window.__panelProofZoom ?? 1,
         stage: document.querySelector('.buddy')?.getAttribute('data-panel-stage'),
         available: document.querySelector('.buddy-panel')?.getAttribute('data-available'),
         viewport: { width: innerWidth, height: innerHeight },
@@ -396,6 +397,65 @@ try {
 
   let controlledBackgroundCaptures;
   let zoomReview;
+  const tiltReviews = [];
+  const inspectTilt = async (label) => {
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.evaluate(() => {
+      document.activeElement?.blur();
+      window.getSelection()?.removeAllRanges();
+    });
+    const root = page.locator('.buddy');
+    const plane = root.locator('.buddy-visual-plane');
+    const rect = await root.boundingBox();
+    const before = await nativeSnapshot();
+    const resizeCount = await desktop.evaluate(() => globalThis.__panelBoundsEvents.length);
+    const poses = [];
+    for (const x of [0.02, 0.98]) {
+      await page.mouse.move(rect.x + rect.width * x, rect.y + rect.height * 0.3, { steps: 8 });
+      await expect(plane).toHaveAttribute('data-tilt', 'active');
+      await expect.poll(() => plane.evaluate((element) => element.style.willChange)).toBe('');
+      const geometry = await plane.evaluate((element) => {
+        const bounds = (node) => {
+          const b = node.getBoundingClientRect();
+          return { left: b.left, top: b.top, right: b.right, bottom: b.bottom };
+        };
+        return {
+          transform: element.style.transform,
+          viewport: { width: innerWidth, height: innerHeight },
+          plane: bounds(element),
+          controls: [...element.querySelectorAll('button')]
+            .filter((button) => button.getClientRects().length && !button.closest('[inert]'))
+            .map((button) => ({
+              label: button.ariaLabel || button.textContent,
+              ...bounds(button),
+            })),
+        };
+      });
+      for (const bounds of [geometry.plane, ...geometry.controls]) {
+        assert.ok(bounds.left >= 0 && bounds.top >= 0, `${label}: tilted content crosses top/left`);
+        assert.ok(
+          bounds.right <= geometry.viewport.width && bounds.bottom <= geometry.viewport.height,
+          `${label}: tilted content crosses bottom/right`,
+        );
+      }
+      poses.push(geometry);
+      await capture(`buddy-panel-native-${label}-tilt-${x < 0.5 ? 'left' : 'right'}.png`);
+    }
+    await page.mouse.move(0, 0);
+    await expect(plane).toHaveAttribute('data-tilt', 'neutral');
+    assert.deepEqual(
+      (await nativeSnapshot()).bounds,
+      before.bounds,
+      'Pointer tilt must not change native bounds.',
+    );
+    assert.equal(await desktop.evaluate(() => globalThis.__panelBoundsEvents.length), resizeCount);
+    await close.focus();
+    await close.press('Tab');
+    await expect(plane).toHaveAttribute('data-tilt', 'neutral');
+    tiltReviews.push({ label, native: before, poses, resizeEvents: 0, keyboardNeutral: true });
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+  };
+  await inspectTilt('normal');
   if (process.argv.includes('--controlled-backgrounds')) {
     // This owned opaque fixture covers every captured desktop pixel behind the buddy.
     // It changes only an isolated test window, never the user's desktop background.
@@ -593,6 +653,9 @@ try {
     }
   }
   if (process.argv.includes('--zoom-review')) {
+    await page.evaluate(() => {
+      window.__panelProofZoom = 2;
+    });
     await desktop.evaluate(({ BrowserWindow }) =>
       BrowserWindow.getAllWindows()[0].webContents.setZoomFactor(2),
     );
@@ -636,6 +699,7 @@ try {
       visibleSendTarget: target,
     };
     await capture('buddy-panel-native-200-percent.png');
+    await inspectTilt('200-percent');
   }
 
   const stages = await page.evaluate(() => window.__panelStages);
@@ -643,8 +707,9 @@ try {
   assert.ok(openStages.length >= 4);
   for (const entry of openStages) {
     assert.equal(entry.available, 'true');
-    assert.equal(entry.viewport.width, edgeOpen.contentBounds.width);
-    assert.equal(entry.viewport.height, edgeOpen.contentBounds.height);
+    const expected = entry.zoomFactor === 2 ? zoomReview.viewport : edgeOpen.contentBounds;
+    assert.equal(entry.viewport.width, expected.width);
+    assert.equal(entry.viewport.height, expected.height);
   }
   assert.ok(stages.some((entry) => entry.stage === 'closing'));
   const reversedStages = stages.findIndex(
@@ -690,6 +755,7 @@ try {
       'Escape closes Settings without collapsing the conversation and restores focus to Tools; draft retained',
     controlledBackgroundCaptures,
     zoomReview,
+    tiltReviews,
     focus: 'close on open/reopen, pet before hide and after collapsed',
     preservation:
       'single mounted composer, draft, selection 5..17 and manually scrolled feed retained',

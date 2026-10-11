@@ -7,9 +7,9 @@ test('actual Sprout export renders at review sizes and runs a labelled simulated
   page,
 }) => {
   test.setTimeout(65000);
-  const asset = await readFile(path.resolve('public/buddy/sprout-v004.glb'));
+  const asset = await readFile(path.resolve('public/buddy/sprout-v005.glb'));
   const assetSha256 = createHash('sha256').update(asset).digest('hex');
-  const artifactDir = path.resolve('artifacts/glass-sprout-v004/sprout-browser');
+  const artifactDir = path.resolve('artifacts/glass-sprout-v005/sprout-browser');
   const errors: string[] = [];
   const apiCalls: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));

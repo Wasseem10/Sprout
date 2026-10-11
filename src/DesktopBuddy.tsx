@@ -35,6 +35,7 @@ import type { AudioPresentationRef } from './audioPresentation';
 import type { BuddyBehaviorInput, BuddyBehaviorSnapshot } from './buddyBehavior';
 import { useBuddyPanel, type BuddyReadingMemory } from './useBuddyPanel';
 import BuddyDisclosure, { type BuddyDisclosureAction } from './BuddyDisclosure';
+import { useBuddyTilt } from './useBuddyTilt';
 
 type Props = {
   embedded?: boolean;
@@ -92,6 +93,8 @@ type Props = {
 };
 export default function DesktopBuddy(p: Props) {
   const Root = p.embedded ? 'section' : 'main';
+  const surface = useRef<HTMLElement>(null);
+  const plane = useRef<HTMLDivElement>(null);
   const pet = useRef<HTMLButtonElement>(null);
   const close = useRef<HTMLButtonElement>(null);
   const composer = useRef<HTMLFormElement>(null);
@@ -107,6 +110,13 @@ export default function DesktopBuddy(p: Props) {
     feed: p.transcriptRef,
     readingMemory: p.readingMemory,
     expansionFailed: p.expansionFailed,
+  });
+  useBuddyTilt({
+    surface,
+    plane,
+    enabled: panel.available,
+    motion: (p.visual?.motion ?? true) && !panel.motionPaused,
+    blocked: p.modalOpen || disclosure !== null,
   });
   useLayoutEffect(() => {
     // The welcome starts at the beginning; actual conversation updates may follow the bottom.
@@ -258,10 +268,11 @@ export default function DesktopBuddy(p: Props) {
     lastMessage?.text.trim() === p.state.task.message.trim();
   return (
     <Root
+      ref={surface}
       className={`buddy ${p.expanded ? 'expanded' : 'collapsed'} ${p.active ? 'active' : ''} ${panel.error ? 'has-layout-error' : ''}`}
       data-panel-stage={panel.stage}
       data-phase={visualPhase}
-      aria-label="InsightOS desktop buddy"
+      aria-label="Sprout desktop buddy"
       onKeyDown={(event) => {
         if (event.key === 'Escape' && p.expanded && !p.modalOpen) {
           event.preventDefault();
@@ -270,292 +281,294 @@ export default function DesktopBuddy(p: Props) {
         }
       }}
     >
-      <h1 className="sr-only">InsightOS desktop assistant</h1>
+      <h1 className="sr-only">Sprout desktop assistant</h1>
       <p id="buddy-voice-help" className="sr-only">
         {voiceHelp}
       </p>
-      <header className="buddy-bar">
-        <button
-          ref={pet}
-          className={`buddy-face ${p.active ? 'awake' : ''}`}
-          onClick={activatePet}
-          aria-label={`${p.expanded ? (panel.available ? 'Collapse buddy' : 'Cancel opening buddy') : 'Expand buddy'}. ${status}`}
-          aria-expanded={panel.available}
-          aria-controls="buddy-conversation-panel"
-        >
-          <AssistantSignal
-            {...p.visual}
-            phase={visualPhase}
-            behavior={p.visual?.behavior ?? p.behavior}
-            onBehaviorChange={p.visual?.onBehaviorChange ?? p.onBehaviorChange}
-            audio={p.audio}
-            reaction={p.visual?.reaction ?? reaction}
-            motion={(p.visual?.motion ?? true) && !panel.motionPaused}
-          />
-        </button>
-        <div className="buddy-dock-controls">
-          <div className="buddy-identity">
-            <strong>
-              Insight<span>OS</span>
-            </strong>
-            <span role="status" title={status}>
-              {status}
-            </span>
-          </div>
-          {panel.error && (
-            <p
-              className="buddy-layout-error"
-              role="alert"
-              aria-label={panel.error}
-              title={panel.error}
-            >
-              Try opening again.
-            </p>
-          )}
-          <div className="buddy-window-actions">
-            {!panel.available && voiceControl}
-            {p.active && (
-              <button
-                className="buddy-icon stop"
-                onClick={p.stop}
-                aria-label="Stop task and audio"
-                title="Stop · Ctrl+Shift+Backspace"
-              >
-                <Square size={15} />
-              </button>
-            )}
-            {!panel.available && (
-              <button
-                className="buddy-icon"
-                onClick={p.hide}
-                aria-label="Hide to system tray"
-                title="Hide to tray"
-              >
-                <Minus size={17} />
-              </button>
-            )}
-            {panel.available && (
-              <button
-                ref={close}
-                className="buddy-icon"
-                onClick={p.expand}
-                aria-label="Collapse conversation"
-              >
-                <ChevronUp size={21} />
-              </button>
-            )}
-          </div>
-        </div>
-      </header>
-      <div ref={panel.shell} className="buddy-panel-glass" aria-hidden="true">
-        <span className="buddy-panel-rim" />
-      </div>
-      <section
-        className="buddy-panel"
-        id="buddy-conversation-panel"
-        aria-labelledby="buddy-panel-title"
-        aria-hidden={!panel.available}
-        inert={!panel.available}
-        data-available={panel.available}
-      >
-        <h2 id="buddy-panel-title" className="sr-only">
-          Conversation
-        </h2>
-        <div className="buddy-body">
-          <div
-            className="buddy-feed"
-            role="region"
-            aria-label="Conversation and task updates"
-            ref={p.transcriptRef}
-            onScroll={panel.onScroll}
-            tabIndex={0}
+      <div ref={plane} className="buddy-visual-plane">
+        <header className="buddy-bar">
+          <button
+            ref={pet}
+            className={`buddy-face ${p.active ? 'awake' : ''}`}
+            onClick={activatePet}
+            aria-label={`${p.expanded ? (panel.available ? 'Collapse buddy' : 'Cancel opening buddy') : 'Expand buddy'}. ${status}`}
+            aria-expanded={panel.available}
+            aria-controls="buddy-conversation-panel"
           >
+            <AssistantSignal
+              {...p.visual}
+              phase={visualPhase}
+              behavior={p.visual?.behavior ?? p.behavior}
+              onBehaviorChange={p.visual?.onBehaviorChange ?? p.onBehaviorChange}
+              audio={p.audio}
+              reaction={p.visual?.reaction ?? reaction}
+              motion={(p.visual?.motion ?? true) && !panel.motionPaused}
+            />
+          </button>
+          <div className="buddy-dock-controls">
+            <div className="buddy-identity">
+              <strong>Sprout</strong>
+              <span role="status" title={status}>
+                {status}
+              </span>
+            </div>
+            {panel.error && (
+              <p
+                className="buddy-layout-error"
+                role="alert"
+                aria-label={panel.error}
+                title={panel.error}
+              >
+                Try opening again.
+              </p>
+            )}
+            <div className="buddy-window-actions">
+              {!panel.available && voiceControl}
+              {p.active && (
+                <button
+                  className="buddy-icon stop"
+                  onClick={p.stop}
+                  aria-label="Stop task and audio"
+                  title="Stop · Ctrl+Shift+Backspace"
+                >
+                  <Square size={15} />
+                </button>
+              )}
+              {!panel.available && (
+                <button
+                  className="buddy-icon"
+                  onClick={p.hide}
+                  aria-label="Hide to system tray"
+                  title="Hide to tray"
+                >
+                  <Minus size={17} />
+                </button>
+              )}
+              {panel.available && (
+                <button
+                  ref={close}
+                  className="buddy-icon"
+                  onClick={p.expand}
+                  aria-label="Collapse conversation"
+                >
+                  <ChevronUp size={21} />
+                </button>
+              )}
+            </div>
+          </div>
+        </header>
+        <div ref={panel.shell} className="buddy-panel-glass" aria-hidden="true">
+          <span className="buddy-panel-shadow" />
+          <span className="buddy-panel-rim" />
+          <span className="buddy-panel-light" />
+        </div>
+        <section
+          className="buddy-panel"
+          id="buddy-conversation-panel"
+          aria-labelledby="buddy-panel-title"
+          aria-hidden={!panel.available}
+          inert={!panel.available}
+          data-available={panel.available}
+        >
+          <h2 id="buddy-panel-title" className="sr-only">
+            Conversation
+          </h2>
+          <div className="buddy-body">
             <div
-              className="buddy-conversation"
-              role="log"
-              aria-live="polite"
-              aria-label="Buddy conversation"
+              className="buddy-feed"
+              role="region"
+              aria-label="Conversation and task updates"
+              ref={p.transcriptRef}
+              onScroll={panel.onScroll}
+              tabIndex={0}
             >
-              {!conversation.length && p.state.task && (
-                <div className="buddy-welcome">
-                  <p>{p.state.task.goal}</p>
+              <div
+                className="buddy-conversation"
+                role="log"
+                aria-live="polite"
+                aria-label="Buddy conversation"
+              >
+                {!conversation.length && p.state.task && (
+                  <div className="buddy-welcome">
+                    <p>{p.state.task.goal}</p>
+                  </div>
+                )}
+                {conversation.map((m) => (
+                  <div key={m.id} className={`buddy-message ${m.role}`}>
+                    <span>
+                      {m.role === 'user' ? 'You' : m.role === 'error' ? 'Error' : 'Sprout'}
+                    </span>
+                    <p>{m.text}</p>
+                  </div>
+                ))}
+              </div>
+              {p.resultView === 'energy' && p.state.bills && !p.state.energy && (
+                <section className="energy-panel compact" aria-label="Bill document review">
+                  <div className="energy-heading">
+                    <strong>Your bills, understood.</strong>
+                    <span>{p.state.bills.documents.length} DOCUMENTS</span>
+                  </div>
+                  <p>
+                    {p.state.bills.pendingReadIds.length
+                      ? 'I found your bills. Say “yes” to read them.'
+                      : p.state.bills.documents.length
+                        ? 'Say “confirm this bill” or correct a number. The full workspace shows source quotes and editable fields.'
+                        : 'Find saved bills or choose PDFs in the workspace.'}
+                  </p>
+                  <div className="energy-actions">
+                    <button disabled={p.busy || !p.enabled} onClick={openWorkspace}>
+                      Open bill workspace
+                    </button>
+                  </div>
+                </section>
+              )}
+              {p.resultView === 'energy' && p.state.energy && (
+                <EnergyPanel
+                  state={p.state.energy}
+                  compact
+                  disabled={p.busy || !p.enabled}
+                  ask={p.suggest}
+                />
+              )}
+              {p.resultView === 'finance' && p.state.finance && (
+                <FinancePanel
+                  state={p.state.finance}
+                  compact
+                  disabled={p.busy || !p.enabled}
+                  ask={p.suggest}
+                  workspace={openWorkspace}
+                />
+              )}
+              {p.state.task && (
+                <div className="buddy-task" aria-label="Current task">
+                  <strong>
+                    {p.state.task.status === 'running'
+                      ? 'Working on it'
+                      : p.state.task.status === 'completed'
+                        ? 'Task finished'
+                        : 'Your next step'}
+                  </strong>
+                  {!taskMessageRepeated && <p>{p.state.task.message}</p>}
+                  <small>{p.state.task.steps.length} steps taken</small>
                 </div>
               )}
-              {conversation.map((m) => (
-                <div key={m.id} className={`buddy-message ${m.role}`}>
-                  <span>
-                    {m.role === 'user' ? 'You' : m.role === 'error' ? 'Error' : 'Insight'}
-                  </span>
-                  <p>{m.text}</p>
+              {p.resultView === 'office' && p.state.presentation && (
+                <div className="buddy-result">
+                  <div>
+                    <Presentation size={15} />
+                    <span>{p.state.presentation.filename}</span>
+                    <small>{p.state.presentation.slideCount} editable slides</small>
+                  </div>
+                  <div className="buddy-result-actions">
+                    <button disabled={p.busy || !p.enabled} onClick={p.openPresentation}>
+                      Open PowerPoint ↗
+                    </button>
+                  </div>
                 </div>
-              ))}
+              )}
+              {p.resultView === 'office' && p.state.spreadsheet && (
+                <div className="buddy-result">
+                  <div>
+                    <Table2 size={15} />
+                    <span>{p.state.spreadsheet.filename}</span>
+                    <small>
+                      {p.state.spreadsheet.provider === 'databricks'
+                        ? 'Databricks SQL'
+                        : 'Local analysis'}
+                    </small>
+                  </div>
+                  <div className="buddy-result-actions">
+                    <button disabled={p.busy || !p.enabled} onClick={p.openSpreadsheet}>
+                      Open Excel ↗
+                    </button>
+                  </div>
+                  {p.state.spreadsheet.provider === 'databricks' &&
+                    p.state.spreadsheet.queryReference && (
+                      <details className="buddy-reference">
+                        <summary>Query reference</summary>
+                        <code>{p.state.spreadsheet.queryReference}</code>
+                      </details>
+                    )}
+                </div>
+              )}
+              {p.resultView === 'code' && p.state.code && (
+                <div className="buddy-result">
+                  <div>
+                    <Code2 size={15} />
+                    <span>{p.state.code.filename}</span>
+                    <small>
+                      {p.state.code.status === 'completed' ? 'Ran successfully' : 'File ready'}
+                    </small>
+                  </div>
+                  <div className="buddy-result-actions">
+                    <button disabled={p.busy || !p.enabled} onClick={p.run}>
+                      Run program
+                    </button>
+                    <button disabled={p.busy || !p.enabled} onClick={p.editor}>
+                      Open in VS Code ↗
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
-            {p.resultView === 'energy' && p.state.bills && !p.state.energy && (
-              <section className="energy-panel compact" aria-label="Bill document review">
-                <div className="energy-heading">
-                  <strong>Your bills, understood.</strong>
-                  <span>{p.state.bills.documents.length} DOCUMENTS</span>
-                </div>
-                <p>
-                  {p.state.bills.pendingReadIds.length
-                    ? 'I found your bills. Say “yes” to read them.'
-                    : p.state.bills.documents.length
-                      ? 'Say “confirm this bill” or correct a number. The full workspace shows source quotes and editable fields.'
-                      : 'Find saved bills or choose PDFs in the workspace.'}
-                </p>
-                <div className="energy-actions">
-                  <button disabled={p.busy || !p.enabled} onClick={openWorkspace}>
-                    Open bill workspace
-                  </button>
-                </div>
-              </section>
-            )}
-            {p.resultView === 'energy' && p.state.energy && (
-              <EnergyPanel
-                state={p.state.energy}
-                compact
-                disabled={p.busy || !p.enabled}
-                ask={p.suggest}
-              />
-            )}
-            {p.resultView === 'finance' && p.state.finance && (
-              <FinancePanel
-                state={p.state.finance}
-                compact
-                disabled={p.busy || !p.enabled}
-                ask={p.suggest}
-                workspace={openWorkspace}
-              />
-            )}
-            {p.state.task && (
-              <div className="buddy-task" aria-label="Current task">
-                <strong>
-                  {p.state.task.status === 'running'
-                    ? 'Working on it'
-                    : p.state.task.status === 'completed'
-                      ? 'Task finished'
-                      : 'Your next step'}
-                </strong>
-                {!taskMessageRepeated && <p>{p.state.task.message}</p>}
-                <small>{p.state.task.steps.length} steps taken</small>
-              </div>
-            )}
-            {p.resultView === 'office' && p.state.presentation && (
-              <div className="buddy-result">
-                <div>
-                  <Presentation size={15} />
-                  <span>{p.state.presentation.filename}</span>
-                  <small>{p.state.presentation.slideCount} editable slides</small>
-                </div>
-                <div className="buddy-result-actions">
-                  <button disabled={p.busy || !p.enabled} onClick={p.openPresentation}>
-                    Open PowerPoint ↗
-                  </button>
-                </div>
-              </div>
-            )}
-            {p.resultView === 'office' && p.state.spreadsheet && (
-              <div className="buddy-result">
-                <div>
-                  <Table2 size={15} />
-                  <span>{p.state.spreadsheet.filename}</span>
-                  <small>
-                    {p.state.spreadsheet.provider === 'databricks'
-                      ? 'Databricks SQL'
-                      : 'Local analysis'}
-                  </small>
-                </div>
-                <div className="buddy-result-actions">
-                  <button disabled={p.busy || !p.enabled} onClick={p.openSpreadsheet}>
-                    Open Excel ↗
-                  </button>
-                </div>
-                {p.state.spreadsheet.provider === 'databricks' &&
-                  p.state.spreadsheet.queryReference && (
-                    <details className="buddy-reference">
-                      <summary>Query reference</summary>
-                      <code>{p.state.spreadsheet.queryReference}</code>
-                    </details>
-                  )}
-              </div>
-            )}
-            {p.resultView === 'code' && p.state.code && (
-              <div className="buddy-result">
-                <div>
-                  <Code2 size={15} />
-                  <span>{p.state.code.filename}</span>
-                  <small>
-                    {p.state.code.status === 'completed' ? 'Ran successfully' : 'File ready'}
-                  </small>
-                </div>
-                <div className="buddy-result-actions">
-                  <button disabled={p.busy || !p.enabled} onClick={p.run}>
-                    Run program
-                  </button>
-                  <button disabled={p.busy || !p.enabled} onClick={p.editor}>
-                    Open in VS Code ↗
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-          <form
-            ref={composer}
-            className={`buddy-composer ${p.voicePhase === 'listening' ? 'listening' : ''}`}
-            onSubmit={(e) => {
-              e.preventDefault();
-              p.send();
-            }}
-          >
-            <label className="sr-only" htmlFor="buddy-request">
-              Tell your buddy what to do
-            </label>
-            <textarea
-              ref={p.inputRef}
-              id="buddy-request"
-              value={p.request}
-              disabled={!p.enabled || p.busy}
-              onChange={(e) => p.setRequest(e.target.value)}
-              placeholder="Ask me anything…"
-              maxLength={2000}
-              rows={2}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  p.send();
-                }
+            <form
+              ref={composer}
+              className={`buddy-composer ${p.voicePhase === 'listening' ? 'listening' : ''}`}
+              onSubmit={(e) => {
+                e.preventDefault();
+                p.send();
               }}
-            />
-            <div className="buddy-compose-actions">
-              <BuddyDisclosure
-                label="Ideas"
-                open={panel.available && disclosure === 'ideas'}
-                actions={ideas}
-                toggle={() => setDisclosure(disclosure === 'ideas' ? null : 'ideas')}
-                dismiss={dismissDisclosure}
+            >
+              <label className="sr-only" htmlFor="buddy-request">
+                Tell your buddy what to do
+              </label>
+              <textarea
+                ref={p.inputRef}
+                id="buddy-request"
+                value={p.request}
+                disabled={!p.enabled || p.busy}
+                onChange={(e) => p.setRequest(e.target.value)}
+                placeholder="Ask me anything…"
+                maxLength={2000}
+                rows={2}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    p.send();
+                  }
+                }}
               />
-              <BuddyDisclosure
-                label="Tools"
-                open={panel.available && disclosure === 'tools'}
-                actions={tools}
-                toggle={() => setDisclosure(disclosure === 'tools' ? null : 'tools')}
-                dismiss={dismissDisclosure}
-              />
-              <div className="buddy-compose-primary">
-                {voiceControl}
-                <button
-                  className="buddy-send"
-                  type="submit"
-                  disabled={!p.enabled || p.busy || !p.request.trim()}
-                  aria-label="Send request"
-                >
-                  <ArrowUp size={18} />
-                </button>
+              <div className="buddy-compose-actions">
+                <BuddyDisclosure
+                  label="Ideas"
+                  open={panel.available && disclosure === 'ideas'}
+                  actions={ideas}
+                  toggle={() => setDisclosure(disclosure === 'ideas' ? null : 'ideas')}
+                  dismiss={dismissDisclosure}
+                />
+                <BuddyDisclosure
+                  label="Tools"
+                  open={panel.available && disclosure === 'tools'}
+                  actions={tools}
+                  toggle={() => setDisclosure(disclosure === 'tools' ? null : 'tools')}
+                  dismiss={dismissDisclosure}
+                />
+                <div className="buddy-compose-primary">
+                  {voiceControl}
+                  <button
+                    className="buddy-send"
+                    type="submit"
+                    disabled={!p.enabled || p.busy || !p.request.trim()}
+                    aria-label="Send request"
+                  >
+                    <ArrowUp size={18} />
+                  </button>
+                </div>
               </div>
-            </div>
-          </form>
-        </div>
-      </section>
+            </form>
+          </div>
+        </section>
+      </div>
     </Root>
   );
 }

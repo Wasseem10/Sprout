@@ -7,8 +7,8 @@ const previewStates = [
   ['Thinking', 'thinking'],
   ['Speaking', 'speaking'],
 ] as const;
-const selectedAsset = '/buddy/sprout-v004.glb';
-const selectedFallback = '/buddy/sprout-v004.png';
+const selectedAsset = '/buddy/sprout-v005.glb';
+const selectedFallback = '/buddy/sprout-v005.png';
 
 function signal(page: Page) {
   return page.locator('.insight-signal:visible');

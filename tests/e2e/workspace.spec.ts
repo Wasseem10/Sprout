@@ -4,8 +4,8 @@ import path from 'node:path';
 import { mkdir, writeFile } from 'node:fs/promises';
 async function ask(page: any, text: string) {
   const count = await page.locator('.message').count();
-  await page.getByLabel('Ask InsightOS about your workspace').fill(text);
-  await page.getByLabel('Ask InsightOS about your workspace').press('Enter');
+  await page.getByLabel('Ask Sprout about your workspace').fill(text);
+  await page.getByLabel('Ask Sprout about your workspace').press('Enter');
   await expect(page.locator('.message')).toHaveCount(count + 2);
   await expect(page.locator('.task-progress')).toHaveCount(0);
 }
@@ -80,7 +80,7 @@ test('keyboard-only entry and project preference restoration', async ({ page }) 
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Skip to request input' })).toBeFocused();
   await page.keyboard.press('Enter');
-  await expect(page.getByLabel('Ask InsightOS about your workspace')).toBeFocused();
+  await expect(page.getByLabel('Ask Sprout about your workspace')).toBeFocused();
   async function tabTo(target: any) {
     for (let i = 0; i < 40; i++) {
       if (await target.evaluate((element: HTMLElement) => document.activeElement === element))
@@ -92,7 +92,7 @@ test('keyboard-only entry and project preference restoration', async ({ page }) 
   await tabTo(page.getByRole('button', { name: 'Try sample data' }));
   await page.keyboard.press('Enter');
   await expect(page.getByText('YOUR DATA IS READY')).toBeVisible();
-  await expect(page.getByLabel('Ask InsightOS about your workspace')).toBeFocused();
+  await expect(page.getByLabel('Ask Sprout about your workspace')).toBeFocused();
   await page.keyboard.type('Compare revenue this quarter with last quarter');
   await page.keyboard.press('Enter');
   await expect(page.getByText('$204,000', { exact: true })).toBeVisible();
@@ -105,7 +105,7 @@ test('keyboard-only entry and project preference restoration', async ({ page }) 
   await page.keyboard.press('Space');
   await page.keyboard.press('Escape');
   await expect(page.getByRole('button', { name: 'Settings & connections' })).toBeFocused();
-  await tabTo(page.getByLabel('Ask InsightOS about your workspace'));
+  await tabTo(page.getByLabel('Ask Sprout about your workspace'));
   await page.keyboard.type('Save my workspace');
   await page.keyboard.press('Enter');
   await expect(page.locator('.message.assistant').last()).toContainText('Saved Operations review');
@@ -204,8 +204,8 @@ test('actual file selection, invalid CSV recovery and keyboard access', async ({
   });
   await expect(page.locator('.message.error').last()).toContainText('CSV requires');
   await expect(page.getByText('$204,000', { exact: true })).toBeVisible();
-  await page.getByLabel('Ask InsightOS about your workspace').focus();
-  await expect(page.getByLabel('Ask InsightOS about your workspace')).toBeFocused();
+  await page.getByLabel('Ask Sprout about your workspace').focus();
+  await expect(page.getByLabel('Ask Sprout about your workspace')).toBeFocused();
   await ask(page, 'Show that as a chart');
   await page.getByRole('button', { name: 'Settings & connections' }).click();
   await expect(page.getByRole('dialog')).toBeVisible();
@@ -230,15 +230,15 @@ test('accessibility scan, narrow layout and delayed-task cancellation', async ({
     await route.continue().catch(() => {});
   });
   await page
-    .getByLabel('Ask InsightOS about your workspace')
+    .getByLabel('Ask Sprout about your workspace')
     .fill('Only include locations that were operating in both quarters');
-  await page.getByLabel('Ask InsightOS about your workspace').press('Enter');
+  await page.getByLabel('Ask Sprout about your workspace').press('Enter');
   await expect(page.getByRole('button', { name: 'Stop task & audio' })).toBeVisible();
   await page.getByRole('button', { name: 'Stop task & audio' }).click();
   await page.waitForTimeout(1600);
   await expect(page.getByText('$204,000', { exact: true })).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
-  await expect(page.getByLabel('Ask InsightOS about your workspace')).toBeVisible();
+  await expect(page.getByLabel('Ask Sprout about your workspace')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Settings & connections' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Saved workspaces' })).toBeVisible();
   await page.screenshot({ path: 'artifacts/mobile.png', fullPage: true });

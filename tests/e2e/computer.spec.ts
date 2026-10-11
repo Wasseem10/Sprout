@@ -72,7 +72,7 @@ test('starts as a general assistant without preparing a file folder', async ({ p
     if (new URL(request.url()).pathname === '/api/computer/demo-folder') folderSetupCalls++;
   });
   await page.goto('/');
-  await expect(page.getByRole('region', { name: 'Start with InsightOS' })).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Start with Sprout' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Find jobs nearby' })).toBeEnabled();
   await expect(page.getByRole('button', { name: 'Open an app' })).toBeEnabled();
   expect(folderSetupCalls).toBe(0);
@@ -173,7 +173,7 @@ test('recovers a stale save folder after the backend restarts', async ({ page })
         });
   });
   await page.goto('/');
-  await expect(page.getByRole('region', { name: 'Start with InsightOS' })).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Start with Sprout' })).toBeVisible();
   const input = page.getByLabel('Tell your computer what to do');
   await input.fill('Can you make me a PowerPoint on George Washington?');
   await input.press('Enter');

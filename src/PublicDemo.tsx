@@ -230,7 +230,7 @@ export default function PublicDemo() {
     const url = URL.createObjectURL(file);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'insightos-sample-plan.json';
+    link.download = 'sprout-sample-plan.json';
     link.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
@@ -241,11 +241,11 @@ export default function PublicDemo() {
         Skip to bill analysis
       </a>
       <header className="public-nav">
-        <a className="public-logo" href="/" aria-label="InsightOS home">
+        <a className="public-logo" href="/" aria-label="Sprout home">
           <span className="public-mark">
             <Sparkles size={22} aria-hidden="true" />
           </span>
-          Insight<span>OS</span>
+          Sprout
         </a>
         <nav aria-label="Main navigation">
           <a href="#how-it-works">How it works</a>
@@ -645,7 +645,7 @@ export default function PublicDemo() {
                 <Sparkles size={19} aria-hidden="true" />
               </span>
               <div>
-                <strong>Insight</strong>
+                <strong>Sprout</strong>
                 <span>Your sample companion</span>
               </div>
               <span className="public-online" />
@@ -660,7 +660,7 @@ export default function PublicDemo() {
               Make the decision.
             </h2>
             <div className="public-response" aria-live="polite">
-              <span>INSIGHT</span>
+              <span>SPROUT</span>
               <p>{message}</p>
             </div>
             {error && (
@@ -719,7 +719,7 @@ export default function PublicDemo() {
           <p className="public-eyebrow">THE FULL DESKTOP COMPANION</p>
           <h2>Independence is the feature.</h2>
           <p>
-            Read a bill. Challenge a number. Change your mind. InsightOS carries your corrections
+            Read a bill. Challenge a number. Change your mind. Sprout carries your corrections
             through the workflow, so the decision stays yours.
           </p>
           <div>
@@ -754,7 +754,7 @@ export default function PublicDemo() {
         </section>
       </main>
       <footer className="public-footer">
-        <span>InsightOS · Built at Knight Hacks IX</span>
+        <span>Sprout · Built at Knight Hacks IX</span>
         <a href={`${repository}/blob/master/DEVPOST-DRAFT.md`}>
           <CircleHelp size={15} aria-hidden="true" />
           Project details and limitations

@@ -1,0 +1,532 @@
+{
+  "variant": "prism-happy-eyes-v005",
+  "status": "Selected source/eye geometry and promoted local assets; integrated browser/native proof is recorded separately by root",
+  "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-prism-v005.glb",
+  "sha256": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2",
+  "bytes": 1445476,
+  "baseline_path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-prism-v004.glb",
+  "baseline_sha256": "77d4b92bc5d06e440706243f6ac9e6745073ba6f98d173b972114fabb02bde7c",
+  "baseline_source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-prism-behaviours-v004.blend",
+  "baseline_source_sha256": "77df8aa69295604c48dec23a0bccb837e2cbdc012f5212c10b76cc37bbf38518",
+  "editable_source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-happy-eyes-v005.blend",
+  "editable_source_sha256": "e97a0df2bafbffda9da972c538dbde60c54bc2d71efe264c163c8913c746a113",
+  "source_export": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-happy-eyes-source-v005.glb",
+  "source_export_sha256": "54458172f8fbf32facd76abfbcff38d4e48ba05644fba554dd02329bb3807e1a",
+  "blender": "5.2.2 LTS",
+  "generator": "Khronos glTF Blender I/O v5.2.40",
+  "settings": {
+    "filepath": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-happy-eyes-source-v005.glb",
+    "export_format": "GLB",
+    "use_selection": true,
+    "use_active_scene": true,
+    "export_animations": true,
+    "export_animation_mode": "NLA_TRACKS",
+    "export_force_sampling": true,
+    "export_frame_step": 1,
+    "export_anim_slide_to_zero": true,
+    "export_apply": false,
+    "export_def_bones": false,
+    "export_morph": true,
+    "export_morph_normal": true,
+    "export_morph_animation": true,
+    "export_normals": true,
+    "export_texcoords": true,
+    "export_vertex_color": "ACTIVE",
+    "export_all_vertex_colors": true,
+    "export_optimize_animation_size": true,
+    "export_optimize_animation_keep_anim_armature": true,
+    "export_optimize_animation_keep_anim_object": true,
+    "export_morph_reset_sk_data": false,
+    "export_optimize_disable_viewport": false
+  },
+  "source_export_dependency_refresh": "Supported post_animation_track_switch_hook samples the identical authored eye Key action/slot directly while keeping NLA clip names; tags Key, mesh and object. Restores NLA after export. Isolated process only; no installed exporter mutation or generated weight replacement.",
+  "profile": "happy-morph-v005",
+  "fps": 24,
+  "eye_geometry": {
+    "EYE_L": {
+      "vertices": 534,
+      "morph_dictionary": {
+        "CloseHappy": 0
+      },
+      "formula_blender": {
+        "x_scale": 0.9,
+        "front_depth_offset_y": -0.063,
+        "depth_scale": 0.17,
+        "arch_height_z": 0.065,
+        "vertical_scale": 0.11
+      },
+      "open_material": "MAT_Sprout_Eyes",
+      "open_bounds": {
+        "min": [
+          -0.17699992656707764,
+          -0.07999996840953827,
+          -0.23499999940395355
+        ],
+        "max": [
+          0.17699997127056122,
+          0.07999996840953827,
+          0.23499999940395355
+        ]
+      },
+      "closed_bounds": {
+        "min": [
+          -0.15929993987083435,
+          -0.07659999281167984,
+          -0.0024531593080610037
+        ],
+        "max": [
+          0.15929996967315674,
+          -0.049400005489587784,
+          0.09085000306367874
+        ]
+      }
+    },
+    "EYE_R": {
+      "vertices": 534,
+      "morph_dictionary": {
+        "CloseHappy": 0
+      },
+      "formula_blender": {
+        "x_scale": 0.9,
+        "front_depth_offset_y": -0.063,
+        "depth_scale": 0.17,
+        "arch_height_z": 0.065,
+        "vertical_scale": 0.11
+      },
+      "open_material": "MAT_Sprout_Eyes",
+      "open_bounds": {
+        "min": [
+          -0.17699992656707764,
+          -0.07999996840953827,
+          -0.23499999940395355
+        ],
+        "max": [
+          0.17699997127056122,
+          0.07999996840953827,
+          0.23499999940395355
+        ]
+      },
+      "closed_bounds": {
+        "min": [
+          -0.15929993987083435,
+          -0.07659999281167984,
+          -0.0024531593080610037
+        ],
+        "max": [
+          0.15929996967315674,
+          -0.049400005489587784,
+          0.09085000306367874
+        ]
+      }
+    }
+  },
+  "glint_contract": {
+    "nodes": [
+      "GLINT_L",
+      "GLINT_R"
+    ],
+    "property": "scale",
+    "open": [
+      1,
+      1,
+      1
+    ],
+    "closed": [
+      0.001,
+      0.001,
+      0.001
+    ],
+    "fully_collapsed_at_closure": 0.75,
+    "mapping": "1 - .999 * smoothstep(0,.75,CloseHappy)"
+  },
+  "removed_rendered_objects": [
+    "CLOSED_EYE_L",
+    "CLOSED_EYE_R",
+    "LID_L",
+    "LID_R"
+  ],
+  "eye_clips": {
+    "Sprout_Blink": {
+      "removed_lid_channels": [
+        {
+          "node": "LID_L",
+          "path": "scale"
+        },
+        {
+          "node": "LID_R",
+          "path": "scale"
+        }
+      ],
+      "added_face_channels": [
+        {
+          "node": "EYE_L",
+          "path": "weights"
+        },
+        {
+          "node": "GLINT_L",
+          "path": "scale"
+        },
+        {
+          "node": "EYE_R",
+          "path": "weights"
+        },
+        {
+          "node": "GLINT_R",
+          "path": "scale"
+        }
+      ],
+      "source_closure_samples": [
+        0,
+        0.6996996877668379,
+        1,
+        0.34934934338291845,
+        0
+      ],
+      "duration": 0.16666666666666666,
+      "channels": 4
+    },
+    "Sprout_SleepEnter": {
+      "removed_lid_channels": [
+        {
+          "node": "LID_L",
+          "path": "scale"
+        },
+        {
+          "node": "LID_R",
+          "path": "scale"
+        }
+      ],
+      "added_face_channels": [
+        {
+          "node": "EYE_L",
+          "path": "weights"
+        },
+        {
+          "node": "GLINT_L",
+          "path": "scale"
+        },
+        {
+          "node": "EYE_R",
+          "path": "weights"
+        },
+        {
+          "node": "GLINT_R",
+          "path": "scale"
+        }
+      ],
+      "source_closure_samples": [
+        0,
+        0.000032969239588316,
+        0.0005064626327819295,
+        0.002449993357375577,
+        0.007364432024466502,
+        0.017020817976575474,
+        0.03325717877577972,
+        0.05778452366202682,
+        0.09201110745812799,
+        0.13689209235919728,
+        0.1928100645601809,
+        0.2594898522675813,
+        0.3359500820094997,
+        0.42049187224906487,
+        0.51072426529618,
+        0.603624577756162,
+        0.6956307608802039,
+        0.7827624892806625,
+        0.8607658170484327,
+        0.9252771352743124,
+        0.9720000170611285,
+        0.9968892819172627,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "duration": 1.6666666666666667,
+      "channels": 33
+    },
+    "Sprout_SleepLoop": {
+      "removed_lid_channels": [
+        {
+          "node": "LID_L",
+          "path": "scale"
+        },
+        {
+          "node": "LID_R",
+          "path": "scale"
+        }
+      ],
+      "added_face_channels": [
+        {
+          "node": "EYE_L",
+          "path": "weights"
+        },
+        {
+          "node": "GLINT_L",
+          "path": "scale"
+        },
+        {
+          "node": "EYE_R",
+          "path": "weights"
+        },
+        {
+          "node": "GLINT_R",
+          "path": "scale"
+        }
+      ],
+      "source_closure_samples": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "duration": 5,
+      "channels": 33
+    },
+    "Sprout_Wake": {
+      "removed_lid_channels": [
+        {
+          "node": "LID_L",
+          "path": "scale"
+        },
+        {
+          "node": "LID_R",
+          "path": "scale"
+        }
+      ],
+      "added_face_channels": [
+        {
+          "node": "EYE_L",
+          "path": "weights"
+        },
+        {
+          "node": "GLINT_L",
+          "path": "scale"
+        },
+        {
+          "node": "EYE_R",
+          "path": "weights"
+        },
+        {
+          "node": "GLINT_R",
+          "path": "scale"
+        }
+      ],
+      "source_closure_samples": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0.9996940414230148,
+        0.9720000170611285,
+        0.9055410767938044,
+        0.8099927429680351,
+        0.6956307608802039,
+        0.5725713334642015,
+        0.450074063168393,
+        0.3359500820094997,
+        0.2361132566396658,
+        0.15430452432241049,
+        0.09201110745812799,
+        0.048592591727221454,
+        0.021612939325061527,
+        0.007364432024466502,
+        0.0015536902362370754,
+        0.00010284954668940961,
+        0
+      ],
+      "duration": 1.25,
+      "channels": 33
+    }
+  },
+  "retained_clips": [
+    "Sprout_Click",
+    "Sprout_Idle",
+    "Sprout_Listen",
+    "Sprout_Think",
+    "Sprout_Speak",
+    "Sprout_Done",
+    "Sprout_JoyJump"
+  ],
+  "preservation": "Frozen v004 nodes/geometry/materials/texture/skin and non-eye animation accessor bytes; deliberate four clip eye-channel replacement. Eye basis/index bytes retained; only new morph POSITION/NORMAL appended. Unreachable old cover data removed, references remapped.",
+  "source_provenance": "Original project-authored eye deformation of existing project mesh; no generated, downloaded or third-party character/motion asset.",
+  "scope": "Source-backed selected eye asset. Exact non-eye baseline stream preservation, reopened authored action samples, supporting Cycles views and matched PNGs verified. Runtime, native and fallback integration gates are separate root/runtime evidence.",
+  "runtime_path": "public/buddy/sprout-v005.glb",
+  "runtime_sha256": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2",
+  "fallbacks": [
+    {
+      "pose": "idle",
+      "canonical": "design/buddy/sprout/sprout-prism-v005.png",
+      "runtime": "public/buddy/sprout-v005.png",
+      "sha256": "1142a9ef44f70e13813e0ee542672852a7c2b5bbf5e87f89eb9c747159af6277",
+      "runtime_sha256": "1142a9ef44f70e13813e0ee542672852a7c2b5bbf5e87f89eb9c747159af6277",
+      "bytes": 302888,
+      "width": 640,
+      "height": 640,
+      "channels": "RGBA"
+    },
+    {
+      "pose": "sleep",
+      "canonical": "design/buddy/sprout/sprout-prism-sleep-v005.png",
+      "runtime": "public/buddy/sprout-v005-sleep.png",
+      "sha256": "e5666517a4556ed7939e042ff10464d751954f4053a4e499c262388ada488887",
+      "runtime_sha256": "e5666517a4556ed7939e042ff10464d751954f4053a4e499c262388ada488887",
+      "bytes": 240987,
+      "width": 640,
+      "height": 640,
+      "channels": "RGBA"
+    }
+  ],
+  "proofs": {
+    "source_reopen": "design/buddy/sprout/proofs/v005-eyes-audit.json",
+    "source_study": "design/buddy/sprout/proofs/v005-eyes-study.json",
+    "source_contact_sheet": "design/buddy/sprout/proofs/v005-eye-morph-source-contact-sheet.png",
+    "source_tiny_comparison": "design/buddy/sprout/proofs/v005-eye-tiny-source-comparison.png",
+    "fallback_render": "design/buddy/sprout/proofs/v005-eyes-fallback.json",
+    "frozen_data": "design/buddy/sprout/proofs/v005-frozen-data-audit.json",
+    "gltf_validator": "design/buddy/sprout/proofs/v005-gltf-validation.json"
+  },
+  "asset_handoff": "design/buddy/sprout/ASSET-HANDOFF-v005.md"
+}

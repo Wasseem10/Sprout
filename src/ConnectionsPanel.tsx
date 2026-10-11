@@ -49,7 +49,7 @@ const cards: {
     provider: 'vultr',
     name: 'Vultr',
     description:
-      'Run AI requests on your deployed InsightOS server; files and desktop actions stay on this computer. Requires an existing deployment.',
+      'Run AI requests on your deployed Sprout server; files and desktop actions stay on this computer. Requires an existing deployment.',
     fields: [
       { key: 'INSIGHTOS_CLOUD_URL', label: 'Deployed HTTPS origin' },
       { key: 'INSIGHTOS_CLOUD_PASSPHRASE', label: 'Server session passphrase', secret: true },
