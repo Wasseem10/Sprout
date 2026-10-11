@@ -63,4 +63,8 @@ The Three.js, Drei and ElevenLabs references use MIT code licenses; OGL declares
 
 The generated board's strong character silhouette and material separation guide the next authoring pass. Its extra slogans, wide panel and pale placeholder are not product requirements; the recorded critique asks for a portrait layout, meaningful conversation content and tested contrast in React.
 
+### Color exploration — 2026-10-10
+
+The user likes the vibrant blue concept and asked whether a beautiful combination of colors would improve it. [The palette study](PALETTE-STUDY.md) compares Ocean, Prism and Lagoon with a [saved reference board](../../../artifacts/ripple-palette-study-v003.png). Our creative preference is Prism: blue/aqua with a violet-to-coral side/lower streak, clear face, neutral steel and quieter reading surfaces. This is a candidate recommendation; final palette and layout remain open, and the master implementation prompt has not been changed to imply acceptance.
+
 Append future entries with observed defects, source revisions, controlled comparisons and actual artifact links. Do not report planned budgets, generated concept pixels, or untested audio responses as completed implementation.
