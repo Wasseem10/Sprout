@@ -22,6 +22,7 @@ import type { ComputerState } from '../shared/computer';
 import './buddy.css';
 import EnergyPanel from './EnergyPanel';
 import FinancePanel from './FinancePanel';
+import StudioPanel from './StudioPanel';
 
 type Props = {
   expanded: boolean;
@@ -30,12 +31,13 @@ type Props = {
   busy: boolean;
   enabled: boolean;
   voicePhase: string;
+  backupVoice?: boolean;
   voiceReady: boolean;
   speech: boolean;
   speechReady: boolean;
   shortcut: boolean | null;
   state: ComputerState;
-  resultView: 'home' | 'code' | 'office' | 'browser' | 'screen' | 'energy' | 'finance';
+  resultView: 'home' | 'code' | 'office' | 'browser' | 'screen' | 'energy' | 'finance' | 'studio';
   request: string;
   messages: { id: string; role: 'user' | 'assistant' | 'error'; text: string }[];
   inputRef: RefObject<HTMLTextAreaElement | null>;
@@ -58,19 +60,29 @@ type Props = {
   openSpreadsheet: () => void;
 };
 export default function DesktopBuddy(p: Props) {
-  const status = p.conversationActive
-    ? p.voicePhase === 'speaking'
-      ? 'Speaking · listening'
-      : p.busy || p.voicePhase === 'processing'
-        ? 'Working · listening'
-        : p.voicePhase === 'transcribing'
-          ? 'Understanding · listening'
-          : 'Listening…'
-    : p.busy
-      ? 'Working…'
-      : p.voicePhase === 'starting'
-        ? 'Opening mic…'
-        : 'Ready to talk';
+  const presentationProject = p.state.presentation?.project;
+  const graphIndex = presentationProject?.orderedDeck?.slides.findIndex((slide) => slide.type === 'flowchart') ?? -1;
+  const diagramIndex = presentationProject?.orderedDeck
+    ? graphIndex >= 0 ? graphIndex : presentationProject.orderedDeck.slides.findIndex((slide) => slide.type === 'process')
+    : presentationProject
+      ? presentationProject.deck.slides.length + 1
+      : -1;
+  const sourceCount = presentationProject?.assets.length ?? 0;
+  const voiceStatus =
+    p.voicePhase === 'starting'
+      ? 'Opening mic…'
+      : p.conversationActive
+        ? p.voicePhase === 'speaking'
+          ? 'Speaking · listening'
+          : p.busy || p.voicePhase === 'processing'
+            ? 'Working · listening'
+            : p.voicePhase === 'transcribing'
+              ? 'Understanding · listening'
+              : 'Listening…'
+        : p.busy
+          ? 'Working…'
+          : 'Ready to talk';
+  const status = `${voiceStatus}${p.backupVoice ? ' · Windows voice' : ''}`;
   const conversation = p.messages.filter((m) => m.id !== 'welcome');
   return (
     <main
@@ -162,14 +174,14 @@ export default function DesktopBuddy(p: Props) {
                 <h2>What’s on your mind?</h2>
                 <p>
                   Press Play and talk naturally. I’ll keep listening, even while I reply. Ask me to
-                  understand spending, check a payment, use Excel, or describe your screen.
+                  explore a spreadsheet, check its evidence, or create Excel and PowerPoint files.
                 </p>
                 <div className="buddy-suggestions" aria-label="Ideas to try">
                   <button
                     disabled={!p.enabled || p.busy}
-                    onClick={() => p.suggest('Start the finance demo')}
+                    onClick={() => p.suggest('Start the analysis demo')}
                   >
-                    Understand my finances
+                    Try an analysis
                   </button>
                   <button
                     disabled={!p.enabled || p.busy}
@@ -238,6 +250,15 @@ export default function DesktopBuddy(p: Props) {
               workspace={p.workspace}
             />
           )}
+          {p.resultView === 'studio' && p.state.studio && (
+            <StudioPanel
+              state={p.state.studio}
+              compact
+              disabled={p.busy || !p.enabled}
+              ask={p.suggest}
+              workspace={p.workspace}
+            />
+          )}
           {p.state.task && (
             <div className="buddy-task" aria-label="Current task">
               <strong>
@@ -255,10 +276,25 @@ export default function DesktopBuddy(p: Props) {
             <div className="buddy-result">
               <div>
                 <Presentation size={15} />
-                <span>{p.state.presentation.filename}</span>
-                <small>{p.state.presentation.slideCount} editable slides</small>
+                <span>{p.state.presentation.title}</span>
+                <small>
+                  {presentationProject?.orderedDeck?.slides.length ??
+                    p.state.presentation.slideCount}{' '}
+                  editable slides
+                  {p.state.presentation.project
+                    ? ` · revision ${p.state.presentation.project.revision} · ${sourceCount} source ${sourceCount === 1 ? 'image' : 'images'}`
+                    : ''}
+                </small>
               </div>
               <div className="buddy-result-actions">
+                {diagramIndex >= 0 && (
+                  <button
+                    disabled={p.busy || !p.enabled}
+                    onClick={() => p.suggest(`Read slide ${diagramIndex + 1}`)}
+                  >
+                    Read the diagram
+                  </button>
+                )}
                 <button disabled={p.busy || !p.enabled} onClick={p.openPresentation}>
                   Open PowerPoint ↗
                 </button>
@@ -341,11 +377,13 @@ export default function DesktopBuddy(p: Props) {
             />
             <div>
               <span>
-                {p.conversationActive
-                  ? 'Conversation on · Speak anytime, even during my reply'
-                  : p.shortcut === false
-                    ? 'Press play to talk'
-                    : 'Press play or Ctrl + Shift + Space'}
+                {p.voicePhase === 'starting'
+                  ? 'Opening your microphone…'
+                  : p.conversationActive
+                    ? 'Conversation on · Speak anytime, even during my reply'
+                    : p.shortcut === false
+                      ? 'Press play to talk'
+                      : 'Press play or Ctrl + Shift + Space'}
               </span>
               <button
                 className="buddy-send"

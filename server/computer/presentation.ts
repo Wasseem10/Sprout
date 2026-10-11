@@ -2,6 +2,7 @@ import PptxGenJS from 'pptxgenjs';
 import { z } from 'zod';
 import type { Config } from '../config.js';
 import { chat } from './planner.js';
+import type { ResearchDeck, ResearchSource } from '../../shared/presentation-research.js';
 
 const outlineSchema = z.object({
   title: z.string().trim().min(3).max(90),
@@ -66,7 +67,11 @@ export async function generatePresentationOutline(
   );
 }
 
-export async function writePresentation(outline: PresentationOutline, file: string) {
+export async function writePresentation(
+  outline: PresentationOutline,
+  file: string,
+  research?: { deck: ResearchDeck; sources: ResearchSource[] },
+) {
   // The package's CommonJS type export is read as a namespace by NodeNext;
   // the runtime default export is the constructor.
   const pptx = new (PptxGenJS as unknown as new () => any)();
@@ -128,6 +133,13 @@ export async function writePresentation(outline: PresentationOutline, file: stri
     margin: 0,
     valign: 'middle',
   });
+  if (research)
+    cover.addNotes(
+      'Web research draft. Review factual claims before sharing. Sources: ' +
+        research.sources
+          .map((s) => `${s.id}. ${s.title}\n${s.url}\nAccessed ${s.accessedAt}`)
+          .join('\n'),
+    );
   outline.slides.forEach((section, index) => {
     const slide = pptx.addSlide();
     slide.background = { color: navy };
@@ -173,7 +185,7 @@ export async function writePresentation(outline: PresentationOutline, file: stri
         valign: 'middle',
       });
     });
-    slide.addText(`${index + 2} / ${outline.slides.length + 1}`, {
+    slide.addText(`${index + 2} / ${research ? 5 : outline.slides.length + 1}`, {
       x: 11.75,
       y: 7.02,
       w: 0.8,
@@ -184,6 +196,106 @@ export async function writePresentation(outline: PresentationOutline, file: stri
       color: muted,
       margin: 0,
     });
+    if (research) {
+      slide.addText('Web research draft · Sources in speaker notes', {
+        x: 0.72,
+        y: 7.0,
+        w: 10.4,
+        h: 0.25,
+        fontSize: 10,
+        color: muted,
+        margin: 0,
+      });
+      slide.addNotes(
+        research.deck.slides[index].points
+          .map((point) => {
+            const source = research.sources.find((s) => s.id === point.sourceId)!;
+            return `${point.text}\nSource: ${source.title}\n${source.url}\nSupporting excerpt: ${point.quote}\nAccessed: ${source.accessedAt}`;
+          })
+          .join('\n\n'),
+      );
+    }
   });
+  if (research) {
+    const slide = pptx.addSlide(),
+      diagram = research.deck.diagram;
+    slide.background = { color: navy };
+    slide.addText(diagram.title, {
+      x: 0.72,
+      y: 1.02,
+      w: 11.75,
+      h: 0.9,
+      fontSize: 32,
+      bold: true,
+      color: white,
+      margin: 0,
+    });
+    slide.addText('PROPOSED WORKFLOW · EDITABLE', {
+      x: 0.72,
+      y: 2.08,
+      w: 11.75,
+      h: 0.4,
+      fontSize: 15,
+      color: cyan,
+      margin: 0,
+    });
+    const gap = 0.38,
+      width = (11.85 - gap * (diagram.stages.length - 1)) / diagram.stages.length;
+    diagram.stages.forEach((stage, index) => {
+      const x = 0.72 + index * (width + gap);
+      slide.addShape(pptx.ShapeType.rect, {
+        x,
+        y: 3.1,
+        w: width,
+        h: 3.1,
+        line: { color: cyan, width: 1.4 },
+        fill: { color: '192944' },
+      });
+      slide.addText(stage.label, {
+        x: x + 0.12,
+        y: 3.29,
+        w: width - 0.24,
+        h: 0.85,
+        fontSize: diagram.stages.length >= 5 ? 18 : 21,
+        color: white,
+        bold: true,
+        margin: 0,
+        align: 'center',
+        valign: 'mid',
+      });
+      slide.addText(stage.detail, {
+        x: x + 0.12,
+        y: 4.22,
+        w: width - 0.24,
+        h: 1.78,
+        fontSize: diagram.stages.length >= 5 ? 17 : 19,
+        color: muted,
+        margin: 0,
+        align: 'center',
+        valign: 'mid',
+      });
+      if (index < diagram.stages.length - 1)
+        slide.addShape(pptx.ShapeType.line, {
+          x: x + width,
+          y: 4.65,
+          w: gap,
+          h: 0,
+          line: { color: cyan, width: 2, endArrowType: 'triangle' },
+        });
+    });
+    slide.addText('Suggested process based on the research · Review before use', {
+      x: 0.72,
+      y: 7.0,
+      w: 11.75,
+      h: 0.25,
+      fontSize: 10,
+      color: muted,
+      margin: 0,
+    });
+    slide.addNotes(
+      'This workflow is a proposal, not a verified decision procedure.\n' +
+        research.sources.map((s) => `${s.title}: ${s.url}`).join('\n'),
+    );
+  }
   await pptx.writeFile({ fileName: file });
 }

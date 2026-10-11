@@ -1,0 +1,6 @@
+# Merge after compose.yaml when using the precompiled deployment bundle.
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.runtime

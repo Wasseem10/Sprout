@@ -1,0 +1,327 @@
+.studio {
+  --studio-line: rgba(145, 184, 239, 0.2);
+  color: #ecf4ff;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 28px;
+  background: linear-gradient(140deg, rgba(40, 71, 112, 0.52), rgba(13, 27, 49, 0.7));
+  border: 1px solid var(--studio-line);
+  border-radius: 25px;
+}
+.studio-kicker {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: #afceff;
+}
+.studio h2 {
+  font-size: 34px;
+  letter-spacing: -0.04em;
+  margin: 10px 0 12px;
+}
+.studio h3 {
+  font-size: 18px;
+  margin: 0;
+}
+.studio p {
+  color: #bfd0e9;
+  font-size: 14px;
+  line-height: 1.65;
+}
+.studio-intro p {
+  max-width: 650px;
+  font-size: 17px;
+}
+.studio-heading,
+.studio-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+.studio-section-heading span,
+.studio-source span,
+.studio-revision {
+  font-size: 12px;
+  color: #b6c7df;
+}
+.studio-revision {
+  border: 1px solid var(--studio-line);
+  padding: 7px 11px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.studio-source {
+  margin-top: 0;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+.studio-start,
+.studio-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.studio button,
+.studio-upload {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 15px;
+  border: 1px solid var(--studio-line);
+  border-radius: 12px;
+  background: rgba(57, 86, 129, 0.28);
+  color: #eff6ff;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.studio button:disabled {
+  opacity: 0.48;
+  cursor: default;
+}
+.studio button:focus-visible,
+.studio a:focus-visible,
+.studio summary:focus-visible {
+  outline: 3px solid #b3d5ff;
+  outline-offset: 4px;
+}
+.studio button[aria-pressed='true'] {
+  background: #294e83;
+  border-color: #86b7f5;
+}
+.studio .studio-primary {
+  background: linear-gradient(120deg, #8fc0ff, #bad8ff);
+  color: #102849;
+  border: 0;
+  font-weight: 700;
+}
+.studio-upload {
+  position: relative;
+}
+.studio-upload input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+}
+.studio-upload:focus-within {
+  outline: 3px solid #b3d5ff;
+  outline-offset: 4px;
+}
+.studio-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  margin: 24px 0;
+  padding: 24px 0;
+  border-top: 1px solid var(--studio-line);
+  border-bottom: 1px solid var(--studio-line);
+}
+.studio-metrics div {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.studio-metrics span,
+.studio-metrics small {
+  font-size: 12px;
+  color: #c2d2e8;
+}
+.studio-metrics strong {
+  font-size: 31px;
+  letter-spacing: -0.04em;
+}
+.studio-growth strong {
+  color: #a5ccff;
+}
+.studio-coverage {
+  padding: 17px;
+  border-radius: 14px;
+  background: rgba(15, 31, 54, 0.45);
+  border: 1px solid var(--studio-line);
+}
+.studio-coverage > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #bad6ff;
+  font-size: 14px;
+}
+.studio-coverage p {
+  margin: 9px 0 15px;
+}
+.studio-chart {
+  margin: 28px 0;
+}
+.studio .chart-wrap {
+  margin-top: 18px;
+  background: rgba(9, 21, 40, 0.22);
+  border-radius: 15px;
+}
+.studio .chart-wrap svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.studio-regions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.studio-regions button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+.studio-regions span {
+  font-size: 11px;
+  color: #c2d2e8;
+}
+.studio details {
+  border-top: 1px solid var(--studio-line);
+  padding-top: 15px;
+  margin-top: 18px;
+}
+.studio summary {
+  color: #d6e7ff;
+  cursor: pointer;
+  font-size: 14px;
+}
+.studio-table {
+  overflow: auto;
+  margin-top: 15px;
+  max-height: 430px;
+}
+.studio table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.studio caption {
+  text-align: left;
+  color: #b9cce7;
+  padding: 8px 0 14px;
+}
+.studio th,
+.studio td {
+  padding: 12px;
+  border-bottom: 1px solid var(--studio-line);
+}
+.studio thead {
+  background: #1c3558;
+}
+.studio th {
+  font-weight: 600;
+}
+.studio-deliverables {
+  margin-top: 25px;
+  padding-top: 25px;
+  border-top: 1px solid var(--studio-line);
+}
+.studio-deliverables .studio-actions {
+  margin-top: 17px;
+}
+.studio-downloads {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 18px;
+}
+.studio-downloads a {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 18px;
+  border: 1px solid var(--studio-line);
+  border-radius: 15px;
+  background: rgba(60, 96, 144, 0.23);
+  color: #eaf4ff;
+  text-decoration: none;
+}
+.studio-downloads a > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.studio-downloads strong {
+  font-size: 14px;
+}
+.studio-downloads small {
+  font-size: 11px;
+  color: #b8cce8;
+}
+.studio-provider {
+  font-size: 11px !important;
+  margin-bottom: 0;
+}
+.studio-compact {
+  padding: 14px;
+  border-radius: 15px;
+}
+.studio-compact h2 {
+  font-size: 19px;
+}
+.studio-compact .studio-metrics {
+  gap: 12px;
+  padding: 14px 0;
+  margin: 14px 0;
+}
+.studio-compact .studio-metrics strong {
+  font-size: 21px;
+}
+.studio-compact .studio-metrics span,
+.studio-compact .studio-metrics small {
+  font-size: 10px;
+}
+.studio-compact .studio-actions button {
+  font-size: 11px;
+  padding: 9px;
+}
+.studio-compact .studio-downloads {
+  grid-template-columns: 1fr;
+}
+.studio a {
+  color: #b9d7ff;
+}
+.studio-evidence > p button {
+  padding: 5px 9px;
+  margin-left: 10px;
+}
+@media (max-width: 650px) {
+  .studio {
+    padding: 18px;
+  }
+  .studio h2 {
+    font-size: 27px;
+  }
+  .studio-metrics {
+    gap: 12px;
+  }
+  .studio-metrics strong {
+    font-size: 23px;
+  }
+  .studio-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .studio-downloads {
+    grid-template-columns: 1fr;
+  }
+  .studio-chart p {
+    font-size: 12px;
+  }
+  .studio-compact h2 {
+    font-size: 19px;
+  }
+}

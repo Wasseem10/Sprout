@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { config } from '../server/config';
 import { ComputerController } from '../server/computer/controller';
+import * as presentationIntent from '../server/computer/presentation-intent';
 
 const controllers: ComputerController[] = [];
 const servers: Server[] = [];
@@ -110,6 +111,15 @@ it('passes Databricks workbook findings into a real editable PowerPoint through 
   expect(result.state.presentation?.slideCount).toBe(3);
 });
 async function setup() {
+  // Browser/workbook goals continue through the coordinator after typed domain classification.
+  vi.spyOn(presentationIntent, 'interpretPresentationTurn').mockResolvedValue({
+    kind: 'request',
+    domain: 'other',
+    startsNewTask: false,
+    awaitingContinuation: false,
+    fields: {},
+    operations: [],
+  });
   const server = createServer((req, res) => {
     res.setHeader('Content-Type', 'text/html');
     res.end(

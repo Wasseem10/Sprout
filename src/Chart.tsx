@@ -1,6 +1,6 @@
 import { visibleRegions, money } from '../shared/presentation';
 import type { Workspace } from '../shared/schema';
-export default function Chart({ state }: { state: Workspace }) {
+export default function Chart({ state, palette }: { state: Workspace; palette?: 'blue' }) {
   const regions = visibleRegions(state);
   if (!state.result || !regions.length)
     return (
@@ -60,7 +60,7 @@ export default function Chart({ state }: { state: Workspace }) {
                 width={bar}
                 height={Math.abs(baseline - y(r.previous))}
                 rx="3"
-                fill="#a9a4c7"
+                fill={palette === 'blue' ? '#587cac' : '#a9a4c7'}
               >
                 <title>
                   {r.region}, previous: {money(r.previous)}
@@ -72,7 +72,7 @@ export default function Chart({ state }: { state: Workspace }) {
                 width={bar}
                 height={Math.abs(baseline - y(r.current))}
                 rx="3"
-                fill="#c4ec8b"
+                fill={palette === 'blue' ? '#a5ceff' : '#c4ec8b'}
               >
                 <title>
                   {r.region}, current: {money(r.current)}

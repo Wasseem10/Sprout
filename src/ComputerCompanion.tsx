@@ -26,14 +26,26 @@ import './computer.css';
 import ConnectionsPanel from './ConnectionsPanel';
 import DesktopBuddy from './DesktopBuddy';
 import FinancePanel from './FinancePanel';
+import StudioPanel from './StudioPanel';
+import PresentationProjectPanel from './PresentationProjectPanel';
 import BillWorkspace from './BillWorkspace';
 import type { BillValues } from '../shared/bills';
+import { runScreenNavigation, screenNavigationGoal, wantsCurrentScreen } from './screenNavigation';
+import { spokenDesktopApp } from './desktopIntents';
+import { presentationNavigationFailure } from '../shared/presentation-feedback';
 
 const empty: ComputerState = { folder: null, code: null, browser: null, screen: null };
 type Message = { id: string; role: 'user' | 'assistant' | 'error'; text: string };
 type Source = { id: string; name: string; thumbnail: string };
 
 function visibleScreenTarget(request: string, hasControlledBrowser: boolean) {
+  // Folder navigation needs its verified filesystem identity as well as the
+  // Desktop control. Let the backend resolve it before native mouse execution.
+  if (/\bfolder\b/i.test(request)) return null;
+  request = request
+    .trim()
+    .replace(/^(?:hey\s+)?insight(?:\s+os)?[,.!]?\s+/i, '')
+    .replace(/^(?:can you|could you|please)\s+/i, '');
   const explicit = request.match(
     /\b(?:click|press|tap|select)\s+(?:on\s+)?(?:the\s+)?(.{2,100}?)\s+(?:on|in)\s+(?:my|the|this)\s+(?:screen|display|desktop|window|app)\b/i,
   );
@@ -46,6 +58,15 @@ function visibleScreenTarget(request: string, hasControlledBrowser: boolean) {
 }
 
 function needsFileWorkspace(request: string, action?: ComputerAction) {
+  if (
+    (!action && /\b(?:power\s?point|presentation|slides?|deck)\b/i.test(request)) ||
+    action?.tool === 'presentationHelp' ||
+    (/\b(?:research|browse|web|internet|online sources)\b/i.test(request) &&
+      /\b(?:power\s?point|presentation|deck|slides?)\b/i.test(request)) ||
+    (/\b(?:power\s?point|presentation|slides?|deck)\b/i.test(request) &&
+      /\b(?:images?|photos?|pictures?|folder|assets)\b/i.test(request))
+  )
+    return false;
   if (action?.tool === 'createCode' || action?.tool === 'createPresentation') return true;
   if (action?.tool === 'analyzeSpreadsheet')
     return /\b(?:sample|demo|synthetic)\b/i.test(action.question);
@@ -80,20 +101,24 @@ export default function ComputerCompanion() {
     {
       id: 'welcome',
       role: 'assistant',
-      text: 'Hi, I can help you use your computer. Ask me to search the web, open an app, describe your screen, fill a form, or make something for you.',
+      text: 'Hi, I’m Insight. I can create a PowerPoint from the images in your folder, help you revise it, or explore an Excel spreadsheet. Tell me what you want to make.',
     },
   ]);
   const [request, setRequest] = useState(''),
     [busy, setBusy] = useState(false),
     [phase, setPhase] = useState('Ready when you are');
   const [tab, setTab] = useState<
-      'home' | 'code' | 'office' | 'browser' | 'screen' | 'energy' | 'finance'
+      'home' | 'code' | 'office' | 'browser' | 'screen' | 'energy' | 'finance' | 'studio'
     >(
-      new URLSearchParams(window.location.search).get('workspace') === 'finance'
-        ? 'finance'
-        : new URLSearchParams(window.location.search).get('workspace') === 'energy'
-          ? 'energy'
-          : 'home',
+      new URLSearchParams(window.location.search).get('workspace') === 'studio'
+        ? 'studio'
+        : new URLSearchParams(window.location.search).get('workspace') === 'finance'
+          ? 'finance'
+          : new URLSearchParams(window.location.search).get('workspace') === 'energy'
+            ? 'energy'
+            : new URLSearchParams(window.location.search).get('workspace') === 'presentation'
+              ? 'office'
+              : 'home',
     ),
     [modal, setModal] = useState<'settings' | 'screens' | null>(null);
   const [sources, setSources] = useState<Source[]>([]),
@@ -120,6 +145,26 @@ export default function ComputerCompanion() {
     upload = useRef<HTMLInputElement>(null),
     lastFocus = useRef<HTMLElement | null>(null);
   const runRef = useRef<(text: string) => Promise<void>>(async () => {});
+  const interruptionPending = useRef<Promise<void> | null>(null);
+  const interruptForSpeech = () => {
+    if (!inFlight.current) return;
+    if (acknowledgmentTimer.current) clearTimeout(acknowledgmentTimer.current);
+    acknowledgmentTimer.current = null;
+    const stoppedGeneration = ++generation.current;
+    controller.current?.abort();
+    controller.current = null;
+    inFlight.current = false;
+    setBusy(false);
+    interruptionPending.current = (async () => {
+      try {
+        await window.insightos?.cancelPointerActions?.();
+        const next = await api<ComputerState>('/computer/interrupt', {});
+        if (generation.current === stoppedGeneration) applyState(next);
+      } catch {
+        /* The next command reports an unavailable backend. */
+      }
+    })();
+  };
   const add = (role: Message['role'], text: string) => {
     setMessages((old) => [...old, { id: crypto.randomUUID(), role, text }]);
     setAnnouncement(text);
@@ -127,12 +172,21 @@ export default function ComputerCompanion() {
   const voice = useVoice(
     (text) => void runRef.current(text),
     (text) => add('error', text),
+    interruptForSpeech,
+    speech,
   );
   const enabled = !!status && !locked && !!status.computer?.local;
-  const sync = async () => setState(await api<ComputerState>('/computer/state'));
+  const sync = async (signal?: AbortSignal) => {
+    const expected = generation.current;
+    const next = await api<ComputerState>('/computer/state', undefined, signal);
+    if (!signal?.aborted && generation.current === expected) setState(next);
+  };
   const applyState = (next: ComputerState, tool?: string) => {
     setState(next);
-    if (tool === 'financeHelp') setTab('finance');
+    if (tool === 'studioHelp') setTab('studio');
+    else if (tool === 'presentationHelp' || tool === 'openFolder' || tool === 'goToSlide')
+      setTab('office');
+    else if (tool === 'financeHelp') setTab('finance');
     else if (tool === 'energyHelp') setTab('energy');
     else if (/navigate|search|SearchResult|click|fill|readPage|goBack/.test(tool ?? ''))
       setTab('browser');
@@ -176,22 +230,34 @@ export default function ComputerCompanion() {
         setState(next);
         before = next;
       }
+      // Presentation commands need the active project, task draft and verified
+      // slide context. Screen shortcuts cannot resolve those semantic targets.
+      const presentationRequest = /\b(?:slides?|power\s?point|presentation|deck)\b/i.test(text);
+      const navigationGoal =
+        !action && !presentationRequest && window.insightos?.clickCapturedTarget
+          ? screenNavigationGoal(text)
+          : null;
       const scrollDirection =
-        !action && window.insightos?.scrollCurrentScreen
+        !action && !presentationRequest && window.insightos?.scrollCurrentScreen && !navigationGoal
           ? (text.match(/\bscroll\s+(up|down)\b/i)?.[1]?.toLowerCase() as 'up' | 'down' | undefined)
           : undefined;
       const nativeTarget =
-        !action && !scrollDirection && !!window.insightos?.clickCapturedTarget
-          ? visibleScreenTarget(text, !!state.browser)
+        !action &&
+        !presentationRequest &&
+        !scrollDirection &&
+        !navigationGoal &&
+        !!window.insightos?.clickCapturedTarget
+          ? visibleScreenTarget(text, !desktopBuddy && !!state.browser)
           : action?.tool === 'locateScreenTarget'
             ? action.target
             : null;
       const spokenScreenRequest =
-        !action &&
+        (!action || action.tool === 'describeScreen') &&
+        (!presentationRequest || action?.tool === 'describeScreen') &&
         !scrollDirection &&
         !nativeTarget &&
         !!window.insightos?.captureCurrentScreen &&
-        /\b(describe|read|what|tell me)\b.*\b(screen|display)\b/i.test(text);
+        (action?.tool === 'describeScreen' || wantsCurrentScreen(text));
       const clickVisibleTarget = async (target: string): Promise<ComputerResult> => {
         if (!window.insightos?.captureCurrentScreen || !window.insightos.clickCapturedTarget)
           throw new Error('Screen clicking requires the desktop buddy.');
@@ -236,8 +302,79 @@ export default function ComputerCompanion() {
         };
       };
       let result: ComputerResult;
-      let usedNativeScreen = !!scrollDirection || !!nativeTarget;
-      if (scrollDirection) {
+      let usedNativeScreen = !!scrollDirection || !!nativeTarget || !!navigationGoal;
+      const desktopApp =
+        !action && window.insightos
+          ? spokenDesktopApp(text)
+          : action?.tool === 'openApp'
+            ? action.app
+            : null;
+      if (desktopApp && window.insightos?.activatePinnedApp) {
+        setPhase('Looking for the app on your taskbar');
+        let activated = await window.insightos.activatePinnedApp(desktopApp);
+        if (abort.signal.aborted) return;
+        result = await api<ComputerResult>(
+          '/computer/action',
+          { tool: 'openApp', app: desktopApp },
+          abort.signal,
+        );
+        if (abort.signal.aborted) return;
+        if (!activated.clicked) {
+          // A newly launched, unpinned app has no taskbar target before launch.
+          // Resolve it again now; never reuse a previous app's coordinates.
+          setPhase('Finding the opened app on your screen');
+          activated = await window.insightos.activatePinnedApp(desktopApp);
+          if (abort.signal.aborted) return;
+        }
+        if (activated.clicked) {
+          const location = activated.method === 'titlebar' ? 'window' : 'taskbar icon';
+          result.summary = `I clicked ${activated.name}’s ${location}. ${result.summary}`;
+          if (window.insightos.captureCurrentScreen) {
+            const capture = await window.insightos.captureCurrentScreen();
+            if (abort.signal.aborted) return;
+            result.state = await api<ComputerState>(
+              '/computer/screen',
+              { name: capture.name, image: capture.image },
+              abort.signal,
+            );
+          }
+        }
+        usedNativeScreen = activated.clicked;
+      } else if (navigationGoal) {
+        result = await runScreenNavigation(
+          navigationGoal,
+          {
+            capture: () => window.insightos!.captureCurrentScreen(),
+            observe: (capture, signal) =>
+              api<ComputerState>(
+                '/computer/screen',
+                { name: capture.name, image: capture.image },
+                signal,
+              ),
+            decide: (goal, history, signal) =>
+              api<ComputerResult>(
+                '/computer/action',
+                { tool: 'nextScreenStep', goal, history },
+                signal,
+              ),
+            click: (capture, pointer) =>
+              window.insightos!.clickCapturedTarget!(
+                capture.captureId,
+                pointer.x,
+                pointer.y,
+                pointer.target,
+                pointer.observedText,
+                pointer.context,
+                pointer.authorization,
+              ),
+            scroll: (direction) => window.insightos!.scrollCurrentScreen!(direction),
+            phase: setPhase,
+            settle: () => new Promise((resolve) => setTimeout(resolve, 600)),
+            pause: () => api<ComputerState>('/computer/interrupt', {}, abort.signal),
+          },
+          abort.signal,
+        );
+      } else if (scrollDirection) {
         setPhase(`Scrolling ${scrollDirection}`);
         await window.insightos!.scrollCurrentScreen!(scrollDirection);
         if (abort.signal.aborted) return;
@@ -272,7 +409,7 @@ export default function ComputerCompanion() {
         );
       } else {
         const endpoint = action ? '/computer/action' : '/computer/request';
-        const payload = action ?? { request: text };
+        const payload = action ?? { request: text, turnId: crypto.randomUUID(), baseRevision: before.presentation?.project?.revision, projectId: before.presentation?.projectId };
         try {
           result = await api<ComputerResult>(endpoint, payload, abort.signal);
         } catch (error) {
@@ -291,6 +428,217 @@ export default function ComputerCompanion() {
           result = await api<ComputerResult>(endpoint, payload, abort.signal);
         }
       }
+      // Interruption can finish while a provider/native promise is settling.
+      // Never execute a stale desktop intent merely because its response arrived.
+      if (abort.signal.aborted || current !== generation.current) return;
+      // An ordered semantic plan may pause for a verified native selection or
+      // source folder, then return the next native intent in its continuation.
+      for (let desktopSteps = 0; result.desktopIntent && desktopSteps < 16; desktopSteps++) {
+        if (result.desktopIntent?.kind === 'describe') {
+          if (!window.insightos?.captureCurrentScreen)
+            throw new Error(
+              'Open the Insight desktop buddy so I can see your screen. The web workspace cannot capture your desktop automatically.',
+            );
+          setPhase('Looking at your current desktop');
+          const capture = await window.insightos.captureCurrentScreen();
+          if (abort.signal.aborted) return;
+          await api<ComputerState>(
+            '/computer/screen',
+            { name: capture.name, image: capture.image },
+            abort.signal,
+          );
+          result = await api<ComputerResult>(
+            '/computer/action',
+            { tool: 'describeScreen' },
+            abort.signal,
+          );
+          usedNativeScreen = true;
+        }
+        if (abort.signal.aborted || current !== generation.current) return;
+        if (result.desktopIntent?.kind === 'activateApp') {
+          // Natural-language planner actions need the same desktop bridge as a
+          // direct "Open Chrome" command. The backend has already opened it.
+          if (!desktopApp && window.insightos?.activatePinnedApp) {
+            setPhase('Finding the opened app on your screen');
+            const activated = await window.insightos.activatePinnedApp(result.desktopIntent.app);
+            if (abort.signal.aborted) return;
+            if (activated.clicked) {
+              const location = activated.method === 'titlebar' ? 'window' : 'taskbar icon';
+              result.summary = `I clicked ${activated.name}’s ${location}. ${result.summary}`;
+              usedNativeScreen = true;
+              if (window.insightos.captureCurrentScreen) {
+                const capture = await window.insightos.captureCurrentScreen();
+                if (abort.signal.aborted) return;
+                result.state = await api<ComputerState>(
+                  '/computer/screen',
+                  { name: capture.name, image: capture.image },
+                  abort.signal,
+                );
+              }
+            }
+          }
+          result.desktopIntent = undefined;
+        }
+        if (abort.signal.aborted || current !== generation.current) return;
+        if (result.desktopIntent?.kind === 'openFolder') {
+          const intent = result.desktopIntent;
+          const folderName = intent.name;
+          setPhase(`Moving to ${folderName}`);
+          const clicked = await window.insightos
+            ?.openVisibleFolder?.(folderName, intent.path)
+            .catch(() => ({ clicked: false, opened: false }));
+          if (abort.signal.aborted) return;
+          usedNativeScreen = !!clicked?.clicked;
+          if (!clicked || clicked.opened === false || (!clicked.clicked && !clicked.opened)) {
+            await api<ComputerResult>(
+              '/computer/action',
+              { tool: intent.imageSource ? 'openImageSourceFolder' : 'openSelectedFolder' },
+              abort.signal,
+            );
+          }
+          if (window.insightos?.captureCurrentScreen) {
+            const capture = await window.insightos.captureCurrentScreen();
+            if (abort.signal.aborted) return;
+            const capturedState = await api<ComputerState>(
+              '/computer/screen',
+              { name: capture.name, image: capture.image },
+              abort.signal,
+            );
+            result.state = capturedState;
+          }
+          if (intent.continueRequest) {
+            setPhase(
+              intent.imageSource
+                ? 'Adding your picture to the selected slide'
+                : 'Creating your presentation from the folder pictures',
+            );
+            result = await api<ComputerResult>(
+              '/computer/request',
+              { request: intent.continueRequest },
+              abort.signal,
+            );
+          } else result.desktopIntent = undefined;
+        }
+        if (abort.signal.aborted || current !== generation.current) return;
+        if (result.desktopIntent?.kind === 'slide') {
+          const intent = result.desktopIntent;
+          const savedEdit =
+            result.tool === 'presentationHelp' &&
+            result.state.presentation &&
+            (result.state.presentation.filename !== before.presentation?.filename ||
+              result.state.presentation.project?.revision !==
+                before.presentation?.project?.revision)
+              ? { summary: result.summary, spokenSummary: result.spokenSummary }
+              : null;
+          let selectionVerified = false;
+          try {
+            if (!window.insightos?.navigatePresentationSlide)
+              throw new Error('Slide navigation needs the updated Insight desktop buddy.');
+            setPhase('Selecting the slide in PowerPoint');
+            const selected = await window.insightos.navigatePresentationSlide(
+              intent.slide,
+              intent.filename,
+            );
+            if (abort.signal.aborted || current !== generation.current) return;
+            usedNativeScreen = selected.clicked;
+            if (!selected.verified)
+              throw new Error('I could not verify that PowerPoint selected the requested slide.');
+            if (intent.filename) {
+              result.state = await api<ComputerState>(
+                '/computer/selected-slide',
+                {
+                  filename: intent.filename,
+                  slide: selected.slide,
+                  identity: intent.identity,
+                },
+                abort.signal,
+              );
+            }
+            // Native selection already supplied verification. Preview failure
+            // must not turn that success into a false navigation failure.
+            if (window.insightos.captureCurrentScreen) {
+              try {
+                const capture = await window.insightos.captureCurrentScreen();
+                if (abort.signal.aborted) return;
+                result.state = await api<ComputerState>(
+                  '/computer/screen',
+                  { name: capture.name, image: capture.image },
+                  abort.signal,
+                );
+              } catch {
+                if (abort.signal.aborted) return;
+              }
+            }
+            const selectionSummary = `Slide ${selected.slide}${selected.title ? `, ${selected.title}` : ''}`;
+            result.summary = savedEdit
+              ? savedEdit.summary
+              : result.state.presentation?.imageEdits?.length &&
+                  /^I (?:added|replaced) /.test(result.summary)
+                ? result.summary
+                : /[.!?]$/.test(selectionSummary)
+                  ? selectionSummary
+                  : `${selectionSummary}.`;
+            result.spokenSummary = savedEdit?.spokenSummary ?? result.summary;
+            selectionVerified = true;
+          } catch (error) {
+            if (abort.signal.aborted || current !== generation.current) return;
+            const failure =
+              error instanceof Error ? error.message : 'Slide selection was not verified.';
+            // Saved files and native view selection have separate outcomes.
+            // Give the planner the failed verification so follow-ups stay honest.
+            if (intent.filename) {
+              const recorded = await api<ComputerState>(
+                '/computer/presentation-navigation-failure',
+                {
+                  filename: intent.filename,
+                  message: failure.slice(0, 400),
+                  requestedSlide: intent.slide,
+                  identity: intent.identity,
+                },
+                abort.signal,
+              ).catch((recordError) => {
+                if (intent.identity || result.state.presentation?.project) throw recordError;
+                return null;
+              });
+              if (abort.signal.aborted || current !== generation.current) return;
+              // Rejected/stale receipts escape to the outer handler, which
+              // refreshes current state instead of applying an old result.
+              if (recorded?.presentation) result.state = recorded;
+              if (result.state.presentation)
+                result.state = {
+                  ...result.state,
+                  presentation: {
+                    ...result.state.presentation,
+                    selectedSlide: undefined,
+                    desktopNavigation: {
+                      status: 'failed',
+                      message: failure.slice(0, 400),
+                      requestedSlide: intent.slide,
+                    },
+                  },
+                };
+            }
+            result.summary = presentationNavigationFailure(result.state, {
+              savedEditSummary: savedEdit?.summary,
+            });
+            result.spokenSummary = result.summary;
+            result.clarification = true;
+          }
+          result.desktopIntent = undefined;
+          if (selectionVerified && intent.continueRequest) {
+            if (abort.signal.aborted || current !== generation.current) return;
+            setPhase('Continuing your presentation request');
+            result = await api<ComputerResult>(
+              '/computer/request',
+              { request: intent.continueRequest },
+              abort.signal,
+            );
+          }
+        }
+      }
+      if (result.desktopIntent)
+        throw new Error('I paused this sequence after its supported steps. Tell me the next step.');
+      if (abort.signal.aborted || current !== generation.current) return;
       if (result.pointer) {
         // A planner may ask to click a visible desktop control. Always locate it
         // again from a fresh capture so the click cannot use stale coordinates.
@@ -338,7 +686,8 @@ export default function ComputerCompanion() {
       const failure = error instanceof Error ? error.message : 'Task could not complete.';
       add('error', failure);
       setPhase('Needs attention');
-      await sync().catch(() => {});
+      await sync(abort.signal).catch(() => {});
+      if (current !== generation.current || abort.signal.aborted) return;
       if (fromVoice && voice.isConversationActive() && !voice.hasPendingInterruption()) {
         if (speech && status?.integrations.elevenLabs.ttsConfigured)
           void voice.speak(failure.slice(0, 300));
@@ -356,18 +705,24 @@ export default function ComputerCompanion() {
     }
   };
   runRef.current = async (text) => {
+    if (interruptionPending.current) {
+      await interruptionPending.current;
+      interruptionPending.current = null;
+    }
     if (inFlight.current) {
       // A new utterance during an acknowledgment supersedes the older request.
       if (acknowledgmentTimer.current) clearTimeout(acknowledgmentTimer.current);
       acknowledgmentTimer.current = null;
       const interruption = ++generation.current;
       const previousRequest = controller.current;
+      previousRequest?.abort();
       try {
-        applyState(await api<ComputerState>('/computer/interrupt', {}));
+        await window.insightos?.cancelPointerActions?.();
+        const next = await api<ComputerState>('/computer/interrupt', {});
+        if (generation.current === interruption) applyState(next);
       } catch {
         // A failed interruption is surfaced if the backend remains busy.
       }
-      previousRequest?.abort();
       if (generation.current !== interruption) return;
       controller.current = null;
       inFlight.current = false;
@@ -386,6 +741,7 @@ export default function ComputerCompanion() {
     setBusy(true);
     setPhase('Stopping');
     try {
+      await window.insightos?.cancelPointerActions?.();
       applyState(await api<ComputerState>('/computer/stop', {}));
       add(
         'assistant',
@@ -593,22 +949,22 @@ export default function ComputerCompanion() {
     void billOperation((signal) =>
       api<ComputerResult>('/computer/bills/confirm', { id, values }, signal),
     );
-  const importFinance = async (file: File) => {
+  const importWorkspaceFile = async (file: File, kind: 'finance' | 'studio') => {
     if (!enabled || inFlight.current) return;
-    if (file.size > 3 * 1024 * 1024) {
-      add('error', 'Choose a finance CSV or XLSX under 3 MB.');
+    if (file.size > (kind === 'studio' ? 1 : 3) * 1024 * 1024) {
+      add('error', `Choose a ${kind} CSV or XLSX under ${kind === 'studio' ? 1 : 3} MB.`);
       return;
     }
     inFlight.current = true;
     setBusy(true);
-    setPhase('Reading the finance file');
+    setPhase('Reading your dataset');
     const current = ++generation.current,
       abort = new AbortController();
     controller.current = abort;
     try {
       const form = new FormData();
       form.append('file', file);
-      const response = await fetch('/api/computer/finance/import', {
+      const response = await fetch(`/api/computer/${kind}/import`, {
         method: 'POST',
         body: form,
         signal: abort.signal,
@@ -621,18 +977,21 @@ export default function ComputerCompanion() {
       } catch {
         throw new Error('Insight’s local service is reconnecting. Try importing the file again.');
       }
-      if (!response.ok) throw new Error(body.error ?? 'The finance file could not be imported.');
+      if (!response.ok) throw new Error(body.error ?? 'The dataset could not be imported.');
       if (!body.state || typeof body.summary !== 'string')
-        throw new Error('The finance service returned an incomplete result. Try the import again.');
+        throw new Error('The data service returned an incomplete result. Try the import again.');
       if (generation.current !== current || abort.signal.aborted) return;
       applyState((body as ComputerResult).state);
-      setTab('finance');
+      setTab(kind);
       add('assistant', body.summary);
-      setPhase('Finance records analyzed');
-      if (speech) void voice.speak(spokenComputerReply(body, 'financeHelp'));
+      setPhase('Records analyzed');
+      if (speech)
+        void voice.speak(
+          spokenComputerReply(body, kind === 'studio' ? 'studioHelp' : 'financeHelp'),
+        );
     } catch (error) {
       if (generation.current === current && !abort.signal.aborted)
-        add('error', error instanceof Error ? error.message : 'Finance import failed.');
+        add('error', error instanceof Error ? error.message : 'Dataset import failed.');
     } finally {
       if (generation.current === current) {
         inFlight.current = false;
@@ -641,6 +1000,7 @@ export default function ComputerCompanion() {
       }
     }
   };
+  const importFinance = (file: File) => importWorkspaceFile(file, 'finance');
   const voicePending = voice.phase === 'starting' || voice.phase === 'transcribing';
   const toggleRecording = () => {
     if (voice.isConversationActive()) {
@@ -736,6 +1096,7 @@ export default function ComputerCompanion() {
           busy={busy}
           enabled={enabled}
           voicePhase={voice.phase}
+          backupVoice={voice.speechProvider === 'windows'}
           conversationActive={voice.conversationActive}
           voiceReady={!!status?.integrations.elevenLabs.configured}
           speech={speech}
@@ -757,7 +1118,6 @@ export default function ComputerCompanion() {
             setModal('settings');
           }}
           workspace={() => {
-            setTab(tab === 'energy' ? 'energy' : 'finance');
             setDockMode(false);
           }}
           folder={() => void setup(window.insightos ? 'folder' : 'demo')}
@@ -838,8 +1198,8 @@ export default function ComputerCompanion() {
                   <div className="eyebrow">
                     <span /> LESS FRICTION. MORE FREEDOM.
                   </div>
-                  <h1>Tell me what you need done.</h1>
-                  <p>Search, open apps, use your screen, or make something together.</p>
+                  <h1>Your work, within reach.</h1>
+                  <p>Explore data by conversation. Create work you can independently check.</p>
                 </div>
                 <div className={`companion-orb ${active ? 'is-active' : ''}`} aria-hidden="true">
                   <AudioLines size={37} />
@@ -848,6 +1208,7 @@ export default function ComputerCompanion() {
               <nav className="computer-tabs" aria-label="Computer tools">
                 {[
                   { id: 'home', title: 'Start here', icon: Sparkles },
+                  { id: 'studio', title: 'Insight Studio', icon: Presentation },
                   { id: 'finance', title: 'Finance & Excel', icon: ShieldCheck },
                   { id: 'energy', title: 'Bills & energy', icon: Sparkles },
                   { id: 'browser', title: 'Browse & act', icon: Globe },
@@ -865,6 +1226,15 @@ export default function ComputerCompanion() {
                   </button>
                 ))}
               </nav>
+              {tab === 'studio' && (
+                <StudioPanel
+                  state={state.studio ?? null}
+                  disabled={busy || !enabled}
+                  cloudReady={status?.integrations.databricks.configured}
+                  ask={(text) => void perform(text)}
+                  importFile={(file) => void importWorkspaceFile(file, 'studio')}
+                />
+              )}
               {tab === 'finance' && (
                 <FinancePanel
                   state={state.finance ?? null}
@@ -1094,9 +1464,9 @@ export default function ComputerCompanion() {
                     <Presentation size={25} aria-hidden="true" />
                   </div>
                   <p className="computer-caption">
-                    Say “Create a four-slide PowerPoint about job interview preparation” or “Analyze
-                    the Excel workbook and tell me the top region.” Workbooks must be .xlsx files in
-                    your local work folder.
+                    Say “Open my Q3 Demo folder,” then “Make a marketing-plan PowerPoint using these
+                    images, with a diagram at the end.” Or ask Insight to research a topic online
+                    and create a deck with source notes. Read and revise your image deck by voice.
                   </p>
                   <div className="computer-toolbar">
                     {window.insightos && (
@@ -1113,11 +1483,11 @@ export default function ComputerCompanion() {
                       disabled={!enabled || busy}
                       onClick={() =>
                         void perform(
-                          'Create a four slide PowerPoint about preparing for a job interview',
+                          'Create a proposed marketing-plan PowerPoint using the three images in my folder, with a process diagram on the last slide',
                         )
                       }
                     >
-                      Create sample PowerPoint
+                      Create from my image folder
                     </button>
                     <button
                       className="secondary-button"
@@ -1131,7 +1501,16 @@ export default function ComputerCompanion() {
                       Analyze sample Excel
                     </button>
                   </div>
-                  {state.presentation && (
+                  {state.presentation?.project && (
+                    <PresentationProjectPanel
+                      project={state.presentation.project}
+                      projectId={state.presentation.projectId}
+                      outputSha256={state.presentation.sha256}
+                      disabled={!enabled || busy}
+                      ask={(request) => void perform(request)}
+                    />
+                  )}
+                  {state.presentation && !state.presentation.project && (
                     <div className="office-result">
                       <h3>{state.presentation.title}</h3>
                       <p>
@@ -1152,6 +1531,57 @@ export default function ComputerCompanion() {
                       >
                         Open in PowerPoint
                       </button>
+                      <a
+                        className="secondary-button"
+                        href="/api/computer/presentation/export"
+                        download
+                      >
+                        Download PowerPoint
+                      </a>
+                      {state.presentation.research && (
+                        <>
+                          <button
+                            className="secondary-button"
+                            disabled={!enabled || busy}
+                            onClick={() => void perform('Read slide two')}
+                          >
+                            Read slide two
+                          </button>
+                          <button
+                            className="secondary-button"
+                            disabled={!enabled || busy}
+                            onClick={() => void perform('Read the diagram')}
+                          >
+                            Read the diagram
+                          </button>
+                          <details className="computer-details">
+                            <summary>Sources and supporting excerpts</summary>
+                            {state.presentation.research.sources.map((source) => (
+                              <p key={source.id}>
+                                <a href={source.url} target="_blank" rel="noreferrer">
+                                  {source.title}
+                                </a>
+                              </p>
+                            ))}
+                            {state.presentation.research.deck.slides.map((slide, i) => (
+                              <section key={i}>
+                                <h4>
+                                  Slide {i + 2}: {slide.title}
+                                </h4>
+                                {slide.points.map((point, j) => (
+                                  <p key={j}>
+                                    {point.text}
+                                    <br />
+                                    <small>
+                                      Source {point.sourceId}: “{point.quote}”
+                                    </small>
+                                  </p>
+                                ))}
+                              </section>
+                            ))}
+                          </details>
+                        </>
+                      )}
                     </div>
                   )}
                   {state.spreadsheet && (

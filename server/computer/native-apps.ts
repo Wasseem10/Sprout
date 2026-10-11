@@ -139,11 +139,19 @@ export async function availableNativeApp(app: NativeAppId, cfg: Config) {
   return null;
 }
 
-export async function openNativeApp(app: NativeAppId, cfg: Config, signal: AbortSignal) {
+export async function openNativeApp(
+  app: NativeAppId,
+  cfg: Config,
+  signal: AbortSignal,
+  folder?: string,
+) {
   if (process.platform !== 'win32')
     throw new Error('Opening installed applications currently requires Windows.');
   signal.throwIfAborted();
-  if (await focusRunning(app, signal)) return { app, name: labels[app], mode: 'focused' as const };
+  if (folder && (app !== 'fileExplorer' || !path.isAbsolute(folder)))
+    throw new Error('A folder can only be opened in File Explorer.');
+  if (!folder && (await focusRunning(app, signal)))
+    return { app, name: labels[app], mode: 'focused' as const };
   const executable = await availableNativeApp(app, cfg);
   if (!executable)
     throw new Error(`${labels[app]} is not installed in a supported location on this computer.`);
@@ -159,7 +167,7 @@ export async function openNativeApp(app: NativeAppId, cfg: Config, signal: Abort
   ])
     delete childEnv[name];
   await new Promise<void>((resolve, reject) => {
-    const child = spawn(executable, [], {
+    const child = spawn(executable, folder ? [folder] : [], {
       detached: true,
       shell: false,
       stdio: 'ignore',

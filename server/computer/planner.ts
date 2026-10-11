@@ -7,8 +7,14 @@ import {
 import type { Config } from '../config.js';
 import { fetchJson, secureUrl } from '../providers/http.js';
 import { cloudInference } from '../providers/cloudInference.js';
+import { spokenSlideTarget } from '../../shared/slide-navigation.js';
+import { groundedPresentationReply } from '../../shared/presentation-feedback.js';
+import { inferenceOutputSchema, type InferenceOutputSchema } from '../../shared/inference-schema.js';
 
 function directPlan(request: string, state: ComputerState): ComputerPlan | null {
+  const slide = spokenSlideTarget(request);
+  if (slide !== null && (typeof slide !== 'number' || (slide >= 1 && slide <= 500)))
+    return { action: { tool: 'goToSlide', slide }, clarification: null };
   const text = request.trim().replace(/^(?:can you|could you|would you|i want you to)\s+/i, '');
   if (/^(?:hi|hello|hey|good (?:morning|afternoon|evening))[!. ]*$/i.test(text))
     return {
@@ -19,7 +25,7 @@ function directPlan(request: string, state: ComputerState): ComputerPlan | null 
     return {
       action: null,
       clarification:
-        'I can open apps, make a presentation, analyze an Excel workbook, search the web, follow a job listing to its application, and help research products. Tell me a task in your own words.',
+        'I can turn your images into a PowerPoint, read and revise its slides, and compare supported spreadsheet data to create an Excel and PowerPoint report. I can also open apps and help you browse the web. What would you like to work on?',
     };
   if (/^(?:please\s+)?(?:open|visit|go to)\s+amazon(?:\.com)?[.!?]*$/i.test(text))
     return state.browser && /(^|\.)amazon\.com$/i.test(new URL(state.browser.url).hostname)
@@ -375,11 +381,26 @@ export async function chat(
   signal: AbortSignal,
   model = cfg.hfModel,
   json = true,
+  maxTokens = 2000,
+  outputSchema?: InferenceOutputSchema,
+  options: { purpose?: 'writing' } = {},
 ) {
+  signal.throwIfAborted();
+  if (!Number.isInteger(maxTokens) || maxTokens < 1 || maxTokens > 8192)
+    throw new Error('Inference output must be between 1 and 8192 tokens.');
+  if (options.purpose !== undefined && options.purpose !== 'writing')
+    throw new Error('Unknown inference purpose.');
+  const writing = options.purpose === 'writing';
+  const selectedModel = writing ? cfg.hfWritingModel || cfg.hfModel : model;
+  const schema = outputSchema
+    ? inferenceOutputSchema.parse(outputSchema)
+    : undefined;
+  if (schema && !json) throw new Error('Structured output requires JSON mode.');
   if (cfg.cloudUrl)
     return cloudInference(
       cfg,
-      { system, content, vision: model === cfg.hfVisionModel, json },
+      { system, content, vision: !writing && model === cfg.hfVisionModel, json, maxTokens,
+        ...(schema ? { outputSchema: schema } : {}), ...(writing ? { purpose: 'writing' } : {}) },
       signal,
     );
   if (!cfg.hfToken)
@@ -391,17 +412,21 @@ export async function chat(
     method: 'POST',
     headers: { Authorization: `Bearer ${cfg.hfToken}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model,
+      model: selectedModel,
       messages: [
         { role: 'system', content: system },
         { role: 'user', content },
       ],
-      max_tokens: 2000,
+      max_tokens: maxTokens,
       temperature: 0,
-      ...(json ? { response_format: { type: 'json_object' } } : {}),
+      ...(writing && cfg.hfWritingReasoningEffort ? { reasoning_effort: cfg.hfWritingReasoningEffort } : {}),
+      ...(schema
+        ? { response_format: { type: 'json_schema', json_schema: { ...schema, strict: true } } }
+        : json ? { response_format: { type: 'json_object' } } : {}),
     }),
     signal,
   });
+  signal.throwIfAborted();
   return z.string().min(1).max(30000).parse(result.choices?.[0]?.message?.content);
 }
 
@@ -435,6 +460,29 @@ export async function computerPlan(
     browser,
     selectedScreen: state.screen?.name,
     lastApp: state.lastApp,
+    presentation: state.presentation && {
+      filename: state.presentation.filename,
+      title: state.presentation.title,
+      slideTitles: state.presentation.slideTitles,
+      opened: state.presentation.opened,
+      selectedSlide: state.presentation.selectedSlide,
+      imageEdits: state.presentation.imageEdits,
+      desktopNavigation: state.presentation.desktopNavigation,
+      project: state.presentation.project,
+    },
+    spreadsheet: state.spreadsheet && {
+      filename: state.spreadsheet.filename,
+      summary: state.spreadsheet.summary,
+    },
+    studio: state.studio && {
+      title: state.studio.workspace.title,
+      revision: state.studio.revision,
+      result: state.studio.workspace.result,
+      baseline: state.studio.baseline,
+      lastChange: state.studio.lastChange,
+      evidence: state.studio.evidence,
+      outputs: state.studio.outputs,
+    },
     energy: state.energy,
     recentConversation: history.slice(-4),
   };
@@ -442,19 +490,32 @@ export async function computerPlan(
   const outputFormat =
     ' Tool arguments MUST be flat properties of action, alongside tool. Never nest them under args, arguments, or parameters. Valid example: {"action":{"tool":"createCode","request":"Print ten Fibonacci numbers"},"clarification":null}. Another valid example: {"action":{"tool":"runCode"},"clarification":null}.';
   const conversationRules =
-    ' Keep replies to one or two natural sentences and ask only the next necessary question. Never suggest Python or VS Code unless the user asks about coding. If a browser page is already open, resolve follow-ups against its observed controls rather than starting another search. Use searchCurrentSite {query:string} to search the current store. Use click on a matching observed product link or Add to cart control when explicitly requested. For vague medicine requests ask for the exact product, strength and pack; do not choose a treatment or substitute. Do not use pursueBrowserGoal for references such as buy it, that medicine, continue or the first item: use the current page or ask what is missing.';
+    ' Keep replies to one or two natural sentences and ask only the next necessary question. Questions asking what we found, what we have done, or to remind/summarize the current work need action:null and a conversational clarification grounded in context, not describeScreen or another tool. Screen capture is only for an explicit request to look at/read/use the screen or desktop. Never suggest Python or VS Code unless the user asks about coding. If a browser page is already open, resolve follow-ups against its observed controls rather than starting another search. Use searchCurrentSite {query:string} to search the current store. Use click on a matching observed product link or Add to cart control when explicitly requested. For vague medicine requests ask for the exact product, strength and pack; do not choose a treatment or substitute. Do not use pursueBrowserGoal for references such as buy it, that medicine, continue or the first item: use the current page or ask what is missing.';
+  const presentationRules =
+    ' Additional tools: goToSlide {slide:number|"next"|"previous"|"first"|"last"} navigates the visible slide in PowerPoint; use this for go to slide two, open the second slide, show me the last slide and next slide. Never substitute openApp/openPresentation for selecting a numbered slide. Read slide means reading content, which is distinct from goToSlide. openFolder {name:string} for an explicitly named local folder; presentationHelp {request:string} for creating from local images, reviewing slides, or changing an existing deck. Your user may be blind: complete supported work through voice without asking them to click a picker. A folder name and spoken location such as Marketing on my Desktop are sufficient to attempt resolution; never demand a full path as the first step. Preserve the original topic across folder and style follow-ups. Include the word presentation in a normalized edit request if resolving an implied reference. If asked to use/add/insert a picture, never choose openApp or openPresentation: route to presentationHelp or ask which folder contains it. Only use openApp when the user explicitly wants to open, launch, switch to or focus an app. Mentioning PowerPoint, a JPG, or a screen is not an instruction to focus an app. DescribeScreen means looking at the current desktop; the desktop app captures it automatically. Be a helpful conversational colleague: answer questions about the current work from the supplied context, suggest a visual style if asked, and ask a single concrete question when information is missing. An aesthetic preference is optional: if the user says make it or repeats the creation request, use a clean blue style and proceed. Never repeat an already answered question or echo the request as the entire reply. Do not claim a click or deck revision until a tool completes and verifies it. Native navigation is bounded; do not claim unrestricted control or arbitrary Office UI editing.';
   const raw = await chat(
     cfg,
     system +
       outputFormat +
       conversationRules +
+      presentationRules +
+      ' Presentation file edits and native view selection have separate evidence. imageEdits records pictures saved in the file. desktopNavigation.status failed means the requested PowerPoint view was not verified: say the file is saved but selection could not be confirmed; never claim it looks successfully selected or everything is set. selectedSlide is confirmed only after native verification. Use the latest failure in recentConversation instead of repeating an earlier successful navigation. A hesitant or incomplete phrase is not a new task: ask what the user would like to do without claiming any completion.' +
       ' Additional tool: financeHelp {request:string} for accessible household transaction analysis, hypothetical spending reductions, undo, payment assumption comparisons, Databricks finance analysis, and Excel budget exports. Pass the exact request and never invent loan terms, transactions or user consent to sample data. Financial results cover uploaded records, not a bank balance or lender approval.' +
-      " Additional tool: energyHelp {request:string} for utility bill analysis, budget-constrained efficiency comparisons and the labeled application rehearsal. Pass the user's exact request. Do not invent budget, consent to sample data, identity, savings, or financing eligibility. The energy state contains verified calculations that you may explain; distinguish estimated savings from observed usage.",
+      " Additional tool: energyHelp {request:string} for utility bill analysis, budget-constrained efficiency comparisons and the labeled application rehearsal. Pass the user's exact request. Do not invent budget, consent to sample data, identity, savings, or financing eligibility. The energy state contains verified calculations that you may explain; distinguish estimated savings from observed usage." +
+      ' Additional tool: studioHelp {request:string} for supported quarterly revenue analysis, comparing the same locations, inspecting source rows, Databricks verification, undo, and exporting Excel/PowerPoint reports. The studio result and baseline describe actual calculations; use them for conversational questions about the current analysis. Only call it Databricks-verified when the current result provider is databricks. An outputs entry proves a file was created, not that a user reviewed it. Keep the image-deck and data-report workflows distinct; do not claim they are automatically merged.',
     JSON.stringify({ request, context }),
     signal,
   );
   try {
-    return computerPlanSchema.parse(JSON.parse(raw));
+    const value = JSON.parse(raw);
+    // Some models propose an action alongside their question. The question
+    // takes precedence: never execute a guessed action while asking about it.
+    if (typeof value.clarification === 'string' && value.clarification.trim())
+      return computerPlanSchema.parse({
+        action: null,
+        clarification: groundedPresentationReply(value.clarification, state),
+      });
+    return computerPlanSchema.parse(value);
   } catch {
     throw new Error('Computer model returned an invalid action. No action was performed.');
   }

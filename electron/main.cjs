@@ -21,7 +21,11 @@ const {
   targetRegionChanged,
   runPointerCommand,
   locateAccessibleTarget,
+  locateAppActivation,
+  revealDesktop,
+  explorerFolderIsOpen,
 } = require('./native-pointer.cjs');
+const { navigatePresentationSlide } = require('./powerpoint-navigation.cjs');
 require('dotenv').config({ quiet: true });
 let backend;
 let companionWindow,
@@ -113,7 +117,7 @@ app
     ipcMain.handle('insightos:choose-folder', async (event) => {
       nativeRequest(event);
       const selected = await dialog.showOpenDialog(BrowserWindow.fromWebContents(event.sender), {
-        title: 'Choose where InsightOS can create Python files',
+        title: 'Choose a folder for InsightOS files',
         properties: ['openDirectory', 'createDirectory'],
       });
       if (selected.canceled) return null;
@@ -140,6 +144,158 @@ app
     });
     let screenChoices = new Set();
     let pendingScreenCapture = null;
+    let pointerGeneration = 0;
+    let pointerAbort = new AbortController();
+    let pointerHideDepth = 0;
+    let restoreBuddyAfterPointer = false;
+    const hideBuddyForPointer = () => {
+      if (pointerHideDepth++ === 0) {
+        restoreBuddyAfterPointer = !!companionWindow && companionWindow.isVisible();
+        if (restoreBuddyAfterPointer) companionWindow.hide();
+      }
+      return () => {
+        if (--pointerHideDepth === 0 && restoreBuddyAfterPointer) {
+          restoreBuddyAfterPointer = false;
+          // Restoring the overlay must not reactivate it over the app that the
+          // voice command just selected. Overlapping cancelled work shares a
+          // hide lease so it cannot restore the buddy over a newer capture.
+          if (companionWindow && !companionWindow.isDestroyed()) companionWindow.showInactive();
+        }
+      };
+    };
+    const cancelPointerActions = () => {
+      pointerGeneration++;
+      pointerAbort.abort();
+      pointerAbort = new AbortController();
+      pendingScreenCapture = null;
+    };
+    const assertPointerActive = (generation) => {
+      if (generation !== pointerGeneration)
+        throw new Error('The screen action was stopped. Nothing further was clicked.');
+    };
+    ipcMain.handle('insightos:cancel-pointer-actions', (event) => {
+      nativeRequest(event);
+      cancelPointerActions();
+    });
+    ipcMain.handle('insightos:navigate-presentation-slide', async (event, slide, filename) => {
+      nativeRequest(event);
+      const generation = pointerGeneration;
+      const signal = pointerAbort.signal;
+      const restoreBuddy = hideBuddyForPointer();
+      try {
+        assertPointerActive(generation);
+        const result = await navigatePresentationSlide(slide, filename, signal);
+        assertPointerActive(generation);
+        return result;
+      } finally {
+        restoreBuddy();
+      }
+    });
+    ipcMain.handle('insightos:activate-pinned-app', async (event, app) => {
+      nativeRequest(event);
+      const names = {
+        browser: 'browser',
+        chrome: 'Chrome',
+        edge: 'Edge',
+        fileExplorer: 'File Explorer',
+        notepad: 'Notepad',
+        calculator: 'Calculator',
+        vsCode: 'VS Code',
+        excel: 'Excel',
+        powerPoint: 'PowerPoint',
+      };
+      if (!Object.hasOwn(names, app)) throw new Error('Choose a supported app.');
+      const generation = pointerGeneration;
+      const signal = pointerAbort.signal;
+      const restoreBuddy = hideBuddyForPointer();
+      try {
+        const located = await locateAppActivation(app, signal);
+        assertPointerActive(generation);
+        if (!located)
+          return {
+            clicked: false,
+            name: names[app],
+            reason: 'No visible app button or safe title bar was found.',
+          };
+        await runPointerCommand('click', located.target.x, located.target.y, signal);
+        assertPointerActive(generation);
+        return { clicked: true, name: names[app], method: located.method };
+      } finally {
+        restoreBuddy();
+      }
+    });
+    ipcMain.handle('insightos:open-visible-folder', async (event, name, requestedPath) => {
+      nativeRequest(event);
+      const generation = pointerGeneration;
+      const signal = pointerAbort.signal;
+      if (typeof name !== 'string' || !name.trim() || name.length > 120 || /[\\/]/.test(name))
+        throw new Error('Use a folder name.');
+      let folderPath;
+      if (requestedPath !== undefined) {
+        if (
+          typeof requestedPath !== 'string' ||
+          requestedPath.length > 2048 ||
+          !path.isAbsolute(requestedPath) ||
+          path.basename(path.resolve(requestedPath)).toLowerCase() !== name.trim().toLowerCase()
+        )
+          throw new Error('The selected folder path does not match its name.');
+        folderPath = path.resolve(requestedPath);
+        if (!(await stat(folderPath)).isDirectory())
+          throw new Error('The selected folder is unavailable.');
+      }
+      assertPointerActive(generation);
+      const restoreBuddy = hideBuddyForPointer();
+      try {
+        if (folderPath) {
+          const parent = path.dirname(folderPath).toLowerCase();
+          const desktopPaths = [
+            app.getPath('desktop'),
+            process.env.PUBLIC && path.join(process.env.PUBLIC, 'Desktop'),
+          ]
+            .filter(Boolean)
+            .map((value) => path.resolve(value).toLowerCase());
+          if (desktopPaths.includes(parent)) await revealDesktop(signal);
+          else {
+            const error = await shell.openPath(path.dirname(folderPath));
+            if (error) throw new Error('Windows could not open the selected folder location.');
+          }
+          assertPointerActive(generation);
+        }
+        let target = null;
+        for (let attempt = 0; attempt < 3 && !target; attempt++) {
+          await new Promise((resolve) => setTimeout(resolve, 300));
+          target = await locateAccessibleTarget(name, folderPath, signal);
+          assertPointerActive(generation);
+        }
+        if (!target?.folder)
+          return {
+            clicked: false,
+            opened: false,
+            reason: 'I could not find one visible verified icon for that folder.',
+          };
+        await runPointerCommand('double-click', target.x, target.y, signal);
+        assertPointerActive(generation);
+        if (!folderPath) return { clicked: true };
+        let opened = false;
+        for (let attempt = 0; attempt < 3 && !opened; attempt++) {
+          await new Promise((resolve) => setTimeout(resolve, 250));
+          assertPointerActive(generation);
+          opened = await explorerFolderIsOpen(folderPath, signal);
+        }
+        return {
+          clicked: true,
+          opened,
+          ...(!opened
+            ? {
+                reason:
+                  'The folder click completed, but Windows did not confirm the folder opened.',
+              }
+            : {}),
+        };
+      } finally {
+        restoreBuddy();
+      }
+    });
     const usedPointerProofs = new Map();
     ipcMain.handle('insightos:screen-sources', async (event) => {
       nativeRequest(event);
@@ -181,13 +337,14 @@ app
     };
     ipcMain.handle('insightos:capture-current-screen', async (event) => {
       nativeRequest(event);
+      const generation = pointerGeneration;
       // A spoken request is explicit consent for one snapshot. Hide the buddy so
       // it does not cover the content the user asked to understand.
-      const wasVisible = !!companionWindow && companionWindow.isVisible();
-      if (wasVisible) companionWindow.hide();
+      const restoreBuddy = hideBuddyForPointer();
       try {
         await new Promise((resolve) => setTimeout(resolve, 180));
         const { display, source, size } = await mainDisplaySnapshot();
+        assertPointerActive(generation);
         const captureId = crypto.randomUUID();
         const image = source.thumbnail.toDataURL();
         pendingScreenCapture = {
@@ -207,13 +364,15 @@ app
           captureId,
         };
       } finally {
-        if (wasVisible && companionWindow && !companionWindow.isDestroyed()) companionWindow.show();
+        restoreBuddy();
       }
     });
     ipcMain.handle(
       'insightos:click-captured-target',
       async (event, captureId, x, y, target, observedText, context, authorization) => {
         nativeRequest(event);
+        const generation = pointerGeneration;
+        const signal = pointerAbort.signal;
         const capture = pendingScreenCapture;
         validatePointerRequest(capture, { captureId, x, y, target, observedText, context });
         for (const [nonce, expiresAt] of usedPointerProofs)
@@ -222,6 +381,7 @@ app
           path.join(process.env.LOCAL_DATA_DIR || path.resolve('.local'), 'desktop-bridge-key'),
           'utf8',
         );
+        assertPointerActive(generation);
         verifyPointerAuthorization(
           capture,
           { x, y, target, observedText, context },
@@ -230,13 +390,13 @@ app
           usedPointerProofs,
         );
         pendingScreenCapture = null; // One observed screen can cause at most one click.
-        const wasVisible = !!companionWindow && companionWindow.isVisible();
-        if (wasVisible) companionWindow.hide();
+        const restoreBuddy = hideBuddyForPointer();
         try {
           await new Promise((resolve) => setTimeout(resolve, 180));
           let accessible = null;
           for (let attempt = 0; attempt < 3 && !accessible; attempt++) {
-            accessible = await locateAccessibleTarget(observedText);
+            accessible = await locateAccessibleTarget(observedText, undefined, signal);
+            assertPointerActive(generation);
             if (!accessible) await new Promise((resolve) => setTimeout(resolve, 220));
           }
           if (!accessible)
@@ -250,6 +410,7 @@ app
           const actualX = (accessibleDip.x - capture.bounds.x) / capture.bounds.width;
           const actualY = (accessibleDip.y - capture.bounds.y) / capture.bounds.height;
           const current = await mainDisplaySnapshot();
+          assertPointerActive(generation);
           if (
             current.display.id !== capture.displayId ||
             current.display.bounds.x !== capture.bounds.x ||
@@ -280,31 +441,45 @@ app
             y: Math.round(capture.bounds.y + actualY * capture.bounds.height),
           };
           const physical = screen.dipToScreenPoint(dip);
-          await runPointerCommand('click', physical.x, physical.y);
+          assertPointerActive(generation);
+          await runPointerCommand(
+            accessible.folder ? 'double-click' : 'click',
+            physical.x,
+            physical.y,
+            signal,
+          );
+          assertPointerActive(generation);
           return { clicked: true, target: observedText };
         } finally {
-          if (wasVisible && companionWindow && !companionWindow.isDestroyed())
-            companionWindow.show();
+          restoreBuddy();
         }
       },
     );
     ipcMain.handle('insightos:scroll-current-screen', async (event, direction) => {
       nativeRequest(event);
+      const generation = pointerGeneration;
+      const signal = pointerAbort.signal;
       if (direction !== 'up' && direction !== 'down') throw new Error('Choose scroll up or down.');
       pendingScreenCapture = null;
-      const wasVisible = !!companionWindow && companionWindow.isVisible();
-      if (wasVisible) companionWindow.hide();
+      const restoreBuddy = hideBuddyForPointer();
       try {
         await new Promise((resolve) => setTimeout(resolve, 140));
+        assertPointerActive(generation);
         const display = screen.getPrimaryDisplay();
         const point = screen.dipToScreenPoint({
           x: Math.round(display.bounds.x + display.bounds.width / 2),
           y: Math.round(display.bounds.y + display.bounds.height * 0.6),
         });
-        await runPointerCommand(direction === 'up' ? 'scroll-up' : 'scroll-down', point.x, point.y);
+        await runPointerCommand(
+          direction === 'up' ? 'scroll-up' : 'scroll-down',
+          point.x,
+          point.y,
+          signal,
+        );
+        assertPointerActive(generation);
         return { scrolled: true, direction };
       } finally {
-        if (wasVisible && companionWindow && !companionWindow.isDestroyed()) companionWindow.show();
+        restoreBuddy();
       }
     });
     const work = screen.getPrimaryDisplay().workArea;
@@ -370,6 +545,7 @@ app
       });
     };
     const dispatch = (command) => {
+      if (command === 'stop') cancelPointerActions();
       if (win.isDestroyed()) return;
       if (command !== 'hide') {
         win.show();
@@ -383,6 +559,7 @@ app
     });
     ipcMain.handle('insightos:buddy-hide', (event) => {
       nativeRequest(event);
+      restoreBuddyAfterPointer = false;
       win.hide();
     });
     ipcMain.handle('insightos:desktop-shortcuts', (event) => {

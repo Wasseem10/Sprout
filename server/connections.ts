@@ -13,7 +13,7 @@ import {
 import { computerPlan, generateCode, chat } from './computer/planner.js';
 import { Databricks } from './providers/databricks.js';
 import { Storage } from './providers/storage.js';
-import { fetchJson, secureUrl } from './providers/http.js';
+import { fetchJson, secureUrl, providerFailure, ProviderRequestError } from './providers/http.js';
 import { cloudInference } from './providers/cloudInference.js';
 import { parseCsv, defaultComparison } from '../shared/analysis.js';
 import { emptyWorkspace, resultSchema } from '../shared/schema.js';
@@ -254,9 +254,11 @@ export class Connections {
             detail:
               label +
               ': ' +
-              (http
-                ? `HTTP ${http}. Check key permissions, model access and credits.`
-                : 'Check credentials, model availability and account limits. No fallback used.'),
+              (error instanceof ProviderRequestError && error.reason === 'quota'
+                ? `${error.provider} credits are exhausted. Add provider credits or choose another speech provider.`
+                : http
+                  ? `HTTP ${http}. Check key permissions, model access and credits.`
+                  : 'Check credentials, model availability and account limits. No fallback used.'),
           });
         }
       };
@@ -338,7 +340,7 @@ export class Connections {
               signal,
             },
           );
-          if (!response.ok) throw new Error(`Provider request failed (HTTP ${response.status}).`);
+          if (!response.ok) throw await providerFailure(response, 'ElevenLabs speech');
           const audio = await response.arrayBuffer();
           if (audio.byteLength < 100 || audio.byteLength > 5 * 1024 * 1024)
             throw new Error('Invalid audio.');

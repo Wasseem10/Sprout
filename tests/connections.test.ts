@@ -7,6 +7,7 @@ import { parse } from 'dotenv';
 import { config } from '../server/config';
 import { Connections } from '../server/connections';
 import { buildApp } from '../server/app';
+import * as localVoice from '../server/providers/localSpeech';
 const dirs: string[] = [];
 const apps: Awaited<ReturnType<typeof buildApp>>[] = [];
 afterEach(async () => {
@@ -110,7 +111,9 @@ it('saves an HTTPS cloud connection privately and verifies authenticated inferen
         headers: { 'set-cookie': 'insightos_session=fixture-session; HttpOnly' },
       }),
     )
-    .mockResolvedValueOnce(json({ text: '{"ready":true}' }));
+    .mockResolvedValueOnce(
+      json({ text: '{"ready":true}', provider: 'hugging-face', execution: 'cloud-service' }),
+    );
   vi.stubGlobal('fetch', fetchMock);
   const result = await connections.verify('vultr', new AbortController().signal);
   expect(result.reports.vultr?.checks[0].status).toBe('passed');
@@ -317,4 +320,52 @@ it('prevents configuration changes while a real API task is in progress', async 
       })
     ).statusCode,
   ).toBe(200);
+});
+it('returns genuine labeled Windows audio when ElevenLabs speech quota is exhausted and preserves other errors', async () => {
+  const { cfg } = await fixture();
+  cfg.elevenKey = 'test-key';
+  cfg.elevenVoice = 'testVoice';
+  vi.spyOn(localVoice, 'hasLocalSpeech').mockReturnValue(true);
+  const backup = vi
+    .spyOn(localVoice, 'localSpeech')
+    .mockResolvedValue(Buffer.from('RIFF-test-WAVE-audio'));
+  vi.stubGlobal(
+    'fetch',
+    vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ detail: { status: 'quota_exceeded', message: 'private' } }), {
+        status: 401,
+      }),
+    ),
+  );
+  const app = await buildApp(cfg);
+  apps.push(app);
+  const session = await app.inject({ method: 'POST', url: '/api/session', payload: {} });
+  const cookie = session.headers['set-cookie']!.toString().split(';')[0];
+  const request = {
+    method: 'POST' as const,
+    url: '/api/voice/speak',
+    headers: { cookie },
+    payload: { text: 'Your deck is ready.' },
+  };
+  const response = await app.inject(request);
+  expect(response.statusCode).toBe(200);
+  expect(response.headers['content-type']).toContain('audio/wav');
+  expect(response.headers['x-insight-voice-provider']).toBe('windows');
+  expect(backup).toHaveBeenCalledWith(cfg, 'Your deck is ready.', expect.any(AbortSignal));
+  expect((await app.inject(request)).headers['x-insight-voice-provider']).toBe('windows');
+  expect(fetch).toHaveBeenCalledTimes(1);
+  cfg.elevenKey = 'replacement-test-key';
+  vi.stubGlobal(
+    'fetch',
+    vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ detail: { status: 'invalid_api_key', message: 'secret' } }), {
+        status: 401,
+      }),
+    ),
+  );
+  const failed = await app.inject(request);
+  expect(failed.statusCode).toBe(400);
+  expect(failed.body).toContain('ElevenLabs speech rejected its saved API key');
+  expect(failed.body).not.toContain('secret');
+  expect(backup).toHaveBeenCalledTimes(2);
 });

@@ -61,6 +61,29 @@ declare global {
       scrollCurrentScreen?: (
         direction: 'up' | 'down',
       ) => Promise<{ scrolled: true; direction: 'up' | 'down' }>;
+      cancelPointerActions?: () => Promise<void>;
+      activatePinnedApp?: (app: import('../shared/computer').NativeAppId) => Promise<{
+        clicked: boolean;
+        name: string;
+        method?: 'taskbar' | 'titlebar';
+        reason?: string;
+      }>;
+      openVisibleFolder?: (
+        name: string,
+        path?: string,
+      ) => Promise<{ clicked: boolean; opened?: boolean }>;
+      navigatePresentationSlide?: (
+        slide: number | 'next' | 'previous' | 'first' | 'last',
+        filename?: string,
+      ) => Promise<{
+        slide: number;
+        slideCount: number;
+        filename: string;
+        title?: string;
+        clicked: boolean;
+        verified: boolean;
+        method: string;
+      }>;
       openAccount: (
         provider: keyof typeof import('../shared/connections').accountUrls,
       ) => Promise<void>;
@@ -155,6 +178,8 @@ export default function App() {
   const voice = useVoice(
     (text) => void runRef.current(text),
     (text) => addMessage('error', text),
+    undefined,
+    speechEnabled,
   );
   const stop = useCallback(() => {
     engineRef.current!.stop();

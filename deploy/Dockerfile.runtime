@@ -1,0 +1,23 @@
+FROM node:24-bookworm-slim
+ENV NODE_ENV=production HOST=0.0.0.0 PORT=4311 LOCAL_DATA_DIR=/app/.local
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates fonts-dejavu-core \
+    && rm -rf /var/lib/apt/lists/* \
+    && NODE_OPTIONS=--max-old-space-size=512 npm ci --omit=dev --ignore-scripts \
+    && npm cache clean --force \
+    && mkdir -p /app/.local \
+    && chown -R node:node /app \
+    && chmod 700 /app/.local
+# Only compiled app files and synthetic fixtures enter this image.
+# Run npm run build on the laptop before preparing the bundle.
+COPY --chown=node:node dist ./dist
+COPY --chown=node:node dist-server ./dist-server
+COPY --chown=node:node data ./data
+COPY --chown=node:node migrations ./migrations
+RUN node --input-type=module -e "await import('./dist-server/server/app.js'); const {createCanvas}=await import('@napi-rs/canvas'); createCanvas(2,2).toBuffer('image/png')"
+USER node
+EXPOSE 4311
+HEALTHCHECK --interval=30s --timeout=5s --start-period=15s CMD node -e "fetch('http://127.0.0.1:4311/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+CMD ["node","dist-server/server/start.js"]

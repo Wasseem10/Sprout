@@ -24,7 +24,7 @@ await writeFile(
 const desktop = await electron.launch({ args: [entry, '--dev'], timeout: 30000 });
 try {
   const buddy = await desktop.firstWindow();
-  await expect(buddy.getByRole('region', { name: 'InsightOS desktop buddy' })).toBeVisible();
+  await expect(buddy.getByRole('main', { name: 'InsightOS desktop buddy' })).toBeVisible();
   const fixture = await desktop.evaluate(async ({ BrowserWindow, screen }) => {
     const display = screen.getPrimaryDisplay();
     const x = Math.round(display.bounds.x + display.bounds.width * 0.28);
@@ -171,6 +171,16 @@ try {
       }),
     )
     .toBe(true);
+  assert.equal(
+    await desktop.evaluate(({ BrowserWindow }) => {
+      const fixture = BrowserWindow.getAllWindows().find(
+        (candidate) => candidate.getTitle() === 'Pointer smoke fixture',
+      );
+      return fixture?.isFocused();
+    }),
+    true,
+    'Restoring the buddy must not steal foreground focus from the clicked fixture.',
+  );
   await assert.rejects(
     buddy.evaluate(
       ({ id, pointer }) =>
@@ -204,6 +214,125 @@ try {
     ),
     /already used/,
   );
+  // An interrupted capture must be cancelled, while the next command receives
+  // a fresh abort signal/capture. Use distinct owned controls to verify that the
+  // cursor continues to move rather than replaying the first target.
+  await buddy.evaluate(async () => {
+    const pending = window.insightos.captureCurrentScreen();
+    await new Promise((resolve) => setTimeout(resolve, 30));
+    await window.insightos.cancelPointerActions();
+    const replacement = window.insightos.captureCurrentScreen();
+    let stopped = false;
+    try {
+      await pending;
+    } catch (error) {
+      stopped = /stopped/i.test(String(error));
+    }
+    if (!stopped) throw new Error('Interrupted capture was not rejected.');
+    const refreshed = await replacement;
+    if (!refreshed.captureId)
+      throw new Error('A replacement capture did not succeed while cancelled work settled.');
+  });
+  await desktop.evaluate(async ({ BrowserWindow }) => {
+    const fixture = BrowserWindow.getAllWindows().find(
+      (candidate) => candidate.getTitle() === 'Pointer smoke fixture',
+    );
+    await fixture.webContents.executeJavaScript(
+      `document.body.innerHTML='<button id="second" style="position:absolute;left:30px;top:90px;width:130px;height:70px;font-size:20px" onclick="window.__second=true">Demo second</button><button id="third" style="position:absolute;left:245px;top:90px;width:130px;height:70px;font-size:20px" onclick="window.__third=true">Demo third</button>';window.__second=false;window.__third=false;`,
+    );
+  });
+  const repeatedTargets = [
+    { name: 'Demo second', offsetX: 95, flag: 'window.__second' },
+    { name: 'Demo third', offsetX: 310, flag: 'window.__third' },
+  ];
+  for (const target of repeatedTargets) {
+    const fresh = await buddy.evaluate(() => window.insightos.captureCurrentScreen());
+    const coordinate = await desktop.evaluate(({ BrowserWindow, screen }, offsetX) => {
+      const fixture = BrowserWindow.getAllWindows().find(
+        (candidate) => candidate.getTitle() === 'Pointer smoke fixture',
+      );
+      const bounds = fixture.getBounds();
+      const display = screen.getPrimaryDisplay();
+      return {
+        x: (bounds.x + offsetX - display.bounds.x) / display.bounds.width,
+        y: (bounds.y + 125 - display.bounds.y) / display.bounds.height,
+      };
+    }, target.offsetX);
+    const freshController = new ComputerController({
+      ...cfg,
+      hfToken: 'synthetic-test-token',
+      cloudUrl: undefined,
+    });
+    const oldFetch = globalThis.fetch;
+    let nextPointer;
+    try {
+      await freshController.init();
+      await freshController.selectScreen(fresh.name, fresh.image);
+      globalThis.fetch = async () =>
+        new Response(
+          JSON.stringify({
+            choices: [
+              {
+                message: {
+                  content: JSON.stringify({
+                    found: true,
+                    x: coordinate.x * 1000,
+                    y: coordinate.y * 1000,
+                    observedText: target.name,
+                    context: 'desktop',
+                    actionType: 'navigation',
+                    confidence: 0.99,
+                  }),
+                },
+              },
+            ],
+          }),
+          { status: 200 },
+        );
+      const located = await freshController.action(
+        { tool: 'locateScreenTarget', target: target.name },
+        new AbortController().signal,
+      );
+      assert.ok(located.pointer);
+      nextPointer = located.pointer;
+    } finally {
+      globalThis.fetch = oldFetch;
+      await freshController.close();
+    }
+    const nextResult = await buddy.evaluate(
+      ({ captureId, pointer }) =>
+        window.insightos.clickCapturedTarget(
+          captureId,
+          pointer.x,
+          pointer.y,
+          pointer.target,
+          pointer.observedText,
+          pointer.context,
+          pointer.authorization,
+        ),
+      { captureId: fresh.captureId, pointer: nextPointer },
+    );
+    assert.equal(nextResult.clicked, true);
+    await expect
+      .poll(() =>
+        desktop.evaluate(
+          ({ BrowserWindow }, flag) =>
+            BrowserWindow.getAllWindows()
+              .find((candidate) => candidate.getTitle() === 'Pointer smoke fixture')
+              ?.webContents.executeJavaScript(flag),
+          target.flag,
+        ),
+      )
+      .toBe(true);
+  }
+  await desktop.evaluate(async ({ BrowserWindow }) => {
+    const fixture = BrowserWindow.getAllWindows().find(
+      (candidate) => candidate.getTitle() === 'Pointer smoke fixture',
+    );
+    await fixture.webContents.executeJavaScript(
+      `document.body.style.height="1800px";document.body.innerHTML='<div style="position:absolute;top:1500px">Scroll destination</div>'`,
+    );
+  });
   await desktop.evaluate(({ BrowserWindow, screen }) => {
     const display = screen.getPrimaryDisplay();
     const fixture = BrowserWindow.getAllWindows().find(
@@ -234,6 +363,8 @@ try {
       visionLocator: liveVision ? 'passed using configured Hugging Face model' : 'not requested',
       nativeScroll: 'passed on synthetic local page',
       oneShotCapture: 'passed',
+      repeatAfterCancellation: 'two distinct owned buttons clicked with fresh captures',
+      buddyFocus: 'target window remains foreground after buddy restoration',
       signedPointerReplay: 'blocked',
       forgedPointer: 'blocked',
       physicalTarget: fixture.physical,

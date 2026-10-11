@@ -36,6 +36,14 @@ export function spokenRequestAcknowledgment(
   action?: ComputerAction,
 ): string | null {
   switch (action?.tool) {
+    case 'openFolder':
+      return "I'll open that folder.";
+    case 'nextScreenStep':
+      return "I'll check the screen and continue.";
+    case 'presentationHelp':
+      return "I'll work on the presentation.";
+    case 'studioHelp':
+      return "I'll work on the analysis.";
     case 'financeHelp':
       return "I'll check the numbers.";
     case 'createCode':
@@ -79,6 +87,18 @@ export function spokenRequestAcknowledgment(
       return "I'll look for that button.";
   }
   const text = request.trim();
+  if (
+    /\b(?:open|go to|select|use)\b.*\bfolder\b/i.test(text) &&
+    !/\b(?:presentation|powerpoint|slides)\b/i.test(text)
+  )
+    return "I'll find that folder.";
+  if (
+    /\b(?:research|browse|web|internet)\b/i.test(text) &&
+    /\b(?:presentation|powerpoint|slides|deck)\b/i.test(text)
+  )
+    return "I'll read web sources and make the slides.";
+  if (/^(?:please\s+)?(?:navigate|take control|use my (?:screen|computer))/i.test(text))
+    return "I'll check the screen and continue.";
   if (/\b(?:find|search|look for|show me)\b.*\b(?:jobs?|employment|openings?|hiring)\b/i.test(text))
     return /\bnear me\b/i.test(text)
       ? "I'll look for jobs near you."
@@ -230,9 +250,15 @@ function browserSpeech(browser: BrowserView, summary: string, tool?: string): st
 
 export function spokenComputerReply(result: ComputerResult, tool?: string): string {
   const { summary, state } = result;
+  if (result.tool === 'openFolder' || result.tool === 'nextScreenStep' || tool === 'screenAction')
+    return cleanSpeechText(result.spokenSummary ?? summary, 420);
   // Keep the budget question and application readback intact; generic shortening
   // can cut off the next question and strand a voice-only user.
   if (
+    result.tool === 'presentationHelp' ||
+    tool === 'presentationHelp' ||
+    result.tool === 'studioHelp' ||
+    tool === 'studioHelp' ||
     result.tool === 'energyHelp' ||
     tool === 'energyHelp' ||
     result.tool === 'financeHelp' ||

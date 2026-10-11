@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-10-11T02:43:23.081Z",
+  "live": true,
+  "interpretation": "hugging-face",
+  "analytics": "databricks",
+  "previousTotal": 126000,
+  "currentTotal": 141000,
+  "includedRows": 30,
+  "outputs": {
+    "excel": "insight-analysis-r5-89861153.xlsx",
+    "powerpoint": "insight-analysis-r5-ef150144.pptx"
+  },
+  "microphone": "User previously reported speech and interruption work; this workflow still needs a physical voice rehearsal."
+}

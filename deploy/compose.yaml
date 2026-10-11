@@ -1,19 +1,51 @@
+name: insightos
 services:
   app:
     build: ..
     restart: unless-stopped
-    env_file: ../.env
+    init: true
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 20s
     environment:
       HOST: 0.0.0.0
       PORT: 4311
       LOCAL_DATA_DIR: /app/.local
+      APP_MODE: ${APP_MODE:-sample}
+      CLIENT_ORIGIN: ${CLIENT_ORIGIN:?Set the exact HTTPS origin}
+      SESSION_PASSPHRASE: ${SESSION_PASSPHRASE:?Set a separate cloud session passphrase}
+      HF_TOKEN: ${HF_TOKEN:?Set the remote Hugging Face inference token}
+      HF_MODEL_ID: ${HF_MODEL_ID:-Qwen/Qwen3-Coder-30B-A3B-Instruct:scaleway}
+      HF_VISION_MODEL_ID: ${HF_VISION_MODEL_ID:-Qwen/Qwen3-VL-30B-A3B-Instruct:deepinfra}
+      HF_ENDPOINT_URL: ${HF_ENDPOINT_URL:-https://router.huggingface.co/v1/chat/completions}
+      DATABASE_URL: ${DATABASE_URL:-}
+      # Remote inference must not recurse or load the laptop's desktop URL.
+      INSIGHTOS_CLOUD_URL: ''
+      INSIGHTOS_CLOUD_PASSPHRASE: ''
+      INSIGHTOS_APP_URL: ''
     volumes:
       - insightos-data:/app/.local
+    tmpfs:
+      - /tmp:size=64m,mode=1777,nosuid,noexec
     expose:
       - '4311'
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
   proxy:
     image: caddy:2-alpine
     restart: unless-stopped
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    security_opt:
+      - no-new-privileges:true
     environment:
       INSIGHTOS_DOMAIN: ${INSIGHTOS_DOMAIN:?Set the DNS name for your Vultr instance}
     ports:
@@ -24,7 +56,13 @@ services:
       - caddy-data:/data
       - caddy-config:/config
     depends_on:
-      - app
+      app:
+        condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
 volumes:
   insightos-data:
   caddy-data:

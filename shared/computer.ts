@@ -2,6 +2,9 @@ import { z } from 'zod';
 import type { EnergyState } from './energy.js';
 import type { FinanceState } from './finance.js';
 import type { BillWorkspace } from './bills.js';
+import type { StudioState } from './studio.js';
+import type { PresentationProjectView } from './presentation-project.js';
+import type { ResearchPresentationView } from './presentation-research.js';
 
 export const nativeAppSchema = z.enum([
   'browser',
@@ -16,12 +19,34 @@ export const nativeAppSchema = z.enum([
 ]);
 export type NativeAppId = z.infer<typeof nativeAppSchema>;
 
+/** Bind a native result to the exact structured artifact that requested it. */
+export const presentationArtifactIdentitySchema = z.object({
+  projectId: z.string().uuid(),
+  revision: z.number().int().positive(),
+  sha256: z.string().regex(/^[a-f0-9]{64}$/),
+}).strict();
+export type PresentationArtifactIdentity = z.infer<typeof presentationArtifactIdentitySchema>;
+
 export const computerActionSchema = z.discriminatedUnion('tool', [
+  z
+    .object({ tool: z.literal('presentationHelp'), request: z.string().trim().min(1).max(2000) })
+    .strict(),
+  z.object({ tool: z.literal('studioHelp'), request: z.string().trim().min(1).max(2000) }).strict(),
   z
     .object({ tool: z.literal('financeHelp'), request: z.string().trim().min(1).max(2000) })
     .strict(),
   z.object({ tool: z.literal('energyHelp'), request: z.string().trim().min(1).max(2000) }).strict(),
   z.object({ tool: z.literal('openApp'), app: nativeAppSchema }).strict(),
+  z.object({ tool: z.literal('openFolder'), name: z.string().trim().min(1).max(500) }).strict(),
+  z.object({ tool: z.literal('openSelectedFolder') }).strict(),
+  z.object({ tool: z.literal('openImageSourceFolder') }).strict(),
+  z
+    .object({
+      tool: z.literal('nextScreenStep'),
+      goal: z.string().trim().min(3).max(1000),
+      history: z.array(z.string().max(250)).max(6),
+    })
+    .strict(),
   z
     .object({
       tool: z.literal('pursueBrowserGoal'),
@@ -48,6 +73,15 @@ export const computerActionSchema = z.discriminatedUnion('tool', [
     })
     .strict(),
   z.object({ tool: z.literal('openPresentation') }).strict(),
+  z
+    .object({
+      tool: z.literal('goToSlide'),
+      slide: z.union([
+        z.number().int().min(1).max(500),
+        z.enum(['next', 'previous', 'first', 'last']),
+      ]),
+    })
+    .strict(),
   z
     .object({
       tool: z.literal('analyzeSpreadsheet'),
@@ -137,6 +171,7 @@ export type ScreenView = {
   description: string | null;
 };
 export type ComputerState = {
+  studio?: StudioState | null;
   bills?: BillWorkspace | null;
   finance?: FinanceState | null;
   energy?: EnergyState | null;
@@ -154,12 +189,23 @@ export type ComputerState = {
   browser: BrowserView | null;
   screen: ScreenView | null;
   presentation?: {
+    projectId?: string;
     filename: string;
     title: string;
     slideCount: number;
     slideTitles: string[];
     opened: boolean;
     sha256: string;
+    selectedSlide?: number;
+    desktopNavigation?: {
+      status: 'verified' | 'failed';
+      slide?: number;
+      requestedSlide?: number | 'next' | 'previous' | 'first' | 'last';
+      message?: string;
+    };
+    imageEdits?: { slide: number; filename: string; altText: string }[];
+    project?: PresentationProjectView;
+    research?: ResearchPresentationView;
   } | null;
   spreadsheet?: {
     filename: string;
@@ -181,10 +227,37 @@ export type ScreenPointer = {
   authorization: { nonce: string; expiresAt: number; proof: string };
 };
 export type ComputerResult = {
+  failure?: import('./presentation-failure.js').PresentationFailure;
+  persistence?: { projectId: string; revision: number; sha256: string; provider: 'neon' | 'local'; savedAt: string; verified: boolean };
+  taskStatus?: 'completed' | 'awaiting_input' | 'recoverable_failure' | 'failed';
+  changes?: import('./presentation-change.js').PresentationChangeReceipt[];
+  recovery?: import('./presentation-intent.js').PresentationRecoveryChoice;
+  desktopIntent?:
+    | { kind: 'describe' }
+    | { kind: 'activateApp'; app: NativeAppId }
+    | {
+        kind: 'openFolder';
+        name: string;
+        path?: string;
+        continueRequest?: string;
+        imageSource?: boolean;
+      }
+    | {
+        kind: 'slide';
+        slide: number | 'next' | 'previous' | 'first' | 'last';
+        filename?: string;
+        identity?: PresentationArtifactIdentity;
+        continueRequest?: string;
+      };
   spokenSummary?: string;
   tool?: ComputerAction['tool'];
   summary: string;
   state: ComputerState;
   clarification?: boolean;
   pointer?: ScreenPointer;
+  screenStep?: {
+    decision: 'click' | 'scroll' | 'done' | 'ask';
+    target?: string;
+    direction?: 'up' | 'down';
+  };
 };

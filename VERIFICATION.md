@@ -1,4 +1,205 @@
-# Public publishing verification — October 10, 2026
+# InsightOS verification
+
+## 2026-10-11 12:09 UTC — source snapshot validation, not release acceptance
+
+- **Software:** 1,251/1,251 unit tests; frontend TypeScript/build and staged server compilation passed (`.local/github-final-unit.json`, `.local/github-final-*.log`). Latest scoped browser suite: 26 passing cases, mocked providers/native IPC.
+- **Real-model editing:** prospective fixed regression suite passed 15/24 scenarios, completed 8/17 feasible workflows (47.1%), and recorded zero wrong-slide mutations. 103 completed HF HTTP calls, one pre-dispatch cancellation and nine explicit simulated boundaries. Stronger Qwen writing and direct copy review were isolated configuration, not a production switch. Receipt: `.local/phase-a-controller-prospective-LyWhrV/receipt.json`. The 90% completion gate is unmet; programmatic passes remain subject to material-meaning review.
+- **Final narrow guard:** bare image-description replies remain bound to their pending slide, including after reorder. 130 focused tests and TypeScript passed after the integrated suite; no additional live-model run.
+- **Exports:** seven compiled mixed-scene slides visually reviewed, original image bytes preserved, measured scenes embedded and editable chart/diagram output. No visible clipping/overlap. `.local/compiled-mixed-scene-qa-Aa4qWp/receipt.json`. All PNGs were emitted before a nonzero renderer teardown exit.
+- **Data:** isolated actual HF/Databricks named-source import, fresh verification, chart insertion/readback, changed-source refresh and undo passed; 39 labeled synthetic rows, two actual SQL verifications. `.local/chart-source-refresh-live-T7PSZu/receipt.json`.
+- **New scene commands:** actual HF smoke passed 5/7 before subsequent general grounding fixes. No post-fix live success claimed. Direct copy-review calibration passed six authored pairs, which does not establish broad reliability.
+
+Manual review additionally found accepted loss of qualifications and false rejections of faithful copy; a programmatic pass is not semantic acceptance. Both completion and material-fidelity gates remain unmet. The accepted running app and Pet Behavior r4 are preserved. New source, compiled checks and a GitHub push do not constitute deployment or physical voice acceptance. Do not advertise 100% editing reliability.
+
+## 2026-10-11 11:43 UTC — native output review and launch-file protection
+
+Installed PowerPoint opened the isolated compiled `Insight-Visual-QA.pptx`. All five slides were visually inspected: complete two-column copy, labeled six-node branching diagram, seven-node review insertion and revenue chart with units/date/fictional-sample disclosure. No visible clipping or overlap was observed. Only the QA window was closed. `.local/compiled-visual-qa/native-review.json` distinguishes this manual UI export review from Insight's own execution and physical microphone testing.
+
+Read-only production state/file hash at 11:37:31 UTC still matches Pet Behavior r4, seven slides. Accepted checkpoint-zero launch artifacts were copied back from the preserved prior runtime and all 82 files hash-verified; the unaccepted former root build is archived under `.local/unreleased-launch-files-20261011-1144`. No process restart or project write occurred. New source remains staged, with further master-scope work in progress.
+
+The stronger-model direct production-function comparison passed 6/6 count/fit checks but failed manual material fidelity; low reasoning timed out and the isolated paragraph-obligation prototype failed. These are diagnostic experiments, not the frozen controller gate and not released changes. See `.local/revision-direct-production-probe-V8Ng6Y/assessment.json`; the existing 90% release gate remains unmet.
+
+## October 11, 2026, 11:25 UTC — integrated source, current release gate incomplete
+
+**Production remains on checkpoint zero.** Pet Behavior r4 is unchanged: seven slides, three undo entries, file `insight-presentation-r4-068788b7.pptx`, SHA `142b35b4b35371bdff83a43e96cb90e46c00a009ec4c2563767f57a9aa1d201f`. Read-only preservation receipt: `.local/master-release-before-receipt.json` at 11:25:43 UTC. No new physical microphone/native Office rehearsal has occurred in this stage.
+
+| Check | Actual result | Evidence |
+| --- | --- | --- |
+| Integrated unit suite | 1,140/1,140 pass | `.local/master-integrated-final-unit.json` |
+| Scoped browser suite | 23/23 pass; providers/native IPC mocked | `.local/master-integrated-browser.log` |
+| Production compilation | Frontend build/typecheck and staged NodeNext server compile pass; type-only renderer import repair verified with 37 focused tests | `.local/master-release-stage` |
+| Revision HF evaluation | 22/24 programmatic scenarios; 15/17 feasible completions, 88.24%; zero wrong-slide mutations | `.local/phase-a-controller-final-f4nEWP/receipt.json` |
+| Revision manual review | Two programmatic passes lost the qualification against promising unmeasured outcomes; two other shortening requests rejected unchanged/insufficient copy | `semantic-review.json` beside that receipt |
+| Diagram HF probe | 6/6 actual interpretation/generation/reference checks; isolated | `.local/flowchart-voice-live-BD1h7E/receipt.json` |
+| Chart lifecycle | Actual HF + fresh Databricks, source reconciliation, editable chart/embedded workbook, same file, local resume/undo, no query during readback | `.local/chart-controller-live-b1OQUF/receipt.json` |
+| Chart arithmetic | Exact saved totals and percentage readback without another query | `.local/chart-source-readback-WlbXt3/percentage-readback-receipt.json` |
+| Layout lifecycle | Eight actual HF turns, content preservation, image side/two columns/title sizing, saved scene readback, local restart/resume and undo | `.local/visual-controller-live-EgdcUK/receipt.json` |
+| Neon V3 | Actual save/list/fresh-load/independent SELECT preserves graphs, styles, chart data/provenance and history; isolated QA owner only | `.local/visual-session-neon-DPMAde/receipt.json` |
+
+Graph, chart and layout exports were rendered and individually inspected without visible clipping/overlap. The rendering runtime generated the requested PNGs and then exited nonzero during teardown; do not call that a clean renderer exit. Layout package/geometry checks report zero findings in `.local/visual-controller-live-EgdcUK/visual-qa-receipt.json`.
+
+The 90% completion gate and semantic fidelity requirement remain unmet. One stronger HF instruction model is being probed before any production model change. Safe rejection is preferable to silently changing meaning but is not counted as task completion. New native Office and physical voice checks still follow the final accepted build.
+
+## October 11, 2026, 10:26 UTC — Phase A isolated gate, not a release
+
+Integrated source checks: **939/939 tests, 64 files, 18.53 seconds**, production build and TypeScript passed (`.local/phase-a-final-unit.*`, `.local/phase-a-final-build.log`). Scoped browser checks passed 19 initially; three strict navigation mocks rejected the newly required `turnId`. Updating those mocks to require the request plus a UUID produced **3/3 passes** (`.local/phase-a-browser-navigation.log`), completing the 22-case scope without changing product behavior.
+
+Actual HF controller evaluation: **18/24 scenarios passed**, and **12/17 feasible workflows completed (70.6%)**. Zero observed mutations to unrelated stable slide IDs. Median text-to-file latency 1.74 seconds, p90 3.03 seconds; no mic, TTS or native Office included. Seven injected boundary calls are explicitly labeled among the 86 actual provider calls. This misses the 90% completion release target. Evidence: `.local/phase-a-controller-final-uLrxCr/{receipt,assessment}.json`. The requested provider route was Qwen3-Coder-30B-A3B via Scaleway; a separate live strict-schema probe returned that same model identity. This is not proof of arbitrary-request success.
+
+Five rendered slides were inspected across four exports: actual HF expansion, shortening and summary, plus both continuation slides from the injected capacity fixture. Package/layout checks found zero issues; text remains native/editable, unrelated content preserved, no visible clipping/overlap. Each renderer produced its requested PNGs then exited `0xC0000409`; native Office was not exercised. A shortening lost a proposal qualifier, so semantic content fidelity remains a known gap even when geometry passes. Evidence `.local/phase-a-file-qa-uLrxCr/receipt.json`.
+
+After that gate, interpreter repairs passed **132 focused tests and 8/8 fresh real-model interpretation cases** (`.local/phase-a-intent-refinement-8bfcbbac/receipt.json`): exact historical restoration means undo; blank optional fields are omitted; internal execution metadata no longer invalidates title corrections. These isolated improvements do not replace the end-to-end gate. Strict JSON-schema transport also passed 27 direct/cloud tests, but valid JSON and source-ID coverage do not prove preservation of meaning.
+
+Current user Pet Behavior r4 and its working-file SHA remain unchanged. The accepted checkpoint-zero app is still running; new Phase A files on disk are not yet loaded. Graph/scene/layout foundations are unconnected; no new diagram or chart capability is claimed.
+
+## October 11, 2026, 09:50 UTC — production same-file restore and Neon readback
+
+Following the user's normal tray Quit, the accepted checkpoint-zero build was launched. API resume restored Pet Behavior r4 to `insight-presentation-r4-068788b7.pptx`; exact ordered content remained unchanged, seven slides and three history entries. Actual PowerPoint verified slide one and Computer Use found exactly one current Pet presentation window. Regenerated-package SHA: `142b35b4b35371bdff83a43e96cb90e46c00a009ec4c2563767f57a9aa1d201f`. Save completed at 09:49:10.486 UTC, and actual Neon readback at 09:49:32.987 UTC matched working session/history/local output/hash. Receipts `.local/single-file-production-{resume,save,neon-verification}.json`. No new microphone test or general conversational success is claimed. Restart limitation below is resolved.
+
+## October 11, 2026, 09:47 UTC — stable working-file gate
+
+724/724 unit tests in 52 files passed in 17.02 seconds; production frontend/backend build and TypeScript passed (`.local/single-file-final-unit.json`, `.local/single-file-final-build.log`). Tests cover exact working-file adoption, source/output root separation, private backups, rollback/crash discovery, final-boundary cancellation, stale native identity, unsaved Office refusal and truthful partial failure. These are mocked native/provider checks unless specified below.
+
+Actual isolated publication used the existing seven-slide deck structure with deterministic slide-two text changes, disabled inference/cloud storage, and a new owner/project/workspace. Native create → expand → shorten → restore earlier expanded content kept one filename, seven slides and exact other-slide structures. PowerPoint selection and the actual displayed shortened/restored text were read through Computer Use. Each final observation had one QA window and the two original Pet windows. Restart recovered the exact structured deck/history without inference. The QA window was closed afterward. Receipt: `.local/same-file-native-verification.json`; detailed files `.local/same-file-native-DOzctm`. This verifies real file/native refresh, not a complete voice/semantic Undo rehearsal. Two foreground-focus failures found during native testing were fixed; focus is now best-effort but exact-file COM verification is still required.
+
+The user Pet r4 file remained byte-identical throughout isolated testing and was saved with its history to Neon at 09:26:55.368 UTC (`.local/single-document-before-save.json`). Current r4 supersedes r3 below. At this gate, loading the compiled controller into the user app awaited normal Quit/restart after force-stop was rejected; consult newer continuity notes for subsequent runtime evidence. Phase A stable target binding is ongoing and not covered by this 724-test gate.
+
+## October 11, 2026, 08:42 UTC — newly reproduced failures supersede broad reliability claims
+
+User screenshot: expand seventh slide, followed by “For the summary.” Actual 08:38:33 error references 86-word slide-two content; current summary has 57 words. Original semantic output is unavailable, so the originating utterance and returned target cannot be reconstructed definitively. Explicit numeric 7 is honored by the resolver. Isolated actual-HF full request targeted 7; a constructed failure-context fragment became add_summary (.local/summary-target-inference-audit.json). The latter is an evaluation, not captured runtime history.
+
+Read-only isolated actual-HF revision probes also failed: repeated expansion of slide two returned shorter content with a collapsed 98–98-word target; summary expansion failed actual measured fit after an 84-word repair. Receipts: .local/pet-repeat-expansion-2-ouxXhN and .local/pet-repeat-expansion-7-FZqs7x. General defects include target continuity/ambiguity and conflicting length/repair instructions. No production code, active deck, Office or Neon mutations were made. Current r3 remains saved and unchanged. No claim of a fix or 100% reliability follows from the earlier 664 passing unit tests.
+
+## October 11, 2026, 08:26 UTC — pet-deck repair and native recovery verified
+
+**Current user project is Understanding Pet Behavior, revision 3, seven slides, file insight-presentation-r3-c9c2fa8c.pptx.** It supersedes pet revision 1 and every older Site/Cyber Monday checkpoint. Do not resume an older recovery snapshot over it. Original pet recovery files remain preserved under .local/pet-recovery-*; latest full state, checkpoint and Neon row are .local/pet-final-*.
+
+Actual production typed UI request expanded slide two from **48 to 86 body words**. The following exact summary request through the production API added slide seven. Stable slide identity/font and the other five slides remained unchanged; the summary preserved all six preceding slides. Original file hash and PPTX counts passed. Receipt: .local/pet-content-repair-verification.json. Actual expanded and summary exports were rendered and visually checked with no clipping or overlap (.local/pet-actual-file-qa/r2-export-check.json and r3-export-check.json). The renderer produced complete PNGs before exiting 1 during teardown.
+
+Revision 3 was saved to the same owner-scoped Neon project at 08:01:15.905 UTC. Direct SELECT at 08:01:31.200 UTC matched the active ordered deck, local session and output hash: seven slides, two undo entries, zero sources. Receipt: .local/pet-final-neon-verification.json. Do not use .local/resume-pet-recovery.ts now: it targets the original revision-1 snapshot.
+
+General fixes: terminal failures end their executable queue while retaining bounded failure context; explicit new operation plans cannot revive that queue through model retry metadata. Explicit retries and matching corrections remain. Qwen revises content fields only; the app retains slide IDs, image references, layout and font. Topic-appropriate bounded rewriting and measured readability/numeric checks remain. An isolated compiled-controller test with the captured failure injected at execution then actual HF summary produced seven slides without replaying the failed edit (.local/pet-failed-summary-compiled-TvC53P/receipt.json). Three actual compiled HF expansion probes passed, preserving unrelated slides.
+
+Final gate: **664/664 unit tests, 48 files, 16.73 seconds; production build and TypeScript passed.** Logs: .local/pet-repair-final2-unit.log and .local/pet-repair-final2-build.log. Current Electron runs that production build. No model switch, fine-tuning, new sponsor integration or native helper change was made.
+
+**Native recovery completed at 08:26 UTC:** the user approved force-closing the frozen process, but a fresh check found PowerPoint had recovered by itself. No force-close/restart was performed. A typed “Open the presentation” through Insight verified slide seven; “Go to slide two” then verified slide two in both backend and the actual PowerPoint View Indicator. Managed opening retired the old same-project windows and left exactly one current project window plus six unrelated recovery windows. Current revision 3, ordered content and file hash remain unchanged from the Neon save. Receipts: .local/pet-recovered-native-open.json, .local/pet-recovered-native-slide-two.json, .local/pet-native-recovery-final.json. Earlier automatic opening did fail while Office restored its old recovery windows; this later explicit opening succeeded. Physical microphone was not exercised in this repair. Rehearse voice and record next; sponsor/chart additions remain deferred.
+
+## October 11, 2026, 07:09 UTC — final recovery gate and active checkpoint
+
+**Preserve the active user project: Site in One-Day Campaign, revision 10, six slides**, file `insight-presentation-r10-e12d6627.pptx`. It is open in PowerPoint with slide six verified and saved to Neon. This supersedes r5, r6, r8, r9 and earlier Cyber Monday checkpoint instructions. The original r5 file and its SHA remain preserved; do not restore it over the current revision.
+
+The current app's typed UI rehearsal expanded slide two **16 → 62 body words**, shortened it to **37**, then undid that change to restore the exact expanded deck. The other five slides remained unchanged. Receipt: `.local/revision-text-invariants.json`. The current deck therefore has its expanded slide two, not an automatic rewrite of every older slide. New generations use richer, distinct explanatory content; detail direction, meaningful change, factual numbers and measured readability are validated before commit. No model switch or fine-tuning was introduced.
+
+Actual native PowerPoint opening now passed on the first request: adding a summary created r9 with seven slides and verified slide 7 of 7; undo created r10 with six slides and verified slide 6 of 6. Each action left exactly **one window for this project and five unrelated presentations**. No extra Open click or manual PowerPoint intervention was needed. Receipts: `.local/native-summary-window-receipt.json`, `.local/revision-rehearsal-summary.json`, `.local/native-undo-window-receipt.json`, `.local/revision-rehearsal-undo-final.json`. The helper allows bounded initial readiness within a 45-second overall cancellation budget, uses temporary PowerShell files to avoid command-line length limits, and closes only exact same-project paths with matching hashes and no unsaved changes. These were typed UI tests, separate from physical microphone evidence.
+
+Revision 10 saved to the same owner-scoped Neon project at **07:09:02.400 UTC**. Direct SELECT at **07:09:03.734 UTC** matched the active ordered deck, local session and output hash: six slides, three history entries and one source. Receipt: `.local/revision-progress-neon-verification.json`. The earlier actual r5 verification is retained in `.local/current-rehearsal-neon-verification.json`; it is historical, not the latest saved revision.
+
+Actual Hugging Face Qwen editing of an isolated copy separately passed **16 → 63 → 40 body words**, with the other five slides unchanged; both edited slides were exported and visually inspected (`.local/content-depth-live-e644c6dc/edit-receipt.json`). Fresh six-slide generation passed with body-word counts **9, 47, 46, 44, 43, 39**, the original Marketing image on the cover and all six slides visually inspected (`.local/content-depth-live-cd13283a/receipt.json`). The renderers produced the inspected PNGs before exiting 1 during teardown. Those isolated content tests did not change the active deck, write Neon, operate native Office or use the microphone.
+
+Final source gate: **638/638 unit tests in 47 files, 15.94 seconds**, including 23 focused native-helper tests; production frontend/server build and TypeScript passed. Logs: `.local/revision-final-unit.log`, `.local/revision-final-build.log`. Source is frozen. The user previously confirmed full-sentence capture and live interruption/correction/readback, and physically exercised creation/revisions/summary/undo/save; the latest fixes were verified through typed UI/provider/native tests. Rehearse the corrected flow by voice and record the demo next. Optional chart insertion and new sponsor work remain deferred.
+
+Earlier sections below retain previous architecture and dated evidence; this latest checkpoint and recovery status take precedence.
+
+## October 11, 2026 — user-confirmed live interruption
+
+The user replied **“it worked”** to the requested physical check: press Play, say “Read slide two,” then interrupt with “Wait, read slide one.” The question explicitly asked whether Insight stopped speaking, captured the whole correction and read slide one. This is user-reported confirmation of that live microphone/interruption/readback sequence, in addition to the earlier complete-sentence capture report. It is not an independently recorded audio trace or confirmation of the full creation workflow.
+
+The remaining rehearsal is spoken six-slide creation from Desktop Marketing, targeted revision, summary insertion, undo and saving, followed by the final recording. No source changes or repeat automated tests were needed for this confirmation. Optional phase-three chart insertion remains gated on the complete core rehearsal.
+
+## October 11, 2026, 05:09 UTC — final audit and real native navigation
+
+Final automated gate after the acceptance-audit fixes: **600/600 unit tests in 45 files, 16.73 seconds**. Production frontend/server build and TypeScript passed; only the existing bundle-size warning remains. Logs: `.local/semantic-final-unit.log` and `.local/semantic-final-build.log`. These supersede earlier 583/574 totals.
+
+Current failure feedback now records the requested navigation target separately from verified selection. A failed “go to slide two” cannot cite an old slide-one image as though this request saved it. Only a file/revision changed by the current response receives its saved-edit confirmation. Relative failed navigation asks for an exact slide number instead of blindly advancing again. Semantic result chronology receives fresh native outcomes without replacing later failure evidence from a stale navigation snapshot.
+
+The affected **21/21 desktop/image/semantic browser cases** passed in 23.5 seconds, including navigation to slide two with a preexisting image on slide one when the failure-reporting endpoint is available and unavailable, and preservation of real current saved edits. Focused helper/controller/planning units passed **19/19** before the final complete suite. These browser checks use mocked providers/native IPC.
+
+### Repeated real-provider and persistence check
+
+At **05:08:35.367 UTC**, actual HF Qwen and a byte-identical original Marketing image copy again passed creation of six ordered slides with the picture on the cover, read/shorten/text size/clean blue/reorder/summary/undo, actual Neon saving and controller restart/resume with exact ordered content/history/source bytes. Creation took **7.642 seconds** in this single run, excluding audio; no latency guarantee is inferred. Native Office was disabled and microphone was not exercised in this check. Receipt: `.local/ordered-controller-live-IAZULr/receipt.json`. The user's source/checkpoint remained unchanged.
+
+### Actual installed Office through the buddy
+
+Completed **05:09:23 UTC**: typed commands in the running Insight buddy selected **slide 2 → next slide 3 → last slide 4** in the user's existing Cyber Monday Guide. Separate PowerPoint UIA View Indicator readings and backend `desktopNavigation.status: verified` confirmed each slide. Buddy confirmations and Ready to talk were observed; the final transcript was “Slide 4, Smart Shopping Tips.” Receipts: `.local/native-navigation-rehearsal.json` and `.local/native-navigation-final-state.json`.
+
+This is real native execution through typed UI requests, not mocked IPC and not a physical voice rehearsal. It does not demonstrate thumbnail dragging or unrestricted desktop editing. The active file/checkpoint hash stayed unchanged.
+
+Initial inspections of an inactive/occluded buddy sometimes retained stale Working/transcript state. Activating Insight exposed the already-completed result; capture and screen POST timestamps had advanced. A coordinate mismatch during inspection was resolved from a fresh screenshot. No product fix was made for those observations, and no task deadlock was established.
+
+Actual local ElevenLabs speech returned **HTTP 200, audio/mpeg, 53,960 bytes in 487 ms at 05:01:45 UTC** (`.local/voice-ready-check.json`). An earlier 502 coincided with a development-server restart; the successful endpoint check does not prove audible playback, physical microphone behavior or interruption.
+
+### Final remaining acceptance
+
+The complete physical spoken create/review/revise/undo/save workflow and final recording remain pending. The earlier 04:10 UTC user confirmation supports full-sentence capture; the newer user confirmation above supports live interruption, complete correction capture and slide-one readback. Phase-three verified-chart insertion remains skipped/unimplemented; Vultr is undeployed and Gemini/Tiger Data remain absent. Large-image layout is renderer support, not a selectable voice operation. Feature work remains frozen.
+
+The earlier dated sections below preserve previous evidence and limitations; this final gate supersedes their current totals and native-navigation readiness.
+
+## October 11, 2026 — semantic turns and ordered presentation V2
+
+Current automated release gate: **583/583 unit tests in 43 files, 15.22 seconds**; production frontend/server build and TypeScript passed. Existing bundle-size warning only. Logs: `.local/phase2-final-unit.log`, `.local/phase2-final-build.log`. Source changes are frozen for physical rehearsal.
+
+The change is a general semantic pipeline: actual Qwen interprets requests, continuations, corrections, cancellations and questions with task/artifact context, then a validated dispatcher executes typed operations. It no longer routes supported presentation turns through overlapping phrase handlers. Exact cancellation stays immediate; “No, use dark blue instead” remains an editable correction. The V2 model separates slide count/order from image count and preserves stable IDs, specific-slide revision scope and bounded undo history.
+
+### Browser and UI checks
+
+- Phase-one run: **17/17** semantic/desktop/image browser cases, including verified native continuation, no continuation after failure/cancellation, folder continuation, and stale-action suppression.
+- V2 UI run: **15/15** cases (five V2, one legacy, nine semantic). Covers real slide type/order/count, image cover plus text/process/summary, theme, reordered read index/stable IDs, chart table preview, source count, scoped saved-edit feedback and native failure separation. These runs overlap; do not report them as 32 unique cases.
+- Both V2 and legacy project views passed automated accessibility scans with zero findings. Mobile layout had no horizontal overflow. Screenshot: `.local/presentation-v2-workspace.png`.
+- Focused voice-turn units passed **31/31**, covering whole-task cancellation versus correction and retention of hesitant speech. Browser tests use synthetic audio and mocked native IPC/providers; they do not establish actual mouse/Office or physical-microphone behavior.
+
+### Actual HF → ordered deck → Neon rehearsal
+
+Completed at **04:54:58.679 UTC**, using the real `Qwen/Qwen3-Coder-30B-A3B-Instruct:scaleway` provider and a byte-identical copy of Desktop Marketing images.jpg, under an isolated project/Neon owner. Receipt: `.local/ordered-controller-live-s3Ajl4/receipt.json`.
+
+The sequence passed: six-slide creation with picture on title slide → read slide two → shorten that reviewed slide → larger text on slide two → clean blue → move slide four before two → append seventh summary slide → undo to six → actual Neon save → controller restart/resume with exact ordered state/history and original source bytes. Measured calls were 7.3 seconds for creation and approximately 0.7–1.8 seconds per subsequent turn, excluding microphone/transcription/playback. These are single-run measurements, not latency guarantees.
+
+Native Office was explicitly disabled; microphone was not exercised. The user's current four-slide **Cyber Monday Guide** and original Marketing image were not modified. A final read-only running-API check confirmed the Cyber Monday checkpoint/hash still matched.
+
+### Actual exported PPTX visual QA
+
+Receipt: `.local/ordered-visual-qa/receipt.json`, finalized **04:53:29 UTC**. Real HF text and vision generated a six-slide campaign deck from the user's copied Marketing picture. The source hash matched, the original image was embedded once on slide one, and editable text plus native process shapes/arrows were retained.
+
+Five variants (dark, clean blue, bright minimal, shortened revision and seven-slide summary) passed package-integrity and layout/heading/bullet geometry checks with **zero findings**. A discovered dangling content-type declaration in PptxGenJS output was removed only when its referenced ZIP part was absent. The final package checks all exited zero.
+
+Rendering produced **31 PNGs** across complete sets. All six dark slides and representative theme/shortened/summary slides were visually inspected: readable contrast, fitting text, undistorted image and no observed overlap/clipping. The bundled renderer exited nonzero during teardown after producing complete PNG sets. One concurrent light-cover render omitted an image; sequential rendering of the identical PPTX displayed it correctly. These limitations are recorded in the receipt. This is actual exported-file/render evidence, not installed Office execution.
+
+### Remaining acceptance and scope
+
+The physical user report at 04:10 UTC confirmed complete sentence capture after a thinking pause. It did not confirm the current interruption or native navigation sequence. The pending acceptance check is actual microphone conversation, interruption, consecutive commands, repeated installed-PowerPoint selection and create/review/revise/undo with the current app.
+
+Hugging Face, ElevenLabs and Neon are integrated; Databricks remains a separate supported Studio workflow. Optional phase-three verified-chart insertion into the active ordered deck is **unimplemented**; the chart schema/render preview does not establish that feature. Vultr is undeployed, old bundles are stale, Gemini/Tiger Data are absent. No new model training or unrestricted desktop editing is claimed.
+
+## Historical verification
+
+The following dated checks are historical snapshots. Newer evidence above supersedes their current-state claims, active-deck names, provider status and test totals.
+
+## October 11 04:25 UTC repeated image edits
+
+The full unit suite passed **499/499 in 38 files**, the relevant desktop/image browser suite passed **10/10**, and production build/typecheck passed. Actual PPTX regressions cover replacement without repeated scaling, independent insertion on another slide, legacy pane recognition, chart/workbook preservation, source integrity, ambiguity/location recovery, filler-rich slide destinations, stale continuation rejection, different-image selection and undo. Browser cases use mocked native IPC and speech providers.
+
+A copy of the actual current Cyber Monday file passed first-slide replacement, second-slide insertion, second-slide replacement, and first-slide replacement. Original source bytes were embedded exactly, all text runs remained, replacement text geometry was exact, unrelated slide parts were unchanged, and the user's original file hash remained unchanged. All four resulting slides and affected before/after slides were rendered and visually inspected. The bundled renderer emitted valid PNGs but exited 1 during teardown. Private artifacts and receipt: `.local/repeat-image-verified-62f59a6b/`. No physical microphone or installed PowerPoint execution is claimed by this check.
+
+The running authenticated API retains Cyber Monday Guide, four slides and the original first-slide image; test copies did not replace the user's active deck. Marketing exists in the known Desktop and Downloads folders. Explicit Desktop resolution returns the actual OneDrive Desktop Marketing directory.
+
+## October 11, 04:08 UTC — sentence capture and presentation feedback
+
+Physical user report at 04:10 UTC: after the restarted buddy and the requested paused-sentence rehearsal, the user answered “it captures my full sentence.” This confirms full-sentence capture in that user trial. The answer did not independently confirm the requested interruption or native PowerPoint navigation; those remain separate checks.
+
+- Full unit suite: **451/451 tests in 38 files**. Production frontend/server build and TypeScript passed.
+- Voice browser suite: **40/40**. Real browser MediaRecorder/oscillator streams plus mocked Scribe sockets, transcription, TTS and task responses exercise delayed microphone readiness on both startup paths, captured first frames, pauses in the exact image/folder and create-for-me/A/topic sentences, quick Stop/No, retained mic capture during network transcription, reversed HTTP-response ordering, newer input during an older recognition failure, and existing interruption/recovery behavior. Voice helper units: 24/24. These checks do not establish physical-microphone accuracy or laptop-speaker echo rejection.
+- Desktop/image browser subset: **9/9**, with mocked native IPC. A successful file insertion remains acknowledged when native slide selection fails; the failure enters the backend conversation. Verified selection and fresh capture, source-folder fallback, cancellation and repeated app activation remain covered.
+- Backend regressions verify that a distinct topic clears stale Marketing/style questions, informational questions and generic repeated creation retain the original topic, a resolved Desktop Marketing folder is reused, and failure-aware planning cannot repeat tested false navigation claims. File insertion does not assign selectedSlide before native verification.
+- Native navigator protocol: 13/13 within the unit suite. Exact expected filename/full path, duplicate rejection, bounded opening/COM-busy retries, one pointer click and cancellation are covered. An owned real PowerPoint fixture opening failed with HRESULT `0x80048240` before navigation; this is blocked native evidence, not a successful Office check. Receipt: `.local/native-ppt-recovery-verified/receipt.json`.
+- Running API GET checks retained the actual revised Black History Month file, four slides and one image edit, with selection unverified. ElevenLabs realtime/synthesis configuration was present; these GET checks made no new provider inference/audio requests. Receipt: `.local/capture-release-api-check.json`. The owned Insight Electron process was restarted to load native changes. Physical speech/active-deck navigation rehearsal was requested separately.
+- Updated continuity, architecture, finish order and rehearsal notes. No provider/model switch, fine-tuning, new sponsor integration or Vultr deployment was introduced. Existing deployment packages need rebuilding before use.
+
+## Existing-slide image recovery — October 11, 2026, 03:48 UTC
+
+Full unit suite passed: 370 tests in 36 files. Nine relevant browser cases passed for desktop activation/navigation, image insertion continuation and source-folder fallback/cancellation, and saved presentation controls. These browser cases use mocked native bridges/providers and synthetic speech; they do not establish physical microphone or installed PowerPoint behavior. Production build/typecheck passed.
+
+The actual four-slide `declaration-of-independence-6be2c862.pptx` and original Desktop Marketing JPG were checked separately. A distinct revised artifact retained every original text run, all three other slide XML parts and 29 unchanged archive parts, with exact source-image bytes. Before/after renders show readable original bullets and a separate image pane. The bundled renderer emitted valid PNGs but exited 1 without diagnostics; native Office rehearsal remains distinct. Receipts/renders are private in `.local/legacy-image-edit-verified/`.
+
+Running local API verified restoration of the unchanged original Declaration file, actual last-slide readback, unambiguous Desktop Marketing resolution, an image-source opening continuation and preserved original presentation hash. It did not execute the continuation or native mouse/microphone. Receipt: `.local/image-recovery-api-verification.json` at 03:48:42 UTC. The exact original file is again the active backend presentation. Extra inserted images are retained through current-session structured revisions, with source-hash checks, but are not yet supported by structured Neon restart/resume; saving such a patched structured project is explicitly refused.
 
 Published source: https://github.com/Wasseem10/insightos
 Public interactive sample: https://insightos-livid.vercel.app/
@@ -170,3 +371,103 @@ Production Electron check: actual .py file in picker-granted folder, real Python
 Computer contract tests cover disk tampering, unimplemented actions, private URL rejection, browser snapshots/control references, purchase and personal-field review, Python execution/import restrictions and cancellation. Vision request format is checked with a mocked provider; a later synthetic image also passed live HF inference. UI tests cover typed commands, source/output, connection dialog, narrow-layout reflow and zero detected Axe violations in tested states. Physical ElevenLabs microphone/playback and live selected-window interpretation remain unverified. No purchase completion, unrestricted OS sandbox, accessibility certification or placement is claimed.
 
 Reproduce: npm test; npm run test:e2e; npm run build; with other instances closed, npm run test:computer and npm run test:desktop.
+
+## Voice folders, research decks and native screen goals (October 10, 2026)
+
+Folder-selection contract tests verify a spoken request and folder-name clarification select the actual source directory, invoke File Explorer with the resolved path, and then generate a real five-slide PPTX using the three selected images without a picker.
+
+Live `test:research-deck` read the two W3C accessibility tips pages and generated five editable slides with nine matching source excerpts and a proposed native-shape diagram. All slides were rendered and visually inspected; the five-stage layout was adjusted after an overlap was found. Source excerpts are checked against page text; this does not establish semantic correctness of every paraphrase. The renderer produced all five PNGs, but its process exits 1 after successful output during runtime teardown. Native PowerPoint opening was deliberately disabled in this rehearsal.
+
+Live `test:screen-goal` used the actual Hugging Face vision model and actual Windows pointer in an isolated local fixture. The shared frontend loop selected and clicked Demo report, captured the changed screen, selected and clicked Demo sources, then captured and recognized the completed state: two native clicks and three captures. This does not validate arbitrary user applications. Contract tests cover signed click grounding, rejected destructive proposals, ambiguous targets, six-action bounds, unchanged screens and interruption before a click. No general native typing or drag capability is claimed.
+
+The final build and 133 unit tests passed. Both presentation UI tests passed, including keyboard review, previews/revisions, source evidence, narrow-layout reflow and zero detected Axe violations in those tested states. The final screen-goal rehearsal also cancelled an in-flight native click before it changed the fixture, and cancelled an in-flight capture. The optimized loop makes one vision decision per step and keeps the independent Windows accessibility-label, screenshot-change and signed-pointer checks. Model response latency varied substantially between live rehearsals; do not promise immediate navigation. Rehearse the physical microphone, actual three-image folder and selected real application before recording. These new features are local; the Vercel sample does not have desktop access.
+
+## Conversation and visible folder navigation repair (October 10, 2026)
+
+The production build and 136 unit tests passed. After the final folder and screen-routing changes, the 35 affected controller/presentation/desktop-intent tests passed again. Twenty-one browser tests passed, including the eighteen voice tests, automatic desktop screen capture, app/folder bridge dispatch, and both presentation workspaces. Voice tests use generated audio streams and mocked providers; the native bridge in the browser test is mocked. A temporary hydrated copy of the voice test was used because OneDrive placeholder attributes prevented Playwright discovery; that duplicate was removed after verification.
+
+A live Hugging Face single-image conversation asked for the design, answered a recommendation question, accepted a dark style, and generated a real three-slide PPTX with an embedded image and editable final diagram. All three slides were rendered and visually inspected. The renderer outputs the PNGs but exits 1 during teardown. The source and fictional brief were isolated QA fixtures, not the user's marketing assets.
+
+The configured ElevenLabs voice was changed to Jessica. Actual speech synthesis returned HTTP 200, and an actual Scribe realtime WebSocket session started successfully. This verifies provider access, not microphone hardware or subjective voice quality. Partial speech now cancels old requests and native actions before the new turn commits. Explicit turns addressed to another assistant are ignored; general room conversation and speaker identity are not reliably distinguished.
+
+An isolated native File Explorer rehearsal verified both a real mouse double-click and the resulting folder location. The Windows 11 folder locator checks the Explorer shell item rather than relying on an often-empty UI Automation ItemType. Covered duplicate items are rejected by accessibility element identity. Taskbar activation and folder double-clicks require uniquely exposed controls; a direct app launch or folder open is the functional fallback. Native clicks and scrolling are bounded; arbitrary typing, dragging, purchases and unrestricted Office UI control remain unsupported.
+
+After the folder locator repair, the live Hugging Face native screen-goal rehearsal passed again: two physical clicks, three fresh captures and completion in 20.6 seconds in the isolated fixture. Cancellation prevented a pending click and a pending capture. Insight was restarted to load the updated native bridge; a separate browser check loaded the local UI without page errors. Evidence remains in ignored `.local/screen-goal-receipt.json`; the fixture did not operate a user application.
+
+The actual personal folder, microphone, new voice playback and complete blindfolded demo still require a user rehearsal. The presentation image route now supports one to six pictures, asks for style, and remembers follow-up context. It creates/revises supported generated decks; inserting into an arbitrary pre-existing presentation is not implemented.
+
+## Actual Marketing folder and exhausted voice quota repair (October 10, 2026)
+
+The later user rehearsal exposed two gaps missed by fixture checks: location-only folder replies were interpreted as names, and Desktop icons were not exposed by Windows UIA. Folder parsing now keeps name and location separate and resolves redirected Windows KnownFolders. The real Marketing Desktop folder was found by spoken name/location without a full path or picker. Native Desktop lookup now verifies MSAA icon bounds/hit testing against that exact filesystem folder in the Desktop Shell namespace. A real test returned clicked=true and opened=true in about five seconds; the source image was unchanged.
+
+Live diagnosis showed Hugging Face text/vision working while ElevenLabs returned HTTP 401 with quota_exceeded for synthesis and transcription. A token/session-start success did not establish usable speech recognition; sending real audio exposed the quota. Both failures now have explicit provider-aware messages. On confirmed quota, transcription uses openai/whisper-large-v3 through Hugging Face and local Windows synthesis returns real WAV audio. The quota cache avoids repeated failed requests for five minutes and a replacement key clears the match. No new key, subscription or paid purchase was made. Windows voice is a less natural backup, not an ElevenLabs voice.
+
+A genuine browser MediaRecorder WebM clip passed live Whisper recognition in about 1.4 seconds. An actual Marketing conversation used a synthesized spoken command, live transcription, the real frontend/backend, the native folder bridge and live image/deck models. It resolved Marketing, automatically captured the resulting screen, asked for style, accepted the repeated creation request, and generated a three-slide Hackathon Innovation deck using images.jpg. The exported PPTX's embedded image bytes match the source SHA-256; no picker or supplied path was used. This exercised synthetic audio, not the user's physical microphone. The actual folder remains at the user location, with generated revision files preserved.
+
+The 159 unit tests and nineteen voice/native-routing browser tests passed. After final conversation changes, the thirty affected folder/presentation tests passed again. The production build passed. Evidence: ignored .local/provider-quota-verification.json, actual-marketing-conversation-receipt.json, actual-marketing-after.png and actual-marketing-preview.pptx. Rehearse physical audio and interruptions with the user before filming; no unrestricted desktop typing, arbitrary PowerPoint UI edits or blind-user validation is claimed.
+
+## Verified PowerPoint slide navigation (October 10, 2026)
+
+“Go to slide two,” “Open the second slide,” and relative next/previous/first/last requests now route to a dedicated `goToSlide` action without a planning model request. Execution is deferred to the trusted Electron bridge, which checks the active presentation identity, navigates, and reads the actual selected slide through PowerPoint COM before reporting success. Out-of-range targets and failed verification do not claim completion. The frontend captures the screen afterward and replies with the slide number and actual title instead of saying it opened PowerPoint.
+
+Real tests on the user's four-slide `the-great-depression-861e9e63.pptx` passed slide 2 → next (3) → previous (2), and rejected slide 5. That Office installation showed an unlicensed-product notice and exposed no usable thumbnail target. The real cursor clicked its verified title bar, then PowerPoint's own navigation selected the slide. Results report `method: powerpoint`, `clicked: false`, and `focusedByMouse: true`; no thumbnail click or dragging was demonstrated. The optional accessibility-thumbnail path remains unverified on this installed Office build.
+
+After restarting the real buddy, a typed “Go to slide two” passed through the actual frontend, local backend, preload and native IPC, selected slide 2, captured the screen and returned “Slide 2, What Was the Great Depression?” No providers or native actions were mocked in that rehearsal. It did not exercise microphone hardware or spoken playback. Evidence: ignored `.local/native-slide-receipt.json`, `.local/slide-ipc-receipt.json`, and `.local/slide-ipc-after.png`.
+
+The full unit suite passed 165 tests across 25 files, and production build passed. Six focused parser/native-validation tests and all four desktop-routing browser tests passed after final adjustments. Browser regressions use mocked native/provider paths and verify exact targets, fresh capture after success, and no success or application-open substitute after failed verification.
+
+## British male voice selection (October 10, 2026)
+
+The user requested a British male ElevenLabs voice. The accessible account catalog confirmed George — Warm, Captivating Storyteller as a premade British male. Only `ELEVENLABS_VOICE_ID` was changed through the running authenticated connections API, which returned HTTP 200 and updated both live configuration and local settings. A real short speech request still returned HTTP 401 `quota_exceeded`; the current audible backup remains Windows speech. No key was changed and no credits or subscription were purchased. George's app playback is pending restored quota. Evidence: ignored `.local/british-male-voice-verification.json`.
+
+## Presentation follow-up conversation repair (October 10, 2026)
+
+Waiting for a picture-deck style previously intercepted nearly every what/how/which question and repeated the same recommendation. The route now distinguishes style advice and preferences from unrelated conversation, passes other questions to the planner, and retains the original presentation goal. A regression asks about slide count, models, computer capabilities and sponsors, then accepts the style and verifies creation of the original hackathon deck. Existing recommendation, preference and repeated-create behavior remains covered. Eleven focused presentation tests, the complete 166-test suite and production build passed; the running local API is healthy. The tests use model substitutes and do not establish humanlike live conversation. No language model was changed and OpenAI live voice is not integrated.
+
+## Restored ElevenLabs and current continuity (October 10, 2026)
+
+After the user reported completed signup, minimal real account checks passed: George TTS HTTP 200 with 34,316 audio bytes, recorded synthetic-audio transcription HTTP 200 with a nonempty transcript, and Scribe realtime actual-audio commit with a nonempty `committed_transcript`. The running Insight `/api/voice/speak` returned HTTP 200, provider `elevenlabs`, and 26,375 audio bytes; its realtime-token endpoint also returned HTTP 200. No backend restart, source edit, or key change was needed. These checks used synthetic audio; the user's physical microphone, subjective voice quality, and complete conversation rehearsal remain separate. Evidence: ignored `.local/eleven-redemption-verification.json`, with a real George audio sample at `.local/eleven-creator-george.mp3`.
+
+The root continuity instructions and current architecture, sponsor status, presentation rehearsal, and submission plan were synchronized with the user-selected visual-work demo. The code audit confirms blue/light/dark generated-deck themes, real image embedding, structured text/diagram revisions, image swaps, revision files and undo. It does not establish arbitrary PPTX import/editing, custom shape positioning, or a live Vultr/Tiger Data integration. This update changed documentation only; no additional implementation was introduced by the audit.
+
+## Live Neon presentation save and resume (October 10 EDT / October 11 UTC)
+
+The production Neon connection passed an actual write/read at October 11, 02:23:37 UTC. Neon CLI configuration/deployment completed with no changes. The presentation adapter stores parameterized owner-scoped JSONB in `insightos_presentation_projects`; the connected project is `green-forest-70722326`. Credentials remain only in ignored configuration.
+
+At 02:25:08 UTC, a real controller saved a synthetic dark five-slide image deck to Neon, resumed it after a controller restart, saved an image-swap revision, resumed after a second restart, then undid the swap and saved revision three. The structured deck, theme, original source references and revision history survived. Embedded image hashes matched the three original sources after regeneration. A direct SQL read verified the current owner's exact saved row and absence of absolute source-root/raw-image/private-manifest fields in the cloud body. Evidence: ignored `.local/neon-presentation-verification.json`. This used real Neon SQL and synthetic QA images, with no inference calls or inference mocks and no physical desktop actions. Regenerated PPTX metadata and unique filenames can differ; original embedded image bytes and deck structure were checked.
+
+At 02:26:17 UTC, the running app's actual API list → resume with `open:false` → save → voice-list sequence returned HTTP 200 with provider `neon`. Evidence: ignored `.local/neon-presentation-api-verification.json`. The retained project is a synthetic rehearsal deck. This verifies the app/API storage integration; it does not verify a physical microphone, spoken playback or Office navigation.
+
+The commands “Save my presentation,” “List my saved presentations,” and “Resume my last presentation” now use the image-project persistence routes. Saving is explicit and later edits display unsaved status. Up to eight undo entries persist. Same-laptop resume rechecks original image filenames, IDs, byte hashes and dimensions and the optional brief hash before changing active state. Missing/changed sources reject restoration; new folder images are ignored. Exact source-directory bindings and output references remain in a private local manifest. Resume writes a fresh uniquely named PPTX without model inference. Independent Office edits, research-only decks, browser sessions and screen-goal state are outside this contract. A failed Neon operation can fall back locally with a visible warning and local provider attribution.
+
+Fifteen schema/store tests and eight controller/source-restoration integration tests passed. Coverage includes revision/history recovery, source-image embedding, changed-source rejection with unchanged active state, cancellation, hosted restrictions, exact source IDs/captions and brief verification. The final full unit suite passed **211/211 tests across 27 files**, and the production build passed. The final cloud-fixture expectation was corrected before that passing run. These tests use isolated fixtures/model substitutes where required and do not replace the actual Neon checks above.
+
+A targeted presentation browser test also passed keyboard save controls, Neon status, unsaved-change feedback, resume/history and undo, narrow-layout reflow, and an automated Axe scan with zero detected violations. That test uses mocked provider/native paths, including mocked Neon responses; the real SQL and running-API evidence above are separate checks. No screen-reader or physical microphone validation is established by the browser test.
+
+The Vultr deployment package passed 24 checks and Compose validation. Account setup remains incomplete after an earlier rejected Google sign-in, and no server is connected, so `deployed=false` remains the current status; no reachable Vultr-hosted inference task is claimed. Tiger Data and Gemini remain unintegrated. Earlier missing-Neon statements in this dated log are superseded by this section. Rehearse the complete actual-image, physical-voice save/restart/resume sequence before recording the final demo.
+
+## Vultr account ready, deployment pending (October 10, 2026 EDT)
+
+The user reported completed Vultr signup and claimed credits. A read-only inspection of the authenticated Vultr console confirmed the account is signed in and its instance list shows no instances. No compute resource was created or purchased, and no cloud inference deployment is claimed. Next work is to select a credited instance, deploy the prepared backend, and verify actual authenticated HF inference through it.
+
+## October 11, 02:51 UTC — final voice/Studio fixes
+
+- Full unit suite: 220/220 tests across 31 files. Production frontend and server build passed.
+- Voice: 22/22 browser tests passed, with synthetic oscillator microphone streams, fake Scribe sockets and mocked APIs. Added coverage for short “no” partial interruption, listening through delayed speech synthesis, listening during work without acknowledgments, cancellation of stale replies, and realtime-to-recorded fallback. These do not establish physical microphone timing or echo rejection.
+- Studio: real Hugging Face interpretation and Databricks ingestion/SQL, source-row reconciliation, Excel cached formulas and PowerPoint native chart/embedded workbook values passed at 02:47:27 UTC. The fictional fixture had $126,000 previous revenue, $141,000 current revenue, 11.90476% growth, 30 included records and two excluded locations. `.local/studio-live-verified/receipt.json` includes the actual SQL statement reference. Outputs are `verified-analysis.xlsx` and `verified-analysis.pptx` in that directory. Native Office launch and live Excel recalculation were not exercised.
+- Fixed active Studio reports being consumed by a selected image folder. Fixed combined Databricks-and-export requests ignoring SQL verification. Failed verification does not export a falsely labeled local result.
+- A real HF follow-up, “Can you remind me what we found?”, returned the correct 52.2% overall versus 11.9% continuous-location comparison with exact totals after adding current Studio context and explicit conversational routing guidance. Model planning took 1,295 ms, excluding audio transport/synthesis. Receipt: `.local/conversation-context-verification.json`.
+- Vultr: 2 GB Ubuntu 24.04 server configuration prepared at $10/month, billed hourly, with no paid add-ons. Billed deployment approval remains pending. No server or inference on Vultr is verified. The Linux runtime build must run on the owned host because this laptop lacks WSL.
+
+Latest local API verification (02:52:41 UTC): authenticated status passed; actual ElevenLabs George audio returned HTTP 200 (89,487 bytes) and a new realtime token returned 200. Synthesis took 408 ms for the test sentence, excluding microphone/recognition/model stages. HF, Databricks, ElevenLabs and Neon were configured; Vultr remained unconfigured. Receipt: `.local/release-api-verification.json`.
+
+The final precompiled Vultr archive after the conversational-context change is `.local/vultr-bundle-t6iMF5.tar.gz`, SHA256 `6D9439B92EE01899EE9EFEB35441FFB3940EDDBA654A0842C77FE807F5CF7D2D`. It contains 87 allowlisted files and excludes credentials/private assets. Archive preparation is not server deployment.
+
+## October 11, 03:08 UTC — cursor continuity and voice recovery
+
+- Real native fixture: three actual Win32 clicks; fresh signed captures; cancellation followed by two new targets; overlapping replacement capture; target focus retention; scrolling and replay/forgery rejection. Receipt `.local/native-pointer-repeat-verification.json`. This used an isolated owned Electron fixture and synthetic vision responses, not the physical microphone or user-installed apps.
+- Native app lookup supports grouped/window taskbar labels and prefers a verified safe title bar for running apps, avoiding an active taskbar icon's minimize toggle when safe title chrome is exposed. It uses abortable fresh lookup retries when an app window has not appeared. Final native unit subset: 7/7, including caption preference over an available taskbar target. Renderer retries after app launch, handles planner-generated activation intents, and recaptures. Desktop browser suite: 5/5 with mocked native bridge.
+- Voice: 29/29 browser cases passed across an isolated 28-case run and the muted recovery case. Synthetic microphone audio and mocked Scribe/API responses exercised fast repeated commands versus duplicates, session restart, recognition recovery, malformed responses, delayed recovery interruption, mute, output failure and existing interruption paths. 20 voice/speech unit cases passed. Explicitly addressing another assistant while mentioning Insight no longer becomes an Insight command.
+- Full unit run: 224/224 in 31 files before three final native tests; final native subset includes those additional tests. Production build passed. Running Electron was restarted after the final native fix.
+- Running API: actual ElevenLabs audio 200 (85,725 bytes, 408 ms synthesis) and realtime token 200 at 03:07:40 UTC. These endpoint checks do not establish real microphone/echo behavior.
+- Vultr billing: $100 remaining credit, expiry November 10; $10/month Ubuntu server prepared with no paid add-ons. Final approval remains pending; no hosted inference is claimed. Updated allowlisted archive `.local/vultr-bundle-uEP06n.tar.gz` has SHA256 `BD4CB65137F1092CCF131142A9186EB95628BE8D4FB56B8D5250CC3A48DD2003`.

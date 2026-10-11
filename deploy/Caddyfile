@@ -1,3 +1,9 @@
+{
+  admin off
+}
+
 {$INSIGHTOS_DOMAIN} {
+  encode zstd gzip
+  header -Server
   reverse_proxy app:4311
 }

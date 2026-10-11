@@ -1,54 +1,54 @@
-# InsightOS — hear the numbers, make the decision
+# InsightOS — visual work, directed by voice
+
+> Working draft. The one-file editing repair is running. Branching diagrams, integrated charts and spoken layout review are being completed and tested in the next build. Update this draft after the final voice rehearsal before submitting; the public browser sample still shows an earlier bill workflow.
 
 ## One-line pitch
 
-A voice-first desktop companion that helps blind and low-vision people understand household bills, compare affordable options, and prepare their next step.
+InsightOS helps blind and low-vision people explore data and create, review, and revise visual presentations using their own files and their voice.
 
 ## Inspiration
 
-Reading a bill, checking a spreadsheet, and completing a form can require many visual and mouse interactions. We built InsightOS to make a useful financial workflow possible through conversation, while preserving source evidence and the user's choices.
+A presentation is more than its text. Its images, charts and diagrams communicate information that can be difficult to direct and check without sight. We wanted a person to be able to say what they want, hear what was made, challenge it, and change it independently.
 
 ## What it does
 
-The demonstration starts with two electricity-bill PDFs. Insight finds saved documents, asks before reading, and extracts their billing fields. It reads the numbers aloud and waits for the user to confirm or correct them. The workspace keeps the original pages and source quotes beside the editable values.
+Insight lives in a floating Windows companion. The user presses Play and speaks naturally, including interrupting a reply to correct the task. They can name a folder on their Desktop, Documents or Downloads without uploading it or knowing its full path.
 
-After confirmation, Insight explains the change in usage, effective energy rate, and other current charges. A real Databricks SQL query verifies those components against the local calculation, with the statement reference available in the workspace. Our clearly labeled sample bills rise from $195 to $240, with the $45 change coming from increased usage.
+Insight uses original pictures and an optional brief to create a real editable PowerPoint. Slide count is independent of picture count. It reads slide content and image descriptions aloud. The user can navigate to a specific slide, replace an image, revise text or process steps, change the theme, and undo a supported revision. Edits refresh the same working presentation, with private recovery copies rather than a new visible document for every change. Explicitly saved projects and bounded undo history can resume through Neon on the same laptop with the original source files.
 
-The user sets a maximum monthly improvement payment and compares fictional efficiency quotes. The key interaction is a change of mind: after preparing a practice application at a $60 limit, the user says “Wait, I can only afford thirty dollars a month.” Insight invalidates the old verification, flags the selected $41.67 payment as above budget, and keeps the existing applicant answers. Choosing the $25 weather-sealing option updates the browser form and verifies its eight review values again before reading them back. Nothing is submitted.
+Our supporting data workflow shows why conversation matters. In a labeled fictional quarterly operations dataset, revenue appears to grow 52.2%. The user interrupts: “Wait, compare only the same locations.” Growth becomes 11.9%, because newly opened locations changed the original comparison. Insight exposes the contributing source rows, verifies the calculation with actual Databricks SQL, and creates an Excel workbook with formulas plus a six-slide PowerPoint with an editable chart. The exports match the verified calculation.
 
-A real OUC conservation-program link provides a local next step; OUC determines actual eligibility and costs. Follow-up usage recording is supported, but weather and occupancy can affect it. The prototype does not claim measured energy savings, approved financing, or blind-user validation.
-
-Insight lives in a native Windows floating buddy, with a center Play button, global shortcuts, spoken replies, and interruption support. Its accessible companion workspace includes keyboard controls, larger text, source previews, and chart descriptions. It also supports transaction CSV/XLSX analysis, reversible budget scenarios, editable Excel exports, and PowerPoint generation. These are additional capabilities; the recording follows one bill-to-decision story.
+These are two supported workflows in the same companion. The image deck and the data report are not automatically merged. The prototype also opens common applications, supports web research decks, and performs bounded, verified navigation of named screen controls.
 
 ## How we built it
 
-Electron provides the floating window, tray and global shortcuts. React and TypeScript render the companion workspace; Fastify validates requests and keeps provider credentials outside the renderer.
+Electron provides the floating buddy, shortcuts and Windows integration. React and TypeScript render keyboard-accessible workspaces. Fastify validates actions and keeps credentials outside the renderer. Local tools write PowerPoint and Excel files directly; generating a deck does not require simulated mouse dragging.
 
-Hugging Face open models extract text and scanned bill fields, interpret flexible requests, and generate supported files. Text-field proposals need an observed source quote containing their numeric value; scanned-image fields require user review. Missing fields, inconsistent totals and duplicate billing months block comparison. ElevenLabs provides streaming transcription and short spoken replies. Deterministic tools validate fields and calculate financial results rather than accepting model-generated arithmetic.
+Hugging Face hosted open models interpret requests, describe source pictures and screens, and plan structured presentation content. Qwen text and vision outputs pass typed validation; file operations and numerical calculations use deterministic tools. ElevenLabs Scribe handles streaming speech recognition, and Flash generates spoken replies using the British male George voice. The microphone stays available during replies and task processing, and cancellation prevents an older reply from playing after an interruption.
 
-Databricks runs parameterized SQL over confirmed numeric inputs and reconciles the returned bill-change components before displaying the cloud-verification label. Its real warehouse connection test also passed both known operations-data fixtures. Keys are saved privately in a Git-ignored local environment file. Neon and Vultr adapters exist, but neither is deployed or live verified and neither is a demonstrated sponsor integration.
+Databricks ingests the supported operations records and runs bound SQL. Returned results must reconcile against the source calculation before a report receives a Databricks verification label. Neon stores explicitly saved structured image decks and up to eight prior revisions in owner-scoped JSONB. Source-folder bindings and original picture bytes stay local, and resume checks their hashes.
 
-We used Codex to help implement and test the project, and checked actual provider responses, PDFs, generated files, browser fields and UI behavior.
+Vultr deployment is prepared for an authenticated HTTPS AI backend; desktop execution remains on the user's laptop. **The server is not yet deployed or verified. Remove this paragraph or replace it with actual deployment evidence before claiming the Vultr prize.**
 
 ## Challenges and learning
 
-The difficult part was carrying corrections through an entire workflow. A revised bill must invalidate its old comparison; a changed budget must invalidate an old application; a canceled request must release its settings lock. Source checks, typed actions, deterministic calculations and fresh browser read-back make these transitions reviewable. We also separated calculated estimates from observed results, and tested actual services rather than treating saved credentials as proof of connectivity.
+The difficult part was keeping a correction consistent across conversation, files and cloud services. An image swap must change the actual embedded image; a changed data filter must invalidate the old reports; interrupted speech must not resume later. We fixed workflow routing so a selected image folder cannot intercept an Excel analysis report. We also made an explicit “verify with Databricks and create a report” request verify first, rather than exporting a local result and ignoring the provider request.
 
-## Verified evidence
+The voice pipeline has separate transcription, model planning and speech generation stages. We improved interruption and listening behavior without fine-tuning a model. It does not yet match the timing of an integrated speech-to-speech assistant in every situation.
 
-- Live Hugging Face text extraction of two genuine synthetic PDFs and vision extraction of a rasterized bill: `artifacts/bill-rehearsal.json`.
-- Live Databricks bill reconciliation and statement reference: `artifacts/databricks-energy-live.json`; the combined rehearsal also includes a real SQL verification step.
-- The $60 → $30 correction withdraws stale verification, then the selected $25 option is checked in the owned browser practice form.
-- Desktop, mobile and buddy bill workflows passed automated accessibility checks. UI screenshots: `artifacts/bill-workspace.png`, `artifacts/bill-mobile.png`, `artifacts/bill-buddy.png`.
-- Earlier live ElevenLabs transcription/audio checks passed. The physical laptop microphone, speaker echo and spoken interruption still need a human rehearsal before the final recording.
+## Verification and limits
 
-## Challenge fit
+- Actual source images were checked against the bytes embedded in generated slides. Native PowerPoint slide selection has been verified on this laptop.
+- Actual Hugging Face and Databricks calls reconciled $126,000 to $141,000, 30 contributing rows and two excluded locations. The Excel formula caches, PowerPoint figures, native chart and its embedded editable workbook matched those numbers.
+- Actual Neon save, backend restart, resume, swap and undo passed with original source hashes.
+- Recorded/realtime ElevenLabs provider checks passed. Automated interruption tests use synthetic audio and mocked providers; physical microphone and speaker timing still need the final human rehearsal.
+- Supported spreadsheet imports use a constrained six-column operations format. Arbitrary existing-PPTX editing, unrestricted Office mouse editing, completed purchases and application submissions are outside this prototype's demonstrated scope.
+- A blindfolded demonstration by a sighted teammate is a rehearsal, not validation by blind users.
 
-Hugging Face and Databricks are the clearest demonstrated sponsor fits: open text/vision models make documents conversational, and live SQL turns confirmed data into a useful decision. ElevenLabs powers the spoken interaction. The BNY angle is an accessible financial-data and client workflow; the separate transaction/Excel capability can support that pitch. OneEthos is a local conservation extension, with projected reductions and a follow-up measurement plan rather than a claim of achieved community impact. These are proposed fits, not prize guarantees.
+## Submission links
 
-## Submission still needed
+- Source: https://github.com/Wasseem10/insightos — publish the tested local changes before submission.
+- Public sample: https://insightos-livid.vercel.app/ — earlier browser bill-calculation sample; it does not demonstrate local desktop access.
+- Demo video: attach the recorded Windows companion workflow after rehearsal.
 
-- Final narrated video: use the focused script in `COMPUTER-DEMO.md` after a physical voice rehearsal.
-- Public repository URL and both teammates' details.
-- Select only relevant tracks, attach evidence screenshots, and attend the sponsor judging rooms announced by the event.
-- Do not claim a Vultr or Neon deployment, completed purchases, real application submissions, or measured savings.
+Hugging Face, ElevenLabs and Neon support the main presentation demo. Include Databricks when showing the separate verified data segment. Select Vultr only after the real deployment passes. The current demonstration does not establish OneEthos environmental impact or a Figma file submission.

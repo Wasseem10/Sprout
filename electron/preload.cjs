@@ -18,6 +18,12 @@ contextBridge.exposeInMainWorld('insightos', {
     ),
   scrollCurrentScreen: (direction) =>
     ipcRenderer.invoke('insightos:scroll-current-screen', direction),
+  cancelPointerActions: () => ipcRenderer.invoke('insightos:cancel-pointer-actions'),
+  navigatePresentationSlide: (slide, filename) =>
+    ipcRenderer.invoke('insightos:navigate-presentation-slide', slide, filename),
+  activatePinnedApp: (app) => ipcRenderer.invoke('insightos:activate-pinned-app', app),
+  openVisibleFolder: (name, path) =>
+    ipcRenderer.invoke('insightos:open-visible-folder', name, path),
   openAccount: (provider) => ipcRenderer.invoke('insightos:open-account', provider),
   platform: process.platform,
   setBuddyMode: (mode) => ipcRenderer.invoke('insightos:buddy-mode', mode),

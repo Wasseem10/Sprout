@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-10-10T23:32:08.138Z",
+  "live": false,
+  "interpretation": "supported-commands",
+  "analytics": "local-sample",
+  "previousTotal": 126000,
+  "currentTotal": 141000,
+  "includedRows": 30,
+  "outputs": {
+    "excel": "insight-analysis-r2-90154b8b.xlsx",
+    "powerpoint": "insight-analysis-r2-05c10c60.pptx"
+  },
+  "microphone": "User previously reported speech and interruption work; this workflow still needs a physical voice rehearsal."
+}

@@ -37,6 +37,19 @@ async function setup(
   return { controller, cfg };
 }
 const signal = () => new AbortController().signal;
+it('returns a desktop activation intent for app requests routed through the planner', async () => {
+  const nativeApps = await import('../server/computer/native-apps');
+  const open = vi.spyOn(nativeApps, 'openNativeApp').mockResolvedValue({
+    app: 'chrome',
+    name: 'Chrome',
+    mode: 'focused',
+  });
+  const { controller } = await setup();
+  const result = await controller.action({ tool: 'openApp', app: 'chrome' }, signal());
+  expect(open).toHaveBeenCalledOnce();
+  expect(result.desktopIntent).toEqual({ kind: 'activateApp', app: 'chrome' });
+  expect(result.state.lastApp?.app).toBe('chrome');
+});
 it('keeps shopping follow-ups on the active merchant and asks for exact medicine details', async () => {
   const state = {
     folder: null,
@@ -283,9 +296,10 @@ it('blocks private URLs and never converts missing vision credentials into a can
   ])
     await expect(publicUrl(url)).rejects.toThrow('Computer browser');
   const { controller } = await setup();
-  await expect(controller.action({ tool: 'describeScreen' }, signal())).rejects.toThrow(
-    'selected screen',
-  );
+  const deferred = await controller.action({ tool: 'describeScreen' }, signal());
+  expect(deferred.desktopIntent).toEqual({ kind: 'describe' });
+  expect(deferred.state.screen).toBeNull();
+  expect(deferred.summary).not.toContain('I see');
   expect(starterPlan('order everything and pay for it', controller.snapshot()).action).toBeNull();
   expect(
     starterPlan('order everything and pay for it', controller.snapshot()).clarification,

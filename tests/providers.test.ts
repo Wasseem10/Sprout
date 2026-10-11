@@ -5,6 +5,8 @@ import { livePlan, samplePlan } from '../server/providers/planner';
 import { Databricks } from '../server/providers/databricks';
 import { emptyWorkspace, planSchema } from '../shared/schema';
 import { parseCsv, defaultComparison } from '../shared/analysis';
+import { fetchJson, providerFailure } from '../server/providers/http';
+import { huggingFaceTranscribe, speechModel } from '../server/providers/speechRecognition';
 const cfg = {
   ...config(),
   hfToken: 'fake-test-token',
@@ -21,6 +23,68 @@ const reply = (body: unknown) =>
     status: 200,
     headers: { 'Content-Type': 'application/json' },
   });
+it('distinguishes depleted ElevenLabs speech credits from an invalid key without exposing provider messages', async () => {
+  const failure = await providerFailure(
+    new Response(
+      JSON.stringify({
+        detail: {
+          status: 'quota_exceeded',
+          message: 'Private account or secret must not be exposed',
+        },
+      }),
+      { status: 401 },
+    ),
+    'ElevenLabs speech',
+  );
+  expect(failure).toMatchObject({
+    provider: 'ElevenLabs speech',
+    httpStatus: 401,
+    reason: 'quota',
+  });
+  expect(failure.message).toContain('speech credits are exhausted');
+  expect(failure.message).not.toContain('Private account');
+});
+it('identifies the failing inference provider without exposing error bodies or unknown codes', async () => {
+  vi.stubGlobal(
+    'fetch',
+    vi
+      .fn()
+      .mockResolvedValue(
+        new Response(
+          JSON.stringify({ error: { code: 'invalid_api_key', message: 'secret-value' } }),
+          { status: 401 },
+        ),
+      ),
+  );
+  await expect(fetchJson('https://router.huggingface.co/v1/chat/completions')).rejects.toThrow(
+    'Hugging Face rejected its saved API key',
+  );
+  const failure = await providerFailure(
+    new Response(JSON.stringify({ detail: { status: 'secret-value', message: 'private' } }), {
+      status: 503,
+    }),
+    'ElevenLabs',
+  );
+  expect(failure.reason).toBe('access');
+  expect(failure.message).not.toContain('secret-value');
+});
+it('transcribes bounded audio using the saved Hugging Face token and configured open Whisper model', async () => {
+  const audio = Buffer.from('synthetic audio fixture');
+  const fetchMock = vi
+    .fn()
+    .mockResolvedValue(reply({ text: 'Make a presentation about hackathons.' }));
+  vi.stubGlobal('fetch', fetchMock);
+  await expect(
+    huggingFaceTranscribe(cfg, audio, 'audio/webm', new AbortController().signal),
+  ).resolves.toBe('Make a presentation about hackathons.');
+  expect(fetchMock.mock.calls[0][0]).toBe(
+    'https://router.huggingface.co/hf-inference/models/' + speechModel,
+  );
+  expect(fetchMock.mock.calls[0][1]).toMatchObject({
+    headers: { 'Content-Type': 'audio/webm' },
+    body: new Uint8Array(audio),
+  });
+});
 it('repairs malformed inference once, then rejects unsupported actions', async () => {
   const fetchMock = vi
     .fn()

@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import ExcelJS from 'exceljs';
 import { config } from '../server/config';
 import { ComputerController } from '../server/computer/controller';
+import * as presentationIntent from '../server/computer/presentation-intent';
 import { calculateLoan, newFinanceState, refreshFinance } from '../shared/finance';
 import {
   loadFinanceDemo,
@@ -22,6 +23,16 @@ afterEach(async () => {
 });
 const signal = () => new AbortController().signal;
 async function fixture() {
+  // These turns belong to the finance workflow; keep the current semantic entry point enabled
+  // while isolating its classification from the finance provider/calculation contract.
+  vi.spyOn(presentationIntent, 'interpretPresentationTurn').mockResolvedValue({
+    kind: 'request',
+    domain: 'other',
+    startsNewTask: false,
+    awaitingContinuation: false,
+    fields: {},
+    operations: [],
+  });
   const cfg = {
     ...config(),
     hfToken: '',

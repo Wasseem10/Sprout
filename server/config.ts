@@ -1,6 +1,12 @@
 import 'dotenv/config';
 import path from 'node:path';
 export function config() {
+  const writingReasoning = process.env.HF_WRITING_REASONING_EFFORT?.trim() || undefined;
+  const writingReview = process.env.HF_WRITING_REVIEW_ENABLED?.trim().toLowerCase() || 'false';
+  if (!['true', 'false'].includes(writingReview))
+    throw new Error('HF_WRITING_REVIEW_ENABLED must be true or false.');
+  if (writingReasoning && !['none', 'minimal', 'low', 'medium', 'high'].includes(writingReasoning))
+    throw new Error('HF_WRITING_REASONING_EFFORT must be none, minimal, low, medium or high.');
   const port = Number(process.env.PORT ?? 4311),
     host = process.env.HOST ?? '127.0.0.1';
   const mode = process.env.APP_MODE ?? 'sample';
@@ -34,6 +40,9 @@ export function config() {
     owner: 'single-user-pilot',
     hfToken: process.env.HF_TOKEN ?? '',
     hfModel: process.env.HF_MODEL_ID || 'Qwen/Qwen2.5-7B-Instruct',
+    hfWritingModel: process.env.HF_WRITING_MODEL_ID?.trim() || '',
+    hfWritingReasoningEffort: writingReasoning as 'none' | 'minimal' | 'low' | 'medium' | 'high' | undefined,
+    hfWritingReviewEnabled: writingReview === 'true',
     hfVisionModel: process.env.HF_VISION_MODEL_ID || 'Qwen/Qwen2.5-VL-7B-Instruct',
     pythonBin: process.env.PYTHON_BIN ?? '',
     codeBin: process.env.VSCODE_BIN ?? '',
