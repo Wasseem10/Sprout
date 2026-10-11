@@ -1,5 +1,7 @@
 # Sprout v005 — happy eyes, thin glass and subtle depth
 
+**Additional appearance:** [Daylight v006](DELIVERY-v006.md) provides softer reflections for light backgrounds. This original v005 asset and its lighting remain available unchanged through the appearance selector.
+
 **Current panel material:** [Light glass v008](../frutiger-aero/SPROUT-CLEAR-GLASS-v008.md) uses a bright translucent sheet, restrained colour reflections and plain dropdown rows. Its captures supersede the panel appearance below and the dark v007 study; the v005 avatar and behavior delivery remain unchanged.
 
 Implementation on `ui/presentation-polish`, continuing from `5125348`. This delivery refines the existing React/Vite/Three/Electron companion. The finance/backend contracts, ElevenLabs owner, sessions and saved preferences are preserved. The existing draft PR remains the review destination; no merge or production deployment is part of this work.

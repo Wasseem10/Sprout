@@ -5,6 +5,7 @@ import type { BuddyVisualState } from './AssistantSignal';
 import type { BuddyReadingMemory } from './useBuddyPanel';
 import type { ComputerState } from '../shared/computer';
 import './buddy-panel-preview.css';
+import { SPROUT_DAYLIGHT_ASSET, SPROUT_ORIGINAL_ASSET, sproutReviewAsset } from './buddyAppearance';
 
 const empty: ComputerState = { folder: null, code: null, browser: null, screen: null };
 type Message = { id: string; role: 'user' | 'assistant' | 'error'; text: string };
@@ -49,6 +50,7 @@ export default function BuddyPanelPreview({
   const [expandedLocal, setExpandedLocal] = useState(true);
   const [phaseLocal, setPhaseLocal] = useState<BuddyVisualState>('idle');
   const [background, setBackground] = useState('light');
+  const [previewAsset, setPreviewAsset] = useState(() => sproutReviewAsset(window.location.search));
   const [large, setLarge] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [request, setRequest] = useState('');
@@ -126,6 +128,20 @@ export default function BuddyPanelPreview({
                 <option value="speaking">Speaking</option>
               </select>
             </label>
+            <label>
+              Sprout appearance{' '}
+              <select
+                value={previewAsset}
+                onChange={(event) => setPreviewAsset(event.target.value)}
+              >
+                <option value={SPROUT_DAYLIGHT_ASSET}>Daylight</option>
+                <option value={SPROUT_ORIGINAL_ASSET}>Original</option>
+                {previewAsset !== SPROUT_DAYLIGHT_ASSET &&
+                  previewAsset !== SPROUT_ORIGINAL_ASSET && (
+                    <option value={previewAsset}>Legacy reference</option>
+                  )}
+              </select>
+            </label>
           </div>
         </header>
       )}
@@ -138,7 +154,7 @@ export default function BuddyPanelPreview({
           <div className={`buddy-shell${large ? ' large-text' : ''}`}>
             <DesktopBuddy
               embedded={embedded}
-              visual={visual}
+              visual={{ ...visual, assetUrl: visual?.assetUrl ?? previewAsset }}
               audio={audio}
               expanded={expanded}
               modalOpen={false}

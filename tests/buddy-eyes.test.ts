@@ -16,7 +16,10 @@ const input = (overrides: Partial<BuddyBehaviorInput> = {}): BuddyBehaviorInput 
 /** These Node proofs load real exported geometry/tracks; texture pixels/GPU appearance are not tested. */
 async function actualAsset(version = 'v005') {
   const bytes = await readFile(
-    new URL(`../design/buddy/sprout/sprout-prism-${version}.glb`, import.meta.url),
+    new URL(
+      `../design/buddy/sprout/sprout-${version === 'v006' ? 'daylight' : 'prism'}-${version}.glb`,
+      import.meta.url,
+    ),
   );
   const loader = new GLTFLoader().register(() => ({
     name: 'GeometryOnlyTexturePlaceholder',
@@ -48,6 +51,25 @@ async function actualAsset(version = 'v005') {
 }
 
 describe('actual happy-eye export and exclusive mixer ownership', () => {
+  it('keeps the daylight material variant on the same strict eye/animation contract with matching stills', async () => {
+    const asset = await actualAsset('v006');
+    try {
+      expect(auditSproutModel(asset.scene, asset.animations)).toEqual([]);
+      expect(asset.controller.snapshot().eyeProfile).toBe('happy-eyes-v005');
+      expect(asset.animations).toHaveLength(11);
+      expect(buddyStillPaths('/buddy/sprout-v006.glb', true).slice(0, 3)).toEqual([
+        '/buddy/sprout-v006-sleep.png',
+        '/buddy/sprout-v005-sleep.png',
+        '/buddy/sprout-v004-sleep.png',
+      ]);
+      expect(buddyStillPaths('/buddy/sprout-v006.glb', false).slice(0, 2)).toEqual([
+        '/buddy/sprout-v006.png',
+        '/buddy/sprout-v005.png',
+      ]);
+    } finally {
+      asset.dispose();
+    }
+  });
   it('accepts exact complete bindings and rejects constant/missing or indexed eye tracks', async () => {
     const asset = await actualAsset();
     try {

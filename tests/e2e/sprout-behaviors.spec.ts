@@ -2,7 +2,12 @@ import { test, expect } from '@playwright/test';
 import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
 
-const output = path.resolve('artifacts/glass-sprout-v005/browser');
+const assetVersion = process.env.INSIGHTOS_PROOF_ASSET_VERSION ?? 'v005';
+const output = path.resolve(
+  'artifacts',
+  process.env.INSIGHTOS_PROOF_TAG ?? 'glass-sprout-v005',
+  'browser',
+);
 
 test('authored joy, sleep/Zs, wake and Done use actual controller states', async ({ page }) => {
   test.setTimeout(45000);
@@ -12,7 +17,7 @@ test('authored joy, sleep/Zs, wake and Done use actual controller states', async
   page.on('request', (request) => {
     if (new URL(request.url()).pathname.startsWith('/api/')) calls.push(request.url());
   });
-  await page.goto('/?studio=buddy&asset=sprout-v005');
+  await page.goto(`/?studio=buddy&asset=sprout-${assetVersion}`);
   const signal = page.locator('.studio-launcher .insight-signal');
   await expect(signal).toHaveAttribute('data-renderer', 'webgl');
   const click = async (label: string) => {
@@ -74,7 +79,7 @@ test('authored joy, sleep/Zs, wake and Done use actual controller states', async
   await expect(signal).toHaveAttribute('data-renderer', 'fallback');
   await expect(signal.locator('.signal-authored-image')).toHaveAttribute(
     'src',
-    '/buddy/sprout-v005-sleep.png',
+    `/buddy/sprout-${assetVersion}-sleep.png`,
   );
   await expect
     .poll(() => signal.locator('img').evaluate((image) => (image as HTMLImageElement).naturalWidth))

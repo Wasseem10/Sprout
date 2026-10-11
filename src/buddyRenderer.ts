@@ -37,6 +37,7 @@ import {
   type SproutEyeProfile,
 } from './buddyMotionController';
 import { observeDesktopVisibility } from './desktopVisibility';
+import { SPROUT_DAYLIGHT_ASSET } from './buddyAppearance';
 import {
   NO_BUDDY_BEHAVIORS,
   SPROUT_BEHAVIOR_CLIPS,
@@ -45,7 +46,7 @@ import {
 } from './buddyBehavior';
 
 export type BuddyAsset = 'sprout' | 'ribbon';
-export type BuddyReflectionProfile = 'rectangular' | 'tapered';
+export type BuddyReflectionProfile = 'rectangular' | 'tapered' | 'daylight';
 export type BuddyToneMapping = 'agx' | 'neutral';
 export type BuddyRendererSettings = {
   phase: BuddyVisualState;
@@ -132,6 +133,8 @@ function createEnvironment(
   profile: BuddyReflectionProfile,
 ) {
   const studio = new Scene();
+  const shaped = profile === 'tapered' || profile === 'daylight';
+  const daylight = profile === 'daylight';
   studio.background =
     asset === 'sprout'
       ? new Color().setRGB(0.022, 0.031, 0.047)
@@ -141,31 +144,31 @@ function createEnvironment(
       ? [
           {
             position: [-3.5, 3.8, 3],
-            size: [profile === 'tapered' ? 1.55 : 1.45, 3.4],
-            color: [1, 0.95, 0.9],
-            intensity: profile === 'tapered' ? 18 : 6,
+            size: [shaped ? 1.55 : 1.45, 3.4],
+            color: daylight ? [0.92, 0.97, 1] : [1, 0.95, 0.9],
+            intensity: daylight ? 7 : shaped ? 18 : 6,
           },
           {
             position: [3.2, 1.5, 2],
-            size: profile === 'tapered' ? [1.1, 3.2] : [1.3, 2.2],
-            color: profile === 'tapered' ? [0.95, 1, 1] : [0.75, 0.92, 1],
-            intensity: profile === 'tapered' ? 18 : 0.8,
+            size: shaped ? [1.1, 3.2] : [1.3, 2.2],
+            color: daylight ? [0.78, 0.92, 1] : shaped ? [0.95, 1, 1] : [0.75, 0.92, 1],
+            intensity: daylight ? 6 : shaped ? 18 : 0.8,
           },
           {
             position: [1.2, 3, -2],
             size: [2.8, 0.9],
             color: [0.84, 1, 0.95],
-            intensity: profile === 'tapered' ? 16 : 6.4,
+            intensity: daylight ? 6 : shaped ? 16 : 6.4,
           },
-          ...(profile === 'tapered'
+          ...(shaped
             ? [
                 // Fixed broad curved strips: highlights flow with the body,
                 // rather than moving the environment toward the pointer.
                 {
                   position: [-0.3, 2.4, 3.4],
                   size: [4.3, 0.85],
-                  color: [0.95, 1, 1],
-                  intensity: 20,
+                  color: daylight ? [0.88, 0.95, 1] : [0.95, 1, 1],
+                  intensity: daylight ? 8 : 20,
                 },
               ]
             : []),
@@ -177,7 +180,7 @@ function createEnvironment(
           { position: [0, -0.5, 4], size: [6, 6], color: [0.8, 0.9, 0.93], intensity: 1.3 },
         ];
   for (const light of lights) {
-    const tapered = asset === 'sprout' && profile === 'tapered' && light.position[2] > 0;
+    const tapered = asset === 'sprout' && shaped && light.position[2] > 0;
     let geometry: PlaneGeometry | ShapeGeometry;
     if (tapered) {
       // Original rounded/tapered card profile. The fixed environment turns
@@ -408,7 +411,12 @@ export async function createBuddyRenderer(
   renderer.toneMappingExposure = 1;
   const scene = new Scene();
   const reflectionProfile =
-    initial.reflectionProfile ?? (asset === 'sprout' ? 'tapered' : 'rectangular');
+    initial.reflectionProfile ??
+    (loaded.assetUrl === SPROUT_DAYLIGHT_ASSET
+      ? 'daylight'
+      : asset === 'sprout'
+        ? 'tapered'
+        : 'rectangular');
   let environmentMap: ReturnType<typeof createEnvironment>;
   try {
     environmentMap = createEnvironment(renderer, asset, reflectionProfile);
@@ -445,11 +453,12 @@ export async function createBuddyRenderer(
         : 0.08
       : 0;
   camera.lookAt(0, targetY, 0);
-  const keyBase = asset === 'sprout' ? 1.7 : 2.3;
+  const daylight = asset === 'sprout' && reflectionProfile === 'daylight';
+  const keyBase = daylight ? 1.4 : asset === 'sprout' ? 1.7 : 2.3;
   const key = new DirectionalLight(0xf1faff, keyBase);
   if (asset === 'sprout') key.position.set(-3.5, 3.8, 3);
   else key.position.set(-3, 4, 5);
-  const rim = new DirectionalLight(0xa7ddd7, asset === 'sprout' ? 0.7 : 1.7);
+  const rim = new DirectionalLight(0xa7ddd7, daylight ? 0.5 : asset === 'sprout' ? 0.7 : 1.7);
   if (asset === 'sprout') rim.position.set(1.2, 3, -2);
   else rim.position.set(3, -1, -3);
   scene.add(key, rim, new HemisphereLight(0xe4f6f3, 0x131b24, asset === 'sprout' ? 0.4 : 0.8));

@@ -11,6 +11,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import AssistantSignal, { type BuddyVisualState } from './AssistantSignal';
+import { SPROUT_DAYLIGHT_ASSET, SPROUT_ORIGINAL_ASSET, sproutReviewAsset } from './buddyAppearance';
 import type { AudioPresentationSample } from './audioPresentation';
 import type { BuddyRendererDiagnostics } from './buddyRenderer';
 import type { BuddyBehaviorInput, BuddyBehaviorSnapshot } from './buddyBehavior';
@@ -51,11 +52,9 @@ const states: {
 ];
 
 export default function BuddyStudio() {
-  const reviewAssetName = new URLSearchParams(window.location.search).get('asset');
-  const reviewAssetUrl =
-    reviewAssetName && ['sprout-v003', 'sprout-v004', 'sprout-v005'].includes(reviewAssetName)
-      ? `/buddy/${reviewAssetName}.glb`
-      : undefined;
+  const [reviewAssetUrl, setReviewAssetUrl] = useState(() =>
+    sproutReviewAsset(window.location.search),
+  );
   const [phase, setPhase] = useState<BuddyVisualState>('idle');
   const [expanded, setExpanded] = useState(false);
   const [panelVisited, setPanelVisited] = useState(false);
@@ -460,6 +459,20 @@ export default function BuddyStudio() {
                   aria-valuetext={`${Math.round(simulatedLevel * 100)} percent`}
                   onChange={(event) => setSimulatedLevel(Number(event.target.value))}
                 />
+              </label>
+              <label className="studio-appearance-control">
+                Sprout appearance
+                <select
+                  value={reviewAssetUrl}
+                  onChange={(event) => setReviewAssetUrl(event.target.value)}
+                >
+                  <option value={SPROUT_DAYLIGHT_ASSET}>Daylight · light backgrounds</option>
+                  <option value={SPROUT_ORIGINAL_ASSET}>Original</option>
+                  {reviewAssetUrl !== SPROUT_DAYLIGHT_ASSET &&
+                    reviewAssetUrl !== SPROUT_ORIGINAL_ASSET && (
+                      <option value={reviewAssetUrl}>Legacy reference</option>
+                    )}
+                </select>
               </label>
               <p className="studio-replay-note">
                 Synthetic numbers only, used in Listening/Speaking. No microphone or playback

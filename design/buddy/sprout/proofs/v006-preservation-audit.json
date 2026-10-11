@@ -1,0 +1,128 @@
+{
+  "pass": true,
+  "currentSha256": "b8de0b88395e4b876f0eb668a0a7f39317c24d3530c9d15e58a01c7aa561824f",
+  "baselineSha256": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2",
+  "unchangedFields": [
+    "nodes",
+    "skins",
+    "animations",
+    "meshes",
+    "accessors",
+    "bufferViews",
+    "images",
+    "textures"
+  ],
+  "binaryIdenticalOutsideShellColour": true,
+  "byteException": {
+    "start": 244608,
+    "end": 305760,
+    "accessor": 3
+  },
+  "materialsFromEditableSourceExport": true,
+  "v005FilesIntact": {
+    "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-happy-eyes-v005.blend": "e97a0df2bafbffda9da972c538dbde60c54bc2d71efe264c163c8913c746a113",
+    "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-prism-v005.glb": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2",
+    "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-happy-eyes-source-v005.glb": "54458172f8fbf32facd76abfbcff38d4e48ba05644fba554dd02329bb3807e1a",
+    "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-prism-v005.png": "1142a9ef44f70e13813e0ee542672852a7c2b5bbf5e87f89eb9c747159af6277",
+    "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-prism-sleep-v005.png": "e5666517a4556ed7939e042ff10464d751954f4053a4e499c262388ada488887",
+    "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v005.glb": "5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2",
+    "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v005.png": "1142a9ef44f70e13813e0ee542672852a7c2b5bbf5e87f89eb9c747159af6277",
+    "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v005-sleep.png": "e5666517a4556ed7939e042ff10464d751954f4053a4e499c262388ada488887"
+  },
+  "originalTextureAndElevenAnimationsExact": true,
+  "sourceEyeActionSamples": [
+    {
+      "clip": "Sprout_Blink",
+      "frame_count": 5,
+      "first": [
+        0,
+        0
+      ],
+      "last": [
+        0,
+        0
+      ],
+      "peak": [
+        1,
+        1
+      ]
+    },
+    {
+      "clip": "Sprout_SleepEnter",
+      "frame_count": 41,
+      "first": [
+        0,
+        0
+      ],
+      "last": [
+        1,
+        1
+      ],
+      "peak": [
+        1,
+        1
+      ]
+    },
+    {
+      "clip": "Sprout_SleepLoop",
+      "frame_count": 121,
+      "first": [
+        1,
+        1
+      ],
+      "last": [
+        1,
+        1
+      ],
+      "peak": [
+        1,
+        1
+      ]
+    },
+    {
+      "clip": "Sprout_Wake",
+      "frame_count": 31,
+      "first": [
+        1,
+        1
+      ],
+      "last": [
+        0,
+        0
+      ],
+      "peak": [
+        1,
+        1
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "files": [
+        "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-daylight-v006.glb",
+        "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v006.glb"
+      ],
+      "sha256": "b8de0b88395e4b876f0eb668a0a7f39317c24d3530c9d15e58a01c7aa561824f",
+      "bytes": 1445452
+    },
+    {
+      "files": [
+        "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v006-idle-fallback.png",
+        "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-daylight-v006.png",
+        "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v006.png"
+      ],
+      "sha256": "9032ab7125f370c6f4a1f229406ab69408633cca442604f714b14d2c6db6ce53",
+      "bytes": 293943
+    },
+    {
+      "files": [
+        "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\proofs\\sprout-v006-sleep-fallback.png",
+        "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-daylight-sleep-v006.png",
+        "D:\\hackathon2026\\insightos-ui\\public\\buddy\\sprout-v006-sleep.png"
+      ],
+      "sha256": "c476ff185fd92212b70dc865096efab68e43534078de13a6447bdbf0e70c9a4f",
+      "bytes": 237254
+    }
+  ],
+  "scope": "Asset integrity, source material provenance and source-backed fallbacks; browser/native look and rendering speed verified separately."
+}

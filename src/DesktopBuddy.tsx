@@ -31,6 +31,7 @@ import './buddy.css';
 import EnergyPanel from './EnergyPanel';
 import FinancePanel from './FinancePanel';
 import AssistantSignal, { buddyVisualState } from './AssistantSignal';
+import { SPROUT_DAYLIGHT_ASSET } from './buddyAppearance';
 import type { AudioPresentationRef } from './audioPresentation';
 import type { BuddyBehaviorInput, BuddyBehaviorSnapshot } from './buddyBehavior';
 import { useBuddyPanel, type BuddyReadingMemory } from './useBuddyPanel';
@@ -297,6 +298,7 @@ export default function DesktopBuddy(p: Props) {
           >
             <AssistantSignal
               {...p.visual}
+              assetUrl={p.visual?.assetUrl ?? SPROUT_DAYLIGHT_ASSET}
               phase={visualPhase}
               behavior={p.visual?.behavior ?? p.behavior}
               onBehaviorChange={p.visual?.onBehaviorChange ?? p.onBehaviorChange}

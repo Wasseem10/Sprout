@@ -528,6 +528,23 @@
   gap: 20px;
   padding-top: 15px;
 }
+.studio-appearance-control {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0;
+  color: var(--studio-muted);
+  font-size: 14px;
+}
+.studio-appearance-control select {
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--studio-line);
+  border-radius: 8px;
+  background: #14221d;
+  color: var(--studio-ink);
+}
 .studio-controls-footer > p {
   max-width: 450px;
   margin: 0;

@@ -20,19 +20,21 @@ export function buddyVisualState(voicePhase: string, busy: boolean): BuddyVisual
 /** Match static rest to the requested/loaded generation, keeping closed-eye fallbacks before idle. */
 export function buddyStillPaths(assetUrl: string | undefined, sleeping: boolean) {
   if (assetUrl?.includes('insight-core-v1')) return ['/buddy/insight-core-v1.png'];
-  const version = assetUrl?.match(/v00[2-5](?=\.glb$)/)?.[0] ?? 'v005';
+  const version = assetUrl?.match(/v00[2-6](?=\.glb$)/)?.[0] ?? 'v005';
   const idle = `/buddy/sprout-${version}.png`;
-  if (sleeping && ['v004', 'v005'].includes(version))
+  if (sleeping && ['v004', 'v005', 'v006'].includes(version))
     return [
       `/buddy/sprout-${version}-sleep.png`,
-      ...(version === 'v005' ? ['/buddy/sprout-v004-sleep.png'] : []),
+      ...(version === 'v006' ? ['/buddy/sprout-v005-sleep.png'] : []),
+      ...(['v005', 'v006'].includes(version) ? ['/buddy/sprout-v004-sleep.png'] : []),
       idle,
       '/buddy/sprout-v003.png',
       '/buddy/insight-core-v1.png',
     ];
   return [
     idle,
-    ...(version === 'v005' ? ['/buddy/sprout-v004.png'] : []),
+    ...(version === 'v006' ? ['/buddy/sprout-v005.png'] : []),
+    ...(['v005', 'v006'].includes(version) ? ['/buddy/sprout-v004.png'] : []),
     '/buddy/sprout-v003.png',
     '/buddy/insight-core-v1.png',
   ].filter((path, index, paths) => paths.indexOf(path) === index);
@@ -64,7 +66,7 @@ export default function AssistantSignal({
   gaze?: { x: number; y: number } | null;
   /** Owned local asset variant used by the material review studio. */
   assetUrl?: string;
-  reflectionProfile?: 'rectangular' | 'tapered';
+  reflectionProfile?: BuddyRendererSettings['reflectionProfile'];
   behavior?: BuddyBehaviorInput;
   onBehaviorChange?: (snapshot: BuddyBehaviorSnapshot) => void;
   onDiagnostics?: (diagnostics: BuddyRendererDiagnostics) => void;
@@ -183,6 +185,7 @@ export default function AssistantSignal({
       data-phase={phase}
       data-renderer={ready ? 'webgl' : 'fallback'}
       data-model={asset}
+      data-asset-url={loadedAssetUrl}
       data-behavior={character?.mode ?? 'normal'}
       data-done={character?.doneActive || undefined}
       aria-hidden="true"
