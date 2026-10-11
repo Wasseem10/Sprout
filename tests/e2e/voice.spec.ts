@@ -191,6 +191,36 @@ test('buddy greets generally on Play and never narrates an old code artifact', a
   ).toBeVisible();
 });
 
+test('a voice turn preserves the unsent buddy draft until typed submission', async ({ page }) => {
+  const commands = await setupRealtime(page);
+  await page.goto('/?desktop=buddy');
+  const start = page.getByRole('button', { name: 'Start voice conversation', exact: true });
+  await expect(start).toBeEnabled();
+  await page.getByRole('button', { name: /^Expand buddy\./ }).click();
+  const composer = page.getByRole('textbox', { name: 'Tell your buddy what to do' });
+  const draft = 'Keep this unsent draft while we talk.';
+  await composer.fill(draft);
+  await start.click();
+  await expect.poll(() => page.evaluate(() => (window as any).fakeSockets.length)).toBe(1);
+  await page.evaluate(() =>
+    (window as any).emitScribe({ message_type: 'committed_transcript', text: 'Find jobs' }),
+  );
+  await expect.poll(() => commands).toEqual(['Find jobs']);
+  await expect(page.getByRole('log', { name: 'Buddy conversation' })).toContainText(
+    'Your voice command reached the task handler.',
+  );
+  await expect(composer).toHaveValue(draft);
+  await page.getByRole('button', { name: 'Collapse conversation', exact: true }).click();
+  await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'closed');
+  await page.getByRole('button', { name: /^Expand buddy\./ }).click();
+  await expect(composer).toHaveValue(draft);
+  await page.getByRole('button', { name: 'Pause voice conversation', exact: true }).click();
+  // Submitting the text itself still consumes the draft through the typed path.
+  await composer.press('Enter');
+  await expect.poll(() => commands).toEqual(['Find jobs', draft]);
+  await expect(composer).toHaveValue('');
+});
+
 test('a voice follow-up interrupts work through the page-preserving endpoint', async ({ page }) => {
   await setupRealtime(page);
   const calls: string[] = [];

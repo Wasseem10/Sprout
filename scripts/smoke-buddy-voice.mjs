@@ -2,11 +2,22 @@
 // Input is an oscillator; all speech/task endpoints return local fixtures.
 import { _electron as electron, expect } from '@playwright/test';
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, unlink, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { mkdtemp, mkdir, readFile, rename, unlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
-const artifacts = path.resolve('artifacts');
+const recordVideo = process.argv.includes('--record');
+const artifacts = path.resolve('artifacts/buddy-voice-native-final');
+const assetBytes = await readFile('public/buddy/sprout-v002.glb');
+const assetSha256 = createHash('sha256').update(assetBytes).digest('hex');
+assert.equal(
+  assetSha256,
+  createHash('sha256')
+    .update(await readFile('design/buddy/sprout/sprout-prism-v002.glb'))
+    .digest('hex'),
+  'Runtime and canonical Sprout exports must match.',
+);
 const local = path.resolve('.local');
 await mkdir(local, { recursive: true });
 await mkdir(artifacts, { recursive: true });
@@ -42,6 +53,23 @@ function localWav() {
 }
 
 let desktop;
+let video;
+let deadline;
+let report = {
+  checkedAt: new Date().toISOString(),
+  pass: false,
+  assetSha256,
+  assetBytes: assetBytes.length,
+  recordingActive: recordVideo,
+  implementation:
+    'actual useVoice, MediaRecorder, HTMLAudio, Web Audio meter and final animated Sprout in isolated Electron --dev',
+  input: 'local oscillator, no physical microphone capture',
+  output: 'local PCM WAV fixtures, no ElevenLabs provider calls; device audibility not asserted',
+  scope:
+    'All API endpoints are local fixtures. Native layout and production voice/renderer modules are unchanged; the read-only presentation ref is exposed only in this test window. Recording is not a frame-performance measurement.',
+  recordingScope:
+    'Video-only Playwright capture. Actual synthetic PCM playback, interruption and cleanup are asserted by the audio elements, tracks and meter; this is not recorded live speech.',
+};
 try {
   desktop = await electron.launch({
     args: [entry, '--dev'],
@@ -57,9 +85,15 @@ try {
       LOCAL_DATA_DIR: isolatedData,
     },
     timeout: 30000,
+    recordVideo: recordVideo ? { dir: artifacts, size: { width: 1280, height: 900 } } : undefined,
   });
+  deadline = setTimeout(() => {
+    console.error('Native synthetic voice proof exceeded its 60-second harness deadline');
+    desktop.process().kill();
+  }, 60000);
   const page = await desktop.firstWindow();
   await page.waitForURL('http://127.0.0.1:5173/?desktop=buddy', { waitUntil: 'domcontentloaded' });
+  video = recordVideo ? page.video() : undefined;
   const context = page.context();
   await context.addInitScript(() => {
     localStorage.setItem('insightos.buddySpeech', 'true');
@@ -122,6 +156,7 @@ try {
   });
   const empty = { folder: null, code: null, browser: null, screen: null };
   const requests = [];
+  const computerRequests = [];
   let transcriptions = 0;
   let speechRequests = 0;
   const spokenTexts = [];
@@ -154,17 +189,43 @@ try {
       await new Promise((resolve) => setTimeout(resolve, 250));
       return route.fulfill({ body: wav, contentType: 'audio/wav' });
     }
-    if (pathname === '/api/computer/request')
+    if (pathname === '/api/computer/request') {
+      computerRequests.push(route.request().postDataJSON());
       return route.fulfill({
         json: {
           state: empty,
           summary: 'Local animated voice proof. You can interrupt this reply.',
         },
       });
+    }
     return route.fulfill({ json: empty });
   });
   const errors = [];
+  const servedAssets = [];
+  const assetInspections = [];
   page.on('pageerror', (error) => errors.push(error.message));
+  page.on('response', (response) => {
+    if (new URL(response.url()).pathname !== '/buddy/sprout-v002.glb') return;
+    const inspection = (async () => {
+      const bytes = await response.body();
+      const served = {
+        status: response.status(),
+        bytes: bytes.length,
+        header: bytes.subarray(0, 4).toString('ascii'),
+        version: bytes.readUInt32LE(4),
+        declaredBytes: bytes.readUInt32LE(8),
+        sha256: createHash('sha256').update(bytes).digest('hex'),
+      };
+      servedAssets.push(served);
+      assert.equal(served.status, 200);
+      assert.equal(served.header, 'glTF');
+      assert.equal(served.version, 2);
+      assert.equal(served.declaredBytes, assetBytes.length);
+      assert.equal(served.sha256, assetSha256);
+    })();
+    void inspection.catch(() => {});
+    assetInspections.push(inspection);
+  });
   await page.reload();
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await desktop.evaluate(({ BrowserWindow }) => {
@@ -177,12 +238,47 @@ try {
     timeout: 15000,
   });
   await expect(page.locator('.insight-signal').first()).toHaveAttribute('data-model', 'sprout');
+  await Promise.all(assetInspections);
+  assert.ok(servedAssets.length > 0, 'The exact final GLB must be observed on this proof load.');
+  const sequence = [];
+  const capture = async (name) => {
+    const encoded = await desktop.evaluate(async ({ BrowserWindow }) =>
+      (await BrowserWindow.getAllWindows()[0].webContents.capturePage()).toPNG().toString('base64'),
+    );
+    await writeFile(path.join(artifacts, `${name}.png`), Buffer.from(encoded, 'base64'));
+  };
+  const checkpoint = async (step) => {
+    sequence.push(
+      await page.evaluate(
+        (step) => ({
+          step,
+          at: performance.now(),
+          panelStage: document.querySelector('.buddy')?.getAttribute('data-panel-stage'),
+          draft: document.querySelector('#buddy-request')?.value,
+          sample: window.__voicePresentation ? { ...window.__voicePresentation.current } : null,
+        }),
+        step,
+      ),
+    );
+  };
   await page.evaluate(() => {
     window.__voiceProof.timer = setInterval(() => {
       const sample = window.__voicePresentation?.current;
       if (sample) window.__voiceProof.samples.push({ at: performance.now(), ...sample });
     }, 20);
   });
+  await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'closed');
+  await checkpoint('collapsed-final-sprout');
+  await page.waitForTimeout(500);
+  await page.getByRole('button', { name: /^Expand buddy\./ }).click();
+  await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'open');
+  const composer = page.getByRole('textbox', { name: 'Tell your buddy what to do' });
+  const collapse = page.getByRole('button', { name: 'Collapse conversation', exact: true });
+  const draft = 'Keep this unsent draft while we talk.';
+  await composer.pressSequentially(draft, { delay: 30 });
+  await expect(composer).toHaveValue(draft);
+  await checkpoint('open-and-type-unsent-draft');
+  await capture('open-draft');
   await page.keyboard.press('Control+Shift+Space');
   await expect
     .poll(() => spokenTexts.filter((text) => text.includes('Local animated voice proof')).length, {
@@ -196,6 +292,9 @@ try {
     .toBeGreaterThan(0.1);
   const speaking = await page.evaluate(() => ({ ...window.__voicePresentation.current }));
   assert.equal(speaking.outputPlaying, true);
+  await expect(composer).toHaveValue(draft);
+  await checkpoint('first-measured-reply-draft-preserved');
+  await capture('first-reply');
   const firstReplyIndex = await page.evaluate(() =>
     window.__voiceProof.playbacks.findLastIndex(
       (audio) => !audio.paused && !audio.ended && audio.readyState >= 2,
@@ -203,6 +302,7 @@ try {
   );
   assert.ok(firstReplyIndex >= 0, 'The intended first reply has an actual playing element.');
   await expect.poll(() => page.evaluate(() => window.__voiceProof.gains.length)).toBe(2);
+  await page.waitForTimeout(500);
   await page.evaluate(() => {
     const gain = window.__voiceProof.gains[1];
     gain.gain.setValueAtTime(0.25, gain.context.currentTime);
@@ -224,6 +324,7 @@ try {
     };
   }, firstReplyIndex);
   assert.equal(interrupted.ended, false, 'The intended reply was interrupted before natural end.');
+  await checkpoint('actual-playing-reply-interrupted');
   await expect.poll(() => transcriptions, { timeout: 12000 }).toBe(2);
   // A slow task may produce its normal acknowledgment in addition to both replies.
   await expect
@@ -239,6 +340,32 @@ try {
   assert.ok(
     (await page.evaluate(() => window.__voicePresentation.current.playbackGeneration)) >
       speaking.playbackGeneration,
+  );
+  await expect(composer).toHaveValue(draft);
+  const secondMeasuredOutput = await page.evaluate(() => ({
+    ...window.__voicePresentation.current,
+  }));
+  assert.equal(secondMeasuredOutput.outputPlaying, true);
+  await checkpoint('second-measured-output-draft-preserved');
+  await capture('second-reply');
+  await collapse.click();
+  await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'closed');
+  // The collapsed panel remains mounted but is deliberately excluded from the AX tree.
+  await expect(page.locator('#buddy-request')).toHaveValue(draft);
+  await checkpoint('collapse-with-original-unsent-draft');
+  await capture('collapsed-during-conversation');
+  await page.waitForTimeout(600);
+  await page.getByRole('button', { name: /^Expand buddy\./ }).click();
+  await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'open');
+  await expect(composer).toHaveValue(draft);
+  await expect(collapse).toBeFocused();
+  await checkpoint('reopen-with-original-unsent-draft');
+  await capture('reopened-draft');
+  await page.waitForTimeout(600);
+  assert.equal(
+    await page.evaluate(() => window.__voicePresentation.current.outputPlaying),
+    true,
+    'Explicit Pause must stop the newly playing reply, not only an idle conversation.',
   );
   // Escape belongs to the panel's collapse control; pause explicitly owns voice cleanup.
   await page.getByRole('button', { name: 'Pause voice conversation', exact: true }).click();
@@ -261,26 +388,31 @@ try {
   assert.equal(stopped.documentFits, true);
   assert.equal(stopped.sample.outputPlaying, false);
   assert.equal(stopped.sample.outputLevel, null);
+  assert.equal(stopped.sample.inputLevel, null);
+  await expect(composer).toHaveValue(draft);
+  assert.ok(
+    computerRequests.every((request) => !JSON.stringify(request).includes(draft)),
+    'The typed draft must never be submitted as a task.',
+  );
   assert.ok(
     stopped.samples.some(
       (sample) => sample.playbackGeneration > speaking.playbackGeneration && !sample.outputPlaying,
     ),
   );
   assert.deepEqual(errors, []);
-  const encoded = await desktop.evaluate(async ({ BrowserWindow }) =>
-    (await BrowserWindow.getAllWindows()[0].webContents.capturePage()).toPNG().toString('base64'),
-  );
-  await writeFile(
-    path.join(artifacts, 'buddy-voice-native-synthetic.png'),
-    Buffer.from(encoded, 'base64'),
-  );
-  const report = {
+  await checkpoint('explicit-pause-cleared-capture-and-playback');
+  await capture('cleanup');
+  await page.waitForTimeout(700);
+  report = {
+    ...report,
     checkedAt: new Date().toISOString(),
-    implementation:
-      'actual useVoice, MediaRecorder, HTMLAudio, Web Audio meter and animated Sprout in isolated Electron --dev',
-    input: 'local oscillator, no physical microphone capture',
-    output: 'local PCM WAV fixtures, no ElevenLabs provider calls; device audibility not asserted',
+    pass: true,
+    servedAssets,
+    sequence,
+    draft,
+    draftPreservedAcrossVoiceAndPanel: true,
     firstMeasuredOutput: speaking,
+    secondMeasuredOutput,
     interruption:
       'first actual HTMLAudio paused; second recorded utterance and measured output succeeded',
     interruptedElement: { index: firstReplyIndex, ...interrupted },
@@ -290,14 +422,21 @@ try {
     speechRequests,
     spokenTexts,
     localRoutes: requests,
+    interceptedComputerRequests: computerRequests,
     pageErrors: errors,
   };
-  await writeFile(
-    path.join(artifacts, 'buddy-voice-native-verification.json'),
-    JSON.stringify(report, null, 2) + '\n',
-  );
-  console.log(JSON.stringify(report, null, 2));
+} catch (error) {
+  report.failure = error.message;
+  throw error;
 } finally {
   await desktop?.close().catch(() => {});
+  clearTimeout(deadline);
   await unlink(entry).catch(() => {});
+  if (video) {
+    const finalPath = path.join(artifacts, 'synthetic-voice-interrupt-panel.webm');
+    await rename(await video.path(), finalPath);
+    report.video = finalPath;
+  }
+  await writeFile(path.join(artifacts, 'report.json'), JSON.stringify(report, null, 2) + '\n');
+  console.log(JSON.stringify(report, null, 2));
 }

@@ -1314,5 +1314,6 @@
   "errors": [],
   "apiCalls": [],
   "panelVideo": "Actual native pet/panel open, unsent draft, close. No conversation or microphone request.",
-  "video": "D:\\hackathon2026\\insightos-ui\\artifacts\\sprout-native-prism-video\\native-replay-and-panel.webm"
+  "video": "D:\\hackathon2026\\insightos-ui\\artifacts\\sprout-native-prism-video\\native-replay-and-panel.webm",
+  "startupScope": "Warm avatar bootstrap: the initial development buddy rendered before this compiled-UI load. Fresh isolated process/profile, but avatar shaders may already be cached. Timings start at createBuddyRenderer, after its lazy engine import; navigation timing is separate."
 }

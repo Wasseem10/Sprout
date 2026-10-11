@@ -1318,5 +1318,6 @@
     }
   },
   "errors": [],
-  "apiCalls": []
+  "apiCalls": [],
+  "startupScope": "Warm avatar bootstrap: the initial development buddy rendered before this compiled-UI load. Fresh isolated process/profile, but avatar shaders may already be cached. Timings start at createBuddyRenderer, after its lazy engine import; navigation timing is separate."
 }

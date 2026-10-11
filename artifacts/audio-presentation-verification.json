@@ -29,6 +29,13 @@
       ],
       "voiceFixtureMotion": "reduced, initial model warmup awaited, Scribe socket fake restricted to provider host",
       "pcm": "actual production meter plus real AudioContext/HTMLAudio with locally generated PCM tone/silence; no microphone/provider"
+    },
+    "additionalDraftRegression": {
+      "file": "tests/e2e/voice.spec.ts",
+      "test": "a voice turn preserves the unsent buddy draft until typed submission",
+      "passed": 1,
+      "total": 1,
+      "scope": "Existing synthetic realtime fixture and reduced motion. Preserves draft through a voice turn and collapse/reopen, then verifies typed submission consumes it; no live mic/provider."
     }
   },
   "provider": {
@@ -60,6 +67,63 @@
       "ended": false,
       "currentTime": 0.288,
       "duration": 4
+    },
+    "assetStage": "Historical clay Sprout proof before final Prism materials; retained unchanged."
+  },
+  "finalNativeAnimatedVoice": {
+    "status": "passed",
+    "checkedAt": "2026-10-11T02:26:39.952Z",
+    "report": "artifacts/buddy-voice-native-final/report.json",
+    "video": "artifacts/buddy-voice-native-final/synthetic-voice-interrupt-panel.webm",
+    "assetSha256": "34cd83c23c60afedbf6edd9e9e337af4715a6f60070fe59ca90b9a8b7a73d756",
+    "input": "local oscillator, no physical microphone capture",
+    "output": "local PCM WAV fixtures, no ElevenLabs provider calls; device audibility not asserted",
+    "recordingScope": "Video-only Playwright capture. Actual synthetic PCM playback, interruption and cleanup are asserted by the audio elements, tracks and meter; this is not recorded live speech.",
+    "verified": [
+      "collapsed-final-sprout",
+      "open-and-type-unsent-draft",
+      "first-measured-reply-draft-preserved",
+      "actual-playing-reply-interrupted",
+      "second-measured-output-draft-preserved",
+      "collapse-with-original-unsent-draft",
+      "reopen-with-original-unsent-draft",
+      "explicit-pause-cleared-capture-and-playback"
+    ],
+    "interruptedElement": {
+      "index": 1,
+      "paused": true,
+      "ended": false,
+      "currentTime": 0.872904,
+      "duration": 4
+    },
+    "draftPreservedAcrossVoiceAndPanel": true,
+    "stopped": {
+      "sample": {
+        "inputLevel": null,
+        "outputLevel": null,
+        "inputSampledAt": 12761.600000023842,
+        "outputSampledAt": 12761.600000023842,
+        "playbackGeneration": 8,
+        "outputPlaying": false,
+        "source": "voice"
+      },
+      "tracksEnded": true,
+      "audioPaused": true,
+      "inputReads": 80,
+      "renderer": "webgl",
+      "motionReduced": false,
+      "documentFits": true
+    },
+    "mediaQA": {
+      "checkedAt": "2026-10-11T02:32:42.753Z",
+      "codec": "vp9",
+      "width": 1280,
+      "height": 900,
+      "fps": 25,
+      "durationSeconds": 14.8,
+      "bytes": 978948,
+      "audioStream": false,
+      "review": "Six decoded video keyframes and four native PNGs inspected. Final Sprout, draft, reply text, collapsed/reopened stages and cleanup are visible; no composer or control clipping in reviewed frames. Video-only capture has black transparency/gray padding, not a private desktop capture."
     }
   }
 }

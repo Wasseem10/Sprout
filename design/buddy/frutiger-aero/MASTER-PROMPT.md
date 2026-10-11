@@ -1,8 +1,8 @@
 # Consolidated implementation prompt — Sprout / Prism
 
-Revision **4**, **2026-10-10**. Prepared for implementation with Astra Ultra and an optional persistent Goal. Reuse the implemented voice/rendering paths and add only the missing character/presentation work. This supersedes the earlier Ripple/required-steel brief. The portrait layout below is the chosen starting prototype and must be reviewed in the actual app; it is not a completed or frozen layout.
+Revision **5**, **2026-10-10**. Prepared for implementation or continuation with Astra Ultra and an optional persistent Goal. Reuse the implemented voice/rendering paths and continue from verified character/presentation work. This supersedes the earlier Ripple/required-steel brief. The portrait layout below defines the chosen direction; the current delivery guide records what is already built and reviewed.
 
-The text under **Copyable prompt** is the full implementation brief. Its references provide detailed contracts and review recipes. This document has not executed generation, edited Blender or changed the runtime.
+The text under **Copyable prompt** is the full implementation brief. Its references provide detailed contracts and review recipes. Sprout and the panel are now implemented in this checkout; read [the delivery guide](../sprout/README.md) and [scene passport](../sprout/SCENE-PASSPORT.md) before choosing remaining work. This prompt is a reusable contract, not a claim that every acceptance check has passed.
 
 ## Copyable prompt
 
@@ -11,6 +11,8 @@ Build the next visual version of **InsightOS** around **Sprout**, an original in
 ### Execution and completion
 
 Implement this brief now. Make reasonable visual and reversible implementation decisions from the selected references. Continue through asset creation, integration, running the app, inspecting the actual result and correcting observed defects. Planning, generated concept images and a first unreviewed implementation are intermediate outputs. The packet's planning/status labels describe the baseline; this prompt authorizes implementation within the stated scope, without reconfirming routine local work.
+
+First read `design/buddy/sprout/README.md` and `SCENE-PASSPORT.md`, inspect the current diff and compare the delivered evidence to this contract. Continue from the existing implementation. Do not rebuild a completed milestone, regenerate the approved character, replace existing voice, or add a framework merely because it appears in a reference. Reopen a passed check only when a relevant change, observed failure or evidence gap warrants it. Keep measured local fixtures, actual provider/device checks and unverified requirements distinct.
 
 Work in **D:\hackathon2026\insightos-ui**, branch **ui/presentation-polish**, updating [the existing draft UI PR](https://github.com/Wasseem10/insightos/pull/1). The design packet is **D:\hackathon2026\insightos-ui\design\buddy\frutiger-aero**. Confirm checkout, branch and current changes before editing; fetch/compare upstream without resetting, switching or merging the cousin's work. Preserve unrelated changes. Continue local authoring, UI fixes, asset exports, appropriate checks and commits/pushes to this UI branch within the existing authorization. Production deployment and merging remain separate user decisions.
 
@@ -114,7 +116,7 @@ Deliver actual-size stills, the animation replay, open/type/interrupt/collapse/r
 
 Keep the user's work reviewable in the existing draft PR; publish/merge only within the authorized task scope. Report editable source/checkpoints, asset provenance, hashes/manifests, passed checks, remaining defects and deliberate approximations. Follow the source-save policy and never overwrite an unrelated Blender file. Complete each reversible pass, inspect its output and correct the largest visible defect before moving on.
 
-**Begin with the actual-size clay Sprout and four-clip exported motion proof.**
+**For a fresh implementation, begin with the actual-size clay Sprout and four-clip exported motion proof. In this existing checkout, continue from the first unmet requirement in the current delivery record.**
 
 ## Supporting packet
 

@@ -418,7 +418,7 @@ html.desktop-buddy,
 .buddy .energy-panel,
 .buddy .finance-mini {
   --finance-ink: #13243d;
-  --finance-muted: #46566b;
+  --finance-muted: #435368;
   background: #edf4fc;
   color: #13243d;
   border-color: #b8cae2;
@@ -426,7 +426,11 @@ html.desktop-buddy,
 }
 .buddy .energy-panel :is(p, small, span, td, th, caption),
 .buddy .finance-mini :is(p, small, span) {
-  color: #46566b;
+  color: #435368;
+}
+.buddy .energy-panel a {
+  color: #154b9b;
+  text-decoration: underline;
 }
 .buddy .energy-panel :is(strong, summary),
 .buddy .finance-mini :is(strong, summary) {

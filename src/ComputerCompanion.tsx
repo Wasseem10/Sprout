@@ -149,7 +149,8 @@ export default function ComputerCompanion() {
     if (dockMode) setDockExpanded(true);
     inFlight.current = true;
     setBusy(true);
-    setRequest('');
+    // A spoken turn must not consume the separate, unsent text draft.
+    if (!fromVoice) setRequest('');
     const current = ++generation.current,
       abort = new AbortController();
     controller.current = abort;
