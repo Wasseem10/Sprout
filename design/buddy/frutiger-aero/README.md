@@ -34,7 +34,9 @@ The [original concept board](../../../artifacts/ripple-aero-concept-v002.png) sh
 
 ## Build in reviewable passes
 
-The [Ocean / Prism / Lagoon palette study](PALETTE-STUDY.md) explores the user's latest color question. Palette and final layout remain open; the current master prompt has not been revised to treat a candidate as selected.
+The [Ocean / Prism / Lagoon palette study](PALETTE-STUDY.md) records the user's **Prism** selection. Character silhouette, interchangeable accessories and final layout remain open; the current master prompt is an earlier draft awaiting consolidation.
+
+The [avatar exploration](AVATAR-STUDY.md) compares Ripple, Sprout and Drift independently of their supports. The steel cradle is optional; glass and free-floating variants are also under consideration.
 
 1. **Character silhouette.** Preserve v001. Make v002 clay views with the eyes and cradle before adding glass. Compare the actual collapsed icon at 40–44 px, a proposed larger pet near 96 px, and an expanded/preview character near 160 px. Decide from visible results which details survive.
 2. **Geometry refinement.** Compare the current ribbon against a rounded edge profile and selectively higher longitudinal sampling. Render with the same camera and lights. Keep the lowest density that removes a visible defect. Finalize the body topology before authoring shape keys.

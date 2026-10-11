@@ -1,6 +1,6 @@
 # Ripple palette study — Ocean / Prism / Lagoon
 
-Created **2026-10-10**. Status: **exploration for user review**. The user likes the vibrant character but wants to consider a beautiful combination of colors. No final palette or layout has been agreed, and no runtime or Blender changes are part of this study.
+Created **2026-10-10**. Status: **Prism selected by the user**. The three-way comparison is retained as provenance. Character silhouette, accessories and final layout are still being explored; no runtime or Blender changes are part of this study.
 
 ## Recommendation to compare
 
@@ -29,7 +29,7 @@ Compare the same silhouette, pose, camera, lighting and layout before choosing. 
 
 The reference concept's wide empty panel and extra slogans are not the final product layout. The portrait specification remains the starting proposal. Any final image/layout pass should show meaningful conversation content and a dark input label/placeholder.
 
-The full implementation prompt will be consolidated after palette and layout choices are settled. The current MASTER-PROMPT.md is the earlier blue-led draft; it is not silently updated to an unselected palette.
+The full implementation prompt will be consolidated after character and final layout choices are settled, incorporating the selected Prism palette. The current MASTER-PROMPT.md is the earlier blue-led draft and is not the consolidated final prompt.
 
 ## Assets and provenance
 

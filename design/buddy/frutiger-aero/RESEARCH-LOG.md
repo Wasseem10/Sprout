@@ -65,6 +65,10 @@ The generated board's strong character silhouette and material separation guide 
 
 ### Color exploration — 2026-10-10
 
-The user likes the vibrant blue concept and asked whether a beautiful combination of colors would improve it. [The palette study](PALETTE-STUDY.md) compares Ocean, Prism and Lagoon with a [saved reference board](../../../artifacts/ripple-palette-study-v003.png). Our creative preference is Prism: blue/aqua with a violet-to-coral side/lower streak, clear face, neutral steel and quieter reading surfaces. This is a candidate recommendation; final palette and layout remain open, and the master implementation prompt has not been changed to imply acceptance.
+The user likes the vibrant blue concept and asked whether a beautiful combination of colors would improve it. [The palette study](PALETTE-STUDY.md) compares Ocean, Prism and Lagoon with a [saved reference board](../../../artifacts/ripple-palette-study-v003.png). The user subsequently selected **Prism**: blue/aqua with a violet-to-coral side/lower streak, clear face and quieter reading surfaces. Character and final layout remain open; the master implementation prompt is still an earlier draft awaiting consolidation.
+
+### Creature exploration — 2026-10-10
+
+The user asked for other actual character silhouettes before deciding whether Ripple is best, and made the steel cradle interchangeable. [The avatar study](AVATAR-STUDY.md) compares Ripple, Sprout and Drift with Prism materials and no required support. Our preferred challenger is Sprout, with shorter rounded asymmetric buds to test in the next blockout. Steel sweep, glass pebble and free float are independent support ideas. Character selection and final layout remain open; no runtime or Blender model was replaced.
 
 Append future entries with observed defects, source revisions, controlled comparisons and actual artifact links. Do not report planned budgets, generated concept pixels, or untested audio responses as completed implementation.
