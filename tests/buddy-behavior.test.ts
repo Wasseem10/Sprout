@@ -18,6 +18,8 @@ import {
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { auditSproutModel, SproutMotionController } from '../src/buddyMotionController';
 import type { BuddyBehaviorInput } from '../src/buddyBehavior';
+import { buddyPlaybackPhase } from '../src/buddyBehavior';
+import type { AudioPresentationSample } from '../src/audioPresentation';
 
 function fixture() {
   const scene = new Group();
@@ -147,6 +149,144 @@ function pose(scene: Object3D) {
 }
 
 describe('exclusive cosmetic behaviour ownership', () => {
+  const automatic = (
+    changes: Partial<NonNullable<BuddyBehaviorInput['automatic']>> = {},
+    generation = 1,
+  ): BuddyBehaviorInput => ({
+    generation,
+    manualEligible: false,
+    automatic: { presence: 'awake', revision: 1, interrupt: false, ...changes },
+  });
+
+  it('keeps logical sleep independently from voice/manual eligibility, including initial and static mounts', () => {
+    const { controller } = fixture();
+    controller.setBehavior(automatic({ presence: 'asleep' }), 0);
+    expect(controller.snapshot().behavior).toMatchObject({ mode: 'sleep', sleeping: true });
+    controller.setPhase('listening');
+    controller.setBehavior(automatic({ presence: 'asleep' }), 100);
+    expect(controller.snapshot().behavior.mode).toBe('sleep');
+    controller.setMotion(false);
+    controller.setVisible(false);
+    controller.setBehavior(automatic({ presence: 'awake', revision: 2 }), 200);
+    controller.setBehavior(automatic({ presence: 'asleep', revision: 3 }), 300);
+    expect(controller.snapshot().behavior).toMatchObject({ mode: 'sleep', sleeping: true });
+    controller.dispose();
+  });
+
+  it('preserves Wake across mic starting/listening and preempts only for genuine input/work', () => {
+    const { controller, scene } = fixture();
+    controller.setBehavior(automatic({ presence: 'asleep' }), 0);
+    controller.setBehavior(automatic({ revision: 2, wake: { id: 'resume' } }, 2), 100);
+    expect(controller.snapshot().behavior.mode).toBe('wake');
+    controller.setPhase('thinking'); // Current adapter maps microphone starting here.
+    controller.update(0.2, 300);
+    controller.setPhase('listening');
+    expect(controller.snapshot().behavior.mode).toBe('wake');
+    const before = pose(scene);
+    controller.setBehavior(automatic({ revision: 3, interrupt: true }), 300);
+    controller.setPhase('thinking');
+    expect(pose(scene)).toEqual(before);
+    controller.update(0.3, 600);
+    expect(controller.snapshot().behavior.mode).toBe('normal');
+    expect(controller.snapshot().weights.Sprout_Think).toBe(1);
+    controller.dispose();
+  });
+
+  it('finishes an automatic wake into the latest quiet listening state', () => {
+    const { controller } = fixture();
+    controller.setBehavior(automatic({ presence: 'asleep' }), 0);
+    controller.setBehavior(automatic({ revision: 2, wake: { id: 'resume' } }), 0);
+    controller.setPhase('listening');
+    controller.update(2, 2000);
+    expect(controller.snapshot().behavior).toMatchObject({ mode: 'normal', sleeping: false });
+    expect(controller.snapshot().weights.Sprout_Listen).toBe(1);
+    controller.dispose();
+  });
+
+  it('celebrates once during quiet open listening without also playing Done', () => {
+    const { controller } = fixture();
+    controller.setBehavior(automatic(), 0);
+    controller.setPhase('listening');
+    const cue = {
+      ...automatic({ joy: { id: 'task-success' } }),
+      done: { id: 'old', generation: 1, issuedAt: 0 },
+    };
+    controller.setBehavior(cue, 0);
+    expect(controller.snapshot().behavior).toMatchObject({ mode: 'joy', doneActive: false });
+    controller.update(0.5, 500);
+    const time = controller.snapshot().times.Sprout_JoyJump;
+    controller.setBehavior(cue, 500);
+    expect(controller.snapshot().times.Sprout_JoyJump).toBe(time);
+    controller.update(2, 2500);
+    controller.setBehavior(cue, 2500);
+    expect(controller.snapshot().behavior.mode).toBe('normal');
+    expect(controller.snapshot().weights.Sprout_Listen).toBe(1);
+    controller.dispose();
+  });
+
+  it('consumes old automatic joy at initial mount and unavailable presentation without replay', () => {
+    for (const state of ['initial', 'hidden', 'paused'] as const) {
+      const { controller } = fixture();
+      if (state !== 'initial') controller.setBehavior(automatic(), 0);
+      if (state === 'hidden') controller.setVisible(false);
+      if (state === 'paused') controller.setMotion(false);
+      const cue = automatic({ joy: { id: 'already-issued' } });
+      controller.setBehavior(cue, 0);
+      controller.setVisible(true);
+      controller.setMotion(true);
+      controller.setBehavior(cue, 1);
+      controller.update(0.3, 301);
+      expect(controller.snapshot().behavior.mode).toBe('normal');
+      controller.dispose();
+    }
+  });
+
+  it('seeds a cue issued during an asynchronous model load while retaining subsequent fresh cues', () => {
+    const { controller } = fixture();
+    controller.setBehavior(automatic(), 0);
+    const duringLoad = automatic({ joy: { id: 'while-loading' } });
+    controller.setBehavior(duringLoad, 100, true);
+    controller.setBehavior(duringLoad, 101);
+    expect(controller.snapshot().behavior.mode).toBe('normal');
+    controller.setBehavior(automatic({ joy: { id: 'after-ready' } }), 200);
+    expect(controller.snapshot().behavior.mode).toBe('joy');
+    controller.dispose();
+  });
+
+  it('preempts automatic joy from the current pose and permits pending rest after the short cue', () => {
+    const { controller, scene } = fixture();
+    controller.setBehavior(automatic(), 0);
+    controller.setBehavior(automatic({ joy: { id: 'first' } }), 0);
+    controller.update(0.4, 400);
+    const before = pose(scene);
+    controller.setBehavior(automatic({ revision: 2, interrupt: true }), 400);
+    expect(pose(scene)).toEqual(before);
+    controller.update(0.3, 700);
+    controller.setBehavior(automatic({ revision: 3, joy: { id: 'second' } }), 700);
+    controller.update(2, 2700);
+    controller.setBehavior(automatic({ presence: 'asleep', revision: 3 }), 2700);
+    expect(controller.snapshot().behavior.mode).toBe('enter-sleep');
+    controller.update(2, 4700);
+    expect(controller.snapshot().behavior.mode).toBe('sleep');
+    controller.dispose();
+  });
+
+  it('suppresses pending/waiting speech while allowing real playback with unavailable amplitude and Studio previews', () => {
+    const sample: AudioPresentationSample = {
+      inputLevel: null,
+      outputLevel: null,
+      inputSampledAt: 0,
+      outputSampledAt: 0,
+      playbackGeneration: 1,
+      outputPlaying: false,
+      source: 'voice',
+    };
+    expect(buddyPlaybackPhase('speaking', sample)).toBe('thinking');
+    expect(buddyPlaybackPhase('speaking', { ...sample, outputPlaying: true })).toBe('speaking');
+    expect(buddyPlaybackPhase('speaking', { ...sample, source: 'simulated' })).toBe('speaking');
+    expect(buddyPlaybackPhase('listening', sample)).toBe('listening');
+  });
+
   it('requires every extended clip, complete paired vectors, exact owners and no unknown animation', () => {
     const { scene, clips, controller } = fixture();
     expect(auditSproutModel(scene, clips)).toEqual([]);

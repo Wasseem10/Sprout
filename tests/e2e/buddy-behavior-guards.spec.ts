@@ -40,6 +40,25 @@ async function companionFixture(page: Page) {
           reports: {},
         },
       });
+    if (pathname === '/api/computer/request')
+      return route.fulfill({
+        json: {
+          state: {
+            folder: null,
+            code: null,
+            browser: null,
+            screen: null,
+            task: {
+              id: 'guard-fixture',
+              status: 'completed',
+              goal: 'Read fixture',
+              message: 'Done',
+              steps: [],
+            },
+          },
+          summary: 'Fixture completed.',
+        },
+      });
     return route.fulfill({ json: { folder: null, code: null, browser: null, screen: null } });
   });
   await page.goto('/?desktop=buddy');
@@ -58,8 +77,8 @@ test('completed cosmetic requests do not replay when the workspace replaces the 
   page,
 }) => {
   const mutations = await companionFixture(page);
-  await tools(page, 'Settings and connections');
-  await page.getByRole('button', { name: 'Celebrate', exact: true }).click();
+  await page.getByLabel('Tell your buddy what to do').fill('Read this fixture');
+  await page.getByRole('button', { name: 'Send request', exact: true }).click();
   await expect(page.locator('.buddy .insight-signal')).toHaveAttribute('data-behavior', 'joy');
   await expect(page.locator('.buddy .insight-signal')).toHaveAttribute('data-behavior', 'normal');
   await tools(page, 'Open full workspace');
@@ -72,31 +91,22 @@ test('completed cosmetic requests do not replay when the workspace replaces the 
   await expect(returned).toHaveAttribute('data-renderer', 'webgl');
   expect(await returned.getAttribute('data-behavior')).toBe('normal');
   // The existing companion establishes its sample session at startup.
-  expect(mutations).toEqual(['/api/session']);
+  expect(mutations).toEqual(['/api/session', '/api/computer/request']);
 });
 
-test('real settings explain motion and unavailable-view guards while static rest remains usable', async ({
+test('production settings omit animation demos while motion controls remain available', async ({
   page,
 }) => {
   const mutations = await companionFixture(page);
   await tools(page, 'Pause avatar motion');
   await tools(page, 'Settings and connections');
   const dialog = page.getByRole('dialog', { name: 'Settings & connections' });
-  await expect(dialog.getByRole('button', { name: 'Celebrate', exact: true })).toBeDisabled();
-  await expect(dialog.getByText(/Celebration needs avatar motion/)).toBeVisible();
-  await dialog.getByRole('button', { name: 'Rest Sprout', exact: true }).click();
-  const signal = page.locator('.buddy .insight-signal');
-  await expect(signal).toHaveAttribute('data-behavior', 'sleep');
-  await expect(signal.locator('.signal-sleep-zs')).toHaveAttribute('data-moving', 'false');
-  await tools(page, 'Settings and connections');
-  await dialog.getByRole('button', { name: 'Wake Sprout', exact: true }).click();
-  await expect(signal).toHaveAttribute('data-behavior', 'normal');
-  await tools(page, 'Resume avatar motion');
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  await tools(page, 'Settings and connections');
-  await expect(dialog.getByRole('button', { name: 'Celebrate', exact: true })).toBeDisabled();
-  await expect(dialog.getByRole('button', { name: 'Rest Sprout', exact: true })).toBeEnabled();
+  for (const name of ['Celebrate', 'Rest Sprout', 'Wake Sprout'])
+    await expect(dialog.getByRole('button', { name, exact: true })).toHaveCount(0);
+  await expect(dialog.getByLabel('Large text', { exact: true })).toBeVisible();
   await dialog.press('Escape');
+  await tools(page, 'Resume avatar motion');
+  const signal = page.locator('.buddy .insight-signal');
   const loss = await signal
     .locator('canvas')
     .evaluateHandle((canvas) =>
@@ -106,11 +116,7 @@ test('real settings explain motion and unavailable-view guards while static rest
   await loss.evaluate((extension) => extension!.loseContext());
   await expect(signal).toHaveAttribute('data-renderer', 'fallback');
   await tools(page, 'Settings and connections');
-  await expect(dialog.getByRole('button', { name: 'Celebrate', exact: true })).toBeDisabled();
-  await expect(dialog.getByRole('button', { name: 'Rest Sprout', exact: true })).toBeDisabled();
-  await expect(
-    dialog.getByText('Character animations are loading or unavailable in this view.'),
-  ).toBeVisible();
+  await expect(dialog.getByRole('button', { name: 'Celebrate', exact: true })).toHaveCount(0);
   await loss.dispose();
   expect(mutations).toEqual(['/api/session']);
 });

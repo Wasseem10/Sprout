@@ -37,9 +37,14 @@ import {
   type SproutEyeProfile,
 } from './buddyMotionController';
 import { observeDesktopVisibility } from './desktopVisibility';
-import { SPROUT_DAYLIGHT_ASSET } from './buddyAppearance';
+import {
+  isSproutDaylightAsset,
+  SPROUT_CURRENT_ASSET,
+  SPROUT_DAYLIGHT_ASSET,
+} from './buddyAppearance';
 import {
   NO_BUDDY_BEHAVIORS,
+  buddyPlaybackPhase,
   SPROUT_BEHAVIOR_CLIPS,
   type BuddyBehaviorInput,
   type BuddyBehaviorSnapshot,
@@ -121,7 +126,8 @@ export type BuddyRendererDiagnostics = {
   };
 };
 export type BuddyRenderer = {
-  update: (settings: BuddyRendererSettings) => void;
+  /** Initial attachment seeds cues issued during asynchronous asset loading. */
+  update: (settings: BuddyRendererSettings, initialSync?: boolean) => void;
   diagnostics: () => BuddyRendererDiagnostics;
   dispose: () => void;
 };
@@ -265,6 +271,8 @@ async function loadModel(
   ];
   // Studies may load owned local models, never an arbitrary remote source.
   if (candidateUrl && /^\/buddy\/[a-z0-9][a-z0-9_.-]*\.glb$/i.test(candidateUrl)) {
+    if (candidateUrl === SPROUT_CURRENT_ASSET)
+      candidates.unshift([SPROUT_DAYLIGHT_ASSET, 'sprout']);
     if (candidateUrl !== candidates[0][0]) candidates.unshift([candidateUrl, 'sprout']);
   }
   for (const [path, asset] of candidates) {
@@ -412,7 +420,7 @@ export async function createBuddyRenderer(
   const scene = new Scene();
   const reflectionProfile =
     initial.reflectionProfile ??
-    (loaded.assetUrl === SPROUT_DAYLIGHT_ASSET
+    (isSproutDaylightAsset(loaded.assetUrl)
       ? 'daylight'
       : asset === 'sprout'
         ? 'tapered'
@@ -539,9 +547,23 @@ export async function createBuddyRenderer(
   const moving = () => settings.motion && !reducedMotion.matches;
   const canDraw = () => visible && !document.hidden && Boolean(desktopVisibility?.isVisible());
   const shouldAnimate = () => moving() && canDraw() && !contextLost && !disposed;
-  controller?.setPhase(settings.phase);
+  const presentationPhase = () => buddyPlaybackPhase(settings.phase, settings.audio?.current);
+  const syncController = (now = performance.now(), initialSync = false) => {
+    const audio = settings.audio?.current;
+    const intent = settings.behavior;
+    const liveOutput =
+      settings.phase === 'speaking' && audio?.source === 'voice' && audio.outputPlaying;
+    controller?.setBehavior(
+      intent?.automatic && liveOutput && !intent.automatic.interrupt
+        ? { ...intent, automatic: { ...intent.automatic, interrupt: true } }
+        : intent,
+      now,
+      initialSync,
+    );
+    controller?.setPhase(presentationPhase());
+  };
   controller?.setMotion(moving());
-  controller?.setBehavior(settings.behavior);
+  syncController();
   let lastBehaviorKey = '';
   const behaviorSnapshot = (): BuddyBehaviorSnapshot => {
     const state = controller?.behaviorSnapshot();
@@ -633,27 +655,22 @@ export async function createBuddyRenderer(
   const draw = (now = performance.now(), dt = 0) => {
     if (disposed || !canDraw() || contextLost || renderer.getContext().isContextLost()) return;
     const t = moving() ? elapsed : 0;
-    const level = moving() ? envelope.sample(settings.audio?.current, settings.phase, now, dt) : 0;
+    const phase = presentationPhase();
+    const level = moving() ? envelope.sample(settings.audio?.current, phase, now, dt) : 0;
     if (!moving()) envelope.reset();
     key.intensity = keyBase + level * 0.4;
     if (asset === 'ribbon') {
-      const pace = settings.phase === 'thinking' ? 0.6 : settings.phase === 'speaking' ? 0.8 : 0.25;
+      const pace = phase === 'thinking' ? 0.6 : phase === 'speaking' ? 0.8 : 0.25;
       mount.rotation.set(
         moving() ? Math.sin(t * 0.35) * 0.025 + pointer.y * 0.05 : 0,
         moving()
-          ? Math.sin(t * pace) * (settings.phase === 'thinking' ? 0.18 : 0.065) + pointer.x * 0.07
+          ? Math.sin(t * pace) * (phase === 'thinking' ? 0.18 : 0.065) + pointer.x * 0.07
           : 0,
         moving() ? Math.sin(t * 0.28) * 0.025 : 0,
       );
       mount.position.y = moving() ? Math.sin(t * 0.7) * 0.025 : 0;
     }
-    glowColor.set(
-      settings.phase === 'success'
-        ? 0xa9e4b6
-        : settings.phase === 'listening'
-          ? 0x9fdfea
-          : 0xbce7df,
-    );
+    glowColor.set(phase === 'success' ? 0xa9e4b6 : phase === 'listening' ? 0x9fdfea : 0xbce7df);
     for (const light of lights) {
       light.material.emissiveIntensity = light.intensity * (1 + level * 0.35);
       // The inset core's authored blue remains blue. Phase truth stays in
@@ -692,7 +709,7 @@ export async function createBuddyRenderer(
       }
       elapsed += delta;
       if (controller) {
-        controller.setBehavior(settings.behavior, now);
+        syncController(now);
         const gaze =
           attentionFocused && controller.allowsAttention()
             ? (settings.gaze ?? pointer)
@@ -726,7 +743,7 @@ export async function createBuddyRenderer(
     lastFrame = lastRenderedAt = 0;
     controller?.setVisible(canDraw() && !contextLost);
     controller?.setMotion(moving());
-    controller?.setBehavior(settings.behavior);
+    syncController();
     controller?.update(0);
     if (!moving() || !canDraw()) {
       pointer = { x: 0, y: 0 };
@@ -820,12 +837,10 @@ export async function createBuddyRenderer(
   canvas.addEventListener('webglcontextrestored', restored);
   resize();
   return {
-    update(next) {
-      const previousPhase = settings.phase;
+    update(next, initialSync = false) {
       settings = next;
-      if (next.phase !== previousPhase) controller?.setPhase(next.phase);
       controller?.setMotion(moving());
-      controller?.setBehavior(next.behavior);
+      syncController(performance.now(), initialSync);
       if ((next.reaction ?? 0) !== lastReaction) {
         lastReaction = next.reaction ?? 0;
         controller?.react('Sprout_Click');

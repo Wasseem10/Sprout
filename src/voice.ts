@@ -1,10 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
-import { CommitStrategy, useScribe } from '@elevenlabs/react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { CommitStrategy, RealtimeEvents, useScribe } from '@elevenlabs/react';
 import {
   createAudioPresentation,
   createOutputAudioMeter,
   playOutputAudio,
 } from './audioPresentation';
+import {
+  createVoiceActivity,
+  observeVoicePlayback,
+  type VoiceOutputEndReason,
+} from './voiceActivity';
 
 type VoicePhase = 'idle' | 'starting' | 'listening' | 'transcribing' | 'processing' | 'speaking';
 
@@ -27,6 +32,8 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
   const presentationOwner = useRef<ReturnType<typeof createAudioPresentation> | null>(null);
   if (!presentationOwner.current) presentationOwner.current = createAudioPresentation();
   const presentation = presentationOwner.current;
+  const [activityOwner] = useState(() => createVoiceActivity());
+  const activity = useSyncExternalStore(activityOwner.subscribe, activityOwner.getSnapshot);
   const outputMeterOwner = useRef<ReturnType<typeof createOutputAudioMeter> | null>(null);
   if (!outputMeterOwner.current) outputMeterOwner.current = createOutputAudioMeter(presentation);
   const outputMeter = outputMeterOwner.current;
@@ -40,6 +47,9 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
   const transcriptHandler = useRef(onTranscript);
   const pendingGreeting = useRef<string | undefined>(undefined);
   const errorHandler = useRef(onError);
+  const playbackObserver = useRef<(() => void) | null>(null);
+  const scribeObserver = useRef<(() => void) | null>(null);
+  const utteranceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   transcriptHandler.current = onTranscript;
   errorHandler.current = onError;
 
@@ -53,28 +63,32 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
       noiseSuppression: true,
       workletPaths: { scribeAudioProcessor: '/scribeAudioProcessor.js' },
     },
-    onSessionStarted: () => {
-      if (conversation.current && voiceMode.current === 'realtime') {
-        setPhase('listening');
-        const greeting = pendingGreeting.current;
-        pendingGreeting.current = undefined;
-        if (greeting) void speakRealtime(greeting);
-      }
-    },
-    onPartialTranscript: ({ text }) => handleRealtimePartial(text),
-    onCommittedTranscript: ({ text }) => handleRealtimeCommit(text),
-    onError: () => handleRealtimeFailure(),
-    onDisconnect: () => {
-      // An unexpected provider disconnect should not leave Play looking active
-      // while nothing is listening. Ignore closes caused by Pause/Stop.
-      setTimeout(() => {
-        if (conversation.current && voiceMode.current === 'realtime' && !scribe.getConnection())
-          handleRealtimeFailure();
-      }, 250);
-    },
   });
 
-  function stopOutput() {
+  function disconnectScribe() {
+    scribeObserver.current?.();
+    scribeObserver.current = null;
+    scribe.disconnect();
+  }
+
+  function endUtterance() {
+    if (utteranceTimer.current) clearTimeout(utteranceTimer.current);
+    utteranceTimer.current = null;
+    activityOwner.endUtterance();
+  }
+
+  function realtimeActivity() {
+    activityOwner.acceptedSpeech(true);
+    if (utteranceTimer.current) clearTimeout(utteranceTimer.current);
+    // A partial without a commit (provider filtering/network stall) cannot hold
+    // presence awake forever. New partials renew this bounded input lease.
+    utteranceTimer.current = setTimeout(endUtterance, MAX_RECORDING_MS);
+  }
+
+  function stopOutput(reason: VoiceOutputEndReason = 'cancelled') {
+    activityOwner.cancelOutput(reason);
+    playbackObserver.current?.();
+    playbackObserver.current = null;
     outputMeter.stop();
     outputGeneration.current++;
     outputAbort.current?.abort();
@@ -86,13 +100,33 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
     url.current = null;
   }
 
-  async function preparePlayback(src: string, isCurrent: () => boolean) {
+  async function preparePlayback(src: string, isCurrent: () => boolean, outputId: number) {
     const original = new Audio(src);
     audio.current = original;
     const meterGeneration = presentation.ref.current.playbackGeneration;
+    const watch = (target: HTMLAudioElement) => {
+      playbackObserver.current?.();
+      playbackObserver.current = observeVoicePlayback(
+        target,
+        () => isCurrent() && audio.current === target,
+        (state) => {
+          activityOwner.outputState(outputId, state);
+          // Native playback remains truthful when amplitude analysis is unavailable.
+          // The existing meter replaces this zero/null sample with measured RMS.
+          presentation.setOutput(
+            meterGeneration,
+            presentation.ref.current.outputLevel === null ? null : 0,
+            state === 'playing',
+          );
+        },
+      );
+    };
+    watch(original);
     const prepared = await outputMeter.prepare(original, meterGeneration, (previous, next) => {
       if (!isCurrent() || audio.current !== previous) return false;
       audio.current = next;
+      activityOwner.outputState(outputId, 'pending');
+      watch(next);
       return true;
     });
     if (!prepared || !isCurrent() || !presentation.isCurrent(meterGeneration)) {
@@ -100,7 +134,10 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
       return null;
     }
     // Meter setup may return a fresh native element if Web Audio cannot preserve output.
-    if (audio.current === original) audio.current = prepared;
+    if (audio.current === original && prepared !== original) {
+      audio.current = prepared;
+      watch(prepared);
+    }
     return audio.current;
   }
 
@@ -127,11 +164,12 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
     const text = value.trim();
     if (text.length < 3) return;
     if (isPlaybackEcho(text)) return;
+    realtimeActivity();
     // The microphone stays open during speech synthesis and playback. As soon
     // as Scribe hears a new utterance, cancel any older audio, including a
     // still-pending TTS response. Its final transcript will start the new task.
     speechInterrupted.current = true;
-    if (audio.current || outputAbort.current) stopOutput();
+    if (audio.current || outputAbort.current) stopOutput('interrupted');
     setPhase('listening');
   }
 
@@ -139,12 +177,15 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
     if (!conversation.current || voiceMode.current !== 'realtime') return;
     const text = value.trim();
     if (!text) {
+      endUtterance();
       speechInterrupted.current = false;
       setPhase('listening');
       return;
     }
     if (isPlaybackEcho(text)) return;
-    if (audio.current || outputAbort.current) stopOutput();
+    endUtterance();
+    activityOwner.acceptedSpeech(false);
+    if (audio.current || outputAbort.current) stopOutput('interrupted');
     setPhase('processing');
     // The handler synchronously supersedes the old request. Clearing this just
     // before dispatch lets the new request speak its own acknowledgment.
@@ -154,19 +195,21 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
 
   function handleRealtimeFailure() {
     if (!conversation.current || voiceMode.current !== 'realtime') return;
+    endUtterance();
     voiceMode.current = 'batch';
-    scribe.disconnect();
+    disconnectScribe();
     // Keep the conversation alive if a realtime socket expires or worklet
     // setup fails. The local recorder remains a usable fallback.
     void start(true);
   }
 
-  function clearMedia() {
+  function clearMedia(reason: VoiceOutputEndReason = 'cancelled') {
+    endUtterance();
     presentation.clearInput();
     generation.current++;
     monitoringPlayback.current = false;
     speechInterrupted.current = false;
-    stopOutput();
+    stopOutput(reason);
     abort.current?.abort();
     abort.current = null;
     if (timer.current) clearTimeout(timer.current);
@@ -181,19 +224,19 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
     audioContext.current = null;
   }
 
-  function stop() {
+  function stop(reason: VoiceOutputEndReason = 'cancelled') {
     pendingGreeting.current = undefined;
     conversation.current = false;
     setConversationActive(false);
     voiceMode.current = 'off';
-    scribe.disconnect();
-    clearMedia();
+    disconnectScribe();
+    clearMedia(reason);
     setPhase('idle');
   }
 
   async function start(automatic = false, monitorPlayback = false) {
     if (!monitorPlayback) {
-      if (voiceMode.current === 'realtime') scribe.disconnect();
+      if (voiceMode.current === 'realtime') disconnectScribe();
       voiceMode.current = 'batch';
       clearMedia();
     }
@@ -234,6 +277,7 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
       recording.onstop = async () => {
         media.getTracks().forEach((track) => track.stop());
         if (id !== generation.current) return;
+        endUtterance();
         presentation.clearInput();
         if (voiceActivityTimer.current) clearInterval(voiceActivityTimer.current);
         voiceActivityTimer.current = null;
@@ -284,6 +328,7 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
           abort.current = null;
           const text = value.text?.trim();
           if (text) {
+            activityOwner.acceptedSpeech(false);
             setPhase(conversation.current ? 'processing' : 'idle');
             // The handoff to the new request is synchronous. Until this point,
             // pending speech blocks an older task from starting another reply.
@@ -352,6 +397,9 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
               if (monitoringPlayback.current) {
                 monitoringPlayback.current = false;
                 speechInterrupted.current = true;
+                activityOwner.cancelOutput('interrupted');
+                playbackObserver.current?.();
+                playbackObserver.current = null;
                 outputMeter.stop();
                 audio.current?.pause();
                 audio.current = null;
@@ -359,6 +407,7 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
                 url.current = null;
                 setPhase('listening');
               }
+              if (!heardSpeech) activityOwner.acceptedSpeech(true);
               heardSpeech = true;
               lastSpeech = Date.now();
             }
@@ -418,8 +467,66 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
       if (typeof value.token !== 'string' || !value.token) throw new Error('No realtime token');
       if (!conversation.current || id !== generation.current) return;
       voiceMode.current = 'realtime';
-      await scribe.connect({ token: value.token });
-      if (!conversation.current || id !== generation.current) scribe.disconnect();
+      // connect installs the connection synchronously. Bind before awaiting its
+      // Promise so the first session_started cannot outrun the owned handlers.
+      const connecting = scribe.connect({ token: value.token });
+      const connection = scribe.getConnection();
+      if (connection) {
+        const isCurrent = () =>
+          conversation.current &&
+          id === generation.current &&
+          voiceMode.current === 'realtime' &&
+          scribe.getConnection() === connection;
+        const started = () => {
+          if (!isCurrent()) return;
+          setPhase('listening');
+          const greeting = pendingGreeting.current;
+          pendingGreeting.current = undefined;
+          if (greeting) void speakRealtime(greeting);
+        };
+        const partial = ({ text }: { text: string }) => {
+          if (isCurrent()) handleRealtimePartial(text);
+        };
+        const committed = ({ text }: { text: string }) => {
+          if (isCurrent()) handleRealtimeCommit(text);
+        };
+        const failed = () => {
+          if (isCurrent()) handleRealtimeFailure();
+        };
+        let disconnectTimer: ReturnType<typeof setTimeout> | null = null;
+        const closed = () => {
+          // useScribe clears its own connection ref before notifying close.
+          disconnectTimer = setTimeout(() => {
+            if (
+              conversation.current &&
+              id === generation.current &&
+              voiceMode.current === 'realtime' &&
+              !scribe.getConnection()
+            )
+              handleRealtimeFailure();
+          }, 250);
+        };
+        connection.on(RealtimeEvents.SESSION_STARTED, started);
+        connection.on(RealtimeEvents.PARTIAL_TRANSCRIPT, partial);
+        connection.on(RealtimeEvents.COMMITTED_TRANSCRIPT, committed);
+        connection.on(RealtimeEvents.ERROR, failed);
+        connection.on(RealtimeEvents.CLOSE, closed);
+        scribeObserver.current = () => {
+          if (disconnectTimer) clearTimeout(disconnectTimer);
+          connection.off(RealtimeEvents.SESSION_STARTED, started);
+          connection.off(RealtimeEvents.PARTIAL_TRANSCRIPT, partial);
+          connection.off(RealtimeEvents.COMMITTED_TRANSCRIPT, committed);
+          connection.off(RealtimeEvents.ERROR, failed);
+          connection.off(RealtimeEvents.CLOSE, closed);
+        };
+      }
+      await connecting;
+      // Never disconnect a newer session after this connection was superseded.
+      if (
+        (!conversation.current || id !== generation.current) &&
+        scribe.getConnection() === connection
+      )
+        disconnectScribe();
     } catch {
       if (!conversation.current || id !== generation.current) return;
       // Still offer continuous conversation with the local recorder if the
@@ -432,12 +539,15 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
   }
 
   function pauseConversation() {
-    stop();
+    stop('paused');
   }
 
   function skipSpeech() {
+    activityOwner.cancelOutput('skipped');
+    playbackObserver.current?.();
+    playbackObserver.current = null;
     if (voiceMode.current === 'realtime') {
-      stopOutput();
+      stopOutput('skipped');
       if (conversation.current) setPhase('listening');
       else setPhase('idle');
       return;
@@ -460,9 +570,14 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
     if (recorder.current?.state === 'recording') recorder.current.stop();
   }
 
-  async function speakRealtime(text: string) {
-    if (speechInterrupted.current) return;
-    stopOutput();
+  async function speakRealtime(text: string, replyId?: string) {
+    if (speechInterrupted.current) {
+      const cancelled = activityOwner.beginOutput(replyId);
+      activityOwner.settleOutput(cancelled, 'interrupted');
+      return;
+    }
+    stopOutput('superseded');
+    const outputId = activityOwner.beginOutput(replyId);
     const id = outputGeneration.current;
     const controller = new AbortController();
     outputAbort.current = controller;
@@ -485,17 +600,18 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
       const playback = await preparePlayback(
         url.current,
         () => id === outputGeneration.current && conversation.current,
+        outputId,
       );
       if (!playback) return;
       spokenText.current = text;
       playback.onended = () => {
         if (id !== outputGeneration.current) return;
-        stopOutput();
+        stopOutput('ended');
         if (conversation.current) setPhase('listening');
       };
       playback.onerror = () => {
         if (id !== outputGeneration.current) return;
-        stopOutput();
+        stopOutput('error');
         errorHandler.current('Audio playback failed. The full answer remains in the transcript.');
         if (conversation.current) setPhase('listening');
       };
@@ -504,20 +620,23 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
         () => audio.current,
         () => id === outputGeneration.current && conversation.current,
       );
+      if (id === outputGeneration.current && conversation.current && audio.current)
+        activityOwner.outputState(outputId, 'playing');
     } catch (error) {
       if (id !== outputGeneration.current || !conversation.current) return;
-      outputAbort.current = null;
+      stopOutput('error');
       errorHandler.current(error instanceof Error ? error.message : 'Voice output failed.');
       setPhase('listening');
     }
   }
 
-  async function speak(text: string) {
+  async function speak(text: string, replyId?: string) {
     if (voiceMode.current === 'realtime' && conversation.current) {
-      await speakRealtime(text);
+      await speakRealtime(text, replyId);
       return;
     }
-    clearMedia();
+    clearMedia('superseded');
+    const outputId = activityOwner.beginOutput(replyId);
     const id = generation.current;
     speechInterrupted.current = false;
     const controller = new AbortController();
@@ -538,10 +657,17 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
       if (id !== generation.current) return;
       abort.current = null;
       url.current = URL.createObjectURL(blob);
-      const playback = await preparePlayback(url.current, () => id === generation.current);
+      const playback = await preparePlayback(
+        url.current,
+        () => id === generation.current,
+        outputId,
+      );
       if (!playback) return;
       playback.onended = () => {
         if (id !== generation.current) return;
+        activityOwner.settleOutput(outputId, 'ended');
+        playbackObserver.current?.();
+        playbackObserver.current = null;
         outputMeter.stop();
         audio.current = null;
         if (url.current) URL.revokeObjectURL(url.current);
@@ -561,6 +687,7 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
       };
       playback.onerror = () => {
         if (id !== generation.current) return;
+        activityOwner.settleOutput(outputId, 'error');
         errorHandler.current('Audio playback failed. The full answer remains in the transcript.');
         if (conversation.current) void start(true);
         else {
@@ -573,12 +700,15 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
         () => audio.current,
         () => id === generation.current,
       );
+      if (id === generation.current && audio.current)
+        activityOwner.outputState(outputId, 'playing');
       // Keep the microphone listening while ElevenLabs speaks. The recording includes
       // the beginning of an interruption, so its first words are not clipped by VAD.
       if (conversation.current && id === generation.current && audio.current)
         void start(true, true);
     } catch (error) {
       if (id === generation.current && !speechInterrupted.current) {
+        activityOwner.settleOutput(outputId, 'error');
         errorHandler.current(error instanceof Error ? error.message : 'Voice output failed.');
         if (conversation.current) void start(true);
         else {
@@ -607,13 +737,15 @@ export function useVoice(onTranscript: (text: string) => void, onError: (text: s
     () => () => {
       conversation.current = false;
       voiceMode.current = 'off';
-      scribe.disconnect();
+      disconnectScribe();
       clearMedia();
     },
     [],
   );
 
   return {
+    activity,
+    getActivity: activityOwner.getSnapshot,
     presentationAudio: presentation.ref,
     phase,
     conversationActive,

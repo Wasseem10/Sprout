@@ -420,6 +420,9 @@ export class SproutMotionController {
   private revision = 0;
   private behavior: BuddyBehaviorInput = { generation: 0, manualEligible: false };
   private lastRequest: number | undefined;
+  private automaticInitialized = false;
+  private seenAutomaticJoy = new Set<string>();
+  private lastAutomaticWake: string | undefined;
   private seenDone = new Set<string>();
   private pendingDone: NonNullable<BuddyBehaviorInput['done']> | null = null;
   private bodyFinished: { action: AnimationAction; generation: number } | null = null;
@@ -728,7 +731,13 @@ export class SproutMotionController {
     if (phase === 'thinking') {
       this.stopShot('Sprout_Done');
     }
-    if (changed && phase !== 'idle' && phase !== 'success' && this.mode !== 'normal')
+    if (
+      changed &&
+      phase !== 'idle' &&
+      phase !== 'success' &&
+      this.mode !== 'normal' &&
+      (!this.behavior.automatic || this.behavior.automatic.interrupt)
+    )
       this.recover();
     if (this.mode === 'recover' && changed && this.moving) {
       this.retarget(this.phaseTarget(), 0.18);
@@ -740,17 +749,34 @@ export class SproutMotionController {
   }
 
   /** Inputs carry no resource ownership; rejected requests are consumed, never queued. */
-  setBehavior(input: BuddyBehaviorInput | undefined, now = performance.now()) {
+  setBehavior(input: BuddyBehaviorInput | undefined, now = performance.now(), initialSync = false) {
     const next = input ?? { generation: 0, manualEligible: false };
     const epochChanged = next.generation !== this.behavior.generation;
+    const previousAutomatic = this.behavior.automatic;
+    const wasSleeping = this.sleeping || ['enter-sleep', 'sleep'].includes(this.mode);
     this.behavior = next;
-    if (epochChanged || this.interrupted()) {
+    const automatic = next.automatic;
+    if (
+      epochChanged ||
+      this.interrupted() ||
+      automatic?.interrupt ||
+      (automatic && previousAutomatic && automatic.revision !== previousAutomatic.revision)
+    ) {
       this.pendingDone = null;
       this.stopShot('Sprout_Done');
-      this.recover();
-    } else if (!next.manualEligible && this.mode === 'joy') this.recover();
-    else if (!next.manualEligible && ['enter-sleep', 'sleep'].includes(this.mode)) this.wake();
-    const request = next.request;
+      if (
+        automatic?.presence === 'awake' &&
+        wasSleeping &&
+        !automatic.interrupt &&
+        !this.interrupted()
+      )
+        this.wake();
+      else this.recover();
+    } else if (!automatic && !next.manualEligible && this.mode === 'joy') this.recover();
+    else if (!automatic && !next.manualEligible && ['enter-sleep', 'sleep'].includes(this.mode))
+      this.wake();
+    if (automatic) this.applyAutomatic(automatic, initialSync);
+    const request = automatic ? undefined : next.request;
     if (request && Number.isFinite(request.id) && request.id !== this.lastRequest) {
       this.lastRequest = request.id;
       if (request.action === 'wake') this.wake();
@@ -777,7 +803,7 @@ export class SproutMotionController {
         }
       }
     }
-    const done = next.done;
+    const done = automatic ? undefined : next.done;
     if (done && done.id && Number.isFinite(done.issuedAt)) {
       const key = `${done.generation}:${done.id}`;
       if (!this.seenDone.has(key)) {
@@ -797,6 +823,47 @@ export class SproutMotionController {
       }
     }
     this.consumeDone(now);
+  }
+
+  private applyAutomatic(
+    automatic: NonNullable<BuddyBehaviorInput['automatic']>,
+    initialSync: boolean,
+  ) {
+    const initial = !this.automaticInitialized;
+    this.automaticInitialized = true;
+    const newJoy = Boolean(automatic.joy && !this.seenAutomaticJoy.has(automatic.joy.id));
+    const newWake = Boolean(automatic.wake && automatic.wake.id !== this.lastAutomaticWake);
+    // Consume semantic events even when motion/graphics are unavailable. In particular,
+    // a new canvas must not replay an event that existed before its asset finished loading.
+    if (automatic.joy) {
+      this.seenAutomaticJoy.add(automatic.joy.id);
+      if (this.seenAutomaticJoy.size > 64)
+        this.seenAutomaticJoy.delete(this.seenAutomaticJoy.values().next().value!);
+    }
+    if (automatic.wake) this.lastAutomaticWake = automatic.wake.id;
+    if (automatic.interrupt || this.interrupted()) return;
+    if (automatic.presence === 'asleep') {
+      if (!this.capabilities.sleep) return;
+      this.setSleeping(true);
+      if (initial || !this.moving || !this.visible) this.park();
+      else if (!['enter-sleep', 'sleep'].includes(this.mode))
+        this.beginBody('Sprout_SleepEnter', 'enter-sleep');
+      return;
+    }
+    if (this.sleeping || ['enter-sleep', 'sleep'].includes(this.mode)) this.wake();
+    else if (newWake && this.mode === 'joy') this.recover();
+    if (
+      newJoy &&
+      !initial &&
+      !initialSync &&
+      this.capabilities.joy &&
+      this.moving &&
+      this.visible &&
+      ['normal', 'recover'].includes(this.mode)
+    ) {
+      this.setSleeping(false);
+      this.beginBody('Sprout_JoyJump', 'joy');
+    }
   }
 
   private consumeDone(now: number) {
@@ -979,7 +1046,7 @@ export class SproutMotionController {
 
   update(delta: number, now = performance.now()) {
     if (this.disposed) return;
-    if (this.interrupted()) {
+    if (this.interrupted() || this.behavior.automatic?.interrupt) {
       this.pendingDone = null;
       this.stopShot('Sprout_Done');
       this.recover();

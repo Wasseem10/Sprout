@@ -31,7 +31,7 @@ import './buddy.css';
 import EnergyPanel from './EnergyPanel';
 import FinancePanel from './FinancePanel';
 import AssistantSignal, { buddyVisualState } from './AssistantSignal';
-import { SPROUT_DAYLIGHT_ASSET } from './buddyAppearance';
+import { SPROUT_CURRENT_ASSET } from './buddyAppearance';
 import type { AudioPresentationRef } from './audioPresentation';
 import type { BuddyBehaviorInput, BuddyBehaviorSnapshot } from './buddyBehavior';
 import { useBuddyPanel, type BuddyReadingMemory } from './useBuddyPanel';
@@ -62,6 +62,7 @@ type Props = {
   busy: boolean;
   enabled: boolean;
   voicePhase: string;
+  voiceOutputState?: 'pending' | 'playing' | 'settled';
   audio?: AudioPresentationRef;
   voiceReady: boolean;
   speech: boolean;
@@ -149,24 +150,30 @@ export default function DesktopBuddy(p: Props) {
   };
   const visualPhase = p.visual?.phase ?? buddyVisualState(p.voicePhase, p.busy);
   const status =
-    p.voicePhase === 'starting'
-      ? 'Opening mic…'
-      : p.conversationActive
-        ? p.voicePhase === 'speaking'
-          ? 'Speaking · listening'
-          : p.busy || p.voicePhase === 'processing'
-            ? 'Working · listening'
-            : p.voicePhase === 'transcribing'
-              ? 'Understanding · listening'
-              : 'Listening…'
-        : p.busy
-          ? 'Working…'
-          : p.voicePhase === 'starting'
-            ? 'Opening mic…'
-            : 'Ready to talk';
+    p.behavior?.automatic?.presence === 'asleep'
+      ? 'Sleeping · mic paused'
+      : p.voicePhase === 'starting'
+        ? 'Opening mic…'
+        : p.voicePhase === 'speaking'
+          ? p.voiceOutputState && p.voiceOutputState !== 'playing'
+            ? 'Preparing reply…'
+            : p.conversationActive
+              ? 'Speaking · listening'
+              : 'Speaking…'
+          : p.conversationActive
+            ? p.busy || p.voicePhase === 'processing'
+              ? 'Working · listening'
+              : p.voicePhase === 'transcribing'
+                ? 'Understanding · listening'
+                : 'Listening…'
+            : p.busy
+              ? 'Working…'
+              : p.voicePhase === 'starting'
+                ? 'Opening mic…'
+                : 'Ready to talk';
   const conversation = p.messages.filter((m) => m.id !== 'welcome');
   const voiceHelp = p.conversationActive
-    ? 'Speak anytime, even during my reply. Pause ends the voice conversation; Stop also cancels the task.'
+    ? 'Speak anytime, even during my reply. Pause stops the mic and lets Sprout rest after current work. Stop also cancels the task.'
     : p.shortcut === false
       ? 'Start a voice conversation with the microphone button.'
       : 'Start a voice conversation with the microphone button or Control + Shift + Space.';
@@ -176,7 +183,13 @@ export default function DesktopBuddy(p: Props) {
       className={`buddy-play ${p.conversationActive ? 'playing' : ''} ${p.voicePhase === 'listening' ? 'listening' : ''}`}
       data-phase={visualPhase}
       onClick={p.talk}
-      disabled={!p.conversationActive && (!p.enabled || !p.voiceReady || p.busy)}
+      disabled={
+        !p.conversationActive &&
+        (!p.enabled ||
+          !p.voiceReady ||
+          p.voicePhase === 'starting' ||
+          p.voicePhase === 'transcribing')
+      }
       aria-label={p.conversationActive ? 'Pause voice conversation' : 'Start voice conversation'}
       aria-pressed={p.conversationActive}
       aria-describedby="buddy-voice-help"
@@ -298,7 +311,7 @@ export default function DesktopBuddy(p: Props) {
         >
           <AssistantSignal
             {...p.visual}
-            assetUrl={p.visual?.assetUrl ?? SPROUT_DAYLIGHT_ASSET}
+            assetUrl={p.visual?.assetUrl ?? SPROUT_CURRENT_ASSET}
             phase={visualPhase}
             behavior={p.visual?.behavior ?? p.behavior}
             onBehaviorChange={p.visual?.onBehaviorChange ?? p.onBehaviorChange}

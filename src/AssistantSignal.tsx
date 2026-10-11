@@ -20,21 +20,23 @@ export function buddyVisualState(voicePhase: string, busy: boolean): BuddyVisual
 /** Match static rest to the requested/loaded generation, keeping closed-eye fallbacks before idle. */
 export function buddyStillPaths(assetUrl: string | undefined, sleeping: boolean) {
   if (assetUrl?.includes('insight-core-v1')) return ['/buddy/insight-core-v1.png'];
-  const version = assetUrl?.match(/v00[2-6](?=\.glb$)/)?.[0] ?? 'v005';
+  const version = assetUrl?.match(/v00[2-7](?=\.glb$)/)?.[0] ?? 'v005';
   const idle = `/buddy/sprout-${version}.png`;
-  if (sleeping && ['v004', 'v005', 'v006'].includes(version))
+  if (sleeping && ['v004', 'v005', 'v006', 'v007'].includes(version))
     return [
       `/buddy/sprout-${version}-sleep.png`,
-      ...(version === 'v006' ? ['/buddy/sprout-v005-sleep.png'] : []),
-      ...(['v005', 'v006'].includes(version) ? ['/buddy/sprout-v004-sleep.png'] : []),
+      ...(version === 'v007' ? ['/buddy/sprout-v006-sleep.png'] : []),
+      ...(['v006', 'v007'].includes(version) ? ['/buddy/sprout-v005-sleep.png'] : []),
+      ...(['v005', 'v006', 'v007'].includes(version) ? ['/buddy/sprout-v004-sleep.png'] : []),
       idle,
       '/buddy/sprout-v003.png',
       '/buddy/insight-core-v1.png',
     ];
   return [
     idle,
-    ...(version === 'v006' ? ['/buddy/sprout-v005.png'] : []),
-    ...(['v005', 'v006'].includes(version) ? ['/buddy/sprout-v004.png'] : []),
+    ...(version === 'v007' ? ['/buddy/sprout-v006.png'] : []),
+    ...(['v006', 'v007'].includes(version) ? ['/buddy/sprout-v005.png'] : []),
+    ...(['v005', 'v006', 'v007'].includes(version) ? ['/buddy/sprout-v004.png'] : []),
     '/buddy/sprout-v003.png',
     '/buddy/insight-core-v1.png',
   ].filter((path, index, paths) => paths.indexOf(path) === index);
@@ -95,7 +97,13 @@ export default function AssistantSignal({
   const [ready, setReady] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
   const [loadedAssetUrl, setLoadedAssetUrl] = useState<string | undefined>(assetUrl);
-  const sleepingStill = character?.mode === 'sleep';
+  const sleepingStill = behavior?.automatic
+    ? behavior.automatic.presence === 'asleep'
+    : character?.mode === 'sleep';
+  const sleepAnchor = character?.headAnchor ?? { x: 0.5, y: 0.52 };
+  const showSleepZs = ready
+    ? character?.mode === 'sleep' && character.visible && character.headAnchor
+    : sleepingStill;
   const stillAssetUrl = loadedAssetUrl ?? assetUrl;
   const imagePaths = buddyStillPaths(stillAssetUrl, Boolean(sleepingStill));
   useEffect(() => {
@@ -165,7 +173,7 @@ export default function AssistantSignal({
         if (cancelled) instance?.dispose();
         else {
           renderer.current = instance;
-          instance?.update(settings.current);
+          instance?.update(settings.current, true);
         }
       })
       .catch(() => {
@@ -186,7 +194,7 @@ export default function AssistantSignal({
       data-renderer={ready ? 'webgl' : 'fallback'}
       data-model={asset}
       data-asset-url={loadedAssetUrl}
-      data-behavior={character?.mode ?? 'normal'}
+      data-behavior={!ready && sleepingStill ? 'sleep' : (character?.mode ?? 'normal')}
       data-done={character?.doneActive || undefined}
       aria-hidden="true"
     >
@@ -209,14 +217,14 @@ export default function AssistantSignal({
         ref={canvas}
         className="signal-canvas"
       />
-      {character?.mode === 'sleep' && character.visible && character.headAnchor && (
+      {showSleepZs && (
         <span
           className="signal-sleep-zs"
-          data-moving={character.moving && motion}
+          data-moving={Boolean(ready && character?.moving && motion)}
           style={
             {
-              '--sleep-head-x': `${character.headAnchor.x * 100}%`,
-              '--sleep-head-y': `${character.headAnchor.y * 100}%`,
+              '--sleep-head-x': `${sleepAnchor.x * 100}%`,
+              '--sleep-head-y': `${sleepAnchor.y * 100}%`,
             } as CSSProperties
           }
         >

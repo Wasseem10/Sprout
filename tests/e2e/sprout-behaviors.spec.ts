@@ -139,7 +139,7 @@ test('production adapter acknowledges fresh task completion once, including clar
   await page.goto('/?desktop=buddy');
   const signal = page.locator('.buddy .insight-signal');
   await expect(signal).toHaveAttribute('data-renderer', 'webgl');
-  await expect(signal).not.toHaveAttribute('data-done', 'true');
+  await expect(signal).not.toHaveAttribute('data-behavior', 'joy');
   await page.getByRole('button', { name: /^Expand buddy/ }).click();
   await expect(page.locator('.buddy')).toHaveAttribute('data-panel-stage', 'open');
   await signal.evaluate((element) => {
@@ -147,11 +147,11 @@ test('production adapter acknowledges fresh task completion once, including clar
     (window as unknown as { doneLog: string[] }).doneLog = log;
     new MutationObserver((events) => {
       if (
-        events.some((event) => event.attributeName === 'data-done') &&
-        element.getAttribute('data-done') === 'true'
+        events.some((event) => event.attributeName === 'data-behavior') &&
+        element.getAttribute('data-behavior') === 'joy'
       )
-        log.push('done');
-    }).observe(element, { attributes: true, attributeFilter: ['data-done'] });
+        log.push('joy');
+    }).observe(element, { attributes: true, attributeFilter: ['data-behavior'] });
   });
   const send = async () => {
     await page.getByLabel('Tell your buddy what to do').fill('Read this local fixture');
@@ -162,7 +162,7 @@ test('production adapter acknowledges fresh task completion once, including clar
     page.evaluate(() => (window as unknown as { doneLog: string[] }).doneLog.length);
   await send();
   await expect.poll(count).toBe(1);
-  await expect(signal).not.toHaveAttribute('data-done', 'true');
+  await expect(signal).not.toHaveAttribute('data-behavior', 'joy');
   await send();
   await page.waitForTimeout(300);
   expect(await count()).toBe(1);

@@ -1,0 +1,189 @@
+SPROUT — AUTOMATIC PRESENCE, SLEEP/WAKE, SUCCESS AND DISTINCT SPEAKING
+Implementation prompt · prepared 2026-10-11
+Status: implemented and locally verified on 2026-10-11. The brief below is retained as the original implementation contract; section 2 describes the preparation baseline, not the current code.
+Delivery and evidence: design/buddy/sprout/DELIVERY-v007.md
+
+Implement this brief in D:/hackathon2026/insightos-ui. Finish the connection between real application activity and Sprout's existing animations, and refine the speaking animation in Blender. The final companion must express its state automatically. Manual animation selectors remain in Studio only. Deliver working integration, versioned editable assets, and evidence from the actual automatic workflow.
+
+1. BASELINE AND SCOPE
+
+Inspect the branch, working tree and applicable AGENTS instructions before editing. Preparation baseline: f817db1b29dd58bce77b04a48096ba63ceea8d88 on ui/presentation-polish. Preserve legitimate newer work and unrelated edits.
+
+This repository uses React 19, TypeScript, Vite, Electron and direct Three.js. Keep that stack. The unrelated Next.js application in the parent workspace is outside scope. Preserve existing ElevenLabs Scribe, TTS, interruptions, task execution and backend contracts. Do not introduce another voice provider, microphone, audio graph, animation framework or finance workflow. Narrow additions to the existing voice hook for truthful activity and reply lifecycle signals are in scope.
+
+Read these current records before editing:
+- design/buddy/sprout/DELIVERY-v006.md and ASSET-HANDOFF-v006.md
+- design/buddy/frutiger-aero/SPROUT-CLEAR-GLASS-v008.md
+- design/buddy/frutiger-aero/SPROUT-FLOATING-DOCK-v009.md
+- design/buddy/frutiger-aero/SPROUT-SHARP-TILT-v010.md
+- The current asset manifest and relevant animation authoring scripts.
+
+Preserve the bright glass panel, clean compact avatar/mic dock, happy closed-eye arches, Daylight appearance, drafts, reading position, native window behavior and keyboard access. Keep text, controls and the avatar OUTSIDE the tilting decorative glass plane; do not reintroduce hover blur.
+
+Use the existing UI branch and draft PR https://github.com/Wasseem10/insightos/pull/1 for scoped commits/pushes under the existing authorization. Keep it draft. Do not merge, deploy or message the repository owner.
+
+2. WHAT THE AUDIT VERIFIED
+
+These are existing features, not work to recreate:
+- Idle, listening, thinking and speaking already follow real voice/busy state through AssistantSignal.buddyVisualState, DesktopBuddy and buddyMotionController.
+- The actual v006 GLB contains eleven clips: Idle, Listen, Think, Speak, Blink, Click, Done, JoyJump, SleepEnter, SleepLoop and Wake, all prefixed Sprout_. The four base loops last six seconds; JoyJump and SleepEnter approximately 1.667 seconds; Wake 1.25 seconds; Done approximately 0.833 seconds.
+- Fresh confirmed task completion already passes through BuddyCompletionGate. It currently requests the small Done nod, not JoyJump.
+- Sleep/Wake/Joy currently require manual requests. Manual character controls also appear in production Settings, not just Studio.
+- There is no two-minute automatic sleep coordinator. Pausing the conversation stops media but does not request sleep.
+- Sprout_Speak already exists, but its breathing/squash and small sway look too similar to Idle. Real audio currently changes light/emission, not expressive body articulation.
+- Mute spoken replies is output-only. Pause avatar motion is a separate presentation preference. Neither means Pause microphone.
+
+Primary implementation files:
+src/ComputerCompanion.tsx, voice.ts, AssistantSignal.tsx, DesktopBuddy.tsx,
+buddyBehavior.ts, buddyMotionController.ts, buddyCompletion.ts,
+audioPresentation.ts, buddyAudioEnvelope.ts, buddyRenderer.ts.
+
+Inspect current code rather than assuming preparation-time line numbers remain valid. In particular, accepted task results, voice activity and animation snapshots are different kinds of evidence.
+
+3. REQUIRED USER EXPERIENCE
+
+Initial launch: Sprout is awake and ready, with microphone off until explicitly activated. Microphone off does not universally mean asleep: text interaction must still work normally.
+
+Idle: quiet breathing, occasional blink and restrained gaze. No random celebration or unnecessary bouncing.
+
+Listening: attentive forward engagement and lifted buds. Quiet open listening remains eligible for the inactivity timeout. An open conversation by itself must not keep Sprout awake forever.
+
+Thinking: the existing contemplative asymmetric pose during real processing, transcription or task work. Do not invent financial meanings for gestures.
+
+Speaking: an expressive but planted explaining gesture, detailed below. It must correspond to actual spoken output, not merely a TTS request waiting on the network.
+
+Success: one existing JoyJump after a genuinely completed task, scheduled at the reply boundary described below. Then return to the latest real state. Do not stack Done nod and JoyJump for the same result.
+
+Sleep: existing recline with feet forward, happy closed eyes and floating/fading Zs. Capture and playback must already be stopped. Do not make the old blue eyelid surfaces return.
+
+Wake: existing recovery and eye opening, smoothly returning to current activity. Starting the microphone must never wait for this animation to finish.
+
+4. AUTOMATIC INACTIVITY AND MANUAL PAUSE
+
+Implement a 120,000 ms eligible-inactivity deadline. Eligibility includes mic-off idle and silent open listening. Reset activity on meaningful interaction with the companion: typing/editing, activation clicks or taps, relevant keyboard commands, transcript scrolling, accepted user speech, and starting a task or conversation.
+
+Do not reset the deadline from hover/pointer tilt, animation frames, blinking, renderer callbacks, polling, rerenders, status announcements, or arbitrary RMS/noise samples. Outside desktop activity that the app cannot observe is not an input to this policy.
+
+Use accepted non-echo realtime transcript events and the existing sustained VAD detection in the batch fallback as voice activity. Preserve current barge-in/echo rules. Do not accidentally change the existing partial-transcript interruption threshold while exposing activity. The installed useScribe API does not have the separate useConversation product's onVadScore/getInputVolume callbacks; inspect installed types and do not invent SDK APIs.
+
+Block inactivity sleep during microphone connection/permission setup, a genuine utterance in progress, transcription, active/in-flight work, pending or playing reply audio, Wake, and a completion celebration. Start a fresh two-minute eligible window once those operations settle. An utterance-in-progress signal must clear correctly on commit, failure, cancellation and session change so it cannot hold the app awake indefinitely.
+
+At timeout, recheck the latest activity revision, busy state and generations. Pause through the existing voice owner FIRST, then request SleepEnter -> SleepLoop. This must stop tracks, disconnect Scribe, cancel pending voice requests and stop output just as the existing Pause operation does. Do not merely change the icon, meter, gain or canvas pose.
+
+Manual microphone Pause has immediate effect on capture and playback:
+- If no task is running, enter sleep immediately after media cleanup is initiated.
+- If a task is already running, let it continue and retain Thinking. Record a pending rest intention; do not call the backend Stop endpoint or abort the task merely because the user paused voice.
+- When that task settles, a fresh successful completion may do its one short joy cue, then sleep. Failure goes directly to rest with its accessible error information preserved.
+- New typing, a new task or explicit microphone activation clears pending rest. Output-mute toggles and decorative hover do not.
+- Explicit Pause during an already queued/playing celebration or after completion cancels that decorative cue and enters sleep when no work remains.
+
+Keep these controls independent:
+- Pause microphone/conversation: stop input and output; request rest under the policy above.
+- Mute spoken replies: stop/disable output only; input stays active, and this alone does not request sleep.
+- Pause avatar motion / reduced motion: change presentation only; never acquire/release mic resources or cancel a task.
+- Stop task: preserve existing cancellation behavior; do not reinterpret it as proof of success.
+
+5. WAKING AND MEDIA RACES
+
+Clicking the mic or using its keyboard/global shortcut explicitly wakes Sprout and calls the existing startConversation path. Do not call resumeConversation after Pause: it currently returns when conversation is off. Do not introduce a competing session manager.
+
+Capture may connect while Wake runs. A mere phase change to starting/listening must not instantly cancel Wake as the current setPhase behavior can do. Genuine incoming speech, transcription or new work may smoothly preempt it. Audio capture and interruption responsiveness have priority over presentation.
+
+Typing/submitting while asleep wakes Sprout for text use WITHOUT opening the microphone. Hover, focus, opening the panel, restoring visibility, canvas recovery or a renderer callback must never silently start capture. Merely opening the panel may leave Sprout sleeping until a meaningful interaction occurs.
+
+Permission failure leaves an awake, truthful mic-off/error presentation. Preserve accessible error feedback; do not silently retry. Preserve drafts, selection and reading position across sleep/wake and panel transitions.
+
+Handle Pause -> Resume -> Pause, delayed token/permission responses, late microphone streams, stale transcripts, late TTS responses, fallback switching and stale playback-ended callbacks. Reuse existing voice/task generations and cleanup. Old work must not restart a stopped session, submit a stale command, trigger a stale jump or wake Sprout.
+
+6. COMPLETION JOY WITHOUT COMPETING ANIMATIONS
+
+Retain BuddyCompletionGate's confirmed task.status === 'completed', task-ID deduplication, hydration seeding and request-generation guards. HTTP success, finishing a spoken sentence, a generic chat reply, receiving an import result or clearing busy are not proof of task completion.
+
+Audit all existing accepted-result paths that can return a fresh completed task, including the primary request and relevant existing bill/import operations. Apply a consistent observer only where the existing contract provides confirmed completion. Do not redesign those operations or celebrate unrelated state synchronization.
+
+For each accepted success, keep at most ONE pending completion cue, tied to its task/request identity and, where applicable, that task's final reply lifecycle:
+- Associate that reply lifecycle atomically with acceptance of the successful result, before clearing busy or evaluating a no-reply celebration. Avoid a success -> no pending audio -> premature jump gap before speak() starts.
+- If the result has no spoken reply, celebrate after work settles.
+- If there is pending/playing final reply audio, let the distinct speaking animation finish first, then celebrate once. Never delay, truncate or cancel the answer to show the jump.
+- Reply mute/skip or TTS failure may settle the reply boundary; backend success remains success. Explicit microphone Pause, Stop, new user speech/new work or dismissal supersedes the pending decorative cue as specified above.
+- A spoken acknowledgment at task start is not the final reply boundary. An unrelated/stale audio-ended event cannot release the cue.
+- Awaiting voice.speak(...) is not that boundary: its current Promise resolves after playback starts. Observe the matching final reply's actual ended/error/skip/cancel lifecycle, with explicit no-reply handling.
+- Keep the pending cue through a legitimate long associated reply; do not reuse the current Done cue's one-second expiry unchanged. Discard it when its identity is superseded, its presentation surface is dismissed/hidden, or its generation becomes stale. No general animation queue and no replay on returning later.
+- Mark it consumed exactly once. Quiet active listening is allowed during JoyJump; manualEligible must not reject/cancel this automatic success simply because the voice session is open.
+- Actual new speech/work smoothly preempts JoyJump from its current visible pose. Return to the latest real state, not the state captured when the jump began.
+
+If reduced motion, motion pause or no WebGL prevents celebration, consume the cue and retain the accessible completion message. Do not queue it for a later surprise jump. Pending rest must still proceed when joy is skipped/dropped, including while hidden; never wait indefinitely for a renderer callback that cannot arrive. Keep Sprout_Done in the asset for compatibility/Studio if needed; it must not duplicate the automatic celebration.
+
+7. STATE OWNERSHIP AND ANIMATION PRIORITY
+
+Add a small application-level presence coordinator owned by ComputerCompanion, preferably with a pure reducer/decision function and a focused hook. It owns logical awake/asleep/pending-rest, the eligible-inactivity deadline and task-completion intent. The existing voice owner retains all capture/playback resources and command methods.
+
+Use one deadline timer, monotonic time and latest state/generation rechecks; do not implement timeout logic with per-frame React updates. Recheck elapsed time on visibility/resume because timers may be throttled. Visibility does not itself authorize mic changes: apply the same expired-inactivity policy, and preserve the existing explicit Hide/Stop behavior.
+
+Expose only minimal truthful activity/reply lifecycle information from useVoice. presentationAudio is already read-only and outputPlaying is grounded in actual playback. voice.phase === 'speaking' is set before the TTS fetch resolves, so it is not sufficient evidence of audible speech. Track pending output separately for sleep eligibility and final-reply scheduling.
+
+Pass persistent desired presence plus one-shot semantic events into the renderer. Do not route production Sleep/Joy through the current manualEligible gate. Keep manual Studio validation separate. Renderer state/snapshots are observations; they must not own microphone permissions or logical presence.
+
+Logical sleep must survive canvas unmount/remount, asset switch, context loss and no-WebGL startup. AssistantSignal currently derives its sleeping still from a renderer callback; remove that dependency for automatic presence. Show the correct asleep fallback even if no renderer ever initializes. Skip obsolete one-shots across remounts. Maintain reduced-motion/static sleep semantics without animated Zs.
+
+One body owner at a time, with this practical priority:
+1. Cancellation/supersession clears stale cues and safely retargets current motion.
+2. Real speech/transcription/work and actual reply playback determine the live base behavior; these preempt decorative joy. During reply preparation use a restrained attentive/waiting pose, not pretend talking.
+3. Wake can bridge mic startup until real input/work preempts it.
+4. A valid success cue runs at its safe reply boundary before a pending rest transition.
+5. Quiescent explicit/timeout rest enters SleepEnter -> SleepLoop.
+6. Otherwise listening/idle fills the remaining state.
+
+Sleep/wake/joy transitions must start from the currently visible blend, with no snap to frame zero, weight drift or floating feet. Preserve the current motion auditor and extend its explicit contracts, not broad bypasses.
+
+8. REFINE SPEAKING IN BLENDER
+
+Refine the existing Sprout_Speak instead of adding a second competing talking loop. Give it a recognizable, planted explaining identity: gentle torso expansion, alternating small bud articulation with a natural lag, and restrained phrase emphasis. Keep feet planted, the face readable and the six-second seamless base-loop contract intact.
+
+Speaking must not resemble success hopping, sleep/wake, the thinking lean or repeated Done nods. Avoid repeated whole-body rocking, spins, exaggerated squash and fast mechanical pulsing. Preserve the friendly navy eyes, small existing face, blue/aqua glass, lavender/coral undertones and approved Daylight lighting. No new mouth rig or claimed phoneme lip-sync is required for this pass.
+
+Use actual output activity and the existing audio envelope for bounded articulation intensity if it improves the authored result. Use gentle attack/release smoothing and treat unavailable analysis differently from measured silence. If playback is real but amplitude unavailable, a restrained authored fallback is acceptable. Waiting, muted, interrupted, ended or stale playback must not keep the body pumping. Do not drive it from input noise or build a second audio analyzer.
+
+Respect the animation ownership contract:
+- One AnimationMixer.
+- Base/body clips own the nine-bone rig and complete paired shell/core jelly morph vectors.
+- REACTION_ROOT remains serialized Click/Done ownership; Speak must not animate it.
+- Blink owns happy-eye closure/glints except when SleepEnter/SleepLoop/Wake own those tracks.
+- Pointer gaze owns only its existing unkeyed mounts; neutralize attention appropriately during sleep/wake/joy.
+- Do not apply direct per-frame bone/morph writes after the mixer. Compose any speech intensity through the same controller/mixer with normalized weights and explicit ownership.
+
+One agent owns Blender. Save an isolated new source derived from design/buddy/sprout/source/sprout-daylight-v006.blend; preserve an unrelated unsaved Blender scene. Make a reproducible authoring/export script. Use a fresh version, preferably v007 if free, for the editable .blend, canonical/runtime GLB and matching stills/manifest. Preserve v005 and v006 unchanged:
+- public/buddy/sprout-v005.glb SHA256: 5090645ccbc11f1f577ca22373234a2f3f1d4409ba30876fdecc3af5041faeb2
+- public/buddy/sprout-v006.glb SHA256: b8de0b88395e4b876f0eb668a0a7f39317c24d3530c9d15e58a01c7aa561824f
+
+Verify hashes against disk. Keep Original v005 selectable. Validate the new Speak channels, bindings, loop seam, finite bounds and all preserved non-Speak clips/materials/eye shapes. Reopen saved source and inspect the exported GLB, not just the Blender viewport. No paid generation service is needed.
+
+Update runtime default, loading/auditing profile, fallback paths, metadata and manifests together. Current Daylight rendering selection depends on the v006 asset URL; give the new derivative explicit Daylight metadata/profile so it cannot silently receive the older reflection setup. Retain legacy profiles. Adopt the new default after actual-size visual review.
+
+9. PRODUCTION UI AND VERIFICATION
+
+Remove or development-gate production manual Celebrate/Rest/Wake/state selectors. Retain Studio controls and diagnostics. Preserve real microphone, output-mute, Stop and motion-preference controls. Use concise accessible status text for sleeping, listening, processing, speaking and failure; state must not depend on motion or color. Do not announce every amplitude frame or blink.
+
+Implement focused deterministic tests, using the existing fake Scribe socket and oscillator microphone fixtures rather than live services:
+- 119,999 ms remains awake; 120,000 ms pauses capture exactly once and sleeps, both realtime and batch paths, including quiet open listening and mic-off idle.
+- Meaningful activity just before the deadline resets it. Hover, background noise and polling do not. Genuine utterance/work/pending or audible reply cannot sleep mid-operation.
+- Manual Pause stops tracks/output immediately; a running task continues without a backend Stop call; deferred rest and resume cancellation work.
+- Output mute and motion pause stay independent from mic pause and logical sleep.
+- Explicit mic activation wakes and starts capture promptly. Typing wakes without requesting microphone permission. Opening/hover/visibility restoration never starts capture.
+- Rapid toggles, denied/delayed permission, late token/transcription/TTS and stale playback completion cannot revive old state.
+- Fresh completed task celebrates once after its final reply; no-reply completion celebrates promptly. Long reply, mute, reply failure, supersession, repeated/hydrated/failed/paused/running task results and multiple accepted-result paths obey the policy.
+- No concurrent speaking-body and Joy/Sleep owners; no doubled Done+Joy. Live interruption preempts smoothly. Wake survives bare mic-start phase changes.
+- Initial no-WebGL, context loss, appearance switch/remount, reduced motion and motion pause retain correct persistent sleep and never replay obsolete cues.
+- Production has no demo state controls; Studio retains coverage.
+
+Extend existing buddy-behavior, buddy-motion, buddy-completion, buddy-eyes, audioPresentation and relevant voice/behavior browser tests. Reuse tests/e2e/voice.spec.ts, sprout-behaviors.spec.ts and buddy-behavior-guards.spec.ts. Run TypeScript/build and applicable regressions; do not run unrelated live-provider or paid workflows.
+
+Capture actual automatic flows, not only manually selected Studio poses: start mic -> listen -> accepted speech -> think -> audible reply -> one joy -> listen; quiet timeout -> stopped mic -> sleep; explicit resume -> wake; text while asleep -> awake with mic still off. Include fast interruption and pause-during-work. Use a fake clock for deadline proof rather than making the reviewer wait two minutes.
+
+Review the new speaking gesture beside idle/listen/think at real collapsed/expanded avatar sizes and 44/72/96px captures, on the current bright panel. Verify native Electron where available, keyboard operation and 200% zoom. Preserve existing tilt sharpness, glass, native drag hit regions and panel layout. Keep visual evidence unedited and label fixture-driven verification honestly. Do not claim live ElevenLabs, native interactions or performance measurements that were not exercised.
+
+Deliver the implementation, new source/runtime assets, passing relevant verification, a short event/state map, and a handoff listing changed files, evidence and actual remaining limitations. Completion means these states work through the real production controls and accepted result paths, not just Studio buttons.
+
+PREPARATION AUDIT EVIDENCE
+
+At the preparation baseline, 36 existing unit tests passed across buddy-motion, buddy-behavior, buddy-completion and buddy-eyes. The production completion-adapter browser case passed using local fixtures; it verifies the existing Done behavior, not the proposed Joy workflow. Four existing voice browser regressions passed for immediate Pause cleanup, output-only mute, late permission cleanup and canceled transcription. No live provider or real microphone session was used. These are baseline checks; rerun/extend relevant checks after implementation.

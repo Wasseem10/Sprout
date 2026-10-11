@@ -1,10 +1,13 @@
 import { readFile } from 'node:fs/promises';
 import { describe, expect, it } from 'vitest';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { Box3, Mesh, NumberKeyframeTrack, OrthographicCamera, Texture, Vector3 } from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { auditSproutModel, SproutMotionController } from '../src/buddyMotionController';
 import { neutralAvatarRect, sproutSleepHeadAnchor } from '../src/buddyRenderer';
-import { buddyStillPaths } from '../src/AssistantSignal';
+import AssistantSignal, { buddyStillPaths } from '../src/AssistantSignal';
+import { isSproutDaylightAsset, SPROUT_CURRENT_ASSET } from '../src/buddyAppearance';
 import type { BuddyBehaviorInput } from '../src/buddyBehavior';
 
 const input = (overrides: Partial<BuddyBehaviorInput> = {}): BuddyBehaviorInput => ({
@@ -17,7 +20,7 @@ const input = (overrides: Partial<BuddyBehaviorInput> = {}): BuddyBehaviorInput 
 async function actualAsset(version = 'v005') {
   const bytes = await readFile(
     new URL(
-      `../design/buddy/sprout/sprout-${version === 'v006' ? 'daylight' : 'prism'}-${version}.glb`,
+      `../design/buddy/sprout/sprout-${version === 'v007' ? 'speaking' : version === 'v006' ? 'daylight' : 'prism'}-${version}.glb`,
       import.meta.url,
     ),
   );
@@ -51,6 +54,52 @@ async function actualAsset(version = 'v005') {
 }
 
 describe('actual happy-eye export and exclusive mixer ownership', () => {
+  it('keeps the new speaking export on the same eleven-clip happy-eye contract and closed sleep pose', async () => {
+    const asset = await actualAsset('v007');
+    try {
+      expect(auditSproutModel(asset.scene, asset.animations)).toEqual([]);
+      expect(asset.animations).toHaveLength(11);
+      expect(asset.controller.snapshot().eyeProfile).toBe('happy-eyes-v005');
+      asset.controller.setBehavior(
+        input({ automatic: { presence: 'asleep', revision: 1, interrupt: false } }),
+      );
+      expect(asset.closure()).toEqual([1, 1]);
+      expect(asset.controller.snapshot().behavior.mode).toBe('sleep');
+      asset.controller.setBehavior(
+        input({ automatic: { presence: 'awake', revision: 2, interrupt: true } }),
+      );
+      asset.controller.setPhase('speaking');
+      asset.controller.update(0.3);
+      expect(asset.closure()).toEqual([0, 0]);
+      expect(asset.controller.snapshot().weights.Sprout_Speak).toBe(1);
+      expect(asset.animations.find((clip) => clip.name === 'Sprout_Speak')?.duration).toBe(6);
+    } finally {
+      asset.dispose();
+    }
+  });
+
+  it('renders persistent asleep presence before any renderer or behavior callback exists', () => {
+    const html = renderToStaticMarkup(
+      createElement(AssistantSignal, {
+        assetUrl: SPROUT_CURRENT_ASSET,
+        behavior: input({ automatic: { presence: 'asleep', revision: 1, interrupt: false } }),
+      }),
+    );
+    expect(html).toContain('data-renderer="fallback"');
+    expect(html).toContain('data-behavior="sleep"');
+    expect(html).toContain('src="/buddy/sprout-v007-sleep.png"');
+    expect(html).toContain('data-moving="false"');
+    expect(buddyStillPaths(SPROUT_CURRENT_ASSET, true).slice(0, 4)).toEqual([
+      '/buddy/sprout-v007-sleep.png',
+      '/buddy/sprout-v006-sleep.png',
+      '/buddy/sprout-v005-sleep.png',
+      '/buddy/sprout-v004-sleep.png',
+    ]);
+    expect(isSproutDaylightAsset(SPROUT_CURRENT_ASSET)).toBe(true);
+    expect(isSproutDaylightAsset('/buddy/sprout-v006.glb')).toBe(true);
+    expect(isSproutDaylightAsset('/buddy/sprout-v005.glb')).toBe(false);
+  });
+
   it('keeps the daylight material variant on the same strict eye/animation contract with matching stills', async () => {
     const asset = await actualAsset('v006');
     try {

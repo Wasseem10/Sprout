@@ -17,7 +17,7 @@ test('daylight and original switch together with their own lighting while the co
   await expect
     .poll(() => diagnostics(page))
     .toMatchObject({
-      assetUrl: '/buddy/sprout-v006.glb',
+      assetUrl: '/buddy/sprout-v007.glb',
       reflectionProfile: 'daylight',
       assetIssues: [],
     });
@@ -27,7 +27,7 @@ test('daylight and original switch together with their own lighting while the co
   await input.fill('Keep this draft when comparing Sprout.');
   for (const [value, profile] of [
     ['/buddy/sprout-v005.glb', 'tapered'],
-    ['/buddy/sprout-v006.glb', 'daylight'],
+    ['/buddy/sprout-v007.glb', 'daylight'],
   ]) {
     await page.getByLabel('Sprout appearance').selectOption(value);
     await panel.scrollIntoViewIfNeeded();
@@ -43,6 +43,7 @@ test('daylight and original switch together with their own lighting while the co
 test('a missing daylight asset loads the preserved original with original lighting and PNG', async ({
   page,
 }) => {
+  await page.route('**/buddy/sprout-v007.glb', (route) => route.abort());
   await page.route('**/buddy/sprout-v006.glb', (route) => route.abort());
   await page.goto('/?studio=buddy');
   await expect

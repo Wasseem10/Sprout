@@ -31,6 +31,9 @@ import type { BillValues } from '../shared/bills';
 import type { BuddyReadingMemory } from './useBuddyPanel';
 import type { BuddyBehaviorInput, BuddyBehaviorSnapshot } from './buddyBehavior';
 import { BuddyCompletionGate } from './buddyCompletion';
+import { useSproutPresence } from './useSproutPresence';
+import type { PresenceContext } from './sproutPresence';
+import { SPROUT_CURRENT_ASSET } from './buddyAppearance';
 
 const empty: ComputerState = { folder: null, code: null, browser: null, screen: null };
 type Message = { id: string; role: 'user' | 'assistant' | 'error'; text: string };
@@ -109,6 +112,8 @@ export default function ComputerCompanion() {
   const [largeText, setLargeText] = useState(
     () => localStorage.getItem('insightos.largeText') === 'true',
   );
+  const speechEnabled = useRef(speech);
+  speechEnabled.current = speech;
   const [locked, setLocked] = useState(false),
     [passphrase, setPassphrase] = useState('');
   const [fieldValue, setFieldValue] = useState(''),
@@ -126,21 +131,19 @@ export default function ComputerCompanion() {
   const runRef = useRef<(text: string) => Promise<void>>(async () => {});
   const [completionGate] = useState(() => new BuddyCompletionGate());
   const characterGeneration = useRef(0);
-  const characterRequest = useRef(0);
-  const [characterIntent, setCharacterIntent] = useState<
-    Pick<BuddyBehaviorInput, 'generation' | 'request' | 'done'>
-  >({ generation: 0 });
+  const [characterEpoch, setCharacterEpoch] = useState(0);
   const [characterSnapshot, setCharacterSnapshot] = useState<BuddyBehaviorSnapshot | null>(null);
-  const [characterNotice, setCharacterNotice] = useState('');
-  const interruptCharacter = () => {
+  const interruptCharacter = (wake = true) => {
     const next = ++characterGeneration.current;
-    setCharacterIntent({ generation: next });
+    setCharacterEpoch(next);
+    if (wake) presence.activity(true, true);
+    else presence.dismiss();
     return next;
   };
   const switchDockMode = (next: boolean) => {
     if (next !== dockMode) {
       // A new canvas must not consume the old controller's one-shot requests.
-      interruptCharacter();
+      interruptCharacter(false);
       setCharacterSnapshot(null);
     }
     setDockMode(next);
@@ -153,6 +156,35 @@ export default function ComputerCompanion() {
     (text) => void runRef.current(text),
     (text) => add('error', text),
   );
+  const presenceContext = (): PresenceContext => {
+    const activity = voice.getActivity();
+    return {
+      working: inFlight.current,
+      connecting: voice.phase === 'starting',
+      transcribing: voice.phase === 'transcribing' || voice.phase === 'processing',
+      utteranceActive: activity.utteranceActive,
+      speechRevision: activity.speechRevision,
+      output: activity.output,
+      visible: document.visibilityState === 'visible',
+      canCelebrate:
+        !!characterSnapshot?.visible &&
+        !!characterSnapshot?.moving &&
+        !!characterSnapshot?.capabilities.joy,
+    };
+  };
+  const presence = useSproutPresence({
+    context: presenceContext(),
+    getContext: presenceContext,
+    pauseVoice: voice.pauseConversation,
+  });
+  const acceptResult = (result: ComputerResult, current: number, reply: string | null) => {
+    const completion = completionGate.accept(result.state.task, current, generation.current);
+    const replyId = reply ? `task-reply-${current}` : null;
+    if (completion && !voice.hasPendingInterruption() && document.visibilityState === 'visible')
+      presence.acceptCompletion(completion, replyId);
+    // Allocate the completion/reply identity before speak registers pending output.
+    if (reply) void voice.speak(reply, replyId!);
+  };
   const enabled = !!status && !locked && !!status.computer?.local;
   const sync = async () => {
     const next = await api<ComputerState>('/computer/state');
@@ -173,7 +205,7 @@ export default function ComputerCompanion() {
   const perform = async (text: string, action?: ComputerAction, fromVoice = false) => {
     if (!enabled || inFlight.current || !text.trim()) return;
     completionGate.seed(state.task);
-    const visualGeneration = interruptCharacter();
+    interruptCharacter();
     if (acknowledgmentTimer.current) clearTimeout(acknowledgmentTimer.current);
     acknowledgmentTimer.current = null;
     if (!fromVoice) voice.stop();
@@ -194,6 +226,7 @@ export default function ComputerCompanion() {
         if (
           current === generation.current &&
           inFlight.current &&
+          speechEnabled.current &&
           voice.isConversationActive() &&
           !voice.hasPendingInterruption()
         )
@@ -355,25 +388,25 @@ export default function ComputerCompanion() {
       applyState(result.state, tool);
       if (tool === 'fill' || tool === 'confirmFill') setFieldValue('');
       add('assistant', result.summary);
-      const completion = completionGate.accept(result.state.task, current, generation.current);
-      if (
-        completion &&
-        visualGeneration === characterGeneration.current &&
-        !voice.hasPendingInterruption() &&
-        document.visibilityState === 'visible'
-      )
-        setCharacterIntent({
-          generation: visualGeneration,
-          done: { id: completion, generation: visualGeneration, issuedAt: performance.now() },
-        });
       setPhase(result.clarification ? 'Choose your next step' : 'Result received');
-      if (fromVoice && !voice.isConversationActive()) return;
       // The result remains in the transcript. Only its spoken reply is skipped:
       // the microphone is capturing an interruption and must not be reset.
-      if (fromVoice && voice.hasPendingInterruption()) return;
-      if (speech && status?.integrations.elevenLabs.ttsConfigured)
-        void voice.speak(spokenComputerReply(result, tool));
-      else if (fromVoice) voice.resumeConversation();
+      const replyAllowed =
+        !presence.getSnapshot().pendingRest &&
+        (!fromVoice || (voice.isConversationActive() && !voice.hasPendingInterruption()));
+      acceptResult(
+        result,
+        current,
+        replyAllowed && speechEnabled.current && status?.integrations.elevenLabs.ttsConfigured
+          ? spokenComputerReply(result, tool)
+          : null,
+      );
+      if (
+        fromVoice &&
+        replyAllowed &&
+        (!speechEnabled.current || !status?.integrations.elevenLabs.ttsConfigured)
+      )
+        voice.resumeConversation();
     } catch (error) {
       if (current !== generation.current || abort.signal.aborted) return;
       if (acknowledgmentTimer.current) clearTimeout(acknowledgmentTimer.current);
@@ -383,7 +416,7 @@ export default function ComputerCompanion() {
       setPhase('Needs attention');
       await sync().catch(() => {});
       if (fromVoice && voice.isConversationActive() && !voice.hasPendingInterruption()) {
-        if (speech && status?.integrations.elevenLabs.ttsConfigured)
+        if (speechEnabled.current && status?.integrations.elevenLabs.ttsConfigured)
           void voice.speak(failure.slice(0, 300));
         else voice.resumeConversation();
       }
@@ -584,46 +617,14 @@ export default function ComputerCompanion() {
   }, [modal]);
   const active = busy || voice.conversationActive || voice.phase !== 'idle';
   const characterBehavior: BuddyBehaviorInput = {
-    ...characterIntent,
+    generation: characterEpoch,
     manualEligible: !active,
     isInterrupted: voice.hasPendingInterruption,
-  };
-  const requestCharacter = (action: 'joy' | 'sleep' | 'wake') => {
-    const eligible = !inFlight.current && !voice.isConversationActive() && voice.phase === 'idle';
-    const capability =
-      action === 'joy'
-        ? characterSnapshot?.capabilities.joy
-        : characterSnapshot?.capabilities.sleep;
-    const available = !!characterSnapshot?.visible;
-    const canCelebrate = characterSnapshot?.moving && characterSnapshot.mode === 'normal';
-    if (
-      !available ||
-      !capability ||
-      (action !== 'wake' && !eligible) ||
-      (action === 'joy' && !canCelebrate)
-    ) {
-      setCharacterNotice(
-        !available
-          ? 'The character view is loading, hidden or unavailable. Try again when Sprout is visible.'
-          : !capability
-            ? 'This character view does not support that animation.'
-            : !eligible
-              ? 'Pause the voice conversation and finish the current task first.'
-              : !characterSnapshot.moving
-                ? 'Celebration needs avatar motion. Rest and Wake remain available with motion paused or reduced.'
-                : 'Wake Sprout and let the character settle before celebrating.',
-      );
-      return;
-    }
-    setCharacterIntent({
-      generation: characterGeneration.current,
-      request: { id: ++characterRequest.current, action },
-    });
-    setCharacterNotice('');
-    setModal(null);
+    automatic: presence.automatic,
   };
   const billOperation = async (operation: (signal: AbortSignal) => Promise<ComputerResult>) => {
     if (!enabled || inFlight.current) return;
+    completionGate.seed(state.task);
     interruptCharacter();
     inFlight.current = true;
     setBusy(true);
@@ -638,7 +639,15 @@ export default function ComputerCompanion() {
       setTab('energy');
       add('assistant', result.summary);
       setPhase('Ready to review your bills');
-      if (speech) void voice.speak(spokenComputerReply(result, 'energyHelp'));
+      acceptResult(
+        result,
+        current,
+        speechEnabled.current &&
+          !presence.getSnapshot().pendingRest &&
+          status?.integrations.elevenLabs.ttsConfigured
+          ? spokenComputerReply(result, 'energyHelp')
+          : null,
+      );
     } catch (error) {
       if (generation.current === current && !abort.signal.aborted)
         add('error', error instanceof Error ? error.message : 'Bill reading failed.');
@@ -690,6 +699,7 @@ export default function ComputerCompanion() {
       add('error', 'Choose a finance CSV or XLSX under 3 MB.');
       return;
     }
+    completionGate.seed(state.task);
     interruptCharacter();
     inFlight.current = true;
     setBusy(true);
@@ -721,7 +731,15 @@ export default function ComputerCompanion() {
       setTab('finance');
       add('assistant', body.summary);
       setPhase('Finance records analyzed');
-      if (speech) void voice.speak(spokenComputerReply(body, 'financeHelp'));
+      acceptResult(
+        body,
+        current,
+        speechEnabled.current &&
+          !presence.getSnapshot().pendingRest &&
+          status?.integrations.elevenLabs.ttsConfigured
+          ? spokenComputerReply(body, 'financeHelp')
+          : null,
+      );
     } catch (error) {
       if (generation.current === current && !abort.signal.aborted)
         add('error', error instanceof Error ? error.message : 'Finance import failed.');
@@ -736,13 +754,11 @@ export default function ComputerCompanion() {
   const voicePending = voice.phase === 'starting' || voice.phase === 'transcribing';
   const toggleRecording = () => {
     if (voice.isConversationActive()) {
-      interruptCharacter();
-      voice.pauseConversation();
+      presence.pause();
       return;
     }
-    if (!enabled || inFlight.current || voicePending || !status?.integrations.elevenLabs.configured)
-      return;
-    interruptCharacter();
+    if (!enabled || voicePending || !status?.integrations.elevenLabs.configured) return;
+    presence.activity(true, true);
     if (dockMode) setDockExpanded(true);
     const greeting =
       desktopBuddy && !greeted.current && speech
@@ -774,7 +790,7 @@ export default function ComputerCompanion() {
     status?.integrations.elevenLabs.configured,
   ]);
   const hideBuddy = async () => {
-    interruptCharacter();
+    interruptCharacter(false);
     if (active) await stop();
     setDockExpanded(false);
     await window.insightos?.hideBuddy?.();
@@ -822,7 +838,32 @@ export default function ComputerCompanion() {
     setSpeech(!speech);
   };
   return (
-    <div className={`${dockMode ? 'buddy-shell' : 'companion'} ${largeText ? 'large-text' : ''}`}>
+    <div
+      className={`${dockMode ? 'buddy-shell' : 'companion'} ${largeText ? 'large-text' : ''}`}
+      data-sprout-presence={presence.snapshot.presence}
+      data-sprout-cue={presence.snapshot.joy ? 'joy' : presence.snapshot.wake ? 'wake' : ''}
+      data-sprout-pending-rest={presence.snapshot.pendingRest}
+      onClickCapture={() => presence.activity()}
+      onKeyDownCapture={() => presence.activity()}
+      onChange={(event) => {
+        if (
+          event.target instanceof HTMLTextAreaElement ||
+          (event.target instanceof HTMLInputElement &&
+            ['text', 'search'].includes(event.target.type))
+        )
+          // Let controlled input handlers capture the new DOM value before the
+          // external presence store can synchronously render this component.
+          presence.activity(true, true);
+      }}
+      onScrollCapture={(event) => {
+        if (event.target === transcript.current) presence.activity();
+      }}
+    >
+      {!dockMode && (
+        <p className="sr-only" role="status">
+          {presence.snapshot.presence === 'asleep' ? 'Sprout is sleeping. Microphone paused.' : ''}
+        </p>
+      )}
       {dockMode ? (
         <DesktopBuddy
           expanded={dockExpanded}
@@ -831,6 +872,7 @@ export default function ComputerCompanion() {
           busy={busy}
           enabled={enabled}
           voicePhase={voice.phase}
+          voiceOutputState={voice.activity.output?.state}
           audio={voice.presentationAudio}
           behavior={characterBehavior}
           onBehaviorChange={setCharacterSnapshot}
@@ -847,7 +889,7 @@ export default function ComputerCompanion() {
           transcriptRef={transcript}
           readingMemory={buddyReadingMemory}
           expand={() => {
-            interruptCharacter();
+            presence.activity();
             setDockExpanded((expanded) => !expanded);
           }}
           expansionFailed={() => setDockExpanded(false)}
@@ -941,6 +983,7 @@ export default function ComputerCompanion() {
                   <p>Understand your bills. Explore your options. Make something together.</p>
                 </div>
                 <AssistantSignal
+                  assetUrl={SPROUT_CURRENT_ASSET}
                   phase={buddyVisualState(voice.phase, busy)}
                   audio={voice.presentationAudio}
                   behavior={characterBehavior}
@@ -1644,7 +1687,7 @@ export default function ComputerCompanion() {
                     aria-keyshortcuts="Control+Shift+Space"
                     disabled={
                       !enabled ||
-                      (!voice.conversationActive && (busy || voicePending)) ||
+                      (!voice.conversationActive && voicePending) ||
                       !status?.integrations.elevenLabs.configured
                     }
                     onClick={toggleRecording}
@@ -1733,47 +1776,6 @@ export default function ComputerCompanion() {
           </>
         ) : modal === 'settings' ? (
           <>
-            <fieldset className="character-settings">
-              <legend>Sprout</legend>
-              <div className="character-settings-actions">
-                <button
-                  type="button"
-                  disabled={
-                    !characterSnapshot?.visible ||
-                    !characterSnapshot.capabilities.joy ||
-                    !characterSnapshot.moving ||
-                    characterSnapshot.mode !== 'normal' ||
-                    active
-                  }
-                  onClick={() => requestCharacter('joy')}
-                >
-                  Celebrate
-                </button>
-                <button
-                  type="button"
-                  disabled={
-                    !characterSnapshot?.visible ||
-                    !characterSnapshot.capabilities.sleep ||
-                    (!characterSnapshot.sleeping && active)
-                  }
-                  onClick={() => requestCharacter(characterSnapshot?.sleeping ? 'wake' : 'sleep')}
-                >
-                  {characterSnapshot?.sleeping ? 'Wake Sprout' : 'Rest Sprout'}
-                </button>
-              </div>
-              <p>
-                {!characterSnapshot?.visible || !characterSnapshot.capabilities.sleep
-                  ? 'Character animations are loading or unavailable in this view.'
-                  : active
-                    ? 'Pause the voice conversation and finish the current task to rest or celebrate.'
-                    : !characterSnapshot.moving
-                      ? 'Celebration needs avatar motion. Rest and Wake remain available with motion paused or reduced.'
-                      : characterSnapshot.mode !== 'normal'
-                        ? 'Wake Sprout and let the character settle before celebrating. Your controls stay available.'
-                        : 'Rest changes Sprout’s pose. Your controls stay available.'}
-              </p>
-              {characterNotice && <p role="status">{characterNotice}</p>}
-            </fieldset>
             <label className="computer-setting">
               <span>Large text</span>
               <input

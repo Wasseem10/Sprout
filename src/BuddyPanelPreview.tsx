@@ -5,7 +5,7 @@ import type { BuddyVisualState } from './AssistantSignal';
 import type { BuddyReadingMemory } from './useBuddyPanel';
 import type { ComputerState } from '../shared/computer';
 import './buddy-panel-preview.css';
-import { SPROUT_DAYLIGHT_ASSET, SPROUT_ORIGINAL_ASSET, sproutReviewAsset } from './buddyAppearance';
+import { SPROUT_CURRENT_ASSET, SPROUT_ORIGINAL_ASSET, sproutReviewAsset } from './buddyAppearance';
 
 const empty: ComputerState = { folder: null, code: null, browser: null, screen: null };
 type Message = { id: string; role: 'user' | 'assistant' | 'error'; text: string };
@@ -134,9 +134,9 @@ export default function BuddyPanelPreview({
                 value={previewAsset}
                 onChange={(event) => setPreviewAsset(event.target.value)}
               >
-                <option value={SPROUT_DAYLIGHT_ASSET}>Daylight</option>
+                <option value={SPROUT_CURRENT_ASSET}>Daylight</option>
                 <option value={SPROUT_ORIGINAL_ASSET}>Original</option>
-                {previewAsset !== SPROUT_DAYLIGHT_ASSET &&
+                {previewAsset !== SPROUT_CURRENT_ASSET &&
                   previewAsset !== SPROUT_ORIGINAL_ASSET && (
                     <option value={previewAsset}>Legacy reference</option>
                   )}
