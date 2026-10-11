@@ -1,4 +1,4 @@
-import { useRef, useState, type ComponentProps } from 'react';
+import { useRef, useState, type ComponentProps, type CSSProperties } from 'react';
 import DesktopBuddy from './DesktopBuddy';
 import type AssistantSignal from './AssistantSignal';
 import type { BuddyVisualState } from './AssistantSignal';
@@ -50,6 +50,10 @@ export default function BuddyPanelPreview({
   const [expandedLocal, setExpandedLocal] = useState(true);
   const [phaseLocal, setPhaseLocal] = useState<BuddyVisualState>('idle');
   const [background, setBackground] = useState('light');
+  const [pearlMaterial, setPearlMaterial] = useState(
+    () => !embedded && new URLSearchParams(window.location.search).get('material') === 'pearl',
+  );
+  const [textureStrength, setTextureStrength] = useState(26);
   const [previewAsset, setPreviewAsset] = useState(() => sproutReviewAsset(window.location.search));
   const [large, setLarge] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -86,7 +90,10 @@ export default function BuddyPanelPreview({
     setRequest('');
   };
   return (
-    <div className={`buddy-panel-preview${embedded ? ' is-embedded' : ''}`}>
+    <div
+      className={`buddy-panel-preview${embedded ? ' is-embedded' : ''}${pearlMaterial ? ' has-pearl-material' : ''}`}
+      style={{ '--pearl-material-opacity': textureStrength / 100 } as CSSProperties}
+    >
       {!embedded && (
         <header className="panel-preview-heading">
           <a href="?studio=buddy">← Character studio</a>
@@ -108,6 +115,30 @@ export default function BuddyPanelPreview({
                 </button>
               ))}
             </fieldset>
+            <fieldset>
+              <legend>Glass material</legend>
+              <button onClick={() => setPearlMaterial(false)} aria-pressed={!pearlMaterial}>
+                Current
+              </button>
+              <button onClick={() => setPearlMaterial(true)} aria-pressed={pearlMaterial}>
+                Pearl study
+              </button>
+            </fieldset>
+            {pearlMaterial && (
+              <label className="panel-preview-strength">
+                Texture strength
+                <input
+                  type="range"
+                  min="12"
+                  max="40"
+                  step="1"
+                  value={textureStrength}
+                  onChange={(event) => setTextureStrength(Number(event.target.value))}
+                  aria-valuetext={`${textureStrength} percent`}
+                />
+                <span aria-hidden="true">{textureStrength}%</span>
+              </label>
+            )}
             <label>
               <input
                 type="checkbox"

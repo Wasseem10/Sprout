@@ -61,6 +61,30 @@
   width: 20px;
   height: 20px;
 }
+.panel-preview-controls .panel-preview-strength {
+  flex-wrap: wrap;
+}
+.panel-preview-strength input[type='range'] {
+  width: 112px;
+  height: 44px;
+  accent-color: #1454bf;
+}
+.panel-preview-strength span {
+  min-width: 4ch;
+  font-variant-numeric: tabular-nums;
+}
+/* Preview only: sampled reflections sit above the live lens, below all content.
+   Overscan crops the generated outer alpha fringe and baked border. CSS still
+   owns the continuous rounded edge, backdrop blur and pointer lighting. */
+.buddy-panel-preview.has-pearl-material .buddy-panel-glass::before {
+  z-index: 1;
+  background-image: url('/buddy/sprout-glass-material-v002.png');
+  background-position: center;
+  background-size: 108% 108%;
+  background-repeat: no-repeat;
+  opacity: var(--pearl-material-opacity, 0.26);
+  box-shadow: none;
+}
 .panel-preview-scene {
   min-height: 704px;
   border-radius: 28px;
@@ -136,5 +160,11 @@
   }
   .panel-preview-controls button {
     border: 1px solid ButtonText;
+  }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more), (forced-colors: active) {
+  .buddy-panel-preview.has-pearl-material .buddy-panel-glass::before {
+    background-image: none;
+    opacity: 0;
   }
 }
