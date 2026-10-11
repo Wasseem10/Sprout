@@ -13,6 +13,7 @@ import {
   MeshPhysicalMaterial,
   MeshStandardMaterial,
   NeutralToneMapping,
+  NoBlending,
   OrthographicCamera,
   PMREMGenerator,
   PlaneGeometry,
@@ -466,6 +467,30 @@ export async function createBuddyRenderer(
         : 0.08
       : 0;
   camera.lookAt(0, targetY, 0);
+  // The face sits on the outside of the glass. Three's transmission buffer captures
+  // opaque meshes, so including the eyes creates a displaced black copy in the shell
+  // whenever it turns. Render the face in the post-transmission queue at full opacity.
+  // Keep normal depth testing/writing: this is a surface, not an always-visible overlay.
+  if (asset === 'sprout') {
+    const faceMaterials = new Map<Material, Material>();
+    const faceMaterial = (source: Material) => {
+      let material = faceMaterials.get(source);
+      if (!material) {
+        material = source.clone();
+        material.transparent = true;
+        material.blending = NoBlending;
+        material.forceSinglePass = true;
+        faceMaterials.set(source, material);
+      }
+      return material;
+    };
+    model.getObjectByName('FACE_ANCHOR')?.traverse((object) => {
+      if (!(object instanceof Mesh)) return;
+      object.material = Array.isArray(object.material)
+        ? object.material.map(faceMaterial)
+        : faceMaterial(object.material);
+    });
+  }
   const daylight = asset === 'sprout' && reflectionProfile === 'daylight';
   const soft = asset === 'sprout' && reflectionProfile === 'soft';
   // The transparent WebGL canvas refracts differently from the authored Cycles studio.
