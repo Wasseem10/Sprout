@@ -65,7 +65,10 @@ declare global {
         provider: keyof typeof import('../shared/connections').accountUrls,
       ) => Promise<void>;
       platform: string;
-      setBuddyMode?: (mode: 'pill' | 'panel' | 'workspace') => Promise<void>;
+      setBuddyMode?: (
+        mode: 'pill' | 'panel' | 'workspace',
+        requestId?: number,
+      ) => Promise<import('./buddyPanelCoordinator').BuddyBoundsAcknowledgement>;
       hideBuddy?: () => Promise<void>;
       desktopShortcuts?: () => Promise<{ voice: boolean; stop: boolean }>;
       onDesktopCommand?: (callback: (command: string) => void) => () => void;

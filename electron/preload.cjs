@@ -20,7 +20,7 @@ contextBridge.exposeInMainWorld('insightos', {
     ipcRenderer.invoke('insightos:scroll-current-screen', direction),
   openAccount: (provider) => ipcRenderer.invoke('insightos:open-account', provider),
   platform: process.platform,
-  setBuddyMode: (mode) => ipcRenderer.invoke('insightos:buddy-mode', mode),
+  setBuddyMode: (mode, requestId) => ipcRenderer.invoke('insightos:buddy-mode', mode, requestId),
   hideBuddy: () => ipcRenderer.invoke('insightos:buddy-hide'),
   desktopShortcuts: () => ipcRenderer.invoke('insightos:desktop-shortcuts'),
   onDesktopCommand: (callback) => {

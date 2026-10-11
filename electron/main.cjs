@@ -14,6 +14,7 @@ const {
 } = require('electron');
 const path = require('node:path');
 const crypto = require('node:crypto');
+const { buddyBounds, buddySizes } = require('./buddy-window.cjs');
 const { readFile, stat } = require('node:fs/promises');
 const {
   validatePointerRequest,
@@ -310,9 +311,14 @@ app
     const work = screen.getPrimaryDisplay().workArea;
     const standaloneWorkspace = process.argv.includes('--workspace') || !!remote;
     const win = (companionWindow = new BrowserWindow({
-      width: standaloneWorkspace ? 1500 : 360,
-      height: standaloneWorkspace ? 950 : 86,
-      x: Math.round(work.x + (work.width - (standaloneWorkspace ? 1500 : 360)) / 2),
+      width: standaloneWorkspace ? 1500 : Math.min(buddySizes.pill.width, work.width),
+      height: standaloneWorkspace ? 950 : Math.min(buddySizes.pill.height, work.height),
+      x: Math.round(
+        work.x +
+          (work.width -
+            (standaloneWorkspace ? 1500 : Math.min(buddySizes.pill.width, work.width))) /
+            2,
+      ),
       y: work.y + 20,
       title: 'InsightOS Buddy',
       frame: standaloneWorkspace,
@@ -337,37 +343,30 @@ app
     win.webContents.on('will-navigate', (event, url) => {
       if (!trusted(url)) event.preventDefault();
     });
-    const resizeBuddy = (mode) => {
+    const resizeBuddy = (mode, requestId = 0) => {
       if (!['pill', 'panel', 'workspace'].includes(mode))
         throw new Error('Unknown companion mode.');
-      if (standaloneWorkspace) return;
-      const previous = win.getBounds();
-      if (windowMode !== 'workspace')
-        dockPosition = { x: previous.x, y: previous.y, width: previous.width };
-      const area = screen.getDisplayMatching(previous).workArea;
-      const width = Math.min(
-        mode === 'workspace' ? 1350 : mode === 'panel' ? 440 : 360,
-        area.width,
-      );
-      const height = Math.min(
-        mode === 'workspace' ? 900 : mode === 'panel' ? 580 : 86,
-        area.height,
-      );
-      const position = mode === 'workspace' ? null : dockPosition;
-      const x = position
-        ? position.x + (position.width - width) / 2
-        : area.x + (area.width - width) / 2;
-      const y = position?.y ?? area.y + 20;
-      windowMode = mode;
-      win.setAlwaysOnTop(mode !== 'workspace');
-      win.setSkipTaskbar(mode !== 'workspace');
-      win.setResizable(mode === 'workspace');
-      win.setBounds({
-        x: Math.round(Math.max(area.x, Math.min(x, area.x + area.width - width))),
-        y: Math.round(Math.max(area.y, Math.min(y, area.y + area.height - height))),
-        width,
-        height,
-      });
+      if (!Number.isSafeInteger(requestId) || requestId < 0)
+        throw new Error('Invalid companion layout request.');
+      if (!standaloneWorkspace) {
+        const previous = win.getBounds();
+        if (windowMode !== 'workspace') dockPosition = { x: previous.x, y: previous.y };
+        const area = screen.getDisplayMatching(previous).workArea;
+        windowMode = mode;
+        win.setAlwaysOnTop(mode !== 'workspace');
+        win.setSkipTaskbar(mode !== 'workspace');
+        win.setResizable(mode === 'workspace');
+        win.setBounds(buddyBounds(mode, area, dockPosition, win.webContents.getZoomFactor()));
+      }
+      const bounds = win.getBounds();
+      const content = win.getContentBounds();
+      const zoomFactor = win.webContents.getZoomFactor();
+      return {
+        mode,
+        requestId,
+        bounds,
+        viewport: { width: content.width / zoomFactor, height: content.height / zoomFactor },
+      };
     };
     const dispatch = (command) => {
       if (win.isDestroyed()) return;
@@ -377,9 +376,9 @@ app
       }
       win.webContents.send('insightos:desktop-command', command);
     };
-    ipcMain.handle('insightos:buddy-mode', (event, mode) => {
+    ipcMain.handle('insightos:buddy-mode', (event, mode, requestId) => {
       nativeRequest(event);
-      resizeBuddy(mode);
+      return resizeBuddy(mode, requestId);
     });
     ipcMain.handle('insightos:buddy-hide', (event) => {
       nativeRequest(event);

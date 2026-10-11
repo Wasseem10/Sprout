@@ -1,0 +1,60 @@
+{
+  "checkedAt": "2026-10-11T01:55:42.111Z",
+  "implementation": "actual useVoice, MediaRecorder, HTMLAudio, Web Audio meter and animated Sprout in isolated Electron --dev",
+  "input": "local oscillator, no physical microphone capture",
+  "output": "local PCM WAV fixtures, no ElevenLabs provider calls; device audibility not asserted",
+  "firstMeasuredOutput": {
+    "inputLevel": 0,
+    "outputLevel": 0.42593903370052955,
+    "inputSampledAt": 5996.799999952316,
+    "outputSampledAt": 6057.099999904633,
+    "playbackGeneration": 5,
+    "outputPlaying": true,
+    "source": "voice"
+  },
+  "interruption": "first actual HTMLAudio paused; second recorded utterance and measured output succeeded",
+  "interruptedElement": {
+    "index": 1,
+    "paused": true,
+    "ended": false,
+    "currentTime": 0.288,
+    "duration": 4
+  },
+  "cleanup": "explicit Pause voice conversation control stopped all capture/playback",
+  "stopped": {
+    "sample": {
+      "inputLevel": null,
+      "outputLevel": null,
+      "inputSampledAt": 8398.5,
+      "outputSampledAt": 8398.5,
+      "playbackGeneration": 8,
+      "outputPlaying": false,
+      "source": "voice"
+    },
+    "tracksEnded": true,
+    "audioPaused": true,
+    "inputReads": 53,
+    "renderer": "webgl",
+    "motionReduced": false,
+    "documentFits": true
+  },
+  "transcriptions": 2,
+  "speechRequests": 3,
+  "spokenTexts": [
+    "Hi, I'm Insight. What would you like to do?",
+    "Local animated voice proof. You can interrupt this reply.",
+    "Local animated voice proof. You can interrupt this reply."
+  ],
+  "localRoutes": [
+    "/api/session",
+    "/api/voice/realtime-token",
+    "/api/voice/speak",
+    "/api/voice/transcribe",
+    "/api/computer/request",
+    "/api/voice/speak",
+    "/api/voice/transcribe",
+    "/api/computer/request",
+    "/api/voice/speak"
+  ],
+  "pageErrors": []
+}

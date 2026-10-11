@@ -483,8 +483,9 @@ export default function ComputerCompanion() {
     };
   }, []);
   useEffect(() => {
+    if (dockMode) return; // The compact panel owns its reading/follow position.
     transcript.current?.scrollTo({ top: transcript.current.scrollHeight, behavior: 'instant' });
-  }, [messages]);
+  }, [messages, dockMode]);
   useEffect(() => {
     if (!busy) return;
     const abort = new AbortController();
@@ -718,11 +719,10 @@ export default function ComputerCompanion() {
     };
   }, [desktopBuddy]);
   useEffect(() => {
-    if (!desktopBuddy) return;
-    void window.insightos
-      ?.setBuddyMode?.(!dockMode ? 'workspace' : dockExpanded || modal ? 'panel' : 'pill')
-      .catch(() => {});
-  }, [desktopBuddy, dockMode, dockExpanded, modal]);
+    if (!desktopBuddy || dockMode) return;
+    // DesktopBuddy coordinates its own reveal/exit; only the full workspace resizes here.
+    void window.insightos?.setBuddyMode?.('workspace').catch(() => {});
+  }, [desktopBuddy, dockMode]);
   const toggleSpeech = () => {
     if (speech && voice.phase === 'speaking') voice.skipSpeech();
     setSpeech(!speech);
@@ -732,10 +732,12 @@ export default function ComputerCompanion() {
       {dockMode ? (
         <DesktopBuddy
           expanded={dockExpanded}
+          modalOpen={!!modal}
           active={active}
           busy={busy}
           enabled={enabled}
           voicePhase={voice.phase}
+          audio={voice.presentationAudio}
           conversationActive={voice.conversationActive}
           voiceReady={!!status?.integrations.elevenLabs.configured}
           speech={speech}
@@ -747,7 +749,8 @@ export default function ComputerCompanion() {
           messages={messages}
           inputRef={input}
           transcriptRef={transcript}
-          expand={() => setDockExpanded(!dockExpanded)}
+          expand={() => setDockExpanded((expanded) => !expanded)}
+          expansionFailed={() => setDockExpanded(false)}
           hide={() => void hideBuddy()}
           talk={toggleRecording}
           stop={() => void stop()}
@@ -839,7 +842,10 @@ export default function ComputerCompanion() {
                   <h1>Tell me what you need done.</h1>
                   <p>Understand your bills. Explore your options. Make something together.</p>
                 </div>
-                <AssistantSignal phase={buddyVisualState(voice.phase, busy)} />
+                <AssistantSignal
+                  phase={buddyVisualState(voice.phase, busy)}
+                  audio={voice.presentationAudio}
+                />
               </div>
               <nav className="computer-tabs" aria-label="Computer tools">
                 {[

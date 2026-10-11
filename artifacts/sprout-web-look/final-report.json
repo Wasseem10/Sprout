@@ -1,0 +1,41 @@
+{
+  "kind": "Matched browser stills: Idle at time zero, reduced motion. 320px is an inspection fixture, not a shipped size.",
+  "assetSha256": "34cd83c23c60afedbf6edd9e9e337af4715a6f60070fe59ca90b9a8b7a73d756",
+  "bytes": 1295856,
+  "diagnostics": {
+    "asset": "sprout",
+    "clips": [
+      "Sprout_Click",
+      "Sprout_Idle",
+      "Sprout_Listen",
+      "Sprout_Think",
+      "Sprout_Speak",
+      "Sprout_Blink"
+    ],
+    "assetIssues": [],
+    "vertices": 10328,
+    "triangles": 20384,
+    "frames": 9,
+    "intervalP95": 0,
+    "intervalMax": 0,
+    "missedBudgets": 0,
+    "renderP95": 375,
+    "drawCalls": 10,
+    "resolution": "160 × 160",
+    "startup": {
+      "assetBytes": 1295856,
+      "fetchMs": 157.60000002384186,
+      "parseMs": 27.699999928474426,
+      "gpuSetupMs": 634.2999999523163,
+      "firstRenderMs": 825.0999999046326
+    },
+    "memory": {
+      "geometries": 10,
+      "textures": 4,
+      "geometryAttributeBytes": 1197416,
+      "environmentColorBytesEstimate": 1572864,
+      "note": "Geometry bytes describe CPU attribute storage. Environment estimate is one RGBA16F target; neither measures total GPU allocation or driver overhead."
+    }
+  },
+  "errors": []
+}

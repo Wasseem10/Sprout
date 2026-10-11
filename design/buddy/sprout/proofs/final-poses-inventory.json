@@ -1,0 +1,13 @@
+{
+  "size": 320,
+  "samples": 24,
+  "exposure": 0.0,
+  "images": [
+    "final-blink-mid.png",
+    "final-blink-closed.png",
+    "final-click-squash.png",
+    "final-listen.png",
+    "final-think.png",
+    "final-speak.png"
+  ]
+}

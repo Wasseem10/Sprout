@@ -1,0 +1,12 @@
+{
+  "kind": "Headless browser simulated clay proof; separate from native production and real voice verification",
+  "report": "Renderer measurement\n\nSprout v002 · 9,792 vertices · 7 draw calls · 96 × 96\n661 rendered frames · p95 interval 33.4ms · max 50.0ms · 260 intervals above 18ms · p95 render call 0.70ms\n\nLocal render-clock samples, not a verified presented-frame or real voice report.",
+  "gpu": {
+    "vendor": "Google Inc. (Google)",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "width": 96,
+    "height": 96
+  },
+  "errors": [],
+  "apiCalls": []
+}

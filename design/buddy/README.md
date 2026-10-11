@@ -1,43 +1,47 @@
-# InsightOS Ribbon — authored source
+# InsightOS buddy — Sprout / Prism
 
-The implemented v001 direction is **Ribbon**. The proposed next direction is [Ripple: a cute ocean-blue jelly character and Aero interface](frutiger-aero/README.md); that planning packet does not change the current runtime. The original Aperture blockout survives in recovery copies; the current hero is one continuous titanium ribbon around a luminous sea-glass pearl. All five visible surfaces are actual authored meshes. There are no procedural displacement or texture dependencies.
+**Sprout v002 is the implemented character.** The original blue jelly creature has unequal rounded buds, navy eyes, white glints, a small smile and a restrained violet/coral lower streak. Blender-authored geometry, rig and animation are exported to GLB and rendered by the existing React/Vite/Three/Electron application.
 
-Runtime assets are `public/buddy/insight-core-v1.glb` and the transparent 640×640 `insight-core-v1.png`. The GLB contains only the nine model/rig nodes, five mesh surfaces with baked evaluated normals, portable PBR materials, and one six-second loop. The filename stays stable for the UI integration.
+Start with the [Sprout delivery guide](sprout/README.md), [scene passport](sprout/SCENE-PASSPORT.md) and [retained design and workflow studies](frutiger-aero/README.md).
 
-The origin is the pearl center. Blender uses metres and Z-up; glTF exports Y-up. Use an orthographic camera at **[0.35, 0.75, 5.8]**, target **[0,0,0]**, up **[0,1,0]**, vertical span **2.72**. Do not recenter individual meshes or add an extra default rotation. Authored lights, camera bounds, and material values are in `audit.json` and `glb-audit.json`. Lighting exposure is zero with AgX in the offline render.
+| Delivery                 | File                                                                                                         |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| Canonical original asset | [sprout-prism-v002.glb](sprout/sprout-prism-v002.glb)                                                        |
+| Export manifest          | [sprout-prism-v002.manifest.json](sprout/sprout-prism-v002.manifest.json)                                    |
+| Editable Blender master  | [sprout-prism-v002.blend](sprout/source/sprout-prism-v002.blend)                                             |
+| Runtime copies           | [sprout-v002.glb](../../public/buddy/sprout-v002.glb), [transparent PNG](../../public/buddy/sprout-v002.png) |
+| Offline front proof      | [sprout-prism-front.png](sprout/proofs/sprout-prism-front.png)                                               |
 
-The clip `INSIGHTOS_Buddy_v001` runs from 0 to 6 seconds with 145 inclusive sample keys at 24 fps. It rotates the outer ribbon once, counter-rotates the inner flow once, and breathes the pearl ±0.8%. Loop the entire clip. Reduced motion starts at frame zero or freezes the current clip pose when enabled during a session. Voice response can add a small independent parent-scale pulse without changing the authored mesh or audio workflow.
+The canonical and runtime GLBs are identical: **1,295,856 bytes**, SHA-256 `34cd83c23c60afedbf6edd9e9e337af4715a6f60070fe59ca90b9a8b7a73d756`. The export contains ten meshes, nine deformation bones, three body morphs with morph normals and six clips: Idle, Listen, Think, Speak, Click and Blink. The browser uses these authored shapes; the jelly appearance is a controlled material and deformation treatment, not a fluid simulation. Offline and browser lighting differ, so matching geometry does not promise identical pixels.
 
-Rebuild only in a connected Blender session, with the original scene preserved:
+## Open the app
 
-1. Execute `00_checkpoint.py` with a descriptive `LABEL`. It saves a recovery **copy** while keeping the current active filepath unchanged.
-2. Execute `01_blockout.py` successively with `PHASE` set to `bounds`, `primary_masses`, `secondary_masses`, `silhouette_proportions`, `pivots_attachments`, and `camera_review`. This is the retained study construction. Review solid camera and side views before continuing.
-3. Execute `02_ribbon_geometry.py`, `03_materials.py`, and `04_lighting.py`; inspect the ribbon silhouette and reflection bands.
-4. Execute `05_animation.py`, then `06_audit.py`. Any failed assertion stops the pass.
-5. Execute `07_export.py`, `08_render_proofs.py`, and `09_final_visual_audit.py`; review the actual generated images.
-6. Run `node design/buddy/check-glb.cjs` from the repository root to verify the exported clip and normals independently.
-7. Return to frame 1 and the hero camera; make another checkpoint copy. No final `.blend` file save or active filepath change is part of this workflow.
+On Windows, double-click **Start InsightOS UI.cmd** in the repository folder. It reuses healthy local servers, checks that port 5173 serves this checkout's model, starts missing services in the background and opens the native buddy. Startup logs live in ignored `.local/ui-preview-logs/`.
 
-The source intentionally keeps semantic parts and rig controls editable. Mesh replacement preserves the old study datablock; it does not delete existing scene objects. The original `Scene`, `Cube`, `Camera`, `Light`, World and materials are protected.
+Open [the local buddy studio](http://127.0.0.1:5173/?studio=buddy) to inspect Sprout at actual sizes, replay simulated phases and test reactions. The studio needs no credentials and starts no microphone or provider session.
 
-The geometry in the app is the same exported geometry. Cycles transmission and browser transmission differ in lighting, background refraction, and tone mapping; exact offline pixels are provided by the PNG fallback. This is a procedural sculpture, not a physical fluid simulation. The runtime should use PMREM studio reflections and the supplied camera, then be judged in the actual UI.
+For a fresh command-line setup, run `npm ci`, `npm run setup:desktop`, then `npm run dev`. If this checkout's API/UI servers already run, launch only `node_modules\electron\dist\electron.exe . --dev` to reuse them.
 
-## Local preview and desktop
+## Motion, conversation and verification
 
-On Windows, double-click `Start InsightOS UI.cmd` in the repository folder. It reuses healthy local servers, checks that port 5173 serves this checkout's model, starts missing development services in the background, and opens the buddy. It leaves existing services and the original project alone. Startup logs for services it creates live in `.local/ui-preview-logs/`.
+The live conversation remains authoritative for listening, thinking and speaking. The renderer crossfades authored clips, gives Click and Blink separate channels, respects reduced motion and visibility, and consumes a read-only audio presentation ref. Measured TTS output comes from the voice owner's existing playback graph; fallback speech remains audible when analysis is unavailable. Batch input reuses existing RMS without changing VAD or opening a second microphone. Provider, session and backend behavior remain with their existing owners.
 
-Run `npm run dev:web` and open `http://127.0.0.1:5173/?studio=buddy` to compare five simulated states and open the compact conversation panel. The studio never starts a microphone or sends messages.
+[Audio verification](../../artifacts/audio-presentation-verification.json) and the [native animated clay-Sprout voice proof](../../artifacts/buddy-voice-native-verification.json) exercise real capture/playback mechanisms with an oscillator and local PCM fixtures. They prove measured output, interruption and cleanup; they are not live ElevenLabs or physical-device verification. Local provider status reported `configured: false` and `ttsConfigured: false`.
 
-For command-line setup, run `npm run setup:desktop` once, then `npm run dev` after closing previous development servers. Electron hosts the same React UI, with the existing transparent window, drag region, expand/collapse behavior, and keyboard shortcut. If the API and UI servers are already running from this checkout, launch only `node_modules\\electron\\dist\\electron.exe . --dev` to reuse them. The visual studio needs no provider credentials.
+The [actual six-clip replay](../../artifacts/sprout-prism-final-motion-replay.json), [native panel evidence](../../artifacts/buddy-panel-native-verification.json) and [final Blender source audit](sprout/proofs/final-source-inspection.json) are retained. The [compiled native renderer proof](../../artifacts/sprout-native-prism-production/report.json) passes for the final asset: at 96×96 on the tested RTX 5050, renderer intervals had p95 16.8 ms and maximum 17.0 ms. Independent rAF-clock samples had a 19.6 ms maximum. These are local clock/render-call measurements, not verified operating-system presented frames or production backend/provider acceptance; see the delivery guide for scope and startup/resource values.
 
-The live conversation supplies idle/listening/thinking/speaking phases through the presentation-only `buddyVisualState` adapter. Speaking rhythm is a state-driven visual pulse, not an audio-amplitude meter. Done is available in the visual studio; it is not inferred from financial task outcomes.
+## Original work and references
 
-## Visual process and provenance
+The process was generated concept comparison → original clay silhouette → fixed runtime topology and rig → exported animation proof → isolated material/light studies → browser comparison → native interaction review. All character geometry, colors, rig and animation are original. Exact image-generation prompts and boards are linked in the [Sprout provenance guide](sprout/README.md#references-and-provenance). No third-party character, private portfolio file, purchased model, remote HDRI or paid Higgsfield job is included.
 
-The process is reference comparison → original authored silhouette → material and isolated lighting studies → motion audits → shared mesh in the browser → actual-size UI critique. `../../artifacts/buddy-concepts-v1.png` contains the three generated directions. `imagegen-prompt.txt` preserves the built-in image-generation tool and exact prompt. No private portfolio document or third-party geometry is included.
+[Reference recipes](frutiger-aero/REFERENCE-RECIPES.md) and [animation research](frutiger-aero/ANIMATION-WORKFLOW.md) retain primary examples, pinned source revisions and license boundaries. Three.js is MIT licensed; glTF Validator is Apache-2.0 licensed. Referenced example characters and ElevenLabs Orb were not copied into the delivered avatar.
 
-Interaction architecture was studied from [ElevenLabs UI Orb](https://ui.elevenlabs.io/docs/components/orb), whose [repository license is MIT](https://github.com/elevenlabs/ui/blob/main/LICENSE.md). The implementation here is original; it does not embed that component or its shader.
+## Historical Ribbon v001
 
-Rendering uses [Three.js](https://threejs.org/) and its [MIT-licensed loader and renderer](https://github.com/mrdoob/three.js/blob/dev/LICENSE). The installed package includes its applicable license. No remote HDRI or purchased model is required.
+Ribbon is the earlier continuous titanium sculpture around a sea-glass pearl. Its original source scripts, [audit](audit.json), [GLB audit](glb-audit.json) and [runtime GLB](../../public/buddy/insight-core-v1.glb)/[PNG](../../public/buddy/insight-core-v1.png) remain available as history and fallback assets. Its five surfaces, nine model/rig nodes and six-second `INSIGHTOS_Buddy_v001` loop are Ribbon specifications, not Sprout's current inventory.
 
-Other studies: [OGL Fresnel](https://oframe.github.io/ogl/examples/fresnel.html) and [Drei MeshDistortMaterial](https://drei.docs.pmnd.rs/shaders/mesh-distort-material). These are references only; none of their source is copied into the buddy.
+Ribbon's glTF camera is orthographic at `[0.35, 0.75, 5.8]`, target `[0,0,0]`, Y-up, vertical span `2.72`. Its 145 inclusive samples at 24 fps rotate the ribbon and inner flow and breathe the pearl. The original Aperture blockout remains in recovery copies.
+
+To reproduce that historical study, inspect `00_checkpoint.py` through `09_final_visual_audit.py` before executing them in Blender. They retain the checkpoint-copy, staged blockout, geometry, materials, lighting, animation, audit, export and rendered-proof passes. `node design/buddy/check-glb.cjs` verifies Ribbon independently. Preserve the original `Scene`, `Cube`, `Camera`, `Light` and all unrelated objects; use one Blender editor and do not run those old scripts over the current Sprout scene.
+
+The [first concept board](../../artifacts/buddy-concepts-v1.png) and [exact submitted prompt](imagegen-prompt.txt) preserve the initial art direction.

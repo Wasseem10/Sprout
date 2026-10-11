@@ -60,6 +60,7 @@
     "@vitejs/plugin-react": "^6.0.0",
     "concurrently": "^9.2.0",
     "electron": "^44.7.0",
+    "gltf-validator": "2.0.0-dev.3.10",
     "prettier": "^3.9.9",
     "tsx": "^4.21.0",
     "typescript": "^5.9.0",

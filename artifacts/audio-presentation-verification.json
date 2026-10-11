@@ -1,0 +1,65 @@
+{
+  "checkedAt": "2026-10-11T01:56:10.645Z",
+  "implementation": {
+    "files": [
+      "src/audioPresentation.ts",
+      "src/voice.ts"
+    ],
+    "interface": "stable read-only presentationAudio ref; independent input/output freshness and playback generation",
+    "output": "voice-owned HTMLAudio source to exactly one audible destination plus a silent analyser branch",
+    "fallback": "native HTMLAudio retained or replaced from the same blob; analysis unavailable instead of losing speech",
+    "input": "existing batch RMS published; realtime Scribe input level remains unavailable",
+    "reactStatePerSample": false,
+    "fallbackPlayRace": "generation-guarded native handoff survives abort of original pending play promise"
+  },
+  "validation": {
+    "unitTests": {
+      "passed": 27,
+      "files": [
+        "tests/audioPresentation.test.ts",
+        "tests/buddy-motion.test.ts"
+      ]
+    },
+    "typecheck": "passed",
+    "browserTests": {
+      "passed": 19,
+      "files": [
+        "tests/e2e/voice.spec.ts",
+        "tests/e2e/audio-meter.spec.ts"
+      ],
+      "voiceFixtureMotion": "reduced, initial model warmup awaited, Scribe socket fake restricted to provider host",
+      "pcm": "actual production meter plus real AudioContext/HTMLAudio with locally generated PCM tone/silence; no microphone/provider"
+    }
+  },
+  "provider": {
+    "localStatus": {
+      "mode": "sample",
+      "configured": false,
+      "ttsConfigured": false
+    },
+    "realElevenLabsOutput": "not verified; local API has no configured voice credentials",
+    "physicalMicrophone": "not captured",
+    "physicalSpeakerAudibility": "not asserted"
+  },
+  "nativeAnimatedVoice": {
+    "status": "passed",
+    "report": "artifacts/buddy-voice-native-verification.json",
+    "input": "oscillator fixture",
+    "output": "local PCM WAV fixture",
+    "renderer": "actual Sprout WebGL, reduced motion disabled",
+    "verified": [
+      "both intended replies produced measured output",
+      "actual VAD paused first HTMLAudio",
+      "new generation output succeeded",
+      "explicit Pause voice control ended tracks and paused elements",
+      "no page errors or horizontal document overflow"
+    ],
+    "interruptedElement": {
+      "index": 1,
+      "paused": true,
+      "ended": false,
+      "currentTime": 0.288,
+      "duration": 4
+    }
+  }
+}

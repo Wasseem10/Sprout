@@ -1,7 +1,6 @@
-import type { RefObject } from 'react';
+import { useLayoutEffect, useRef, useState, type RefObject } from 'react';
 import {
   ArrowUp,
-  ChevronDown,
   ChevronUp,
   Code2,
   Eye,
@@ -10,6 +9,7 @@ import {
   Maximize2,
   Minus,
   Pause,
+  PauseCircle,
   Play,
   Presentation,
   Settings2,
@@ -23,14 +23,18 @@ import './buddy.css';
 import EnergyPanel from './EnergyPanel';
 import FinancePanel from './FinancePanel';
 import AssistantSignal, { buddyVisualState } from './AssistantSignal';
+import type { AudioPresentationRef } from './audioPresentation';
+import { useBuddyPanel } from './useBuddyPanel';
 
 type Props = {
   expanded: boolean;
+  modalOpen: boolean;
   active: boolean;
   conversationActive: boolean;
   busy: boolean;
   enabled: boolean;
   voicePhase: string;
+  audio?: AudioPresentationRef;
   voiceReady: boolean;
   speech: boolean;
   speechReady: boolean;
@@ -42,6 +46,7 @@ type Props = {
   inputRef: RefObject<HTMLTextAreaElement | null>;
   transcriptRef: RefObject<HTMLDivElement | null>;
   expand: () => void;
+  expansionFailed: () => void;
   hide: () => void;
   talk: () => void;
   stop: () => void;
@@ -59,6 +64,26 @@ type Props = {
   openSpreadsheet: () => void;
 };
 export default function DesktopBuddy(p: Props) {
+  const pet = useRef<HTMLButtonElement>(null);
+  const close = useRef<HTMLButtonElement>(null);
+  const [reaction, setReaction] = useState(0);
+  const panel = useBuddyPanel({
+    expanded: p.expanded,
+    modalOpen: p.modalOpen,
+    pet,
+    close,
+    input: p.inputRef,
+    feed: p.transcriptRef,
+    expansionFailed: p.expansionFailed,
+  });
+  useLayoutEffect(() => {
+    // The welcome starts at the beginning; actual conversation updates may follow the bottom.
+    if (p.messages.some((message) => message.id !== 'welcome')) panel.followNewContent();
+  }, [p.messages, panel.available]);
+  const activatePet = () => {
+    setReaction((value) => value + 1);
+    p.expand();
+  };
   const status = p.conversationActive
     ? p.voicePhase === 'speaking'
       ? 'Speaking · listening'
@@ -75,80 +100,126 @@ export default function DesktopBuddy(p: Props) {
   const conversation = p.messages.filter((m) => m.id !== 'welcome');
   return (
     <main
-      className={`buddy ${p.expanded ? 'expanded' : 'collapsed'} ${p.active ? 'active' : ''}`}
+      className={`buddy ${p.expanded ? 'expanded' : 'collapsed'} ${p.active ? 'active' : ''} ${panel.error ? 'has-layout-error' : ''}`}
+      data-panel-stage={panel.stage}
       aria-label="InsightOS desktop buddy"
+      onKeyDown={(event) => {
+        if (event.key === 'Escape' && p.expanded && !p.modalOpen) {
+          event.preventDefault();
+          event.stopPropagation();
+          p.expand();
+        }
+      }}
     >
       <h1 className="sr-only">InsightOS desktop assistant</h1>
       <header className="buddy-bar">
         <button
+          ref={pet}
           className={`buddy-face ${p.active ? 'awake' : ''}`}
-          onClick={p.expand}
-          aria-label={p.expanded ? 'Collapse buddy' : 'Expand buddy'}
+          onClick={activatePet}
+          aria-label={`${p.expanded ? (panel.available ? 'Collapse buddy' : 'Cancel opening buddy') : 'Expand buddy'}. ${status}`}
+          aria-expanded={panel.available}
+          aria-controls="buddy-conversation-panel"
         >
-          <AssistantSignal small phase={buddyVisualState(p.voicePhase, p.busy)} />
+          <AssistantSignal
+            phase={buddyVisualState(p.voicePhase, p.busy)}
+            audio={p.audio}
+            reaction={reaction}
+            motion={!panel.motionPaused}
+          />
         </button>
-        <div className="buddy-identity">
-          <strong>
-            insight<span>OS</span>
-          </strong>
-          <span role="status" title={status}>
-            {status}
-          </span>
-        </div>
-        <button
-          className={`buddy-play ${p.conversationActive ? 'playing' : ''} ${p.voicePhase === 'listening' ? 'listening' : ''}`}
-          onClick={p.talk}
-          disabled={!p.conversationActive && (!p.enabled || !p.voiceReady || p.busy)}
-          aria-label={
-            p.conversationActive ? 'Pause voice conversation' : 'Start voice conversation'
-          }
-          aria-pressed={p.conversationActive}
-          aria-keyshortcuts="Control+Shift+Space"
-          title={
-            p.conversationActive ? 'Pause conversation' : 'Start conversation · Ctrl+Shift+Space'
-          }
-        >
-          {p.conversationActive ? (
-            <Pause size={22} fill="currentColor" />
-          ) : (
-            <Play size={23} fill="currentColor" />
-          )}
-        </button>
-        <div className="buddy-window-actions">
-          {p.active && (
-            <button
-              className="buddy-icon stop"
-              onClick={p.stop}
-              aria-label="Stop task and audio"
-              title="Stop · Ctrl+Shift+Backspace"
+        <div className="buddy-dock-controls">
+          <div className="buddy-identity">
+            <strong>
+              insight<span>OS</span>
+            </strong>
+            <span role="status" title={status}>
+              {status}
+            </span>
+          </div>
+          {panel.error && (
+            <p
+              className="buddy-layout-error"
+              role="alert"
+              aria-label={panel.error}
+              title={panel.error}
             >
-              <Square size={15} />
-            </button>
+              Try opening again.
+            </p>
           )}
-          <button
-            className="buddy-icon"
-            onClick={p.expand}
-            aria-label={p.expanded ? 'Collapse conversation' : 'Expand conversation'}
-          >
-            {p.expanded ? <ChevronUp size={17} /> : <ChevronDown size={17} />}
-          </button>
-          <button
-            className="buddy-icon"
-            onClick={p.hide}
-            aria-label="Hide to system tray"
-            title="Hide to tray"
-          >
-            <Minus size={17} />
-          </button>
+          <div className="buddy-window-actions">
+            <button
+              className={`buddy-play ${p.conversationActive ? 'playing' : ''} ${p.voicePhase === 'listening' ? 'listening' : ''}`}
+              onClick={p.talk}
+              disabled={!p.conversationActive && (!p.enabled || !p.voiceReady || p.busy)}
+              aria-label={
+                p.conversationActive ? 'Pause voice conversation' : 'Start voice conversation'
+              }
+              aria-pressed={p.conversationActive}
+              aria-keyshortcuts="Control+Shift+Space"
+              title={
+                p.conversationActive
+                  ? 'Pause conversation'
+                  : 'Start conversation · Ctrl+Shift+Space'
+              }
+            >
+              {p.conversationActive ? (
+                <Pause size={22} fill="currentColor" />
+              ) : (
+                <Play size={23} fill="currentColor" />
+              )}
+            </button>
+            {p.active && (
+              <button
+                className="buddy-icon stop"
+                onClick={p.stop}
+                aria-label="Stop task and audio"
+                title="Stop · Ctrl+Shift+Backspace"
+              >
+                <Square size={15} />
+              </button>
+            )}
+            <button
+              className="buddy-icon"
+              onClick={p.hide}
+              aria-label="Hide to system tray"
+              title="Hide to tray"
+            >
+              <Minus size={17} />
+            </button>
+          </div>
         </div>
       </header>
-      {p.expanded && (
+      <div ref={panel.shell} className="buddy-panel-glass" aria-hidden="true" />
+      <section
+        className="buddy-panel"
+        id="buddy-conversation-panel"
+        aria-labelledby="buddy-panel-title"
+        aria-hidden={!panel.available}
+        inert={!panel.available}
+        data-available={panel.available}
+      >
+        <div className="buddy-panel-header">
+          <div>
+            <span className="buddy-eyebrow">HERE WITH YOU</span>
+            <h2 id="buddy-panel-title">Let’s figure it out.</h2>
+          </div>
+          <button
+            ref={close}
+            className="buddy-icon"
+            onClick={p.expand}
+            aria-label="Collapse conversation"
+          >
+            <ChevronUp size={21} />
+          </button>
+        </div>
         <div className="buddy-body">
           <div
             className="buddy-feed"
             role="region"
             aria-label="Conversation and task updates"
             ref={p.transcriptRef}
+            onScroll={panel.onScroll}
             tabIndex={0}
           >
             <div
@@ -165,11 +236,9 @@ export default function DesktopBuddy(p: Props) {
               )}
               {!conversation.length && !p.state.task && (
                 <div className="buddy-welcome">
-                  <span className="buddy-eyebrow">A little help, right here.</span>
-                  <h2>What’s on your mind?</h2>
                   <p>
-                    Press Play and tell me what you need. We can understand a bill, explore your
-                    spending, or take the next step together.
+                    Ask a question, review a bill, or tell me what you need done. We’ll take it one
+                    step at a time.
                   </p>
                   <div className="buddy-suggestions" aria-label="Ideas to try">
                     <button
@@ -393,6 +462,14 @@ export default function DesktopBuddy(p: Props) {
               >
                 {p.speech ? <Volume2 size={17} /> : <VolumeX size={17} />}
               </button>
+              <button
+                className="buddy-icon"
+                onClick={panel.toggleMotion}
+                aria-label={panel.motionPaused ? 'Resume avatar motion' : 'Pause avatar motion'}
+                aria-pressed={panel.motionPaused}
+              >
+                <PauseCircle size={18} />
+              </button>
             </div>
             <div>
               <button
@@ -413,7 +490,7 @@ export default function DesktopBuddy(p: Props) {
             </div>
           </footer>
         </div>
-      )}
+      </section>
     </main>
   );
 }

@@ -66,7 +66,10 @@ try {
     '127.0.0.1',
   ]);
   // Reuse an existing server only when it serves this checkout's authored asset.
-  const response = await fetch('http://127.0.0.1:5173/buddy/insight-core-v1.glb', {
+  const buddyAsset = existsSync(path.join(workspace, 'public/buddy/sprout-v002.glb'))
+    ? 'sprout-v002.glb'
+    : 'insight-core-v1.glb';
+  const response = await fetch(`http://127.0.0.1:5173/buddy/${buddyAsset}`, {
     signal: AbortSignal.timeout(5000),
   });
   const served = Buffer.from(await response.arrayBuffer());
@@ -74,7 +77,7 @@ try {
   if (
     !response.ok ||
     digest(served) !==
-      digest(readFileSync(path.join(workspace, 'public/buddy/insight-core-v1.glb')))
+      digest(readFileSync(path.join(workspace, 'public/buddy', buddyAsset)))
   ) {
     throw new Error(
       'Port 5173 serves a different UI checkout. Close that preview before starting this one.',

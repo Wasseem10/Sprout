@@ -1,0 +1,111 @@
+{
+  "RIG_Sprout": [
+    {
+      "track": "Sprout_Idle",
+      "range": [
+        1.0,
+        145.0
+      ],
+      "action": "Sprout_Idle_Rig",
+      "slot": "OBRIG_Sprout"
+    },
+    {
+      "track": "Sprout_Listen",
+      "range": [
+        1.0,
+        145.0
+      ],
+      "action": "Sprout_Listen_Rig",
+      "slot": "OBRIG_Sprout"
+    },
+    {
+      "track": "Sprout_Think",
+      "range": [
+        1.0,
+        145.0
+      ],
+      "action": "Sprout_Think_Rig",
+      "slot": "OBRIG_Sprout"
+    },
+    {
+      "track": "Sprout_Speak",
+      "range": [
+        1.0,
+        145.0
+      ],
+      "action": "Sprout_Speak_Rig",
+      "slot": "OBRIG_Sprout"
+    }
+  ],
+  "Key": [
+    {
+      "track": "Sprout_Idle",
+      "range": [
+        1.0,
+        145.0
+      ],
+      "action": "Sprout_Idle_Jelly",
+      "slot": "KEKey"
+    },
+    {
+      "track": "Sprout_Listen",
+      "range": [
+        1.0,
+        145.0
+      ],
+      "action": "Sprout_Listen_Jelly",
+      "slot": "KEKey"
+    },
+    {
+      "track": "Sprout_Think",
+      "range": [
+        1.0,
+        145.0
+      ],
+      "action": "Sprout_Think_Jelly",
+      "slot": "KEKey"
+    },
+    {
+      "track": "Sprout_Speak",
+      "range": [
+        1.0,
+        145.0
+      ],
+      "action": "Sprout_Speak_Jelly",
+      "slot": "KEKey"
+    }
+  ],
+  "REACTION_ROOT": [
+    {
+      "track": "Sprout_Click",
+      "range": [
+        1.0,
+        11.0
+      ],
+      "action": "Sprout_Click_Reaction",
+      "slot": "OBREACTION_ROOT"
+    }
+  ],
+  "LID_L": [
+    {
+      "track": "Sprout_Blink",
+      "range": [
+        1.0,
+        5.0
+      ],
+      "action": "Sprout_Blink_L",
+      "slot": "OBLID_L"
+    }
+  ],
+  "LID_R": [
+    {
+      "track": "Sprout_Blink",
+      "range": [
+        1.0,
+        5.0
+      ],
+      "action": "Sprout_Blink_R",
+      "slot": "OBLID_R"
+    }
+  ]
+}

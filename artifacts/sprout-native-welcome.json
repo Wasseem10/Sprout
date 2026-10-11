@@ -1,0 +1,92 @@
+{
+  "checkedAt": "2026-10-11T02:13:19.298Z",
+  "assetSha256": "34cd83c23c60afedbf6edd9e9e337af4715a6f60070fe59ca90b9a8b7a73d756",
+  "source": "Actual isolated Electron buddy, final authored GLB, real initial welcome UI.",
+  "apiScope": "Same local API fixtures as the panel proof; no voice, provider or task request was made.",
+  "expanded": {
+    "bounds": {
+      "x": 32,
+      "y": 28,
+      "width": 408,
+      "height": 672
+    },
+    "contentBounds": {
+      "x": 32,
+      "y": 28,
+      "width": 408,
+      "height": 672
+    },
+    "workArea": {
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1032
+    },
+    "displayScale": 1,
+    "zoomFactor": 1,
+    "alwaysOnTop": true,
+    "resizable": false,
+    "preferences": {
+      "sandbox": true,
+      "contextIsolation": true,
+      "nodeIntegration": false,
+      "webSecurity": true
+    }
+  },
+  "collapsedCapture": [
+    {
+      "background": "bright",
+      "source": "actual OS compositor; owned opaque fixture behind isolated buddy only",
+      "bounds": {
+        "x": 32,
+        "y": 28,
+        "width": 296,
+        "height": 128
+      },
+      "fixtureBounds": {
+        "x": 8,
+        "y": 4,
+        "width": 344,
+        "height": 176
+      },
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "rectangle": {
+        "x": 32,
+        "y": 28,
+        "width": 296,
+        "height": 128
+      }
+    }
+  ],
+  "controlledBackgroundCaptures": [
+    {
+      "background": "bright",
+      "source": "actual OS compositor; owned opaque fixture behind isolated buddy only",
+      "bounds": {
+        "x": 32,
+        "y": 28,
+        "width": 408,
+        "height": 672
+      },
+      "fixtureBounds": {
+        "x": 8,
+        "y": 4,
+        "width": 456,
+        "height": 720
+      },
+      "size": {
+        "width": 1920,
+        "height": 1080
+      },
+      "rectangle": {
+        "x": 32,
+        "y": 28,
+        "width": 408,
+        "height": 672
+      }
+    }
+  ]
+}

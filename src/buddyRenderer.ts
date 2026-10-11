@@ -6,6 +6,8 @@ import {
   DirectionalLight,
   Group,
   HemisphereLight,
+  InterleavedBufferAttribute,
+  Material,
   Mesh,
   MeshBasicMaterial,
   MeshStandardMaterial,
@@ -13,35 +15,90 @@ import {
   PMREMGenerator,
   PlaneGeometry,
   Scene,
+  Skeleton,
+  SkinnedMesh,
   Texture,
   Vector3,
   WebGLRenderer,
 } from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { GLTFLoader, type GLTF } from 'three/addons/loaders/GLTFLoader.js';
 import type { BuddyVisualState } from './AssistantSignal';
+import type { AudioPresentationRef } from './audioPresentation';
+import { BuddyAudioEnvelope } from './buddyAudioEnvelope';
+import { auditSproutModel, SproutMotionController } from './buddyMotionController';
 
+export type BuddyAsset = 'sprout' | 'ribbon';
+export type BuddyRendererSettings = {
+  phase: BuddyVisualState;
+  motion: boolean;
+  audio?: AudioPresentationRef;
+  reaction?: number;
+  blink?: number;
+  gaze?: { x: number; y: number } | null;
+};
+export type BuddyRendererDiagnostics = {
+  asset: BuddyAsset;
+  clips: string[];
+  assetIssues: string[];
+  vertices: number;
+  triangles: number;
+  frames: number;
+  intervalP95: number;
+  intervalMax: number;
+  missedBudgets: number;
+  renderP95: number;
+  drawCalls: number;
+  resolution: string;
+  startup: {
+    assetBytes: number;
+    fetchMs: number;
+    parseMs: number;
+    gpuSetupMs: number;
+    firstRenderMs: number;
+  };
+  memory: {
+    geometries: number;
+    textures: number;
+    geometryAttributeBytes: number;
+    environmentColorBytesEstimate: number;
+    note: string;
+  };
+};
 export type BuddyRenderer = {
-  update: (phase: BuddyVisualState, motion: boolean) => void;
+  update: (settings: BuddyRendererSettings) => void;
+  diagnostics: () => BuddyRendererDiagnostics;
   dispose: () => void;
 };
 
-/** Blender study's three softboxes, plus a broad front card for tiny-size readability. */
-function createEnvironment(renderer: WebGLRenderer) {
+/** Broad reflection cards reproduce the authored studio structure without postprocessing. */
+function createEnvironment(renderer: WebGLRenderer, asset: BuddyAsset) {
   const studio = new Scene();
-  studio.background = new Color().setRGB(0.045, 0.055, 0.065);
-  const lights = [
-    { position: [-3.2, 3.2, 3.4], size: [2.4, 4], color: [1, 0.93, 0.81], intensity: 6 },
-    { position: [3, 0.4, 2.5], size: [2.4, 2], color: [0.75, 0.92, 1], intensity: 2 },
-    { position: [1.7, 2.5, -2.8], size: [1, 3.2], color: [0.84, 1, 0.95], intensity: 8 },
-    { position: [0, -0.5, 4], size: [6, 6], color: [0.8, 0.9, 0.93], intensity: 1.3 },
-  ];
+  studio.background =
+    asset === 'sprout'
+      ? new Color().setRGB(0.022, 0.031, 0.047)
+      : new Color().setRGB(0.045, 0.055, 0.065);
+  const lights =
+    asset === 'sprout'
+      ? [
+          { position: [-3.5, 3.8, 3], size: [1.45, 3.4], color: [1, 0.95, 0.9], intensity: 6 },
+          { position: [3.2, 1.5, 2], size: [1.3, 2.2], color: [0.75, 0.92, 1], intensity: 0.8 },
+          { position: [1.2, 3, -2], size: [2.8, 0.9], color: [0.84, 1, 0.95], intensity: 6.4 },
+        ]
+      : [
+          { position: [-3.2, 3.2, 3.4], size: [2.4, 4], color: [1, 0.95, 0.9], intensity: 6 },
+          { position: [3, 0.4, 2.5], size: [2.4, 2], color: [0.75, 0.92, 1], intensity: 2 },
+          { position: [1.7, 2.5, -2.8], size: [1, 3.2], color: [0.84, 1, 0.95], intensity: 8 },
+          { position: [0, -0.5, 4], size: [6, 6], color: [0.8, 0.9, 0.93], intensity: 1.3 },
+        ];
   for (const light of lights) {
-    const material = new MeshBasicMaterial({
-      color: new Color()
-        .setRGB(light.color[0], light.color[1], light.color[2])
-        .multiplyScalar(light.intensity),
-    });
-    const panel = new Mesh(new PlaneGeometry(light.size[0], light.size[1]), material);
+    const panel = new Mesh(
+      new PlaneGeometry(light.size[0], light.size[1]),
+      new MeshBasicMaterial({
+        color: new Color()
+          .setRGB(light.color[0], light.color[1], light.color[2])
+          .multiplyScalar(light.intensity),
+      }),
+    );
     panel.position.set(light.position[0], light.position[1], light.position[2]);
     panel.lookAt(0, 0, 0);
     studio.add(panel);
@@ -50,29 +107,30 @@ function createEnvironment(renderer: WebGLRenderer) {
   try {
     return generator.fromScene(studio, 0.025, 0.1, 100, { size: 128 });
   } finally {
-    for (const child of studio.children) {
+    for (const child of studio.children)
       if (child instanceof Mesh) {
         child.geometry.dispose();
         child.material.dispose();
       }
-    }
     generator.dispose();
   }
 }
 
 function disposeModel(model: Group) {
   const textures = new Set<Texture>();
-  const materials = new Set<MeshStandardMaterial>();
+  const materials = new Set<Material>();
+  const skeletons = new Set<Skeleton>();
   model.traverse((object) => {
     if (!(object instanceof Mesh)) return;
     object.geometry.dispose();
-    const list = Array.isArray(object.material) ? object.material : [object.material];
-    for (const material of list) {
+    if (object instanceof SkinnedMesh) skeletons.add(object.skeleton);
+    for (const material of Array.isArray(object.material) ? object.material : [object.material]) {
       materials.add(material);
       for (const value of Object.values(material))
         if (value instanceof Texture) textures.add(value);
     }
   });
+  for (const skeleton of skeletons) skeleton.dispose();
   for (const texture of textures) {
     texture.dispose();
     if (typeof ImageBitmap !== 'undefined' && texture.image instanceof ImageBitmap)
@@ -81,28 +139,78 @@ function disposeModel(model: Group) {
   for (const material of materials) material.dispose();
 }
 
-/** The Blender mesh is the browser silhouette, with local PBR studio lighting. */
+async function loadModel(signal?: AbortSignal): Promise<{
+  gltf: GLTF;
+  asset: BuddyAsset;
+  issues: string[];
+  assetBytes: number;
+  fetchMs: number;
+  parseMs: number;
+} | null> {
+  const issues: string[] = [];
+  for (const [path, asset] of [
+    ['sprout-v002.glb', 'sprout'],
+    ['insight-core-v1.glb', 'ribbon'],
+  ] as const) {
+    if (signal?.aborted) return null;
+    let gltf: GLTF;
+    let assetBytes = 0;
+    let fetchMs = 0;
+    let parseMs = 0;
+    try {
+      const fetchStarted = performance.now();
+      const response = await fetch(`/buddy/${path}`, { signal });
+      if (!response.ok) continue;
+      const buffer = await response.arrayBuffer();
+      assetBytes = buffer.byteLength;
+      fetchMs = performance.now() - fetchStarted;
+      const parseStarted = performance.now();
+      gltf = await new GLTFLoader().parseAsync(buffer, '/buddy/');
+      parseMs = performance.now() - parseStarted;
+    } catch {
+      if (signal?.aborted) return null;
+      continue;
+    }
+    if (signal?.aborted) {
+      disposeModel(gltf.scene);
+      return null;
+    }
+    if (asset === 'sprout') {
+      const failures = auditSproutModel(gltf.scene, gltf.animations);
+      if (failures.length) {
+        issues.push(...failures);
+        disposeModel(gltf.scene);
+        continue;
+      }
+    }
+    return { gltf, asset, issues, assetBytes, fetchMs, parseMs };
+  }
+  return null;
+}
+
+const percentile = (values: number[], fraction: number) =>
+  values.length ? [...values].sort((a, b) => a - b)[Math.ceil(values.length * fraction) - 1] : 0;
+
+/** Owns one canvas, scene and animation clock. No voice resources or per-frame React state. */
 export async function createBuddyRenderer(
   canvas: HTMLCanvasElement,
-  settings: { phase: BuddyVisualState; motion: boolean },
+  initial: BuddyRendererSettings,
   onReady: (ready: boolean) => void,
   signal?: AbortSignal,
+  onDiagnostics?: (diagnostics: BuddyRendererDiagnostics) => void,
 ): Promise<BuddyRenderer | null> {
+  const initializationStarted = performance.now();
   const owner = canvas.parentElement;
-  // Complete loading before allocating a GPU context, including Strict Mode / HMR cancellation.
-  let gltf;
-  try {
-    const response = await fetch('/buddy/insight-core-v1.glb', { signal });
-    if (!response.ok) return null;
-    gltf = await new GLTFLoader().parseAsync(await response.arrayBuffer(), '/buddy/');
-  } catch {
-    return null;
-  }
+  // Parse before GPU allocation so detached/Strict Mode instances consume no GPU context.
+  const loaded = await loadModel(signal);
+  if (!loaded) return null;
+  const { gltf, asset, issues } = loaded;
   const model = gltf.scene;
   if (!owner || !canvas.isConnected || signal?.aborted) {
     disposeModel(model);
     return null;
   }
+  const gpuStarted = performance.now();
   let renderer: WebGLRenderer;
   try {
     renderer = new WebGLRenderer({
@@ -121,7 +229,7 @@ export async function createBuddyRenderer(
   const scene = new Scene();
   let environmentMap: ReturnType<typeof createEnvironment>;
   try {
-    environmentMap = createEnvironment(renderer);
+    environmentMap = createEnvironment(renderer, asset);
   } catch {
     disposeModel(model);
     renderer.dispose();
@@ -130,43 +238,67 @@ export async function createBuddyRenderer(
   }
   scene.environment = environmentMap.texture;
   scene.environmentIntensity = 1;
-  const camera = new OrthographicCamera(-1.38, 1.38, 1.38, -1.38, 0.1, 30);
-  camera.position.set(0.35, 0.75, 5.8);
-  camera.lookAt(0, 0, 0);
-  const key = new DirectionalLight(0xf1fff6, 2.3);
-  key.position.set(-3, 4, 5);
-  const rim = new DirectionalLight(0xa7ddd7, 1.7);
-  rim.position.set(3, -1, -3);
-  scene.add(key, rim, new HemisphereLight(0xe4f6f3, 0x131b24, 0.8));
-  const mixer = new AnimationMixer(model);
-  for (const clip of gltf.animations) mixer.clipAction(clip).play();
+  const framing = asset === 'sprout' ? 1.4 : 1.38;
+  const camera = new OrthographicCamera(-framing, framing, framing, -framing, 0.1, 30);
+  camera.position.set(
+    asset === 'sprout' ? 0.1 : 0.35,
+    asset === 'sprout' ? 0.24 : 0.75,
+    asset === 'sprout' ? 6 : 5.8,
+  );
+  camera.lookAt(0, asset === 'sprout' ? 0.08 : 0, 0);
+  const keyBase = asset === 'sprout' ? 1.7 : 2.3;
+  const key = new DirectionalLight(0xf1faff, keyBase);
+  if (asset === 'sprout') key.position.set(-3.5, 3.8, 3);
+  else key.position.set(-3, 4, 5);
+  const rim = new DirectionalLight(0xa7ddd7, asset === 'sprout' ? 0.7 : 1.7);
+  if (asset === 'sprout') rim.position.set(1.2, 3, -2);
+  else rim.position.set(3, -1, -3);
+  scene.add(key, rim, new HemisphereLight(0xe4f6f3, 0x131b24, asset === 'sprout' ? 0.4 : 0.8));
   const bounds = new Box3().setFromObject(model);
   const size = bounds.getSize(new Vector3());
-  model.position.sub(bounds.getCenter(new Vector3()));
+  if (asset === 'ribbon') model.position.sub(bounds.getCenter(new Vector3()));
   const mount = new Group();
   mount.add(model);
-  mount.scale.setScalar(2 / Math.max(size.x, size.y, size.z));
+  if (asset === 'ribbon') mount.scale.setScalar(2 / Math.max(size.x, size.y, size.z, 0.001));
   scene.add(mount);
+  const controller =
+    asset === 'sprout' ? new SproutMotionController(model, gltf.animations, size.y * 0.02) : null;
+  const ribbonMixer = controller ? null : new AnimationMixer(model);
+  if (ribbonMixer) for (const clip of gltf.animations) ribbonMixer.clipAction(clip).play();
   const lights: { material: MeshStandardMaterial; intensity: number; color: Color }[] = [];
+  let vertices = 0;
+  let triangles = 0;
+  const attributeArrays = new Set<{ byteLength: number }>();
   model.traverse((object) => {
     if (!(object instanceof Mesh)) return;
-    const materials = Array.isArray(object.material) ? object.material : [object.material];
-    for (const material of materials) {
+    // The proof includes skin/morph extremes; do not cull against only static basis bounds.
+    object.frustumCulled = false;
+    vertices += object.geometry.attributes.position?.count ?? 0;
+    for (const attribute of [
+      ...Object.values(object.geometry.attributes),
+      ...Object.values(object.geometry.morphAttributes).flat(),
+      object.geometry.index,
+    ])
+      if (attribute)
+        attributeArrays.add(
+          attribute instanceof InterleavedBufferAttribute ? attribute.data.array : attribute.array,
+        );
+    triangles +=
+      (object.geometry.index?.count ?? object.geometry.attributes.position?.count ?? 0) / 3;
+    for (const material of Array.isArray(object.material) ? object.material : [object.material]) {
       if (
         material instanceof MeshStandardMaterial &&
         material.emissiveIntensity > 0 &&
         material.emissive.getHex() !== 0
-      ) {
+      )
         lights.push({
           material,
           intensity: material.emissiveIntensity,
           color: material.emissive.clone(),
         });
-      }
     }
   });
-  let phase = settings.phase;
-  let motion = settings.motion;
+  let settings = initial;
   let disposed = false;
   let visible = true;
   let contextLost = false;
@@ -174,63 +306,140 @@ export async function createBuddyRenderer(
   let lastFrame = 0;
   let lastRenderedAt = 0;
   let elapsed = 0;
-  let pointerX = 0;
-  let pointerY = 0;
+  let nextBlink = 4.8;
+  let pointer = { x: 0, y: 0 };
+  let lastReaction = initial.reaction ?? 0;
+  let lastBlink = initial.blink ?? 0;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const envelope = new BuddyAudioEnvelope();
   const glowColor = new Color();
   let reportedReady = false;
-  const shouldAnimate = () =>
-    motion && !reducedMotion.matches && visible && !document.hidden && !contextLost && !disposed;
-  const draw = () => {
+  let gpuSetupMs = 0;
+  let firstRenderMs = 0;
+  let frames = 0;
+  let lastReport = 0;
+  const intervals: number[] = [];
+  const renderCosts: number[] = [];
+  const moving = () => settings.motion && !reducedMotion.matches;
+  const shouldAnimate = () => moving() && visible && !document.hidden && !contextLost && !disposed;
+  controller?.setPhase(settings.phase);
+  controller?.setMotion(moving());
+  const diagnostics = (): BuddyRendererDiagnostics => ({
+    asset,
+    clips: gltf.animations.map((clip) => clip.name),
+    assetIssues: issues,
+    vertices,
+    triangles,
+    frames,
+    intervalP95: percentile(intervals, 0.95),
+    intervalMax: intervals.length ? Math.max(...intervals) : 0,
+    missedBudgets: intervals.filter((interval) => interval > 18).length,
+    renderP95: percentile(renderCosts, 0.95),
+    drawCalls: renderer.info.render.calls,
+    resolution: `${canvas.width} × ${canvas.height}`,
+    startup: {
+      assetBytes: loaded.assetBytes,
+      fetchMs: loaded.fetchMs,
+      parseMs: loaded.parseMs,
+      gpuSetupMs,
+      firstRenderMs,
+    },
+    memory: {
+      geometries: renderer.info.memory.geometries,
+      textures: renderer.info.memory.textures,
+      geometryAttributeBytes: [...attributeArrays].reduce(
+        (bytes, array) => bytes + array.byteLength,
+        0,
+      ),
+      environmentColorBytesEstimate: environmentMap.width * environmentMap.height * 8,
+      note: 'Geometry bytes describe CPU attribute storage. Environment estimate is one RGBA16F target; neither measures total GPU allocation or driver overhead.',
+    },
+  });
+  const draw = (now = performance.now(), dt = 0) => {
     if (disposed || contextLost || renderer.getContext().isContextLost()) return;
-    const moving = motion && !reducedMotion.matches;
-    const t = moving ? elapsed : 0;
-    const pace = phase === 'thinking' ? 0.6 : phase === 'speaking' ? 0.8 : 0.25;
-    mount.rotation.set(
-      moving ? Math.sin(t * 0.35) * 0.025 + pointerY * 0.1 : 0,
-      moving ? Math.sin(t * pace) * (phase === 'thinking' ? 0.18 : 0.065) + pointerX * 0.14 : 0,
-      moving ? Math.sin(t * 0.28) * 0.025 : 0,
+    const t = moving() ? elapsed : 0;
+    const level = moving() ? envelope.sample(settings.audio?.current, settings.phase, now, dt) : 0;
+    if (!moving()) envelope.reset();
+    key.intensity = keyBase + level * 0.4;
+    if (asset === 'ribbon') {
+      const pace = settings.phase === 'thinking' ? 0.6 : settings.phase === 'speaking' ? 0.8 : 0.25;
+      mount.rotation.set(
+        moving() ? Math.sin(t * 0.35) * 0.025 + pointer.y * 0.05 : 0,
+        moving()
+          ? Math.sin(t * pace) * (settings.phase === 'thinking' ? 0.18 : 0.065) + pointer.x * 0.07
+          : 0,
+        moving() ? Math.sin(t * 0.28) * 0.025 : 0,
+      );
+      mount.position.y = moving() ? Math.sin(t * 0.7) * 0.025 : 0;
+    }
+    glowColor.set(
+      settings.phase === 'success'
+        ? 0xa9e4b6
+        : settings.phase === 'listening'
+          ? 0x9fdfea
+          : 0xbce7df,
     );
-    mount.position.y = moving ? Math.sin(t * 0.7) * 0.025 : 0;
-    const pulse =
-      phase === 'speaking'
-        ? 1 + Math.sin(t * 5.4) * 0.22 + Math.sin(t * 8.1) * 0.08
-        : phase === 'listening'
-          ? 1.2 + Math.sin(t * 2) * 0.14
-          : phase === 'thinking'
-            ? 1.12
-            : 1;
-    glowColor.set(phase === 'success' ? 0xa9e4b6 : phase === 'listening' ? 0x9fdfea : 0xbce7df);
     for (const light of lights) {
-      light.material.emissiveIntensity = light.intensity * pulse;
+      light.material.emissiveIntensity = light.intensity * (1 + level * 0.35);
       light.material.emissive.copy(light.color).lerp(glowColor, 0.2);
     }
+    const started = performance.now();
     renderer.render(scene, camera);
+    renderCosts.push(performance.now() - started);
+    if (renderCosts.length > 900) renderCosts.shift();
+    frames += 1;
     if (!reportedReady) {
       reportedReady = true;
+      if (!firstRenderMs) {
+        firstRenderMs = performance.now() - initializationStarted;
+        gpuSetupMs = performance.now() - gpuStarted;
+      }
       onReady(true);
+      onDiagnostics?.(diagnostics());
+    } else if (now - lastReport > 1500) {
+      lastReport = now;
+      onDiagnostics?.(diagnostics());
     }
   };
   const tick = (now: number) => {
     frame = 0;
     if (!shouldAnimate()) return;
-    const interval = phase === 'idle' || owner.clientWidth < 70 ? 1000 / 15 : 1000 / 30;
+    const interval = 1000 / 60;
     const intervalElapsed = now - lastFrame;
-    if (intervalElapsed >= interval) {
+    if (intervalElapsed >= interval - 0.5) {
       const delta = lastRenderedAt ? Math.min((now - lastRenderedAt) / 1000, 0.1) : 0;
+      if (lastRenderedAt) {
+        intervals.push(now - lastRenderedAt);
+        if (intervals.length > 900) intervals.shift();
+      }
       elapsed += delta;
-      mixer.update(delta * (phase === 'thinking' ? 1.2 : phase === 'speaking' ? 0.75 : 0.4));
-      lastFrame = now - (intervalElapsed % interval);
+      if (controller) {
+        const gaze = settings.gaze ?? pointer;
+        controller.setGaze(gaze.x, gaze.y);
+        if (elapsed >= nextBlink) {
+          controller.react('Sprout_Blink');
+          nextBlink = elapsed + 4.8;
+        }
+        controller.update(delta);
+      } else
+        ribbonMixer?.update(
+          delta *
+            (settings.phase === 'thinking' ? 1.2 : settings.phase === 'speaking' ? 0.75 : 0.4),
+        );
+      // A frame accepted inside the timing tolerance starts a new interval.
+      // Preserve only genuine overshoot; a below-interval remainder would retain
+      // the old timestamp and alternate short/long render intervals.
+      lastFrame = now - (intervalElapsed >= interval ? intervalElapsed % interval : 0);
       lastRenderedAt = now;
-      draw();
+      draw(now, delta);
     }
     frame = requestAnimationFrame(tick);
   };
   const refresh = () => {
     cancelAnimationFrame(frame);
     frame = 0;
-    lastFrame = 0;
-    lastRenderedAt = 0;
+    lastFrame = lastRenderedAt = 0;
+    controller?.setMotion(moving());
     if (visible && !document.hidden) draw();
     if (shouldAnimate()) frame = requestAnimationFrame(tick);
   };
@@ -238,37 +447,41 @@ export async function createBuddyRenderer(
     const width = Math.max(1, owner.clientWidth);
     const height = Math.max(1, owner.clientHeight);
     renderer.setPixelRatio(
-      Math.min(window.devicePixelRatio || 1, 1.75, 420 / Math.max(width, height)),
+      Math.min(window.devicePixelRatio || 1, 2, 420 / Math.max(width, height)),
     );
     renderer.setSize(width, height, false);
     const aspect = width / height;
-    camera.left = -1.38 * aspect;
-    camera.right = 1.38 * aspect;
+    camera.left = -framing * aspect;
+    camera.right = framing * aspect;
     camera.updateProjectionMatrix();
     refresh();
   };
   const move = (event: PointerEvent) => {
     const rect = owner.getBoundingClientRect();
-    pointerX = (event.clientX - rect.left) / rect.width - 0.5;
-    pointerY = (event.clientY - rect.top) / rect.height - 0.5;
+    if (!rect.width || !rect.height) return;
+    pointer = {
+      x: ((event.clientX - rect.left) / rect.width - 0.5) * 2,
+      y: (0.5 - (event.clientY - rect.top) / rect.height) * 2,
+    };
   };
   const leave = () => {
-    pointerX = 0;
-    pointerY = 0;
+    pointer = { x: 0, y: 0 };
   };
   const lost = (event: Event) => {
     event.preventDefault();
     contextLost = true;
     cancelAnimationFrame(frame);
+    frame = 0;
+    envelope.reset();
     onReady(false);
     reportedReady = false;
   };
   const restored = () => {
+    if (disposed) return;
     environmentMap.dispose();
     try {
-      environmentMap = createEnvironment(renderer);
+      environmentMap = createEnvironment(renderer, asset);
     } catch {
-      // Keep the authored fallback if the recovered device cannot rebuild the environment.
       return;
     }
     contextLost = false;
@@ -290,11 +503,22 @@ export async function createBuddyRenderer(
   canvas.addEventListener('webglcontextrestored', restored);
   resize();
   return {
-    update(nextPhase, nextMotion) {
-      phase = nextPhase;
-      motion = nextMotion;
+    update(next) {
+      const previousPhase = settings.phase;
+      settings = next;
+      if (next.phase !== previousPhase) controller?.setPhase(next.phase);
+      controller?.setMotion(moving());
+      if ((next.reaction ?? 0) !== lastReaction) {
+        lastReaction = next.reaction ?? 0;
+        controller?.react('Sprout_Click');
+      }
+      if ((next.blink ?? 0) !== lastBlink) {
+        lastBlink = next.blink ?? 0;
+        controller?.react('Sprout_Blink');
+      }
       refresh();
     },
+    diagnostics,
     dispose() {
       if (disposed) return;
       disposed = true;
@@ -307,9 +531,10 @@ export async function createBuddyRenderer(
       reducedMotion.removeEventListener('change', refresh);
       canvas.removeEventListener('webglcontextlost', lost);
       canvas.removeEventListener('webglcontextrestored', restored);
+      controller?.dispose();
+      ribbonMixer?.stopAllAction();
+      ribbonMixer?.uncacheRoot(model);
       disposeModel(model);
-      mixer.stopAllAction();
-      mixer.uncacheRoot(model);
       environmentMap.dispose();
       renderer.dispose();
       renderer.forceContextLoss();

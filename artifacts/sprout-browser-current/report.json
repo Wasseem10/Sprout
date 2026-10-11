@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-10-11T02:16:27.740Z",
+  "assetSha256": "34cd83c23c60afedbf6edd9e9e337af4715a6f60070fe59ca90b9a8b7a73d756",
+  "assetBytes": 1295856,
+  "kind": "Current authored Sprout asset, headless browser simulated six-clip proof; separate from native production and real voice verification",
+  "report": "Renderer measurement\n\nSprout v002 · 10,328 vertices · 10 draw calls · 96 × 96\n593 rendered frames · p95 interval 50.0ms · max 66.8ms · 471 intervals above 18ms · p95 render call 0.80ms\n\n1265 KiB asset · fetch 133.9ms · parse 17.3ms · first model render 478.9ms\n10 geometries · 4 textures. Total GPU memory is unavailable from WebGL.\n\nLocal render-clock samples, not a verified presented-frame or real voice report.",
+  "gpu": {
+    "vendor": "Google Inc. (Google)",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "width": 96,
+    "height": 96
+  },
+  "errors": [],
+  "apiCalls": []
+}

@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import type { BuddyRenderer } from './buddyRenderer';
+import type {
+  BuddyRenderer,
+  BuddyRendererDiagnostics,
+  BuddyRendererSettings,
+} from './buddyRenderer';
+import type { AudioPresentationRef } from './audioPresentation';
 import './assistant-signal.css';
 
 export type BuddyVisualState = 'idle' | 'listening' | 'thinking' | 'speaking' | 'success';
@@ -17,22 +22,38 @@ export default function AssistantSignal({
   small = false,
   phase = active ? 'speaking' : 'idle',
   motion = true,
+  audio,
+  reaction = 0,
+  blink = 0,
+  gaze,
+  onDiagnostics,
 }: {
   active?: boolean;
   small?: boolean;
   phase?: BuddyVisualState;
   motion?: boolean;
+  audio?: AudioPresentationRef;
+  reaction?: number;
+  blink?: number;
+  gaze?: { x: number; y: number } | null;
+  onDiagnostics?: (diagnostics: BuddyRendererDiagnostics) => void;
 }) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const renderer = useRef<BuddyRenderer | null>(null);
-  const settings = useRef({ phase, motion });
+  const settings = useRef<BuddyRendererSettings>({ phase, motion, audio, reaction, blink, gaze });
+  const diagnosticsHandler = useRef(onDiagnostics);
   const [ready, setReady] = useState(false);
-  const [imageFailed, setImageFailed] = useState(false);
+  const [imageIndex, setImageIndex] = useState(0);
+  const [asset, setAsset] = useState<'sprout' | 'ribbon' | 'loading'>('loading');
 
   useEffect(() => {
-    settings.current = { phase, motion };
-    renderer.current?.update(phase, motion);
-  }, [phase, motion]);
+    diagnosticsHandler.current = onDiagnostics;
+  }, [onDiagnostics]);
+
+  useEffect(() => {
+    settings.current = { phase, motion, audio, reaction, blink, gaze };
+    renderer.current?.update(settings.current);
+  }, [phase, motion, audio, reaction, blink, gaze]);
 
   useEffect(() => {
     let cancelled = false;
@@ -48,11 +69,16 @@ export default function AssistantSignal({
             if (!cancelled) setReady(value);
           },
           controller.signal,
+          (diagnostics) => {
+            if (cancelled) return;
+            setAsset(diagnostics.asset);
+            diagnosticsHandler.current?.(diagnostics);
+          },
         );
         if (cancelled) instance?.dispose();
         else {
           renderer.current = instance;
-          instance?.update(settings.current.phase, settings.current.motion);
+          instance?.update(settings.current);
         }
       })
       .catch(() => {
@@ -68,9 +94,10 @@ export default function AssistantSignal({
 
   return (
     <span
-      className={`insight-signal${small ? ' is-small' : ''}${ready ? ' is-rendered' : ''}${imageFailed ? ' image-unavailable' : ''}`}
+      className={`insight-signal${small ? ' is-small' : ''}${ready ? ' is-rendered' : ''}${imageIndex > 1 ? ' image-unavailable' : ''}`}
       data-phase={phase}
       data-renderer={ready ? 'webgl' : 'fallback'}
+      data-model={asset}
       aria-hidden="true"
     >
       <span className="signal-halo" />
@@ -78,13 +105,13 @@ export default function AssistantSignal({
         <span className="signal-pearl" />
         <span className="signal-ribbon" />
       </span>
-      {!imageFailed && (
+      {imageIndex < 2 && (
         <img
           className="signal-authored-image"
-          src="/buddy/insight-core-v1.png"
+          src={imageIndex === 0 ? '/buddy/sprout-v002.png' : '/buddy/insight-core-v1.png'}
           alt=""
           draggable={false}
-          onError={() => setImageFailed(true)}
+          onError={() => setImageIndex((index) => Math.min(2, index + 1))}
         />
       )}
       <canvas ref={canvas} className="signal-canvas" />

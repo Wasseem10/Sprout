@@ -1,5 +1,9 @@
 import { test, expect, type Page } from '@playwright/test';
 
+// Keep mechanical conversation/VAD checks independent of headless GPU startup.
+// Actual animated avatars and frame budgets have their own studio/native gates.
+test.use({ reducedMotion: 'reduce' });
+
 const empty = { folder: null, code: null, browser: null, screen: null };
 async function setup(
   page: Page,
@@ -86,18 +90,27 @@ async function setup(
   });
   await page.goto('/');
   await expect(page.getByRole('button', { name: 'Start conversation' })).toBeEnabled();
+  // Shader/PMREM warmup must finish before the short synthetic utterance begins.
+  await expect(page.locator('.insight-signal').first()).toHaveAttribute(
+    'data-model',
+    /sprout|ribbon/,
+  );
   return commands;
 }
 
 async function setupRealtime(page: Page) {
   await page.addInitScript(() => {
     const w = window as any;
+    const NativeWebSocket = WebSocket;
     w.fakeSockets = [];
     class FakeScribeSocket {
       static OPEN = 1;
       readyState = 0;
       listeners = new Map<string, Array<(event: any) => void>>();
       constructor(readonly address: string) {
+        // Leave the dev server's HMR socket intact; only Scribe is a fixture.
+        if (new URL(address).hostname !== 'api.elevenlabs.io')
+          return new NativeWebSocket(address) as any;
         w.fakeSockets.push(this);
         setTimeout(() => {
           if (this.readyState !== 0) return;

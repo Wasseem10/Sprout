@@ -1,0 +1,721 @@
+{
+  "path": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-prism-glossy-v002.glb",
+  "sha256": "6651b0e7b3d2013b568db19e66602e67a21d10ff7ae0b9db515d0a55bfde564f",
+  "bytes": 1295864,
+  "generator": "Khronos glTF Blender I/O v5.2.40",
+  "settings": {
+    "filepath": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\sprout-prism-glossy-v002.glb",
+    "export_format": "GLB",
+    "use_selection": true,
+    "use_active_scene": true,
+    "export_animations": true,
+    "export_animation_mode": "NLA_TRACKS",
+    "export_force_sampling": true,
+    "export_frame_step": 1,
+    "export_anim_slide_to_zero": true,
+    "export_apply": false,
+    "export_def_bones": false,
+    "export_morph": true,
+    "export_morph_normal": true,
+    "export_morph_animation": true,
+    "export_normals": true,
+    "export_texcoords": true,
+    "export_vertex_color": "ACTIVE",
+    "export_all_vertex_colors": true,
+    "export_optimize_animation_size": true,
+    "export_optimize_animation_keep_anim_armature": true
+  },
+  "nodes": [
+    "BUD_L_TIP",
+    "BUD_L_BASE",
+    "BUD_R_TIP",
+    "BUD_R_BASE",
+    "FACE_Smile",
+    "EYE_L",
+    "GLINT_L",
+    "GAZE_L",
+    "EYE_R",
+    "GLINT_R",
+    "GAZE_R",
+    "CLOSED_EYE_L",
+    "LID_L",
+    "CLOSED_EYE_R",
+    "LID_R",
+    "FACE_ANCHOR",
+    "FACE_MOUNT",
+    "BODY",
+    "FOOT_L",
+    "FOOT_R",
+    "ROOT",
+    "SPROUT_BODY",
+    "RIG_Sprout",
+    "REACTION_ROOT",
+    "SPROUT_ROOT"
+  ],
+  "skins": [
+    {
+      "joints": [
+        "ROOT",
+        "BODY",
+        "BUD_L_BASE",
+        "BUD_L_TIP",
+        "BUD_R_BASE",
+        "BUD_R_TIP",
+        "FACE_MOUNT",
+        "FOOT_L",
+        "FOOT_R"
+      ]
+    }
+  ],
+  "meshes": [
+    {
+      "name": "SPROUT_BODY_RuntimeBasis",
+      "morphs": [
+        "Jelly_Squash",
+        "Jelly_Sway_L",
+        "Jelly_Sway_R"
+      ],
+      "primitives": [
+        {
+          "attributes": [
+            "POSITION",
+            "NORMAL",
+            "TEXCOORD_0",
+            "COLOR_0",
+            "JOINTS_0",
+            "WEIGHTS_0"
+          ],
+          "targets": [
+            [
+              "POSITION",
+              "NORMAL"
+            ],
+            [
+              "POSITION",
+              "NORMAL"
+            ],
+            [
+              "POSITION",
+              "NORMAL"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "FACE_Smile_Mesh",
+      "morphs": null,
+      "primitives": [
+        {
+          "attributes": [
+            "POSITION",
+            "NORMAL"
+          ],
+          "targets": []
+        }
+      ]
+    },
+    {
+      "name": "EYE_L_RuntimeBasis",
+      "morphs": null,
+      "primitives": [
+        {
+          "attributes": [
+            "POSITION",
+            "NORMAL"
+          ],
+          "targets": []
+        }
+      ]
+    },
+    {
+      "name": "GLINT_L_RuntimeBasis",
+      "morphs": null,
+      "primitives": [
+        {
+          "attributes": [
+            "POSITION",
+            "NORMAL"
+          ],
+          "targets": []
+        }
+      ]
+    },
+    {
+      "name": "EYE_R_RuntimeBasis",
+      "morphs": null,
+      "primitives": [
+        {
+          "attributes": [
+            "POSITION",
+            "NORMAL"
+          ],
+          "targets": []
+        }
+      ]
+    },
+    {
+      "name": "GLINT_R_RuntimeBasis",
+      "morphs": null,
+      "primitives": [
+        {
+          "attributes": [
+            "POSITION",
+            "NORMAL"
+          ],
+          "targets": []
+        }
+      ]
+    },
+    {
+      "name": "CLOSED_EYE_L_Mesh",
+      "morphs": null,
+      "primitives": [
+        {
+          "attributes": [
+            "POSITION",
+            "NORMAL"
+          ],
+          "targets": []
+        }
+      ]
+    },
+    {
+      "name": "LID_L_Mesh",
+      "morphs": null,
+      "primitives": [
+        {
+          "attributes": [
+            "POSITION",
+            "NORMAL",
+            "COLOR_0"
+          ],
+          "targets": []
+        }
+      ]
+    },
+    {
+      "name": "CLOSED_EYE_R_Mesh",
+      "morphs": null,
+      "primitives": [
+        {
+          "attributes": [
+            "POSITION",
+            "NORMAL"
+          ],
+          "targets": []
+        }
+      ]
+    },
+    {
+      "name": "LID_R_Mesh",
+      "morphs": null,
+      "primitives": [
+        {
+          "attributes": [
+            "POSITION",
+            "NORMAL",
+            "COLOR_0"
+          ],
+          "targets": []
+        }
+      ]
+    }
+  ],
+  "animations": [
+    {
+      "name": "Sprout_Click",
+      "channels": [
+        {
+          "node": "REACTION_ROOT",
+          "path": "rotation"
+        },
+        {
+          "node": "REACTION_ROOT",
+          "path": "scale"
+        }
+      ]
+    },
+    {
+      "name": "Sprout_Idle",
+      "channels": [
+        {
+          "node": "ROOT",
+          "path": "translation"
+        },
+        {
+          "node": "ROOT",
+          "path": "rotation"
+        },
+        {
+          "node": "ROOT",
+          "path": "scale"
+        },
+        {
+          "node": "BODY",
+          "path": "translation"
+        },
+        {
+          "node": "BODY",
+          "path": "rotation"
+        },
+        {
+          "node": "BODY",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "translation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "rotation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "scale"
+        },
+        {
+          "node": "SPROUT_BODY",
+          "path": "weights"
+        }
+      ]
+    },
+    {
+      "name": "Sprout_Listen",
+      "channels": [
+        {
+          "node": "ROOT",
+          "path": "translation"
+        },
+        {
+          "node": "ROOT",
+          "path": "rotation"
+        },
+        {
+          "node": "ROOT",
+          "path": "scale"
+        },
+        {
+          "node": "BODY",
+          "path": "translation"
+        },
+        {
+          "node": "BODY",
+          "path": "rotation"
+        },
+        {
+          "node": "BODY",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "translation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "rotation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "scale"
+        },
+        {
+          "node": "SPROUT_BODY",
+          "path": "weights"
+        }
+      ]
+    },
+    {
+      "name": "Sprout_Think",
+      "channels": [
+        {
+          "node": "ROOT",
+          "path": "translation"
+        },
+        {
+          "node": "ROOT",
+          "path": "rotation"
+        },
+        {
+          "node": "ROOT",
+          "path": "scale"
+        },
+        {
+          "node": "BODY",
+          "path": "translation"
+        },
+        {
+          "node": "BODY",
+          "path": "rotation"
+        },
+        {
+          "node": "BODY",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "translation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "rotation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "scale"
+        },
+        {
+          "node": "SPROUT_BODY",
+          "path": "weights"
+        }
+      ]
+    },
+    {
+      "name": "Sprout_Speak",
+      "channels": [
+        {
+          "node": "ROOT",
+          "path": "translation"
+        },
+        {
+          "node": "ROOT",
+          "path": "rotation"
+        },
+        {
+          "node": "ROOT",
+          "path": "scale"
+        },
+        {
+          "node": "BODY",
+          "path": "translation"
+        },
+        {
+          "node": "BODY",
+          "path": "rotation"
+        },
+        {
+          "node": "BODY",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_L_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_BASE",
+          "path": "scale"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "translation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "rotation"
+        },
+        {
+          "node": "BUD_R_TIP",
+          "path": "scale"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "translation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "rotation"
+        },
+        {
+          "node": "FACE_MOUNT",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_L",
+          "path": "scale"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "translation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "rotation"
+        },
+        {
+          "node": "FOOT_R",
+          "path": "scale"
+        },
+        {
+          "node": "SPROUT_BODY",
+          "path": "weights"
+        }
+      ]
+    },
+    {
+      "name": "Sprout_Blink",
+      "channels": [
+        {
+          "node": "LID_L",
+          "path": "scale"
+        },
+        {
+          "node": "LID_R",
+          "path": "scale"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "size": 320,
+  "samples": 24,
+  "exposure": 0.0,
+  "images": [
+    "final-light-world-only.png",
+    "final-light-zero-world.png",
+    "final-light-key.png",
+    "final-light-fill.png",
+    "final-light-rim.png",
+    "final-light-full.png"
+  ]
+}

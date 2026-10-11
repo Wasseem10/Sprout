@@ -71,7 +71,10 @@
     1px 2px 5px #06111b;
 }
 .insight-signal.is-small {
-  --signal-size: 46px;
+  --signal-size: 44px;
+}
+.insight-signal[data-model='sprout'] .signal-halo {
+  background: radial-gradient(ellipse, #71dfff16, transparent 66%);
 }
 .insight-signal.is-small .signal-halo {
   display: none;

@@ -1,0 +1,13 @@
+{
+  "phase": "primary_masses",
+  "scene": "INSIGHTOS_Sprout_v002",
+  "objects": 8,
+  "source_bounds": {
+    "SOURCE_Sprout_Body": [
+      2.023,
+      1.3235,
+      1.82
+    ]
+  },
+  "active_filepath": ""
+}

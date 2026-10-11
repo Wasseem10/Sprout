@@ -1,0 +1,41 @@
+{
+  "source": "D:\\hackathon2026\\insightos-ui\\design\\buddy\\sprout\\source\\sprout-prism-v002.blend",
+  "source_sha256": "d636554af1d2ae493a8414de322a0028779f1fd6d47baff2133be0546a12a2ae",
+  "blender": "5.2.2 LTS",
+  "scenes": [
+    "INSIGHTOS_Buddy_v001",
+    "INSIGHTOS_Sprout_v002",
+    "Scene"
+  ],
+  "objects": 29,
+  "bones": [
+    "ROOT",
+    "BODY",
+    "FACE_MOUNT",
+    "BUD_L_BASE",
+    "BUD_L_TIP",
+    "BUD_R_BASE",
+    "BUD_R_TIP",
+    "FOOT_L",
+    "FOOT_R"
+  ],
+  "body_vertices": 7528,
+  "morphs": [
+    "Basis",
+    "Jelly_Squash",
+    "Jelly_Sway_L",
+    "Jelly_Sway_R"
+  ],
+  "clips": [
+    "Sprout_Blink",
+    "Sprout_Click",
+    "Sprout_Idle",
+    "Sprout_Listen",
+    "Sprout_Speak",
+    "Sprout_Think"
+  ],
+  "material": "MAT_Sprout_Prism",
+  "source_proxies": 7,
+  "camera": "CAM_sprout_hero",
+  "pass": true
+}
