@@ -52,6 +52,8 @@ type Props = {
     | 'assetUrl'
     | 'behavior'
     | 'onBehaviorChange'
+    | 'renderMode'
+    | 'onRenderStatusChange'
   >;
   behavior?: BuddyBehaviorInput;
   onBehaviorChange?: (snapshot: BuddyBehaviorSnapshot) => void;

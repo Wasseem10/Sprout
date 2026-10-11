@@ -9,6 +9,11 @@ import type { BuddyBehaviorInput, BuddyBehaviorSnapshot } from './buddyBehavior'
 import './assistant-signal.css';
 
 export type BuddyVisualState = 'idle' | 'listening' | 'thinking' | 'speaking' | 'success';
+export type BuddyRenderPresentation = {
+  status: 'loading' | 'live' | 'fallback' | 'reference';
+  assetUrl: string | undefined;
+  requestedAssetUrl: string | undefined;
+};
 
 /** Presentation adapter only: voice ownership remains in the conversation hook. */
 export function buddyVisualState(voicePhase: string, busy: boolean): BuddyVisualState {
@@ -57,6 +62,8 @@ export default function AssistantSignal({
   behavior,
   onBehaviorChange,
   onDiagnostics,
+  renderMode = 'live',
+  onRenderStatusChange,
 }: {
   active?: boolean;
   small?: boolean;
@@ -72,6 +79,9 @@ export default function AssistantSignal({
   behavior?: BuddyBehaviorInput;
   onBehaviorChange?: (snapshot: BuddyBehaviorSnapshot) => void;
   onDiagnostics?: (diagnostics: BuddyRendererDiagnostics) => void;
+  /** Review-only static comparison; production keeps the animated renderer. */
+  renderMode?: 'live' | 'reference';
+  onRenderStatusChange?: (presentation: BuddyRenderPresentation) => void;
 }) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const renderer = useRef<BuddyRenderer | null>(null);
@@ -94,7 +104,11 @@ export default function AssistantSignal({
     onBehaviorChange: reportBehavior,
   });
   const diagnosticsHandler = useRef(onDiagnostics);
-  const [ready, setReady] = useState(false);
+  const creationKey = `${assetUrl ?? 'default'}:${reflectionProfile ?? 'default'}:${renderMode}`;
+  const [activeKey, setActiveKey] = useState(creationKey);
+  const [rendererReady, setReady] = useState(false);
+  const ready = rendererReady && activeKey === creationKey && renderMode === 'live';
+  const [loading, setLoading] = useState(true);
   const [imageIndex, setImageIndex] = useState(0);
   const [loadedAssetUrl, setLoadedAssetUrl] = useState<string | undefined>(assetUrl);
   const sleepingStill = behavior?.automatic
@@ -104,12 +118,27 @@ export default function AssistantSignal({
   const showSleepZs = ready
     ? character?.mode === 'sleep' && character.visible && character.headAnchor
     : sleepingStill;
-  const stillAssetUrl = loadedAssetUrl ?? assetUrl;
+  const stillAssetUrl = activeKey === creationKey ? (loadedAssetUrl ?? assetUrl) : assetUrl;
   const imagePaths = buddyStillPaths(stillAssetUrl, Boolean(sleepingStill));
   useEffect(() => {
     setImageIndex(0);
   }, [sleepingStill, stillAssetUrl]);
   const [asset, setAsset] = useState<'sprout' | 'ribbon' | 'loading'>('loading');
+  const renderStatus =
+    renderMode === 'reference'
+      ? 'reference'
+      : ready
+        ? 'live'
+        : loading || activeKey !== creationKey
+          ? 'loading'
+          : 'fallback';
+  useEffect(() => {
+    onRenderStatusChange?.({
+      status: renderStatus,
+      assetUrl: stillAssetUrl,
+      requestedAssetUrl: assetUrl,
+    });
+  }, [renderStatus, stillAssetUrl, assetUrl, onRenderStatusChange]);
 
   useEffect(() => {
     diagnosticsHandler.current = onDiagnostics;
@@ -148,10 +177,13 @@ export default function AssistantSignal({
   useEffect(() => {
     let cancelled = false;
     const controller = new AbortController();
+    setActiveKey(creationKey);
     setReady(false);
     setAsset('loading');
     setLoadedAssetUrl(assetUrl);
     setCharacter(null);
+    setLoading(renderMode === 'live');
+    if (renderMode === 'reference') return;
     // Load the engine independently from the text, controls, and voice connection.
     void import('./buddyRenderer')
       .then(async ({ createBuddyRenderer }) => {
@@ -160,7 +192,10 @@ export default function AssistantSignal({
           canvas.current,
           settings.current,
           (value) => {
-            if (!cancelled) setReady(value);
+            if (!cancelled) {
+              setReady(value);
+              setLoading(false);
+            }
           },
           controller.signal,
           (diagnostics) => {
@@ -173,11 +208,13 @@ export default function AssistantSignal({
         if (cancelled) instance?.dispose();
         else {
           renderer.current = instance;
+          if (!instance) setLoading(false);
           instance?.update(settings.current, true);
         }
       })
       .catch(() => {
         /* Authored image remains available without GPU support. */
+        if (!cancelled) setLoading(false);
       });
     return () => {
       cancelled = true;
@@ -185,15 +222,16 @@ export default function AssistantSignal({
       renderer.current?.dispose();
       renderer.current = null;
     };
-  }, [assetUrl, reflectionProfile]);
+  }, [assetUrl, reflectionProfile, renderMode, creationKey]);
 
   return (
     <span
       className={`insight-signal${small ? ' is-small' : ''}${ready ? ' is-rendered' : ''}${imageIndex >= imagePaths.length ? ' image-unavailable' : ''}`}
       data-phase={phase}
       data-renderer={ready ? 'webgl' : 'fallback'}
+      data-render-status={renderStatus}
       data-model={asset}
-      data-asset-url={loadedAssetUrl}
+      data-asset-url={stillAssetUrl}
       data-behavior={!ready && sleepingStill ? 'sleep' : (character?.mode ?? 'normal')}
       data-done={character?.doneActive || undefined}
       aria-hidden="true"
@@ -212,11 +250,7 @@ export default function AssistantSignal({
           onError={() => setImageIndex((index) => Math.min(imagePaths.length, index + 1))}
         />
       )}
-      <canvas
-        key={`${assetUrl ?? 'default'}:${reflectionProfile ?? 'default'}`}
-        ref={canvas}
-        className="signal-canvas"
-      />
+      <canvas key={creationKey} ref={canvas} className="signal-canvas" />
       {showSleepZs && (
         <span
           className="signal-sleep-zs"

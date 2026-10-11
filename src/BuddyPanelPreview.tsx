@@ -1,7 +1,7 @@
 import { useRef, useState, type ComponentProps, type CSSProperties } from 'react';
 import DesktopBuddy from './DesktopBuddy';
 import type AssistantSignal from './AssistantSignal';
-import type { BuddyVisualState } from './AssistantSignal';
+import type { BuddyRenderPresentation, BuddyVisualState } from './AssistantSignal';
 import type { BuddyReadingMemory } from './useBuddyPanel';
 import type { ComputerState } from '../shared/computer';
 import './buddy-panel-preview.css';
@@ -55,6 +55,24 @@ export default function BuddyPanelPreview({
   );
   const [textureStrength, setTextureStrength] = useState(40);
   const [previewAsset, setPreviewAsset] = useState(() => sproutReviewAsset(window.location.search));
+  const [renderMode, setRenderMode] = useState<'live' | 'reference'>(() =>
+    !embedded && new URLSearchParams(window.location.search).get('render') === 'reference'
+      ? 'reference'
+      : 'live',
+  );
+  const [presentation, setPresentation] = useState<BuddyRenderPresentation | null>(null);
+  const appearanceName =
+    previewAsset === SPROUT_ORIGINAL_ASSET
+      ? 'Original'
+      : previewAsset === SPROUT_CURRENT_ASSET
+        ? 'Daylight'
+        : 'Legacy reference';
+  const renderStatus =
+    presentation?.requestedAssetUrl === previewAsset ? presentation.status : 'loading';
+  const olderAssetNote =
+    presentation?.assetUrl && presentation.assetUrl !== previewAsset
+      ? ` · older fallback (${presentation.assetUrl.split('/').pop()?.replace('.glb', '')})`
+      : '';
   const [large, setLarge] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [request, setRequest] = useState('');
@@ -173,7 +191,26 @@ export default function BuddyPanelPreview({
                   )}
               </select>
             </label>
+            <label>
+              Rendering{' '}
+              <select
+                value={renderMode}
+                onChange={(event) => setRenderMode(event.target.value as 'live' | 'reference')}
+              >
+                <option value="live">Animated 3D</option>
+                <option value="reference">Still reference</option>
+              </select>
+            </label>
           </div>
+          <p className="panel-preview-render-status" role="status">
+            {renderMode === 'reference'
+              ? `${appearanceName} · Still reference (Blender render, no animation)`
+              : renderStatus === 'live'
+                ? `${appearanceName} · Live 3D${olderAssetNote}`
+                : renderStatus === 'fallback'
+                  ? `${appearanceName} · Still image — 3D unavailable${olderAssetNote}`
+                  : `Loading ${appearanceName} 3D… showing its still image`}
+          </p>
         </header>
       )}
       <div className={`panel-preview-scene background-${background}${large ? ' large-text' : ''}`}>
@@ -185,7 +222,12 @@ export default function BuddyPanelPreview({
           <div className={`buddy-shell${large ? ' large-text' : ''}`}>
             <DesktopBuddy
               embedded={embedded}
-              visual={{ ...visual, assetUrl: visual?.assetUrl ?? previewAsset }}
+              visual={{
+                ...visual,
+                assetUrl: visual?.assetUrl ?? previewAsset,
+                renderMode,
+                onRenderStatusChange: embedded ? undefined : setPresentation,
+              }}
               audio={audio}
               expanded={expanded}
               modalOpen={false}
