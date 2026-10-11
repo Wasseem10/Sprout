@@ -2,6 +2,16 @@
 
 Status: the clear-rim Prism look is selected after actual browser comparison. The exact GLB and source-backed fallback are promoted, and final local native integration evidence is complete in [GLOSSY-REFINEMENT-AUDIT.md](GLOSSY-REFINEMENT-AUDIT.md). This guide belongs to the glossy refinement; [README.md](README.md) and the v002 evidence remain historical.
 
+## Muted Prism panel followup
+
+The current panel interior carries Sprout's blue, lavender and coral in a quieter frosted surface, with soft highlights, a glass composer and lighter user-message bubbles. The original outer frame is retained. The InsightOS name and status now align beside a 72px Sprout (56px at narrow widths); the header remains 96px high. Stop and Collapse remain direct 44px controls. Hide moves into Tools while the expanded panel is available and remains direct in the collapsed dock. The Tools surface uses a dense muted gradient to prevent underlying transcript text bleeding through its labels.
+
+The local [panel preview](http://127.0.0.1:5173/?studio=panel) shows the actual component with sample messages. [Current preview capture](../../../artifacts/prism-panel-v004/panel-392-busy.png) and [actual native capture](../../../artifacts/prism-panel-v004/buddy-panel-native-prism-busy.png) show the updated surface. Reduced transparency and increased contrast retain solid reading surfaces; forced colours retain the system palette.
+
+The production build and four focused browser checks pass. The refreshed [HTML audit](../../../artifacts/prism-panel-v004/buddy-accessibility-audit.json) covers 320px/392px, Large text, keyboard controls and six controlled backgrounds; minimum recorded sustained-reading contrast is 7.0807:1. [Native verification](../../../artifacts/prism-panel-v004/buddy-panel-native-verification.json) passes collapse/reopen, rapid reversal, draft/selection/scroll preservation, workspace return, reduced motion and 200% zoom. These are local fixtures; provider, microphone and human screen-reader acceptance remains separate. This followup changes no avatar asset, renderer, voice owner, server or native bounds implementation.
+
+The fresh [compiled native runtime proof](../../../artifacts/prism-panel-v004/buddy-runtime-native/report.json) also passes timing, suspension, restoration and disposal. Five open/close cycles retain the same live resource counts. The smaller expanded avatar requires balanced transmission-target reallocations: the proof now checks bounded texture/FBO/renderbuffer changes at exactly 1:2:3, endpoint dimensions of 96px and 72px, and unchanged other resource counters and texture signatures. Historical same-size equality checks and strict disposal gates remain intact; physical VRAM and hardware scanout are unmeasured.
+
 ## Selected files and integrity
 
 | Deliverable | Accepted path | SHA256 | Status |

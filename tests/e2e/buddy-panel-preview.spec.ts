@@ -41,7 +41,7 @@ test('actual panel preview keeps all simulated interactions local and readable',
   await page.getByRole('button', { name: 'Tools', exact: true }).click();
   await expect(
     page.getByRole('region', { name: 'Tools', exact: true }).getByRole('button'),
-  ).toHaveCount(6);
+  ).toHaveCount(7);
   await page.getByRole('button', { name: 'Tools', exact: true }).press('Escape');
   await expect(page.getByRole('button', { name: 'Tools', exact: true })).toBeFocused();
   await page.getByRole('button', { name: 'Ideas', exact: true }).click();

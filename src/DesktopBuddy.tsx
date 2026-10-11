@@ -228,6 +228,12 @@ export default function DesktopBuddy(p: Props) {
       onSelect: openWorkspace,
       restoreFocus: false,
     },
+    {
+      label: 'Hide to system tray',
+      icon: <Minus size={18} />,
+      onSelect: p.hide,
+      restoreFocus: false,
+    },
   ];
   const lastMessage = conversation.at(-1);
   const taskMessageRepeated =
@@ -271,7 +277,7 @@ export default function DesktopBuddy(p: Props) {
         <div className="buddy-dock-controls">
           <div className="buddy-identity">
             <strong>
-              insight<span>OS</span>
+              Insight<span>OS</span>
             </strong>
             <span role="status" title={status}>
               {status}
@@ -299,14 +305,16 @@ export default function DesktopBuddy(p: Props) {
                 <Square size={15} />
               </button>
             )}
-            <button
-              className="buddy-icon"
-              onClick={p.hide}
-              aria-label="Hide to system tray"
-              title="Hide to tray"
-            >
-              <Minus size={17} />
-            </button>
+            {!panel.available && (
+              <button
+                className="buddy-icon"
+                onClick={p.hide}
+                aria-label="Hide to system tray"
+                title="Hide to tray"
+              >
+                <Minus size={17} />
+              </button>
+            )}
             {panel.available && (
               <button
                 ref={close}

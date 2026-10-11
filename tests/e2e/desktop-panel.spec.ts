@@ -403,7 +403,7 @@ test('Ideas and Tools preserve actions with ordinary keyboard navigation and mod
   await composer(page).fill('An unsent draft stays here.');
   await tools(page).press('Enter');
   const toolRegion = page.getByRole('region', { name: 'Tools', exact: true });
-  await expect(toolRegion.getByRole('button')).toHaveCount(6);
+  await expect(toolRegion.getByRole('button')).toHaveCount(7);
   await tools(page).press('Tab');
   await expect(toolRegion.getByRole('button', { name: 'Choose a window to see' })).toBeFocused();
   await page.keyboard.press('Escape');

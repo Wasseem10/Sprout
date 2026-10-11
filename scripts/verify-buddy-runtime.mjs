@@ -53,6 +53,12 @@ const threeSourceEvidence = [
       'Lines1974/2082/2106–2133 create the depth buffer, resolve/multisample FBOs and colour/depth RBOs;409–464 delete them only upon target disposal.',
   },
   {
+    path: 'src/core/RenderTarget.js',
+    sha256: 'e2d00d331e0eab1a2b5e53fbd9f2d87c69170b92b7a33c0059a8ea5eb3383820',
+    mechanism:
+      'Lines365–391: setSize disposes the old target allocations when its dimensions change; subsequent rendering recreates them.',
+  },
+  {
     path: 'src/renderers/webgl/WebGLState.js',
     sha256: 'fd6adb6c01d75a148ef6ebc8ea948a38acc1a48d3cfdbbb1d12dbde668092431',
     mechanism: 'emptyTextures contains four internal1×1 fallback texture handles.',
@@ -147,8 +153,97 @@ if (previous) {
       checkedAt: new Date().toISOString(),
       sourceReportSha256: createHash('sha256').update(previousBytes).digest('hex'),
       previousAssertion:
-        'The earlier v002 disposal assertion did not include the v003 transmission target. This followup classifies only exact pinned Three-owned signatures while keeping owned-resource and lost-context checks strict.',
+        'Earlier same-size/v002 assertions did not account for v003 transmission-target resizing or its cached target after dispose. This followup allows only bounded balanced resize signatures and pinned Three-owned lost-context residuals; owned-resource checks stay strict.',
     },
+  };
+}
+
+function assertNativeResourceStability(before, after, repetitions) {
+  expect(before).toBeTruthy();
+  expect(after).toBeTruthy();
+  expect(after.id).toBe(before.id);
+  expect(before.contextLost).toBe(false);
+  expect(after.contextLost).toBe(false);
+  expect(Object.keys(after.resources).sort()).toEqual(Object.keys(before.resources).sort());
+  const deltas = {};
+  for (const [kind, initial] of Object.entries(before.resources)) {
+    const final = after.resources[kind];
+    expect(final.live).toBe(initial.live);
+    expect(initial.created - initial.deleted).toBe(initial.live);
+    expect(final.created - final.deleted).toBe(final.live);
+    const created = final.created - initial.created;
+    const deleted = final.deleted - initial.deleted;
+    expect(Number.isSafeInteger(created)).toBe(true);
+    expect(created).toBeGreaterThanOrEqual(0);
+    expect(deleted).toBe(created);
+    deltas[kind] = { created, deleted, live: final.live - initial.live };
+  }
+  const resizeCount = deltas.Texture.created;
+  // Five closed/open pairs, the initial reveal and at most two draws around
+  // the rapid exit reversal can resize the target. No unlimited balanced churn.
+  expect(resizeCount).toBeLessThanOrEqual(repetitions * 2 + 3);
+  const ratios = { Texture: 1, Framebuffer: 2, Renderbuffer: 3 };
+  for (const [kind, delta] of Object.entries(deltas))
+    expect(delta.created).toBe(resizeCount * (ratios[kind] ?? 0));
+  let transmissionDimensions = null;
+  if (resizeCount > 0) {
+    expect(hasTransmission).toBe(true);
+    const target = (record, size) =>
+      record.unmatchedTextureSignatures.filter(
+        (texture) =>
+          texture.storage?.target === 3553 &&
+          texture.storage?.internalFormat === 34842 &&
+          texture.storage?.width === size &&
+          texture.storage?.height === size,
+      );
+    const initialTarget = target(before, 96);
+    const finalTarget = target(after, 72);
+    expect(initialTarget).toHaveLength(1);
+    expect(finalTarget).toHaveLength(1);
+    expect(initialTarget[0].storage).toEqual({
+      target: 3553,
+      internalFormat: 34842,
+      width: 96,
+      height: 96,
+    });
+    expect(finalTarget[0].storage).toEqual({
+      target: 3553,
+      internalFormat: 34842,
+      width: 72,
+      height: 72,
+    });
+    const otherTextures = (record, excluded) =>
+      record.unmatchedTextureSignatures
+        .filter((texture) => texture !== excluded)
+        .map((texture) => JSON.stringify(texture))
+        .sort();
+    expect(otherTextures(after, finalTarget[0])).toEqual(otherTextures(before, initialTarget[0]));
+    // Only the resolve/multisample pair advances in creation order; constructor
+    // and PMREM FBOs stay identical. RBO storage is not recorded by this probe.
+    expect(after.unmatchedFramebufferCreationOrders.slice(0, -2)).toEqual(
+      before.unmatchedFramebufferCreationOrders.slice(0, -2),
+    );
+    expect(after.unmatchedFramebufferCreationOrders.slice(-2)).toEqual(
+      before.unmatchedFramebufferCreationOrders.slice(-2).map((order) => order + 2 * resizeCount),
+    );
+    transmissionDimensions = { before: initialTarget[0].storage, after: finalTarget[0].storage };
+  } else {
+    // Preserve the original exact-equality gate for unchanged-size/historical runs.
+    expect(after.resources).toEqual(before.resources);
+    expect(after.unmatchedTextureSignatures).toEqual(before.unmatchedTextureSignatures);
+    expect(after.unmatchedFramebufferCreationOrders).toEqual(
+      before.unmatchedFramebufferCreationOrders,
+    );
+  }
+  return {
+    stableLiveCounts: true,
+    exactEquality: resizeCount === 0,
+    resizeCount,
+    maxExpectedResizes: repetitions * 2 + 3,
+    balancedCreatesDeletes: deltas,
+    transmissionDimensions,
+    classificationScope:
+      'Endpoint texture dimensions and FBO creation-order accounting prove the bounded resize signature; intermediate dimensions and RBO storage formats are not recorded. All other cumulative counters and texture signatures remain equal. No total-VRAM claim.',
   };
 }
 
@@ -478,7 +573,7 @@ try {
     );
     const nativeAfter = after.contexts.find((context) => context.id === nativeBefore?.id);
     expect(nativeBefore).toBeTruthy();
-    expect(nativeAfter.resources).toEqual(nativeBefore.resources);
+    assertNativeResourceStability(nativeBefore, nativeAfter, report.interaction.repetitions);
     expect(nativeAfter.pendingAvatarCallbacks).toBe(1);
     expect(after.globalPendingAvatarCallbacks).toBe(1);
     expect(after.unassignedPendingAvatarCallbacks).toBe(0);
@@ -492,7 +587,8 @@ try {
     measurement = report.interaction;
   }
   // The retained timed run already exercised five native open/close cycles.
-  // Reassert its exact counters even when this followup reruns only lifecycle.
+  // Reassert live counts and only the pinned transmission resize allocation
+  // pattern, even when this followup reruns only lifecycle.
   expect(report.interaction.repetitions).toBe(5);
   const stableNativeBefore = report.interaction.before.contexts.find(
     (context) => context.label === 'native-pet' && !context.contextLost,
@@ -501,14 +597,18 @@ try {
     (context) => context.id === stableNativeBefore?.id,
   );
   expect(stableNativeBefore).toBeTruthy();
-  expect(stableNativeAfter.resources).toEqual(stableNativeBefore.resources);
+  const resourceAccounting = assertNativeResourceStability(
+    stableNativeBefore,
+    stableNativeAfter,
+    report.interaction.repetitions,
+  );
   report.resourceStability = {
     scope:
-      'The original timed native five-cycle panel run, retained unchanged by lifecycle-only followup; no create/dispose-cycle or total-VRAM claim.',
+      'The original timed native five-cycle panel run, retained unchanged by lifecycle-only followup. A96px closed→72px expanded avatar resizes its Three transmission target; only balanced texture:FBO:RBO1:2:3 reallocation is allowed. Historical same-size exact-equality evidence remains separate and unchanged; no create/dispose-cycle or total-VRAM claim.',
     repetitions: report.interaction.repetitions,
     before: stableNativeBefore.resources,
     after: stableNativeAfter.resources,
-    exactEquality: true,
+    ...resourceAccounting,
   };
 
   // A second owner isolates IntersectionObserver and disposal without unmounting
@@ -775,7 +875,7 @@ try {
       minimizedVisibility,
       restoredVisibility,
     },
-    disposedHandleNote: `Pinned Three0.186.1 leaves one shared DFG_LUT16×16 RG16F texture, four internal1×1 fallback textures and three constructor scratch/src/dst FBOs unmatched by explicit delete calls.${hasTransmission ? ' Its per-camera96×96RGBA16F transmission target also remains unmatched, with two resolve/multisample FBOs and three colour/depth RBOs: WebGLRenderStates.dispose only replaces its WeakMap.' : ''} The actual forced context loss makes all these context handles unusable. Exact signatures/counts are asserted; geometry, model map/bone/morph/PMREM textures, buffers, programs, shaders and VAOs are explicitly disposed. Three info.memory.textures retains${hasTransmission ? 2 : 1} internal cached entries. The five original panel cycles show no handle growth. Driver VRAM reclamation and GC are unmeasured.`,
+    disposedHandleNote: `Pinned Three0.186.1 leaves one shared DFG_LUT16×16 RG16F texture, four internal1×1 fallback textures and three constructor scratch/src/dst FBOs unmatched by explicit delete calls.${hasTransmission ? ' Its per-camera96×96RGBA16F transmission target also remains unmatched, with two resolve/multisample FBOs and three colour/depth RBOs: WebGLRenderStates.dispose only replaces its WeakMap.' : ''} The actual forced context loss makes all these context handles unusable. Exact signatures/counts are asserted; geometry, model map/bone/morph/PMREM textures, buffers, programs, shaders and VAOs are explicitly disposed. Three info.memory.textures retains${hasTransmission ? 2 : 1} internal cached entries. The five original panel cycles show no live-handle growth; size changes permit only the bounded balanced transmission allocation signature. Driver VRAM reclamation and GC are unmeasured.`,
     disposedTextureClassification: {
       signatures: textureSignatures,
       dfgLutMatched: true,

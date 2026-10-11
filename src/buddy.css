@@ -77,9 +77,38 @@ html.desktop-buddy,
     inset 0 1px 0 #fff;
 }
 .buddy[data-panel-stage='open'] .buddy-dock-controls {
+  display: contents;
   border-color: transparent;
   background: transparent;
   box-shadow: none;
+}
+.buddy[data-panel-stage='open'] .buddy-bar {
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  gap: 12px;
+  padding: 12px 20px;
+}
+.buddy[data-panel-stage='open'] .buddy-face {
+  width: 72px;
+  height: 72px;
+}
+.buddy[data-panel-stage='open'] .buddy-face .insight-signal {
+  --signal-size: 72px;
+}
+.buddy[data-panel-stage='open'] .buddy-identity {
+  align-self: center;
+}
+.buddy[data-panel-stage='open'] .buddy-identity strong {
+  font-size: 20px;
+  line-height: 1.25;
+  letter-spacing: -0.4px;
+}
+.buddy[data-panel-stage='open'] .buddy-identity > span {
+  margin-top: 3px;
+  line-height: 1.4;
+}
+.buddy[data-panel-stage='open'] .buddy-window-actions {
+  margin: 0;
+  gap: 4px;
 }
 .buddy-identity {
   min-width: 0;
@@ -211,11 +240,18 @@ html.desktop-buddy,
   inset: 7px;
   border-radius: 23px;
   /* The readable surface is owned HTML, not a capture of the desktop behind Electron. */
-  background: linear-gradient(145deg, #f4fbff, #f8fbff 48%, #faf8fe);
+  /* Quieter Prism colour than Sprout, with a stable frosted reading surface. */
+  background:
+    linear-gradient(125deg, #ffffffb8, #ffffff00 36%, #ffffff42 74%, #ffffff85),
+    radial-gradient(ellipse at 5% 4%, #bdefffbd, transparent 56%),
+    radial-gradient(ellipse at 2% 100%, #c7bceba6, transparent 65%),
+    radial-gradient(ellipse at 100% 76%, #f5cfc6a3, transparent 58%),
+    linear-gradient(160deg, #dfedf8f5, #e7ecf9f5 55%, #e7eaf5f5);
+  backdrop-filter: blur(20px) saturate(115%);
   box-shadow:
-    0 0 0 1px #b1c6df8c,
-    inset 0 1px 2px #fff,
-    inset 0 -1px 2px #c9d7e34d;
+    0 0 0 1px #ffffffb8,
+    inset 0 2px 3px #ffffffe0,
+    inset 0 -1px 5px #899ac52b;
 }
 .buddy-panel {
   display: flex;
@@ -242,7 +278,7 @@ html.desktop-buddy,
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
-  scrollbar-color: #849bb8 #eff5fc;
+  scrollbar-color: #849bb8 transparent;
   margin: 0 -4px 10px;
   padding: 0 4px;
   scroll-padding: 8px;
@@ -274,9 +310,12 @@ html.desktop-buddy,
 .buddy-message.user {
   margin-left: 18px;
   padding: 12px 14px;
-  border-left: 3px solid #9eb7e9;
-  background: #edf3fc;
-  border-radius: 3px 14px 14px 3px;
+  border: 1px solid #ffffffc9;
+  background: linear-gradient(130deg, #ffffffa6, #f4f7ffb8);
+  box-shadow:
+    0 2px 8px #405b8510,
+    inset 0 1px 0 #ffffffb3;
+  border-radius: 16px 16px 5px 16px;
 }
 .buddy-message.user > span {
   color: #46566b;
@@ -341,12 +380,13 @@ html.desktop-buddy,
   position: relative;
   flex-shrink: 0;
   padding: 12px;
-  border: 1px solid #96afcf;
+  border: 1px solid #9db6d1;
   border-radius: 22px;
-  background: #fff;
+  background: linear-gradient(125deg, #ffffffd9, #f4f8ffd9 55%, #f9f3ffd9);
+  backdrop-filter: blur(16px);
   box-shadow:
     inset 0 1px 0 #fff,
-    0 3px 10px #254d7910;
+    0 4px 14px #254d7914;
 }
 .buddy-composer:focus-within,
 .buddy-composer.listening {
@@ -408,7 +448,7 @@ html.desktop-buddy,
   padding: 8px;
   border: 1px solid #96afcf;
   border-radius: 18px;
-  background: #f8fbff;
+  background: linear-gradient(135deg, #edf8ff, #f1eefb 62%, #fbf0ec);
   box-shadow:
     0 8px 26px #182d4e30,
     inset 0 1px 0 #fff;
@@ -524,6 +564,21 @@ html.desktop-buddy,
   font-size: 20px;
 }
 @media (max-width: 350px) {
+  .buddy[data-panel-stage='open'] .buddy-bar {
+    grid-template-columns: 56px minmax(0, 1fr) auto;
+    gap: 8px;
+    padding-inline: 16px;
+  }
+  .buddy[data-panel-stage='open'] .buddy-face {
+    width: 56px;
+    height: 56px;
+  }
+  .buddy[data-panel-stage='open'] .buddy-face .insight-signal {
+    --signal-size: 56px;
+  }
+  .buddy[data-panel-stage='open'] .buddy-identity strong {
+    font-size: 18px;
+  }
   .buddy-bar {
     gap: 8px;
   }
@@ -550,6 +605,13 @@ html.desktop-buddy,
   }
   .buddy-panel-glass::after {
     background: #f8fbff;
+    backdrop-filter: none;
+  }
+  .buddy-composer,
+  .buddy-disclosure-panel,
+  .buddy-message.user {
+    background: #f8fbff;
+    backdrop-filter: none;
   }
 }
 @media (prefers-reduced-motion: reduce) {
